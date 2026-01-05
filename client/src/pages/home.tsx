@@ -13372,42 +13372,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             {isProfileActive && <X className="h-4 w-4" />}
                           </button>
                           
-                          {isProfileActive && (
-                            <div className="flex flex-col space-y-1 animate-in fade-in slide-in-from-top-2">
-                              <button className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center justify-between text-left">
-                                <div className="flex flex-col">
-                                  <span className="text-[10px] text-blue-300 uppercase font-bold tracking-wider">User Name</span>
-                                  <span className="text-sm text-white font-medium">{currentUser.username || "chiranjeevi_perala99"}</span>
-                                </div>
-                                <Pencil className="h-3.5 w-3.5 text-blue-400 opacity-60" />
-                              </button>
-                              
-                              <button className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center justify-between text-left">
-                                <div className="flex flex-col">
-                                  <span className="text-[10px] text-blue-300 uppercase font-bold tracking-wider">Display Name</span>
-                                  <span className="text-sm text-white font-medium">{currentUser.displayName || "Perala chiranjeevi"}</span>
-                                </div>
-                                <Pencil className="h-3.5 w-3.5 text-blue-400 opacity-60" />
-                              </button>
-                              
-                              <button className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center justify-between text-left">
-                                <div className="flex flex-col">
-                                  <span className="text-[10px] text-blue-300 uppercase font-bold tracking-wider">Email ID</span>
-                                  <span className="text-sm text-white font-medium">{currentUser.email || "chiranjeevi.perala99@gmail.com"}</span>
-                                </div>
-                                <Pencil className="h-3.5 w-3.5 text-blue-400 opacity-60" />
-                              </button>
-                              
-                              <button className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center justify-between text-left">
-                                <div className="flex flex-col">
-                                  <span className="text-[10px] text-blue-300 uppercase font-bold tracking-wider">Date of Birth</span>
-                                  <span className="text-sm text-white font-medium">01/01/1999</span>
-                                </div>
-                                <Pencil className="h-3.5 w-3.5 text-blue-400 opacity-60" />
-                              </button>
-                            </div>
-                          )}
-                          
                           {!isProfileActive && (
                             <>
                               <button
