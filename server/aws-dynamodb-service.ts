@@ -214,14 +214,15 @@ class AWSDynamoDBService {
     }
 
     try {
+      // ENSURE we use the canonical userId passed from middleware
       const userDateKey = `user_${userId}_${dateKey}`;
       const command = new PutCommand({
         TableName: TABLE_NAME,
         Item: {
           dateKey: userDateKey,
-          userId: userId,
+          userId: userId, // This must be the canonical ID
           date: dateKey,
-          sessionDate: dateKey, // Required for GSI userId-sessionDate-index
+          sessionDate: dateKey,
           data: data,
           updatedAt: new Date().toISOString()
         }

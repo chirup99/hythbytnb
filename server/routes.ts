@@ -5229,22 +5229,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: 'No authentication token provided' });
       }
 
-      // Verify Cognito token
-      const { verifyCognitoToken } = await import('./cognito-auth');
-      const idToken = authHeader.split('Bearer ')[1];
-      const cognitoUser = await verifyCognitoToken(idToken);
+      // 1. Resolve User Identity (Maps Google sub to Canonical User ID)
+      const claims = await authenticateRequest(authHeader);
       
-      if (!cognitoUser) {
-        console.log('❌ Cognito token verification failed');
-        return res.status(401).json({ message: 'Invalid authentication token' });
+      if (!claims) {
+        console.error('❌ Cognito auth failed: Invalid or missing token');
+        return res.status(401).json({ message: 'Invalid or expired authentication token' });
       }
 
-      const userId = cognitoUser.sub;
-      const email = cognitoUser.email;
+      const userId = claims.sub; // This is now the Canonical User ID thanks to middleware
+      const email = claims.email;
 
       console.log('🔍 Checking profile for Cognito user:', userId);
 
-      // Get user profile from AWS DynamoDB
+      // 2. Fetch profile from neofeed-user-profiles using Canonical userId
       const { DynamoDBClient } = await import('@aws-sdk/client-dynamodb');
       const { DynamoDBDocumentClient, GetCommand } = await import('@aws-sdk/lib-dynamodb');
       
