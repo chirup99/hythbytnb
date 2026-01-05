@@ -701,8 +701,14 @@ export async function getUserProfile(userId: string) {
       TableName: TABLES.USER_PROFILES,
       Key: { pk: `USER#${userId}`, sk: 'PROFILE' }
     }));
-    console.log(`🔍 getUserProfile(${userId}): ${result.Item ? 'FOUND - ' + result.Item.username : 'NOT FOUND'}`);
-    return result.Item || null;
+    
+    const profile = result.Item || null;
+    if (profile) {
+      console.log(`🔍 getUserProfile(${userId}): FOUND - ${profile.username}, DOB: ${profile.dob || 'NOT SET'}`);
+    } else {
+      console.log(`🔍 getUserProfile(${userId}): NOT FOUND`);
+    }
+    return profile;
   } catch (error) {
     console.error(`❌ getUserProfile error for ${userId}:`, error);
     return null;
