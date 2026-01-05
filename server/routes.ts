@@ -4967,7 +4967,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             console.log(`✅ Identity mappings created for ${claims.email}: ${claims.sub} -> ${existingUserId}`);
 
-            // Update existing profile with latest name if provided
+            // Update existing profile with latest metadata but keep old names as primary if they exist
             if (name || claims.name) {
               const updateCommand = new PutItemCommand({
                 TableName: 'neofeed-user-profiles',
@@ -4976,16 +4976,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   sk: { S: 'PROFILE' },
                   userId: { S: existingUserId },
                   email: { S: claims.email },
-                  displayName: { S: name || claims.name || existingUser.displayName?.S || claims.email },
+                  // CRITICAL: Prioritize existing manual name/displayName over Google data
+                  displayName: { S: existingUser.displayName?.S || existingUser.manualName?.S || name || claims.name || claims.email },
                   createdAt: { S: existingUser.createdAt?.S || new Date().toISOString() },
                   updatedAt: { S: new Date().toISOString() },
                   googleName: { S: claims.name || existingUser.googleName?.S || '' },
-                  manualName: { S: name || existingUser.manualName?.S || '' },
+                  manualName: { S: existingUser.manualName?.S || name || '' },
                   linkedGoogleSub: { S: claims.sub } // Track the linked Google account
                 }
               });
               await dynamoClient.send(updateCommand);
-              console.log(`✅ Updated existing profile for userId: ${existingUserId}`);
+              console.log(`✅ Linked account and preserved existing profile names for userId: ${existingUserId}`);
             }
           } else {
             console.log(`ℹ️ User already exists with same Cognito sub: ${claims.sub}`);
