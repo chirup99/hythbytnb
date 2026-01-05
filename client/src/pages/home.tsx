@@ -13388,7 +13388,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">dob</span>
-                                <span className="text-white font-medium">{currentUser?.dob || "empty"}</span>
+                                <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">location</span>
