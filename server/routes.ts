@@ -5025,14 +5025,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
 
           // Update existing profile with latest metadata but keep old names as primary if they exist
-          const profileUpdate = {
-            ...existingUser,
+          // IMPORTANT: Convert existingUser (DynamoDB format) to a fresh PutItem object
+          const profileUpdate: any = {
+            pk: { S: `USER#${canonicalUserId}` },
+            sk: { S: 'PROFILE' },
+            userId: { S: canonicalUserId },
             updatedAt: { S: new Date().toISOString() },
-            linkedGoogleSub: { S: claims.sub } // Track the linked Google account
+            linkedGoogleSub: { S: claims.sub }
           };
 
-          // Prioritize manual names if present
-          profileUpdate.displayName = { S: existingUser.displayName?.S || existingUser.manualName?.S || name || claims.name || claims.email };
+          // Preserve all existing fields
+          Object.keys(existingUser).forEach(key => {
+            if (key !== 'pk' && key !== 'sk' && key !== 'updatedAt') {
+              profileUpdate[key] = existingUser[key];
+            }
+          });
+
+          // Prioritize existing names
+          profileUpdate.displayName = { S: existingUser.displayName?.S || name || claims.name || claims.email };
+          profileUpdate.username = { S: existingUser.username?.S || '' };
+          profileUpdate.email = { S: existingUser.email?.S || claims.email };
           profileUpdate.googleName = { S: claims.name || existingUser.googleName?.S || '' };
           profileUpdate.manualName = { S: existingUser.manualName?.S || name || '' };
 
@@ -5287,9 +5299,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: 'Invalid or expired authentication token' });
       }
 
-      // Check for identity mapping first
+      // 1. Check for identity mapping FIRST
       const { DynamoDBClient, GetItemCommand } = await import('@aws-sdk/client-dynamodb');
-      const dynamoClient = new DynamoDBClient({
+      const dynamoClientForMapping = new DynamoDBClient({
         region: process.env.AWS_REGION || 'eu-north-1',
         credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -5301,7 +5313,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`🔍 [PROFILE] Resolving identity for: ${claims.sub} (${claims.email})`);
 
       try {
-        const mappingCheck = await dynamoClient.send(new GetItemCommand({
+        const mappingCheck = await dynamoClientForMapping.send(new GetItemCommand({
           TableName: 'neofeed-user-profiles',
           Key: {
             pk: { S: `USER#${claims.sub}` },
@@ -5311,7 +5323,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         if (mappingCheck.Item && mappingCheck.Item.canonicalUserId?.S) {
           canonicalUserId = mappingCheck.Item.canonicalUserId.S;
-          console.log(`🔗 [PROFILE] Using canonical identity from mapping: ${canonicalUserId}`);
+          console.log(`🔗 [PROFILE] Found mapping: ${claims.sub} -> ${canonicalUserId}`);
         }
       } catch (err) {
         console.warn('⚠️ Identity mapping check failed:', err);
@@ -5320,26 +5332,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = canonicalUserId;
       const email = claims.email;
 
-      console.log('🔍 Checking profile for resolved user:', userId);
+      console.log('🔍 [PROFILE] Final resolved user ID for lookup:', userId);
 
       // 2. Fetch profile from neofeed-user-profiles using Canonical userId
       const { DynamoDBDocumentClient, GetCommand } = await import('@aws-sdk/lib-dynamodb');
-      
-      const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
-      const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'eu-north-1';
-
-      if (!awsAccessKeyId || !awsSecretAccessKey) {
-        console.log('⚠️ AWS credentials not configured, returning empty profile');
-        return res.json({ 
-          success: true,
-          profile: null,
-          userId: userId,
-          email: email
-        });
-      }
-
-      const profileDocClient = DynamoDBDocumentClient.from(dynamoClient);
+      const profileDocClient = DynamoDBDocumentClient.from(dynamoClientForMapping);
 
       // Fetch profile from neofeed-user-profiles table
       const getCommand = new GetCommand({
@@ -5354,6 +5351,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       if (!result.Item) {
         console.log('❌ No profile found in DynamoDB for user:', userId);
+        
+        // If we didn't find it with the canonical ID, try the original sub just in case
+        if (userId !== claims.sub) {
+           console.log(`🔍 [PROFILE] Retrying with original sub: ${claims.sub}`);
+           const retryResult = await profileDocClient.send(new GetCommand({
+             TableName: 'neofeed-user-profiles',
+             Key: { pk: `USER#${claims.sub}`, sk: 'PROFILE' }
+           }));
+           if (retryResult.Item) {
+             console.log('✅ Found profile using original sub');
+             const userData = retryResult.Item;
+             return res.json({
+               success: true,
+               profile: {
+                 username: userData.username,
+                 displayName: userData.displayName,
+                 dob: userData.dob,
+                 bio: userData.bio,
+                 email: userData.email,
+                 profilePicUrl: userData.profilePicUrl,
+                 coverPicUrl: userData.coverPicUrl,
+                 userId: claims.sub
+               },
+               userId: claims.sub,
+               email: email
+             });
+           }
+        }
+
         return res.json({ 
           success: true,
           profile: null,
@@ -5365,14 +5391,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userData = result.Item;
 
       console.log('✅ Profile found in DynamoDB:', {
+        userId: userId,
         username: userData?.username,
-        displayName: userData?.displayName,
-        hasUsername: !!userData?.username,
-        hasDOB: !!userData?.dob,
-        hasProfilePic: !!userData?.profilePicUrl,
-        hasCoverPic: !!userData?.coverPicUrl,
-        profilePicUrl: userData?.profilePicUrl?.substring(0, 80),
-        coverPicUrl: userData?.coverPicUrl?.substring(0, 80)
+        displayName: userData?.displayName
       });
 
       res.json({ 
@@ -5384,7 +5405,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           bio: userData.bio,
           email: userData.email,
           profilePicUrl: userData.profilePicUrl,
-          coverPicUrl: userData.coverPicUrl
+          coverPicUrl: userData.coverPicUrl,
+          userId: userId
         },
         userId: userId,
         email: email
