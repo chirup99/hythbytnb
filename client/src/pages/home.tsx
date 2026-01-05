@@ -1903,6 +1903,7 @@ export default function Home() {
   const [chartTimeframe, setChartTimeframe] = useState<string>("1");
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isProfileActive, setIsProfileActive] = useState(false);
   // Mobile bottom navigation state (home, insight, ranking, paper-trade)
   const [mobileBottomTab, setMobileBottomTab] = useState<
     "home" | "insight" | "ranking" | "paper-trade"
@@ -13363,71 +13364,78 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* Navigation Menu Items - Left aligned */}
                         <div className="space-y-3 flex flex-col">
                           <button
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
+                            onClick={() => setIsProfileActive(!isProfileActive)}
+                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-between"
                             data-testid="nav-profile"
                           >
-                            profile
+                            <span>profile</span>
+                            {isProfileActive && <X className="h-4 w-4" />}
                           </button>
-                          <button
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
-                            data-testid="nav-saved"
-                          >
-                            saved
-                          </button>
-                          {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
-                            <button
-                              onClick={() => {
-                                setTabWithAuthCheck("dashboard");
-                                setIsNavOpen(false);
-                              }}
-                              className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                              data-testid="nav-dashboard"
-                            >
-                              <BarChart3 className="h-4 w-4" />
-                              <span>dashboard</span>
-                            </button>
+                          
+                          {!isProfileActive && (
+                            <>
+                              <button
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
+                                data-testid="nav-saved"
+                              >
+                                saved
+                              </button>
+                              {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
+                                <button
+                                  onClick={() => {
+                                    setTabWithAuthCheck("dashboard");
+                                    setIsNavOpen(false);
+                                  }}
+                                  className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                  data-testid="nav-dashboard"
+                                >
+                                  <BarChart3 className="h-4 w-4" />
+                                  <span>dashboard</span>
+                                </button>
+                              )}
+                              <button
+                                onClick={() => setShowSettingsPanel(true)}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                                data-testid="nav-settings"
+                              >
+                                <Settings className="h-4 w-4" />
+                                <span>setting & privacy</span>
+                              </button>
+                              <button
+                                onClick={toggleTheme}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                data-testid="nav-dark-theme"
+                              >
+                                {theme === 'dark' ? (
+                                  <>
+                                    <Sun className="h-4 w-4" />
+                                    <span>light mode</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Moon className="h-4 w-4" />
+                                    <span>dark mode</span>
+                                  </>
+                                )}
+                              </button>
+                              <button
+                                onClick={async () => {
+                                  try {
+                                    await cognitoSignOut();
+                                    localStorage.clear();
+                                    window.location.href = "/login";
+                                  } catch (error) {
+                                    console.error("Logout error:", error);
+                                  }
+                                }}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                data-testid="nav-logout"
+                              >
+                                <LogOut className="h-4 w-4" />
+                                <span>logout</span>
+                              </button>
+                            </>
                           )}
-                          <button
-                            onClick={() => setShowSettingsPanel(true)}
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
-                            data-testid="nav-settings"
-                          >
-                            <Settings className="h-4 w-4" />
-                            <span>setting & privacy</span>
-                          </button>
-                          <button
-                            onClick={toggleTheme}
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                            data-testid="nav-dark-theme"
-                          >
-                            {theme === 'dark' ? (
-                              <>
-                                <Sun className="h-4 w-4" />
-                                <span>light mode</span>
-                              </>
-                            ) : (
-                              <>
-                                <Moon className="h-4 w-4" />
-                                <span>dark mode</span>
-                              </>
-                            )}
-                          </button>
-                          <button
-                            onClick={async () => {
-                              try {
-                                await cognitoSignOut();
-                                localStorage.clear();
-                                window.location.href = "/login";
-                              } catch (error) {
-                                console.error("Logout error:", error);
-                              }
-                            }}
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                            data-testid="nav-logout"
-                          >
-                            <LogOut className="h-4 w-4" />
-                            <span>logout</span>
-                          </button>
                         </div>
                       </>
                     ) : (
