@@ -13376,7 +13376,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <div className="px-4 py-2 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
-                                <span className="text-white font-medium">@{currentUser?.username || "Not available"}</span>
+                                <div className="flex items-center gap-2"><span className="text-white font-medium">@{currentUser?.username || ""}</span><button onClick={() => setShowProfileSetup(true)} className="p-1 hover:bg-white/10 rounded-full transition-colors"><Pencil className="h-3 w-3 text-gray-400 hover:text-white" /></button></div>
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
@@ -13388,7 +13388,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">dob</span>
-                                <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
+                                <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : ""}</span>
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">location</span>
