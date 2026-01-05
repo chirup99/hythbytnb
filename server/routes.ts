@@ -4951,7 +4951,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
               }
             });
             await dynamoClient.send(mappingCommand);
-            console.log(`✅ Identity mapping created: ${claims.sub} -> ${existingUserId}`);
+
+            // Also create email-based mapping for faster identity resolution
+            const emailMappingCommand = new PutItemCommand({
+              TableName: 'neofeed-user-profiles',
+              Item: {
+                pk: { S: `USER_EMAIL#${claims.email.toLowerCase()}` },
+                sk: { S: 'IDENTITY_LINK' },
+                userId: { S: existingUserId },
+                email: { S: claims.email },
+                updatedAt: { S: new Date().toISOString() }
+              }
+            });
+            await dynamoClient.send(emailMappingCommand);
+            
+            console.log(`✅ Identity mappings created for ${claims.email}: ${claims.sub} -> ${existingUserId}`);
 
             // Update existing profile with latest name if provided
             if (name || claims.name) {

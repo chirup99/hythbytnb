@@ -131,7 +131,21 @@ export async function authenticateRequest(authHeader: string | undefined): Promi
       console.log(`🔗 [Auth Middleware] Resolved Identity: ${claims.sub} -> ${canonicalId}`);
       claims.sub = canonicalId; // Override sub with the real user ID
     } else {
-      // console.log(`ℹ️ [Auth Middleware] No identity mapping found for: ${claims.sub}`);
+      // Identity Resolution: Check for account linking by email if no explicit mapping exists
+      const scanCommand = new GetItemCommand({
+        TableName: 'neofeed-user-profiles',
+        Key: {
+          pk: { S: `USER_EMAIL#${claims.email.toLowerCase()}` },
+          sk: { S: 'IDENTITY_LINK' }
+        }
+      });
+      
+      const emailMappingResult = await ddb.send(scanCommand);
+      if (emailMappingResult.Item && emailMappingResult.Item.userId?.S) {
+        const linkedId = emailMappingResult.Item.userId.S;
+        console.log(`🔗 [Auth Middleware] Resolved Identity via Email: ${claims.sub} -> ${linkedId}`);
+        claims.sub = linkedId;
+      }
     }
   } catch (error) {
     console.warn('⚠️ [Auth Middleware] Identity resolution failed (using original sub):', error);
