@@ -4901,7 +4901,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Account Linking: Search for existing user by email
       try {
-        const { DynamoDBClient, ScanCommand, PutItemCommand } = await import('@aws-sdk/client-dynamodb');
+        const { DynamoDBClient, ScanCommand, PutItemCommand, GetItemCommand } = await import('@aws-sdk/client-dynamodb');
         
         const dynamoClient = new DynamoDBClient({
           region: process.env.AWS_REGION || 'eu-north-1',
@@ -4923,8 +4923,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         console.log(`🔍 [ACCOUNT LINKING] Searching neofeed-user-profiles for: ${searchEmail}`);
         
-        // Try identity link first
-        const { GetItemCommand } = await import('@aws-sdk/client-dynamodb');
+        // 1. Try identity link first
         const linkCheck = await dynamoClient.send(new GetItemCommand({
           TableName: 'neofeed-user-profiles',
           Key: {
@@ -4938,9 +4937,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         if (linkCheck.Item && linkCheck.Item.userId?.S) {
           canonicalUserId = linkCheck.Item.userId.S;
-          console.log(`🔗 [ACCOUNT LINKING] Found DIRECT link: ${canonicalUserId}`);
-        } else {
-          // Fallback to scan if no link record
+          console.log(`🔗 [ACCOUNT LINKING] Found DIRECT link via IDENTITY_LINK: ${canonicalUserId}`);
+          
+          // Fetch the actual profile to ensure it exists
+          const profileCheck = await dynamoClient.send(new GetItemCommand({
+            TableName: 'neofeed-user-profiles',
+            Key: {
+              pk: { S: `USER#${canonicalUserId}` },
+              sk: { S: 'PROFILE' }
+            }
+          }));
+          if (profileCheck.Item) {
+            existingUser = profileCheck.Item;
+          }
+        } 
+        
+        // 2. If no direct link or profile, fallback to scan by email
+        if (!existingUser) {
+          console.log(`🔍 [ACCOUNT LINKING] Falling back to scan for profile with email: ${searchEmail}`);
           const scanCommand = new ScanCommand({
             TableName: 'neofeed-user-profiles',
             FilterExpression: 'email = :email AND sk = :sk',
@@ -4954,11 +4968,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (scanResult.Items && scanResult.Items.length > 0) {
             existingUser = scanResult.Items[0];
             canonicalUserId = existingUser.userId?.S || existingUser.pk?.S?.replace('USER#', '');
-            console.log(`🔗 [ACCOUNT LINKING] Found profile via scan: ${canonicalUserId}`);
+            console.log(`🔗 [ACCOUNT LINKING] Found existing profile via scan: ${canonicalUserId}`);
           }
         }
 
-        if (canonicalUserId !== claims.sub) {
+        if (existingUser && canonicalUserId !== claims.sub) {
           console.log(`✅ [ACCOUNT LINKING] Linking ${claims.sub} -> ${canonicalUserId}`);
           
           // Create mapping
@@ -4988,51 +5002,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }));
 
           // Update existing profile with latest metadata but keep old names as primary if they exist
-          if (name || claims.name) {
-            const updateCommand = new PutItemCommand({
-              TableName: 'neofeed-user-profiles',
-              Item: {
-                pk: { S: `USER#${canonicalUserId}` },
-                sk: { S: 'PROFILE' },
-                userId: { S: canonicalUserId },
-                email: { S: claims.email },
-                // CRITICAL: Prioritize existing manual name/displayName over Google data
-                displayName: { S: (existingUser && existingUser.displayName?.S) || (existingUser && existingUser.manualName?.S) || name || claims.name || claims.email },
-                createdAt: { S: (existingUser && existingUser.createdAt?.S) || new Date().toISOString() },
-                updatedAt: { S: new Date().toISOString() },
-                googleName: { S: claims.name || (existingUser && existingUser.googleName?.S) || '' },
-                manualName: { S: (existingUser && existingUser.manualName?.S) || name || '' },
-                linkedGoogleSub: { S: claims.sub } // Track the linked Google account
-              }
-            });
-            await dynamoClient.send(updateCommand);
-            console.log(`✅ Linked account and preserved existing profile names for userId: ${canonicalUserId}`);
-          }
-        } else {
-          // Check if we need to create a NEW profile or update existing
-          if (!existingUser) {
-            // No existing user found, create new profile
-            console.log(`📝 Creating new user profile for: ${claims.email}`);
-            const putCommand = new PutItemCommand({
-              TableName: 'neofeed-user-profiles',
-              Item: {
-                pk: { S: `USER#${claims.sub}` },
-                sk: { S: 'PROFILE' },
-                userId: { S: claims.sub },
-                email: { S: claims.email },
-                displayName: { S: name || claims.name || claims.email },
-                createdAt: { S: new Date().toISOString() },
-                updatedAt: { S: new Date().toISOString() },
-                googleName: { S: claims.name || '' },
-                manualName: { S: name || '' }
-              },
-            });
+          const profileUpdate = {
+            ...existingUser,
+            updatedAt: { S: new Date().toISOString() },
+            linkedGoogleSub: { S: claims.sub } // Track the linked Google account
+          };
 
-            await dynamoClient.send(putCommand);
-            console.log('💾 New user profile saved to DynamoDB');
-          } else {
-            console.log(`ℹ️ User already exists with same Cognito sub: ${claims.sub}`);
+          // Prioritize manual names if present
+          if (name || claims.name) {
+            profileUpdate.displayName = { S: existingUser.displayName?.S || existingUser.manualName?.S || name || claims.name || claims.email };
+            profileUpdate.googleName = { S: claims.name || existingUser.googleName?.S || '' };
+            profileUpdate.manualName = { S: existingUser.manualName?.S || name || '' };
           }
+
+          await dynamoClient.send(new PutItemCommand({
+            TableName: 'neofeed-user-profiles',
+            Item: profileUpdate
+          }));
+          console.log(`✅ Linked account and preserved existing profile names for userId: ${canonicalUserId}`);
+        } else if (!existingUser) {
+          // No existing user found, create new profile
+          console.log(`📝 Creating new user profile for: ${claims.email}`);
+          await dynamoClient.send(new PutItemCommand({
+            TableName: 'neofeed-user-profiles',
+            Item: {
+              pk: { S: `USER#${claims.sub}` },
+              sk: { S: 'PROFILE' },
+              userId: { S: claims.sub },
+              email: { S: claims.email },
+              displayName: { S: name || claims.name || claims.email },
+              createdAt: { S: new Date().toISOString() },
+              updatedAt: { S: new Date().toISOString() },
+              googleName: { S: claims.name || '' },
+              manualName: { S: name || '' }
+            },
+          }));
+          console.log('💾 New user profile saved to DynamoDB');
+        } else {
+          console.log(`ℹ️ User already exists with same Cognito sub: ${claims.sub}`);
         }
 
         res.json({ 
