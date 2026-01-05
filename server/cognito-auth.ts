@@ -117,6 +117,9 @@ export async function authenticateRequest(authHeader: string | undefined): Promi
   // Identity Resolution: Check if this user is linked to another account
   try {
     const ddb = getDynamoAuthClient();
+    const searchEmail = (claims.email || '').toLowerCase();
+
+    // 1. Try direct PK lookup for the Google sub mapping
     const command = new GetItemCommand({
       TableName: 'neofeed-user-profiles',
       Key: {
@@ -128,22 +131,22 @@ export async function authenticateRequest(authHeader: string | undefined): Promi
     const result = await ddb.send(command);
     if (result.Item && result.Item.canonicalUserId?.S) {
       const canonicalId = result.Item.canonicalUserId.S;
-      console.log(`🔗 [Auth Middleware] Resolved Identity: ${claims.sub} -> ${canonicalId}`);
-      claims.sub = canonicalId; // Override sub with the real user ID
+      console.log(`🔗 [Auth Middleware] Resolved Identity (Mapping): ${claims.sub} -> ${canonicalId}`);
+      claims.sub = canonicalId;
     } else {
-      // Identity Resolution: Check for account linking by email if no explicit mapping exists
-      const scanCommand = new GetItemCommand({
+      // 2. Try direct PK lookup for the Email link
+      const emailCommand = new GetItemCommand({
         TableName: 'neofeed-user-profiles',
         Key: {
-          pk: { S: `USER_EMAIL#${claims.email.toLowerCase()}` },
+          pk: { S: `USER_EMAIL#${searchEmail}` },
           sk: { S: 'IDENTITY_LINK' }
         }
       });
       
-      const emailMappingResult = await ddb.send(scanCommand);
-      if (emailMappingResult.Item && emailMappingResult.Item.userId?.S) {
-        const linkedId = emailMappingResult.Item.userId.S;
-        console.log(`🔗 [Auth Middleware] Resolved Identity via Email: ${claims.sub} -> ${linkedId}`);
+      const emailResult = await ddb.send(emailCommand);
+      if (emailResult.Item && emailResult.Item.userId?.S) {
+        const linkedId = emailResult.Item.userId.S;
+        console.log(`🔗 [Auth Middleware] Resolved Identity (Email Link): ${claims.sub} -> ${linkedId}`);
         claims.sub = linkedId;
       }
     }

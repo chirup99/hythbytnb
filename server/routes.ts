@@ -4911,61 +4911,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
           } : undefined,
         });
 
-        // Search for existing user by email
+        // Search for existing user by email - BE MORE AGGRESSIVE
         const searchEmail = (claims.email || '').toLowerCase();
-        console.log(`🔍 [ACCOUNT LINKING] Scanning table: neofeed-user-profiles for email: ${searchEmail}`);
-        const scanCommand = new ScanCommand({
+        console.log(`🔍 [ACCOUNT LINKING] Searching neofeed-user-profiles for: ${searchEmail}`);
+        
+        // Try identity link first
+        const { GetItemCommand } = await import('@aws-sdk/client-dynamodb');
+        const linkCheck = await dynamoClient.send(new GetItemCommand({
           TableName: 'neofeed-user-profiles',
-          FilterExpression: 'email = :email',
-          ExpressionAttributeValues: {
-            ':email': { S: searchEmail }
+          Key: {
+            pk: { S: `USER_EMAIL#${searchEmail}` },
+            sk: { S: 'IDENTITY_LINK' }
           }
-        });
+        }));
 
-        const scanResult = await dynamoClient.send(scanCommand);
         let canonicalUserId = claims.sub;
         let existingUser = null;
 
-        if (scanResult.Items && scanResult.Items.length > 0) {
-          // Found existing user(s) with this email
-          existingUser = scanResult.Items[0];
-          const existingUserId = existingUser.userId?.S || existingUser.pk?.S?.replace('USER#', '');
+        if (linkCheck.Item && linkCheck.Item.userId?.S) {
+          canonicalUserId = linkCheck.Item.userId.S;
+          console.log(`🔗 [ACCOUNT LINKING] Found DIRECT link: ${canonicalUserId}`);
+        } else {
+          // Fallback to scan if no link record
+          const scanCommand = new ScanCommand({
+            TableName: 'neofeed-user-profiles',
+            FilterExpression: 'email = :email AND sk = :sk',
+            ExpressionAttributeValues: {
+              ':email': { S: searchEmail },
+              ':sk': { S: 'PROFILE' }
+            }
+          });
+
+          const scanResult = await dynamoClient.send(scanCommand);
+          if (scanResult.Items && scanResult.Items.length > 0) {
+            existingUser = scanResult.Items[0];
+            canonicalUserId = existingUser.userId?.S || existingUser.pk?.S?.replace('USER#', '');
+            console.log(`🔗 [ACCOUNT LINKING] Found profile via scan: ${canonicalUserId}`);
+          }
+        }
+
+        if (canonicalUserId !== claims.sub) {
+          console.log(`✅ [ACCOUNT LINKING] Linking ${claims.sub} -> ${canonicalUserId}`);
           
-          if (existingUserId && existingUserId !== claims.sub) {
-            console.log(`🔗 [ACCOUNT LINKING] Found existing user: ${existingUserId} for email: ${claims.email}`);
-            console.log(`   Current Cognito sub: ${claims.sub}`);
-            console.log(`   Linking to original userId: ${existingUserId}`);
-            canonicalUserId = existingUserId;
+          // Create mapping
+          await dynamoClient.send(new PutItemCommand({
+            TableName: 'neofeed-user-profiles',
+            Item: {
+              pk: { S: `USER#${claims.sub}` },
+              sk: { S: 'IDENTITY_MAPPING' },
+              userId: { S: claims.sub },
+              canonicalUserId: { S: canonicalUserId },
+              email: { S: searchEmail },
+              provider: { S: 'Google' },
+              updatedAt: { S: new Date().toISOString() }
+            }
+          }));
 
-            // Create identity mapping record for future lookups
-            const mappingCommand = new PutItemCommand({
-              TableName: 'neofeed-user-profiles',
-              Item: {
-                pk: { S: `USER#${claims.sub}` },
-                sk: { S: 'IDENTITY_MAPPING' },
-                userId: { S: claims.sub },
-                canonicalUserId: { S: existingUserId },
-                email: { S: claims.email },
-                provider: { S: 'Google' },
-                createdAt: { S: new Date().toISOString() }
-              }
-            });
-            await dynamoClient.send(mappingCommand);
-
-            // Also create email-based mapping for faster identity resolution
-            const emailMappingCommand = new PutItemCommand({
-              TableName: 'neofeed-user-profiles',
-              Item: {
-                pk: { S: `USER_EMAIL#${claims.email.toLowerCase()}` },
-                sk: { S: 'IDENTITY_LINK' },
-                userId: { S: existingUserId },
-                email: { S: claims.email },
-                updatedAt: { S: new Date().toISOString() }
-              }
-            });
-            await dynamoClient.send(emailMappingCommand);
-            
-            console.log(`✅ Identity mappings created for ${claims.email}: ${claims.sub} -> ${existingUserId}`);
+          // Create email link
+          await dynamoClient.send(new PutItemCommand({
+            TableName: 'neofeed-user-profiles',
+            Item: {
+              pk: { S: `USER_EMAIL#${searchEmail}` },
+              sk: { S: 'IDENTITY_LINK' },
+              userId: { S: canonicalUserId },
+              email: { S: searchEmail },
+              updatedAt: { S: new Date().toISOString() }
+            }
+          }));
+        }
 
             // Update existing profile with latest metadata but keep old names as primary if they exist
             if (name || claims.name) {
