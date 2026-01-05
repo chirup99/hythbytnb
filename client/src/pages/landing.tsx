@@ -586,10 +586,10 @@ export default function Landing() {
       </div>
       <div className="max-w-xl w-full space-y-6">
         <div className="text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">Get Early Access</h2>
-          <p className="text-gray-400 text-lg mb-2">Type a prompt, get a trading strategy</p>
-          <p className="text-gray-400 text-lg mb-6">instantly.</p>
-          <p className="text-gray-500 text-sm">AI-powered trading insights.</p>
+          <h2 className="text-4xl font-bold text-white mb-4">Daily Trade Tracking</h2>
+          <p className="text-gray-400 text-lg mb-2">Record and monitor all your trades</p>
+          <p className="text-gray-400 text-lg mb-6">AI Performance Analysis</p>
+          <p className="text-gray-500 text-sm">View detailed P&L and trading statistics</p>
         </div>
         <div className="w-full max-w-md mx-auto space-y-4">
           {isSignupVerification ? (
@@ -895,12 +895,12 @@ export default function Landing() {
         <div className="flex flex-col items-center space-y-3 text-sm text-gray-400">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-            <span>AI Social feed </span>
+            <span>Improve Your Trading</span>
           </div>
          
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-            <span>AI-Journal tracking</span>
+            <span>Learn from your trading mistakes and patterns</span>
           </div>
         </div>
       </div>
