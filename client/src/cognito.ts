@@ -48,13 +48,15 @@ const cognitoConfig = {
           scopes: ['openid', 'email', 'profile'],
           redirectSignIn: [
             'https://perala.in/landing',
-            'http://localhost:5000/landing',
-            window.location.origin + '/landing'
+            'https://perala.in/',
+            'https://' + window.location.host + '/landing',
+            'https://' + window.location.host + '/'
           ],
           redirectSignOut: [
             'https://perala.in/landing',
-            'http://localhost:5000/landing',
-            window.location.origin + '/landing'
+            'https://perala.in/',
+            'https://' + window.location.host + '/landing',
+            'https://' + window.location.host + '/'
           ],
           responseType: 'code' as const,
         },
