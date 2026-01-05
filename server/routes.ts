@@ -5258,7 +5258,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: 'No authentication token provided' });
       }
 
-      // 1. Resolve User Identity (Maps Google sub to Canonical User ID)
+      // Resolve User Identity (Maps Google sub to Canonical User ID)
       const claims = await authenticateRequest(authHeader);
       
       if (!claims) {
@@ -5266,10 +5266,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: 'Invalid or expired authentication token' });
       }
 
-      const userId = claims.sub; // This is now the Canonical User ID thanks to middleware
+      // Check for identity mapping first
+      const { DynamoDBClient, GetItemCommand } = await import('@aws-sdk/client-dynamodb');
+      const dynamoClient = new DynamoDBClient({
+        region: process.env.AWS_REGION || 'eu-north-1',
+        credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        } : undefined,
+      });
+
+      let canonicalUserId = claims.sub;
+      console.log(`🔍 [PROFILE] Resolving identity for: ${claims.sub} (${claims.email})`);
+
+      try {
+        const mappingCheck = await dynamoClient.send(new GetItemCommand({
+          TableName: 'neofeed-user-profiles',
+          Key: {
+            pk: { S: `USER#${claims.sub}` },
+            sk: { S: 'IDENTITY_MAPPING' }
+          }
+        }));
+
+        if (mappingCheck.Item && mappingCheck.Item.canonicalUserId?.S) {
+          canonicalUserId = mappingCheck.Item.canonicalUserId.S;
+          console.log(`🔗 [PROFILE] Using canonical identity from mapping: ${canonicalUserId}`);
+        }
+      } catch (err) {
+        console.warn('⚠️ Identity mapping check failed:', err);
+      }
+
+      const userId = canonicalUserId;
       const email = claims.email;
 
-      console.log('🔍 Checking profile for Cognito user:', userId);
+      console.log('🔍 Checking profile for resolved user:', userId);
 
       // 2. Fetch profile from neofeed-user-profiles using Canonical userId
       const { DynamoDBClient } = await import('@aws-sdk/client-dynamodb');
