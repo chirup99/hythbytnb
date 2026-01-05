@@ -13435,7 +13435,7 @@ gmail.com' && (
                             <span>profile</span>
                             {isProfileActive ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                             {isProfileActive ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                            {isProfileActive && <X className="h-4 w-4" />}
+                            {isProfileActive ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                           </button>
                           
                           {isProfileActive && (
