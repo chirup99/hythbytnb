@@ -4913,6 +4913,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Search for existing user by email - BE MORE AGGRESSIVE
         let searchEmail = (claims.email || '').toLowerCase();
+        const originalEmail = searchEmail;
         
         // Normalize Gmail addresses (remove dots before @) for better matching
         if (searchEmail.endsWith('@gmail.com')) {
@@ -4921,7 +4922,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`📧 Normalized Gmail for searching: ${searchEmail}`);
         }
         
-        console.log(`🔍 [ACCOUNT LINKING] Searching neofeed-user-profiles for: ${searchEmail}`);
+        console.log(`🔍 [ACCOUNT LINKING] Searching neofeed-user-profiles for: ${searchEmail} (Original: ${originalEmail})`);
         
         // 1. Try identity link first
         const linkCheck = await dynamoClient.send(new GetItemCommand({
@@ -4932,11 +4933,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }));
 
+        // Also check with original email if different
+        let linkCheckOriginal = null;
+        if (searchEmail !== originalEmail) {
+          linkCheckOriginal = await dynamoClient.send(new GetItemCommand({
+            TableName: 'neofeed-user-profiles',
+            Key: {
+              pk: { S: `USER_EMAIL#${originalEmail}` },
+              sk: { S: 'IDENTITY_LINK' }
+            }
+          }));
+        }
+
         let canonicalUserId = claims.sub;
         let existingUser = null;
 
-        if (linkCheck.Item && linkCheck.Item.userId?.S) {
-          canonicalUserId = linkCheck.Item.userId.S;
+        const foundLink = linkCheck.Item || (linkCheckOriginal && linkCheckOriginal.Item);
+
+        if (foundLink && foundLink.userId?.S) {
+          canonicalUserId = foundLink.userId.S;
           console.log(`🔗 [ACCOUNT LINKING] Found DIRECT link via IDENTITY_LINK: ${canonicalUserId}`);
           
           // Fetch the actual profile to ensure it exists
@@ -4952,14 +4967,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         } 
         
-        // 2. If no direct link or profile, fallback to scan by email
+        // 2. If no direct link or profile, fallback to scan by email (check both normalized and original)
         if (!existingUser) {
-          console.log(`🔍 [ACCOUNT LINKING] Falling back to scan for profile with email: ${searchEmail}`);
+          console.log(`🔍 [ACCOUNT LINKING] Falling back to scan for profile with email: ${searchEmail} or ${originalEmail}`);
           const scanCommand = new ScanCommand({
             TableName: 'neofeed-user-profiles',
-            FilterExpression: 'email = :email AND sk = :sk',
+            FilterExpression: '(email = :email OR email = :originalEmail) AND sk = :sk',
             ExpressionAttributeValues: {
               ':email': { S: searchEmail },
+              ':originalEmail': { S: originalEmail },
               ':sk': { S: 'PROFILE' }
             }
           });
@@ -4983,23 +4999,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
               sk: { S: 'IDENTITY_MAPPING' },
               userId: { S: claims.sub },
               canonicalUserId: { S: canonicalUserId },
-              email: { S: searchEmail },
+              email: { S: originalEmail },
               provider: { S: 'Google' },
               updatedAt: { S: new Date().toISOString() }
             }
           }));
 
-          // Create email link
-          await dynamoClient.send(new PutItemCommand({
-            TableName: 'neofeed-user-profiles',
-            Item: {
-              pk: { S: `USER_EMAIL#${searchEmail}` },
-              sk: { S: 'IDENTITY_LINK' },
-              userId: { S: canonicalUserId },
-              email: { S: searchEmail },
-              updatedAt: { S: new Date().toISOString() }
-            }
-          }));
+          // Create email links for both normalized and original to be safe
+          const linkItems = [
+            { email: searchEmail, pk: `USER_EMAIL#${searchEmail}` },
+            { email: originalEmail, pk: `USER_EMAIL#${originalEmail}` }
+          ];
+
+          for (const item of linkItems) {
+            await dynamoClient.send(new PutItemCommand({
+              TableName: 'neofeed-user-profiles',
+              Item: {
+                pk: { S: item.pk },
+                sk: { S: 'IDENTITY_LINK' },
+                userId: { S: canonicalUserId },
+                email: { S: item.email },
+                updatedAt: { S: new Date().toISOString() }
+              }
+            }));
+          }
 
           // Update existing profile with latest metadata but keep old names as primary if they exist
           const profileUpdate = {
@@ -5009,11 +5032,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           };
 
           // Prioritize manual names if present
-          if (name || claims.name) {
-            profileUpdate.displayName = { S: existingUser.displayName?.S || existingUser.manualName?.S || name || claims.name || claims.email };
-            profileUpdate.googleName = { S: claims.name || existingUser.googleName?.S || '' };
-            profileUpdate.manualName = { S: existingUser.manualName?.S || name || '' };
-          }
+          profileUpdate.displayName = { S: existingUser.displayName?.S || existingUser.manualName?.S || name || claims.name || claims.email };
+          profileUpdate.googleName = { S: claims.name || existingUser.googleName?.S || '' };
+          profileUpdate.manualName = { S: existingUser.manualName?.S || name || '' };
 
           await dynamoClient.send(new PutItemCommand({
             TableName: 'neofeed-user-profiles',
@@ -5302,7 +5323,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log('🔍 Checking profile for resolved user:', userId);
 
       // 2. Fetch profile from neofeed-user-profiles using Canonical userId
-      const { DynamoDBClient } = await import('@aws-sdk/client-dynamodb');
       const { DynamoDBDocumentClient, GetCommand } = await import('@aws-sdk/lib-dynamodb');
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
@@ -5319,14 +5339,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      const dynamoClient = new DynamoDBClient({
-        region: awsRegion,
-        credentials: {
-          accessKeyId: awsAccessKeyId,
-          secretAccessKey: awsSecretAccessKey
-        }
-      });
-      const docClient = DynamoDBDocumentClient.from(dynamoClient);
+      const profileDocClient = DynamoDBDocumentClient.from(dynamoClient);
 
       // Fetch profile from neofeed-user-profiles table
       const getCommand = new GetCommand({
@@ -5337,7 +5350,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       });
 
-      const result = await docClient.send(getCommand);
+      const result = await profileDocClient.send(getCommand);
       
       if (!result.Item) {
         console.log('❌ No profile found in DynamoDB for user:', userId);
