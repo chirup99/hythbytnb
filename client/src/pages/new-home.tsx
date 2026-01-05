@@ -12,9 +12,12 @@ import {
   Send,
   Sparkles
 } from "lucide-react";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export default function NewHome() {
   const [searchQuery, setSearchQuery] = useState("");
+  const { getUserDisplayName } = useCurrentUser();
+  const displayName = getUserDisplayName().split(' ')[0]; // Just use first name for a friendly greeting
 
   const actionButtons = [
     {
@@ -70,7 +73,7 @@ export default function NewHome() {
           <div className="flex items-center justify-center gap-3">
             <Sparkles className="h-6 w-6 text-orange-400" />
             <h1 className="text-3xl font-normal text-gray-100">
-              What's new, Esmondrio?
+              What's new, {displayName}?
             </h1>
           </div>
         </div>

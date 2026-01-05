@@ -4872,6 +4872,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // AWS Cognito Authentication Route (replaces Firebase auth)
   app.post('/api/auth/cognito', async (req, res) => {
+    console.log('📨 [API] Received Cognito auth request from frontend');
     try {
       const authHeader = req.headers.authorization;
       const { name, email } = req.body;
@@ -4894,12 +4895,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log('✅ Cognito token verified:', { 
         userId: claims.sub, 
         email: claims.email,
-        name: claims.name 
+        tokenName: claims.name,
+        bodyName: name
       });
 
-      // Save user profile to DynamoDB (similar to Firebase Firestore save)
+      // Account Linking: Search for existing user by email
       try {
-        const { DynamoDBClient, PutItemCommand } = await import('@aws-sdk/client-dynamodb');
+        const { DynamoDBClient, ScanCommand, PutItemCommand } = await import('@aws-sdk/client-dynamodb');
         
         const dynamoClient = new DynamoDBClient({
           region: process.env.AWS_REGION || 'eu-north-1',
@@ -4909,32 +4911,112 @@ export async function registerRoutes(app: Express): Promise<Server> {
           } : undefined,
         });
 
-        const putCommand = new PutItemCommand({
-          TableName: 'tradebook-users',
-          Item: {
-            pk: { S: `USER#${claims.sub}` },
-            sk: { S: 'PROFILE' },
-            userId: { S: claims.sub },
-            email: { S: claims.email },
-            displayName: { S: name || claims.name || claims.email },
-            createdAt: { S: new Date().toISOString() },
-            updatedAt: { S: new Date().toISOString() },
-          },
+        // Search for existing user by email
+        const searchEmail = (claims.email || '').toLowerCase();
+        console.log(`🔍 [ACCOUNT LINKING] Scanning table: neofeed-user-profiles for email: ${searchEmail}`);
+        const scanCommand = new ScanCommand({
+          TableName: 'neofeed-user-profiles',
+          FilterExpression: 'email = :email',
+          ExpressionAttributeValues: {
+            ':email': { S: searchEmail }
+          }
         });
 
-        await dynamoClient.send(putCommand);
-        console.log('💾 User profile saved to DynamoDB');
-      } catch (dbError) {
-        console.warn('⚠️ DynamoDB save failed (non-critical):', dbError);
-      }
+        const scanResult = await dynamoClient.send(scanCommand);
+        let canonicalUserId = claims.sub;
+        let existingUser = null;
 
-      res.json({ 
-        success: true, 
-        message: 'Cognito authentication successful',
-        userId: claims.sub,
-        email: claims.email,
-        name: name || claims.name || claims.email
-      });
+        if (scanResult.Items && scanResult.Items.length > 0) {
+          // Found existing user(s) with this email
+          existingUser = scanResult.Items[0];
+          const existingUserId = existingUser.userId?.S || existingUser.pk?.S?.replace('USER#', '');
+          
+          if (existingUserId && existingUserId !== claims.sub) {
+            console.log(`🔗 [ACCOUNT LINKING] Found existing user: ${existingUserId} for email: ${claims.email}`);
+            console.log(`   Current Cognito sub: ${claims.sub}`);
+            console.log(`   Linking to original userId: ${existingUserId}`);
+            canonicalUserId = existingUserId;
+
+            // Create identity mapping record for future lookups
+            const mappingCommand = new PutItemCommand({
+              TableName: 'neofeed-user-profiles',
+              Item: {
+                pk: { S: `USER#${claims.sub}` },
+                sk: { S: 'IDENTITY_MAPPING' },
+                userId: { S: claims.sub },
+                canonicalUserId: { S: existingUserId },
+                email: { S: claims.email },
+                provider: { S: 'Google' },
+                createdAt: { S: new Date().toISOString() }
+              }
+            });
+            await dynamoClient.send(mappingCommand);
+            console.log(`✅ Identity mapping created: ${claims.sub} -> ${existingUserId}`);
+
+            // Update existing profile with latest name if provided
+            if (name || claims.name) {
+              const updateCommand = new PutItemCommand({
+                TableName: 'neofeed-user-profiles',
+                Item: {
+                  pk: { S: `USER#${existingUserId}` },
+                  sk: { S: 'PROFILE' },
+                  userId: { S: existingUserId },
+                  email: { S: claims.email },
+                  displayName: { S: name || claims.name || existingUser.displayName?.S || claims.email },
+                  createdAt: { S: existingUser.createdAt?.S || new Date().toISOString() },
+                  updatedAt: { S: new Date().toISOString() },
+                  googleName: { S: claims.name || existingUser.googleName?.S || '' },
+                  manualName: { S: name || existingUser.manualName?.S || '' },
+                  linkedGoogleSub: { S: claims.sub } // Track the linked Google account
+                }
+              });
+              await dynamoClient.send(updateCommand);
+              console.log(`✅ Updated existing profile for userId: ${existingUserId}`);
+            }
+          } else {
+            console.log(`ℹ️ User already exists with same Cognito sub: ${claims.sub}`);
+          }
+        } else {
+          // No existing user found, create new profile
+          console.log(`📝 Creating new user profile for: ${claims.email}`);
+          const putCommand = new PutItemCommand({
+            TableName: 'neofeed-user-profiles',
+            Item: {
+              pk: { S: `USER#${claims.sub}` },
+              sk: { S: 'PROFILE' },
+              userId: { S: claims.sub },
+              email: { S: claims.email },
+              displayName: { S: name || claims.name || claims.email },
+              createdAt: { S: new Date().toISOString() },
+              updatedAt: { S: new Date().toISOString() },
+              googleName: { S: claims.name || '' },
+              manualName: { S: name || '' }
+            },
+          });
+
+          await dynamoClient.send(putCommand);
+          console.log('💾 New user profile saved to DynamoDB');
+        }
+
+        res.json({ 
+          success: true, 
+          message: 'Cognito authentication successful',
+          userId: canonicalUserId, // Return the canonical userId (original or new)
+          email: claims.email,
+          name: name || claims.name || claims.email,
+          accountLinked: canonicalUserId !== claims.sub // Indicate if accounts were linked
+        });
+      } catch (dbError) {
+        console.error('❌ DynamoDB operation failed:', dbError);
+        // Still return success for auth, but without linking
+        res.json({ 
+          success: true, 
+          message: 'Cognito authentication successful (linking skipped)',
+          userId: claims.sub,
+          email: claims.email,
+          name: name || claims.name || claims.email
+        });
+      }
     } catch (error: any) {
       console.error('❌ Cognito auth error:', error);
       res.status(401).json({ 
@@ -4943,6 +5025,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
+
 
   // AWS Cognito Auto-Confirm User - DISABLED to enforce email verification
   app.post('/api/auth/cognito/confirm-signup', async (req, res) => {

@@ -48,10 +48,14 @@ export function useCurrentUser() {
               const data = await response.json();
               if (data.success && data.profile) {
                 const profile = data.profile;
+                // CRITICAL: Use the userId from the backend profile (which handles Identity Linking)
+                // instead of the savedUserId (which might be the raw Google Sub)
+                const effectiveUserId = profile.userId || savedUserId;
+                
                 updateUser(
-                  savedUserId,
+                  effectiveUserId,
                   savedUserEmail,
-                  profile.username,
+                  profile.username || savedUserEmail,
                   profile.displayName
                 );
               } else {
@@ -75,18 +79,18 @@ export function useCurrentUser() {
     localStorage.setItem('currentUserId', userId);
     localStorage.setItem('currentUserEmail', email);
     
-    if (username) {
-      localStorage.setItem('currentUsername', username);
-    } else {
-      localStorage.removeItem('currentUsername');
-    }
-    
     if (displayName) {
       localStorage.setItem('currentDisplayName', displayName);
       localStorage.setItem('currentUserName', displayName);
     } else {
       localStorage.removeItem('currentDisplayName');
       localStorage.removeItem('currentUserName');
+    }
+    
+    if (username) {
+      localStorage.setItem('currentUsername', username);
+    } else {
+      localStorage.setItem('currentUsername', email); // Fallback to email
     }
     
     setCurrentUser({ 

@@ -47,6 +47,42 @@ export default function Landing() {
   useEffect(() => {
     initializeCognito();
     
+    // Check if user is already authenticated
+    const checkExistingSession = async () => {
+      console.log('🔍 [Landing] Checking for existing session...');
+      try {
+        const user = await getCognitoUser();
+        if (user && user.userId) {
+          console.log('👤 [Landing] User already authenticated:', user.email);
+          console.log('🚀 [Landing] Redirecting to home page...');
+          
+          // Ensure localStorage is synced but respect existing linked ID
+          const storedUserId = localStorage.getItem('currentUserId');
+          
+          // Only overwrite if not set, or if we want to force sync (but here we want to preserve link)
+          // If storedUserId exists and is different from user.userId (506c...), it might be the linked ID (c06...)
+          // So we should NOT overwrite it with the raw token ID.
+          if (!storedUserId) {
+             localStorage.setItem('currentUserId', user.userId);
+          }
+          
+          localStorage.setItem('currentUserEmail', user.email);
+          localStorage.setItem('currentUsername', user.email);
+          localStorage.setItem('currentDisplayName', user.displayName);
+          localStorage.setItem('currentUserName', user.displayName);
+
+          // Force redirect to home
+          window.location.href = '/';
+          return true;
+        } else {
+          console.log('ℹ️ [Landing] No active session found via getCognitoUser');
+        }
+      } catch (error) {
+        console.error('❌ [Landing] Error in checkExistingSession:', error);
+      }
+      return false;
+    };
+
     const checkOAuthCallback = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search);
@@ -69,22 +105,34 @@ export default function Landing() {
         }
         
         if (hasCode) {
-          console.log('🔐 [Google OAuth] Callback detected with authorization code, processing...');
+          const logDiv = document.getElementById('auth-debug-log');
+          const log = (msg: string) => {
+             console.log(msg);
+             if (logDiv) {
+               const p = document.createElement('div');
+               p.innerHTML = `> ${msg}`;
+               logDiv.appendChild(p);
+               logDiv.scrollTop = logDiv.scrollHeight;
+             }
+          };
+
+          log('🔐 [Google OAuth] Callback code detected..');
           
           // Process the OAuth callback - this exchanges the code for tokens
           const user = await handleCognitoCallback();
           
           if (user) {
-            console.log('✅ [Google OAuth] User authenticated:', user.email);
-            
-            localStorage.setItem('currentUserId', user.userId);
-            localStorage.setItem('currentUserEmail', user.email);
-            localStorage.setItem('currentUserName', user.name);
+            log(`✅ User Authenticated. Email: ${user.email}`);
+            log(`🔑 Token ID (Sub): ${user.userId.substring(0, 10)}...`);
             
             const token = await getCognitoToken();
+            let finalUserId = user.userId; // Default to Cognito sub
+            let accountLinked = false;
+            
             if (token) {
               try {
-                await fetch('/api/auth/cognito', {
+                log('📡 Syncing with Backend ID System...');
+                const response = await fetch('/api/auth/cognito', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
@@ -92,16 +140,37 @@ export default function Landing() {
                   },
                   body: JSON.stringify({ name: user.name, email: user.email }),
                 });
+                
+                const result = await response.json();
+                log(`📩 Backend Reply: ${JSON.stringify(result)}`);
+
+                if (result.success && result.userId) {
+                  finalUserId = result.userId; // Use canonical userId from backend
+                  accountLinked = result.accountLinked || false;
+                  log(`🔗 LINKED ID FOUND: ${finalUserId}`);
+                }
               } catch (err) {
-                console.warn('Backend sync failed, continuing...', err);
+                log(`⚠️ Backend Sync Failed: ${err}`);
               }
+            } else {
+               log('⚠️ No Token found.');
             }
             
-            console.log('✅ [Google OAuth] Sign-in successful, redirecting to app...');
+            log(`💾 Final Storage ID: ${finalUserId}`);
+            // Store the canonical userId (original or new)
+            localStorage.setItem('currentUserId', finalUserId);
+            localStorage.setItem('currentUserEmail', user.email);
+            localStorage.setItem('currentUsername', user.email);
+            localStorage.setItem('currentDisplayName', user.name);
+            localStorage.setItem('currentUserName', user.name);
+            
+            log('✅ Redirecting to Home...');
+            
             // Clean up URL before redirect
             window.history.replaceState({}, document.title, window.location.pathname);
             window.location.href = '/';
             return;
+
           } else {
             console.error('❌ [Google OAuth] Failed to get user from callback');
             toast({
@@ -112,6 +181,9 @@ export default function Landing() {
             // Clean up URL
             window.history.replaceState({}, document.title, window.location.pathname);
           }
+        } else {
+          // If not an OAuth callback, check for existing session
+          await checkExistingSession();
         }
       } catch (error: any) {
         console.error('❌ [Google OAuth] Callback error:', error);
@@ -195,7 +267,9 @@ export default function Landing() {
       
       localStorage.setItem('currentUserId', authUser.userId);
       localStorage.setItem('currentUserEmail', authUser.email);
-      localStorage.setItem('currentUserName', authUser.name);
+      localStorage.setItem('currentUsername', authUser.email);
+      localStorage.setItem('currentDisplayName', authUser.name);
+      localStorage.setItem('currentUserName', authUser.name); 
 
       const token = await getCognitoToken();
       if (token) {
@@ -271,9 +345,8 @@ export default function Landing() {
         console.log('🔐 Signing in with AWS Cognito...');
         const user = await cognitoSignIn(email, password);
         
-        localStorage.setItem('currentUserId', user.userId);
-        localStorage.setItem('currentUserEmail', user.email);
-        localStorage.setItem('currentUserName', user.name);
+        const token = await getCognitoToken();
+        let finalUserId = user.userId; // Default to Cognito sub
 
         console.log('🔑 Authentication successful:', { 
           action: 'login',
@@ -281,10 +354,9 @@ export default function Landing() {
           email: user.email 
         });
 
-        const token = await getCognitoToken();
         if (token) {
           try {
-            await fetch('/api/auth/cognito', {
+            const response = await fetch('/api/auth/cognito', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -293,13 +365,26 @@ export default function Landing() {
               body: JSON.stringify({ name: user.name, email: user.email }),
               signal: AbortSignal.timeout(8000)
             });
+            
+            const result = await response.json();
+            if (result.success && result.userId) {
+              finalUserId = result.userId; // Use canonical userId from backend
+            }
           } catch (fetchError) {
             console.warn('⚠️ Backend sync failed, but Cognito Auth succeeded. Continuing...', fetchError);
           }
         }
 
+        // Store the canonical userId
+        localStorage.setItem('currentUserId', finalUserId);
+        localStorage.setItem('currentUserEmail', user.email);
+        localStorage.setItem('currentUsername', user.email);
+        localStorage.setItem('currentDisplayName', user.name);
+        localStorage.setItem('currentUserName', user.name);
+
         console.log('✅ Authentication successful, redirecting to app...');
         window.location.href = "/";
+
       } else {
         console.log('🔐 Signing up with AWS Cognito...');
         await cognitoSignUp(email, password, name);
@@ -532,6 +617,14 @@ export default function Landing() {
                   {isEmailLoading ? "Verifying..." : "Verify & Continue"}
                   {!isEmailLoading && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
+
+                {/* DEBUG CONSOLE FOR AUTH FLOW */}
+                <div className="mt-8 p-4 bg-gray-900 border border-gray-800 rounded-lg text-xs font-mono text-green-400 overflow-hidden">
+                  <div className="mb-2 font-bold text-gray-500">AUTH DEBUG LOG:</div>
+                  <div id="auth-debug-log" className="h-32 overflow-y-auto space-y-1">
+                     <div>Waiting for action...</div>
+                  </div>
+                </div>
                 <div className="flex justify-center">
                   <button
                     onClick={() => {

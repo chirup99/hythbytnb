@@ -43,10 +43,13 @@ import NeoFeedSocialFeed from "@/components/neofeed-social-feed";
 import ZerodhaDebug from "@/pages/zerodha-debug";
 import { AngelOneGlobalAutoConnect } from "@/components/auth-button-angelone";
 import { getCognitoToken, getCognitoUser, initializeCognito } from "@/cognito";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 // New Home Page Component
 function NewHome() {
   const [searchQuery, setSearchQuery] = useState("");
+  const { getUserDisplayName } = useCurrentUser();
+  const displayName = getUserDisplayName().split(' ')[0];
 
   const actionButtons = [
     {
@@ -102,7 +105,7 @@ function NewHome() {
           <div className="flex items-center justify-center gap-2 sm:gap-3">
             <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-orange-400" />
             <h1 className="text-xl sm:text-2xl md:text-3xl font-normal text-gray-100">
-              What's new, Esmondrio?
+              What's new, {displayName}?
             </h1>
           </div>
         </div>
@@ -453,11 +456,21 @@ function App() {
       try {
         const user = await getCognitoUser();
         if (user && user.userId) {
+          console.log('👤 [App] User authenticated:', user.email);
           localStorage.setItem('currentUserId', user.userId);
           localStorage.setItem('currentUserEmail', user.email || '');
+          localStorage.setItem('currentUsername', user.email || '');
           if (user.displayName) {
             localStorage.setItem('currentDisplayName', user.displayName);
             localStorage.setItem('currentUserName', user.displayName);
+          }
+          
+          // Enhanced: Redirect from auth pages if session active
+          const currentPath = window.location.pathname;
+          if (currentPath === '/landing' || currentPath === '/login') {
+            console.log('🚀 [App] User already authenticated on auth page, redirecting to home...');
+            window.location.href = '/';
+            return;
           }
           
           const idToken = await getCognitoToken();

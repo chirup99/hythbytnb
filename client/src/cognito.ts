@@ -153,19 +153,56 @@ export async function getCognitoUser(): Promise<{ userId: string; email: string;
   initializeCognito();
   
   try {
+    // Try to get current user first
     const user = await getCurrentUser();
     const session = await fetchAuthSession();
     const attributes = await fetchUserAttributes();
     
-    const name = attributes.name || attributes.email || '';
+    // Improved name extraction: Try 'name', then 'given_name' + 'family_name'
+    let name = attributes.name || '';
+    if (!name && (attributes.given_name || attributes.family_name)) {
+      name = [attributes.given_name, attributes.family_name].filter(Boolean).join(' ');
+    }
+    
+    // Fallback to email if still no name
+    const finalName = name || attributes.email || '';
     
     return {
       userId: user.userId,
       email: attributes.email || '',
-      name,
-      displayName: name,
+      name: finalName,
+      displayName: finalName,
     };
-  } catch {
+  } catch (error) {
+    // Fallback: If getCurrentUser fails, check if we have a valid session/tokens
+    // This handles the "partially logged in" state where standard methods might fail
+    try {
+      const session = await fetchAuthSession();
+      if (session.tokens?.idToken) {
+        const payload = session.tokens.idToken.payload;
+        const userId = payload.sub as string;
+        const email = (payload.email as string) || '';
+        
+        // Improved name extraction from ID token claims
+        let name = (payload.name as string) || '';
+        if (!name && (payload.given_name || payload.family_name)) {
+          name = [payload.given_name as string, payload.family_name as string].filter(Boolean).join(' ');
+        }
+        
+        const finalName = name || email;
+        
+        console.log('👤 [Cognito] Detected user via session tokens fallback:', email);
+        
+        return {
+          userId,
+          email,
+          name: finalName,
+          displayName: finalName,
+        };
+      }
+    } catch (sessionError) {
+      console.log('👤 [Cognito] No session tokens found');
+    }
     return null;
   }
 }
@@ -203,12 +240,20 @@ export async function handleCognitoCallback(): Promise<{ userId: string; email: 
       const attributes = await fetchUserAttributes();
       const userId = session.tokens.idToken.payload.sub as string;
       
-      console.log('✅ [OAuth] User authenticated:', { userId, email: attributes.email });
+      // Improved name extraction
+      let name = attributes.name || '';
+      if (!name && (attributes.given_name || attributes.family_name)) {
+        name = [attributes.given_name, attributes.family_name].filter(Boolean).join(' ');
+      }
+      
+      const finalName = name || attributes.email || '';
+      
+      console.log('✅ [OAuth] User authenticated:', { userId, email: attributes.email, name: finalName });
       
       return {
         userId,
         email: attributes.email || '',
-        name: attributes.name || attributes.email || '',
+        name: finalName,
       };
     }
     

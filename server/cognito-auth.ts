@@ -59,10 +59,16 @@ export async function verifyCognitoToken(token: string): Promise<CognitoUserClai
   try {
     const payload = await verifier.verify(token);
     
+    // Improved name extraction from claims
+    let name = (payload.name as string) || '';
+    if (!name && (payload.given_name || payload.family_name)) {
+      name = [payload.given_name as string, payload.family_name as string].filter(Boolean).join(' ');
+    }
+    
     return {
       sub: payload.sub,
       email: payload.email as string,
-      name: payload.name as string | undefined,
+      name: name || undefined,
       email_verified: payload.email_verified as boolean | undefined,
       iat: payload.iat,
       exp: payload.exp,
@@ -80,12 +86,58 @@ export function extractBearerToken(authHeader: string | undefined): string | nul
   return authHeader.substring(7);
 }
 
+// Import minimal DynamoDB client for identity resolution
+// Using dynamic import inside function to avoid circular dependencies if any
+import { DynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb';
+
+let dynamoClientForAuth: DynamoDBClient | null = null;
+
+function getDynamoAuthClient() {
+  if (!dynamoClientForAuth) {
+    dynamoClientForAuth = new DynamoDBClient({
+      region: process.env.AWS_REGION || 'eu-north-1',
+      credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      } : undefined,
+    });
+  }
+  return dynamoClientForAuth;
+}
+
 export async function authenticateRequest(authHeader: string | undefined): Promise<CognitoUserClaims | null> {
   const token = extractBearerToken(authHeader);
   if (!token) {
     return null;
   }
-  return verifyCognitoToken(token);
+  
+  const claims = await verifyCognitoToken(token);
+  if (!claims) return null;
+
+  // Identity Resolution: Check if this user is linked to another account
+  try {
+    const ddb = getDynamoAuthClient();
+    const command = new GetItemCommand({
+      TableName: 'neofeed-user-profiles',
+      Key: {
+        pk: { S: `USER#${claims.sub}` },
+        sk: { S: 'IDENTITY_MAPPING' }
+      }
+    });
+    
+    const result = await ddb.send(command);
+    if (result.Item && result.Item.canonicalUserId?.S) {
+      const canonicalId = result.Item.canonicalUserId.S;
+      console.log(`🔗 [Auth Middleware] Resolved Identity: ${claims.sub} -> ${canonicalId}`);
+      claims.sub = canonicalId; // Override sub with the real user ID
+    } else {
+      // console.log(`ℹ️ [Auth Middleware] No identity mapping found for: ${claims.sub}`);
+    }
+  } catch (error) {
+    console.warn('⚠️ [Auth Middleware] Identity resolution failed (using original sub):', error);
+  }
+
+  return claims;
 }
 
 // Admin function to reset password directly (bypasses email verification)
