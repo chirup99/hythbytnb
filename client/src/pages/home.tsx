@@ -13382,6 +13382,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
                                 <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
                               </div>
+                              <div className="flex flex-col">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">email id</span>
+                                <span className="text-white font-medium">{currentUser?.email || localStorage.getItem('currentUserEmail') || "empty"}</span>
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">dob</span>
+                                <span className="text-white font-medium">{currentUser?.dob || "empty"}</span>
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">location</span>
+                                <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
+                              </div>
                             </div>
                           )}
                           
