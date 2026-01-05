@@ -13372,6 +13372,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             {isProfileActive && <X className="h-4 w-4" />}
                           </button>
                           
+                          {isProfileActive && (
+                            <div className="px-4 py-2 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                              <div className="flex flex-col">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
+                                <span className="text-white font-medium">@{currentUser?.username || "Not available"}</span>
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
+                                <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
+                              </div>
+                            </div>
+                          )}
+                          
                           {!isProfileActive && (
                             <>
                               <button
