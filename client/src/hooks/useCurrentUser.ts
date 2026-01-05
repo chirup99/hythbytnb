@@ -6,6 +6,8 @@ interface CurrentUser {
   email: string | null;
   username: string | null;
   displayName: string | null;
+  dob: string | null;
+  location: string | null;
 }
 
 export function useCurrentUser() {
@@ -13,7 +15,9 @@ export function useCurrentUser() {
     userId: null,
     email: null,
     username: null,
-    displayName: null
+    displayName: null,
+    dob: null,
+    location: null
   });
   const [loading, setLoading] = useState(true);
   const [profileChecked, setProfileChecked] = useState(false);
@@ -26,12 +30,16 @@ export function useCurrentUser() {
       const savedUserEmail = localStorage.getItem('currentUserEmail');
       const savedUsername = localStorage.getItem('currentUsername');
       const savedDisplayName = localStorage.getItem('currentDisplayName') || localStorage.getItem('currentUserName');
+      const savedDob = localStorage.getItem('currentUserDob');
+      const savedLocation = localStorage.getItem('currentUserLocation');
       
       setCurrentUser({
         userId: savedUserId,
         email: savedUserEmail,
         username: savedUsername,
-        displayName: savedDisplayName
+        displayName: savedDisplayName,
+        dob: savedDob,
+        location: savedLocation
       });
 
       if (savedUserId && savedUserEmail) {
@@ -56,10 +64,12 @@ export function useCurrentUser() {
                   effectiveUserId,
                   savedUserEmail,
                   profile.username || savedUserEmail,
-                  profile.displayName
+                  profile.displayName,
+                  profile.dob,
+                  profile.location
                 );
               } else {
-                updateUser(savedUserId, savedUserEmail, null, savedDisplayName);
+                updateUser(savedUserId, savedUserEmail, null, savedDisplayName, savedDob, savedLocation);
               }
             }
           }
@@ -75,7 +85,14 @@ export function useCurrentUser() {
     loadUserData();
   }, []);
 
-  const updateUser = (userId: string, email: string, username?: string | null, displayName?: string | null) => {
+  const updateUser = (
+    userId: string, 
+    email: string, 
+    username?: string | null, 
+    displayName?: string | null,
+    dob?: string | null,
+    location?: string | null
+  ) => {
     localStorage.setItem('currentUserId', userId);
     localStorage.setItem('currentUserEmail', email);
     
@@ -92,23 +109,42 @@ export function useCurrentUser() {
     } else {
       localStorage.setItem('currentUsername', email); // Fallback to email
     }
+
+    if (dob) {
+      localStorage.setItem('currentUserDob', dob);
+    } else {
+      localStorage.removeItem('currentUserDob');
+    }
+
+    if (location) {
+      localStorage.setItem('currentUserLocation', location);
+    } else {
+      localStorage.removeItem('currentUserLocation');
+    }
     
     setCurrentUser({ 
       userId, 
       email,
       username: username || null,
-      displayName: displayName || null
+      displayName: displayName || null,
+      dob: dob || null,
+      location: location || null
     });
   };
 
-  const updateProfile = (username: string, displayName: string) => {
+  const updateProfile = (username: string, displayName: string, dob?: string | null, location?: string | null) => {
     localStorage.setItem('currentUsername', username);
     localStorage.setItem('currentDisplayName', displayName);
     localStorage.setItem('currentUserName', displayName);
+    if (dob) localStorage.setItem('currentUserDob', dob);
+    if (location) localStorage.setItem('currentUserLocation', location);
+
     setCurrentUser(prev => ({
       ...prev,
       username,
-      displayName
+      displayName,
+      dob: dob !== undefined ? dob : prev.dob,
+      location: location !== undefined ? location : prev.location
     }));
   };
 
