@@ -678,8 +678,8 @@ export async function getFinanceNews(limit = 20) {
 export async function createOrUpdateUserProfile(userId: string, profileData: any) {
   try {
     const item = {
-      pk: `profile#${userId}`,
-      sk: userId,
+      pk: `USER#${userId}`,
+      sk: 'PROFILE',
       userId,
       ...profileData,
       updatedAt: new Date().toISOString()
@@ -1028,6 +1028,7 @@ export async function getUserProfileByUsername(username: string): Promise<any> {
     if (profile) {
       console.log(`🖼️ [getUserProfileByUsername] Found profile for ${normalizedUsername}:`, {
         username: profile.username,
+        dob: profile.dob,
         hasProfilePicUrl: !!profile.profilePicUrl,
         profilePicUrl: profile.profilePicUrl ? profile.profilePicUrl.substring(0, 60) + '...' : 'NONE'
       });
