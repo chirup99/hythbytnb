@@ -1,6 +1,5 @@
 ﻿import { motion, AnimatePresence } from "framer-motion";
-import { BrokerData } from "
-/components/broker-data";
+import { BrokerData } from "@/components/broker-data";
 import React, {
   useState,
   useEffect,
@@ -9,76 +8,44 @@ import React, {
   useRef,
 } from "react";
 import { useLocation } from "wouter";
-import { useToast } from "
-/hooks/use-toast";
-import { AuthButtonAngelOne, AngelOneStatus, AngelOneApiStatistics, AngelOneSystemStatus, AngelOneLiveMarketPrices } from "
-/components/auth-button-angelone";
-import { AuthButtonUpstox } from "
-/components/auth-button-upstox";
-import { TradingJournalModal } from "
-/components/trading-journal-modal";
+import { useToast } from "@/hooks/use-toast";
+import { AuthButtonAngelOne, AngelOneStatus, AngelOneApiStatistics, AngelOneSystemStatus, AngelOneLiveMarketPrices } from "@/components/auth-button-angelone";
+import { AuthButtonUpstox } from "@/components/auth-button-upstox";
+import { TradingJournalModal } from "@/components/trading-journal-modal";
 // REMOVED: All Fyers-related imports
-// import { AuthButton } from "
-/components/auth-button";
-// import { ConnectionStatus } from "
-/components/connection-status";
-// import { MonthlyProgressTracker } from "
-/components/monthly-progress-tracker";
-// import { ApiStatistics } from "
-/components/api-statistics";
-// import { ErrorPanel } from "
-/components/error-panel";
-import { SigninDataWindow } from "
-/components/signin-data-window";
-import { TradingViewWidget } from "
-/components/tradingview-widget";
-import { AdvancedCandlestickChart } from "
-/components/advanced-candlestick-chart";
-import { EnhancedTradingViewWidget } from "
-/components/enhanced-tradingview-widget";
-import { TradingViewStyleChart } from "
-/components/tradingview-style-chart";
-import { MinimalChart } from "
-/components/minimal-chart";
+// import { AuthButton } from "@/components/auth-button";
+// import { ConnectionStatus } from "@/components/connection-status";
+// import { MonthlyProgressTracker } from "@/components/monthly-progress-tracker";
+// import { ApiStatistics } from "@/components/api-statistics";
+// import { ErrorPanel } from "@/components/error-panel";
+import { SigninDataWindow } from "@/components/signin-data-window";
+import { TradingViewWidget } from "@/components/tradingview-widget";
+import { AdvancedCandlestickChart } from "@/components/advanced-candlestick-chart";
+import { EnhancedTradingViewWidget } from "@/components/enhanced-tradingview-widget";
+import { TradingViewStyleChart } from "@/components/tradingview-style-chart";
+import { MinimalChart } from "@/components/minimal-chart";
 import {
   MultipleImageUpload,
   MultipleImageUploadRef,
-} from "
-/components/multiple-image-upload";
-import { IndicatorCrossingsDisplay } from "
-/components/indicator-crossings-display";
-// import { BattuScanSimulation } from "
-/components/battu-scan-simulation";
-// import { FourCandleRuleScanner } from "
-/components/four-candle-rule-scanner";
-import NeoFeedSocialFeed from "
-/components/neofeed-social-feed";
-import SimpleCompleteScanner from "
-/components/simple-complete-scanner";
-// import { BattuDocumentationDisplay } from "
-/components/battu-documentation-display";
-import { StrategyBuilder } from "
-/components/strategy-builder";
-import { TradingMaster } from "
-/components/trading-master";
-import { WorldMap } from "
-/components/world-map";
-import { DemoHeatmap } from "
-/components/DemoHeatmap";
-import { PersonalHeatmap } from "
-/components/PersonalHeatmap";
-import { useTheme } from "
-/components/theme-provider";
-import { useCurrentUser } from "
-/hooks/useCurrentUser";
-import { useAngelOneAutoconnect } from "
-/hooks/useAngelOneAutoconnect";
-import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmailVerification, checkEmailVerified } from "
-/cognito";
+} from "@/components/multiple-image-upload";
+import { IndicatorCrossingsDisplay } from "@/components/indicator-crossings-display";
+// import { BattuScanSimulation } from "@/components/battu-scan-simulation";
+// import { FourCandleRuleScanner } from "@/components/four-candle-rule-scanner";
+import NeoFeedSocialFeed from "@/components/neofeed-social-feed";
+import SimpleCompleteScanner from "@/components/simple-complete-scanner";
+// import { BattuDocumentationDisplay } from "@/components/battu-documentation-display";
+import { StrategyBuilder } from "@/components/strategy-builder";
+import { TradingMaster } from "@/components/trading-master";
+import { WorldMap } from "@/components/world-map";
+import { DemoHeatmap } from "@/components/DemoHeatmap";
+import { PersonalHeatmap } from "@/components/PersonalHeatmap";
+import { useTheme } from "@/components/theme-provider";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useAngelOneAutoconnect } from "@/hooks/useAngelOneAutoconnect";
+import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmailVerification, checkEmailVerified } from "@/cognito";
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, LineSeries, HistogramSeries, IPriceLine, createSeriesMarkers } from 'lightweight-charts';
 import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2 } from "lucide-react";
-import { parseBrokerTrades, ParseError } from "
-/utils/trade-parser";
+import { parseBrokerTrades, ParseError } from "@/utils/trade-parser";
 
 // Global window type declaration for audio control
 declare global {
@@ -87,10 +54,8 @@ declare global {
   }
 }
 
-// import ThreeCycleScanner from "
-/components/three-cycle-scanner";
-import HistoricalTradeSimulator from "
-/components/historical-trade-simulator";
+// import ThreeCycleScanner from "@/components/three-cycle-scanner";
+import HistoricalTradeSimulator from "@/components/historical-trade-simulator";
 import {
   PriceChangeAnimation,
   TradeExecutionAnimation,
@@ -99,26 +64,19 @@ import {
   ProfitLossAnimation,
   CandlestickAnimation,
   MarketDataSkeleton,
-} from "
-/components/micro-animations";
-import { useQuery, useMutation, useQueryClient } from "
-tanstack/react-query";
+} from "@/components/micro-animations";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "
-/components/ui/card";
-import { Button } from "
-/components/ui/button";
-import { Input } from "
-/components/ui/input";
-import { Label } from "
-/components/ui/label";
-import { Switch } from "
-/components/ui/switch";
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
   DialogContent,
@@ -126,18 +84,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "
-/components/ui/dialog";
-import { Textarea } from "
-/components/ui/textarea";
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "
-/components/ui/select";
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -145,16 +100,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "
-/components/ui/table";
+} from "@/components/ui/table";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "
-/components/ui/popover";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "
-/components/ui/tabs";
+} from "@/components/ui/popover";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   TrendingDown,
   Activity,
@@ -232,14 +184,10 @@ import {
   Brain,
   ShieldCheck,
 } from "lucide-react";
-import { AIChatWindow } from "
-/components/ai-chat-window";
-import { BrokerImportDialog } from "
-/components/broker-import-dialog";
-import { TradeBlockEditor } from "
-/components/TradeBlockEditor";
-import type { BrokerTrade } from "
-shared/schema";
+import { AIChatWindow } from "@/components/ai-chat-window";
+import { BrokerImportDialog } from "@/components/broker-import-dialog";
+import { TradeBlockEditor } from "@/components/TradeBlockEditor";
+import type { BrokerTrade } from "@shared/schema";
 
 // Type definitions for stock data and trading
 interface StockData {
@@ -922,8 +870,7 @@ function SwipeableCardStack({
   );
 }
 import { format } from "date-fns";
-import { apiRequest } from "
-/lib/queryClient";
+import { apiRequest } from "@/lib/queryClient";
 import {
   LineChart,
   Line,
@@ -1867,8 +1814,7 @@ function MicroAnimationsDemoPage() {
                                                     <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-8 border border-gray-700 shadow-2xl max-w-md">
                                                       <div className="text-center">
                                                         <style>{`
-                                                          
-keyframes thinkingDot {
+                                                          @keyframes thinkingDot {
                                                             0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
                                                             30% { opacity: 1; transform: translateY(-8px); }
                                                           }
@@ -2410,8 +2356,7 @@ export default function Home() {
     return setTabWithAuthCheck(tabName);
   };
 
-  // Handle Trading Master access - only for chiranjeevi.perala99
-gmail.com
+  // Handle Trading Master access - only for chiranjeevi.perala99@gmail.com
   const handleTradingMasterAccess = () => {
     const userId = localStorage.getItem('currentUserId');
     const userEmail = localStorage.getItem('currentUserEmail');
@@ -2425,8 +2370,7 @@ gmail.com
 
     console.log('[AUTH] User authenticated for Trading Master check - email:', userEmail);
     // Check if user is authorized for Trading Master
-    if (userEmail === 'chiranjeevi.perala99
-gmail.com') {
+    if (userEmail === 'chiranjeevi.perala99@gmail.com') {
       // Authorized user - navigate to trading-master tab
       setActiveTab('trading-master');
     } else {
@@ -5875,8 +5819,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       }, 5000);
 
       eventSource.onopen = () => {
-        console.log(`✅ [PAPER-TRADE-PRICE] WebSocket STREAMING for ${stockInfo.symbol} 
- 700ms`);
+        console.log(`✅ [PAPER-TRADE-PRICE] WebSocket STREAMING for ${stockInfo.symbol} @ 700ms`);
         setPaperTradingWsStatus('connected');
       };
 
@@ -6026,8 +5969,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       localStorage.setItem("paperTradeHistory", JSON.stringify(updatedHistory));
 
       // Build toast message with SL info
-      let toastDescription = `Bought ${quantity} ${paperTradeSymbol} 
- ₹${paperTradeCurrentPrice.toFixed(2)}`;
+      let toastDescription = `Bought ${quantity} ${paperTradeSymbol} @ ₹${paperTradeCurrentPrice.toFixed(2)}`;
       if (paperTradeSLEnabled && slTriggerPrice) {
         toastDescription += ` | SL: ₹${slTriggerPrice.toFixed(2)}`;
       } else if (paperTradeSLEnabled && slExpiryTime) {
@@ -6103,8 +6045,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
       toast({
         title: pnl >= 0 ? "Profit Booked!" : "Loss Booked",
-        description: `Sold ${openPosition.quantity} ${paperTradeSymbol} 
- ₹${paperTradeCurrentPrice.toFixed(2)} | P&L: ₹${pnl.toFixed(2)}`
+        description: `Sold ${openPosition.quantity} ${paperTradeSymbol} @ ₹${paperTradeCurrentPrice.toFixed(2)} | P&L: ₹${pnl.toFixed(2)}`
       });
     }
 
@@ -9410,11 +9351,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             time: trade.time,
             pnl: trade.pnl,
           });
-          console.log(`✅ Marker added: ${trade.order} 
- ${trade.time} → Candle #${closestCandleIndex} (diff: ${minTimeDiff}min)`);
+          console.log(`✅ Marker added: ${trade.order} @ ${trade.time} → Candle #${closestCandleIndex} (diff: ${minTimeDiff}min)`);
         } else {
-          console.log(`⚠️ No matching candle for trade 
- ${trade.time} (closest diff: ${minTimeDiff}min, tolerance: ${timeframeTolerance}min)`);
+          console.log(`⚠️ No matching candle for trade @ ${trade.time} (closest diff: ${minTimeDiff}min, tolerance: ${timeframeTolerance}min)`);
         }
       } catch (error) {
         console.error("Error parsing trade for markers:", trade, error);
@@ -9459,8 +9398,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     console.log('  - Generated markers:', markers.length, 'Visible:', showTradeMarkers);
 
     markers.forEach((m, idx) => {
-      console.log(`  📍 [${idx}] Candle#${m.candleIndex} TIME: ${m.time} - ${m.type.toUpperCase()} 
- ₹${m.price}`);
+      console.log(`  📍 [${idx}] Candle#${m.candleIndex} TIME: ${m.time} - ${m.type.toUpperCase()} @ ₹${m.price}`);
     });
 
     try {
@@ -13343,8 +13281,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           <div className="h-full overflow-auto">
             {/* Render content based on active tab */}
 
-            {activeTab === 'dashboard' && localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99
-gmail.com' && (
+            {activeTab === 'dashboard' && localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
               <div className="space-y-8">
                 <div className="text-center space-y-4">
                   <div className="flex items-center justify-center gap-3">
@@ -13419,8 +13356,7 @@ gmail.com' && (
                               {currentUser.displayName || "User"}
                             </p>
                             <p className="text-blue-200 text-sm">
-                              
-{currentUser.username || "username"}
+                              @{currentUser.username || "username"}
                             </p>
                           </div>
                         </div>
@@ -13433,17 +13369,14 @@ gmail.com' && (
                             data-testid="nav-profile"
                           >
                             <span>profile</span>
-                            {isProfileActive ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                            {isProfileActive ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                            {isProfileActive ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                            {isProfileActive && <X className="h-4 w-4" />}
                           </button>
                           
                           {isProfileActive && (
                             <div className="px-4 py-2 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
-                                <span className="text-white font-medium">
-{currentUser?.username || "Not available"}</span>
+                                <span className="text-white font-medium">@{currentUser?.username || "Not available"}</span>
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
@@ -13472,8 +13405,7 @@ gmail.com' && (
                               >
                                 saved
                               </button>
-                              {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99
-gmail.com' && (
+                              {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
                                 <button
                                   onClick={() => {
                                     setTabWithAuthCheck("dashboard");
@@ -15172,8 +15104,7 @@ gmail.com' && (
                             ) : isSearchLoading ? (
                               <div className="text-center py-8">
                                 <style>{`
-                                  
-keyframes thinkingDot {
+                                  @keyframes thinkingDot {
                                     0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
                                     30% { opacity: 1; transform: translateY(-8px); }
                                   }
@@ -16000,8 +15931,7 @@ keyframes thinkingDot {
 
                     {/* Global CSS for animations */}
                     <style>{`
-                  
-keyframes slideUpFromBottom {
+                  @keyframes slideUpFromBottom {
                     from {
                       transform: translateY(100%);
                     }
@@ -16010,8 +15940,7 @@ keyframes slideUpFromBottom {
                     }
                   }
 
-                  
-keyframes slideInFromRight {
+                  @keyframes slideInFromRight {
                     from {
                       transform: translateX(100%);
                     }
