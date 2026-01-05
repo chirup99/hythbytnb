@@ -4912,7 +4912,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         // Search for existing user by email - BE MORE AGGRESSIVE
-        const searchEmail = (claims.email || '').toLowerCase();
+        let searchEmail = (claims.email || '').toLowerCase();
+        
+        // Normalize Gmail addresses (remove dots before @) for better matching
+        if (searchEmail.endsWith('@gmail.com')) {
+          const [local, domain] = searchEmail.split('@');
+          searchEmail = local.replace(/\./g, '') + '@' + domain;
+          console.log(`📧 Normalized Gmail for searching: ${searchEmail}`);
+        }
+        
         console.log(`🔍 [ACCOUNT LINKING] Searching neofeed-user-profiles for: ${searchEmail}`);
         
         // Try identity link first
@@ -4978,52 +4986,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
               updatedAt: { S: new Date().toISOString() }
             }
           }));
-        }
 
-            // Update existing profile with latest metadata but keep old names as primary if they exist
-            if (name || claims.name) {
-              const updateCommand = new PutItemCommand({
-                TableName: 'neofeed-user-profiles',
-                Item: {
-                  pk: { S: `USER#${existingUserId}` },
-                  sk: { S: 'PROFILE' },
-                  userId: { S: existingUserId },
-                  email: { S: claims.email },
-                  // CRITICAL: Prioritize existing manual name/displayName over Google data
-                  displayName: { S: existingUser.displayName?.S || existingUser.manualName?.S || name || claims.name || claims.email },
-                  createdAt: { S: existingUser.createdAt?.S || new Date().toISOString() },
-                  updatedAt: { S: new Date().toISOString() },
-                  googleName: { S: claims.name || existingUser.googleName?.S || '' },
-                  manualName: { S: existingUser.manualName?.S || name || '' },
-                  linkedGoogleSub: { S: claims.sub } // Track the linked Google account
-                }
-              });
-              await dynamoClient.send(updateCommand);
-              console.log(`✅ Linked account and preserved existing profile names for userId: ${existingUserId}`);
-            }
+          // Update existing profile with latest metadata but keep old names as primary if they exist
+          if (name || claims.name) {
+            const updateCommand = new PutItemCommand({
+              TableName: 'neofeed-user-profiles',
+              Item: {
+                pk: { S: `USER#${canonicalUserId}` },
+                sk: { S: 'PROFILE' },
+                userId: { S: canonicalUserId },
+                email: { S: claims.email },
+                // CRITICAL: Prioritize existing manual name/displayName over Google data
+                displayName: { S: (existingUser && existingUser.displayName?.S) || (existingUser && existingUser.manualName?.S) || name || claims.name || claims.email },
+                createdAt: { S: (existingUser && existingUser.createdAt?.S) || new Date().toISOString() },
+                updatedAt: { S: new Date().toISOString() },
+                googleName: { S: claims.name || (existingUser && existingUser.googleName?.S) || '' },
+                manualName: { S: (existingUser && existingUser.manualName?.S) || name || '' },
+                linkedGoogleSub: { S: claims.sub } // Track the linked Google account
+              }
+            });
+            await dynamoClient.send(updateCommand);
+            console.log(`✅ Linked account and preserved existing profile names for userId: ${canonicalUserId}`);
+          }
+        } else {
+          // Check if we need to create a NEW profile or update existing
+          if (!existingUser) {
+            // No existing user found, create new profile
+            console.log(`📝 Creating new user profile for: ${claims.email}`);
+            const putCommand = new PutItemCommand({
+              TableName: 'neofeed-user-profiles',
+              Item: {
+                pk: { S: `USER#${claims.sub}` },
+                sk: { S: 'PROFILE' },
+                userId: { S: claims.sub },
+                email: { S: claims.email },
+                displayName: { S: name || claims.name || claims.email },
+                createdAt: { S: new Date().toISOString() },
+                updatedAt: { S: new Date().toISOString() },
+                googleName: { S: claims.name || '' },
+                manualName: { S: name || '' }
+              },
+            });
+
+            await dynamoClient.send(putCommand);
+            console.log('💾 New user profile saved to DynamoDB');
           } else {
             console.log(`ℹ️ User already exists with same Cognito sub: ${claims.sub}`);
           }
-        } else {
-          // No existing user found, create new profile
-          console.log(`📝 Creating new user profile for: ${claims.email}`);
-          const putCommand = new PutItemCommand({
-            TableName: 'neofeed-user-profiles',
-            Item: {
-              pk: { S: `USER#${claims.sub}` },
-              sk: { S: 'PROFILE' },
-              userId: { S: claims.sub },
-              email: { S: claims.email },
-              displayName: { S: name || claims.name || claims.email },
-              createdAt: { S: new Date().toISOString() },
-              updatedAt: { S: new Date().toISOString() },
-              googleName: { S: claims.name || '' },
-              manualName: { S: name || '' }
-            },
-          });
-
-          await dynamoClient.send(putCommand);
-          console.log('💾 New user profile saved to DynamoDB');
         }
 
         res.json({ 
