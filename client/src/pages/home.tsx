@@ -13376,7 +13376,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <div className="px-4 py-2 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
-                                <span className="text-white font-medium">@{currentUser?.username || "Not available"}</span>
+                                <span className="text-white font-medium group cursor-pointer" onClick={(e) => { const pencil = e.currentTarget.querySelector('.pencil-icon'); if (pencil) pencil.classList.toggle('hidden'); }}>@{currentUser?.username || "Not available"}<Pencil className="pencil-icon hidden h-3 w-3 inline-block ml-1 text-blue-400" /></span>
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
