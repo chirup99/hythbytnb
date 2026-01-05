@@ -12,7 +12,8 @@ import {
   initializeCognito,
   cognitoForgotPassword,
   cognitoConfirmResetPassword,
-  getRedirectUrl
+  getRedirectUrl,
+  getCognitoUser
 } from "@/cognito";
 
 export default function Landing() {
@@ -586,8 +587,8 @@ export default function Landing() {
       </div>
       <div className="max-w-xl w-full space-y-6">
         <div className="text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">Daily Trade Tracking</h2>
-          <p className="text-gray-400 text-lg mb-2">Record and monitor all your trades</p>
+          <h2 className="text-4xl font-bold text-white mb-4">Get Early Access</h2>
+          <p className="text-gray-400 text-lg mb-2">Daily Trade Tracking</p>
           <p className="text-gray-400 text-lg mb-6">AI Performance Analysis</p>
           <p className="text-gray-500 text-sm">View detailed P&L and trading statistics</p>
         </div>
