@@ -13419,6 +13419,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <X className="h-4 w-4 text-red-500" />
                                       ) : null}
                                     </button>
+                                    {isUsernameAvailable !== null && !isCheckingUsername && (
+                                      <span className={`absolute -bottom-4 right-0 text-[10px] font-medium ${isUsernameAvailable ? "text-green-400" : "text-red-400"}`}>
+                                        {isUsernameAvailable ? "available" : "taken"}
+                                      </span>
+                                    )}
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">

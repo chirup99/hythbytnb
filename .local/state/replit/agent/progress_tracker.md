@@ -43,6 +43,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 2. Restart the workflow - Server running on port 5000, workflow status: RUNNING
 [x] 3. Verify the project is working - Angel One authenticated (P176266), JWT tokens generated, WebSocket streaming active with real-time market data (BANKNIFTY, SENSEX, GOLD live prices confirmed)
 [x] 4. Import completed successfully - All core systems operational
+[x] 5. UI Enhancement - Added "available" or "taken" status text below the username edit box in home.tsx
 
 ### Notes:
 - Vite HMR websocket warning is expected in Replit proxy environment (non-blocking)
