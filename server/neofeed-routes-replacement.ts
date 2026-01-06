@@ -1255,6 +1255,20 @@ export function registerNeoFeedAwsRoutes(app: any) {
   });
 
   // Get current user's votes for filtering Likes tab
+  // Check username availability in neofeed-user-profiles
+  app.get('/api/users/check-username/:username', async (req: any, res: any) => {
+    try {
+      const { username } = req.params;
+      if (!username) return res.status(400).json({ error: 'Username is required' });
+      
+      const profile = await getUserProfileByUsername(username.toLowerCase());
+      res.json({ available: !profile });
+    } catch (error: any) {
+      console.error('❌ Error checking username availability:', error);
+      res.status(500).json({ error: 'Failed to check availability' });
+    }
+  });
+
   app.get('/api/user/votes', async (req: any, res: any) => {
     try {
       const currentUser = await getAuthenticatedUser(req);

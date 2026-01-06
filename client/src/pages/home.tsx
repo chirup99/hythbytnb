@@ -1903,6 +1903,8 @@ export default function Home() {
   const [chartTimeframe, setChartTimeframe] = useState<string>("1");
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState("");
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState<boolean | null>(null);
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
@@ -13382,7 +13384,24 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="relative flex items-center gap-2">
                                     <Input
                                       value={newUsername}
-                                      onChange={(e) => setNewUsername(e.target.value)}
+                                      onChange={async (e) => {
+                                        const val = e.target.value;
+                                        setNewUsername(val);
+                                        if (val.length >= 3) {
+                                          setIsCheckingUsername(true);
+                                          try {
+                                            const res = await fetch(`/api/users/check-username/${val.toLowerCase()}`);
+                                            const data = await res.json();
+                                            setIsUsernameAvailable(data.available);
+                                          } catch (err) {
+                                            console.error("Error checking username:", err);
+                                          } finally {
+                                            setIsCheckingUsername(false);
+                                          }
+                                        } else {
+                                          setIsUsernameAvailable(null);
+                                        }
+                                      }}
                                       className="h-8 bg-gray-800 border-gray-700 text-white text-sm pr-10"
                                       autoFocus
                                     />
@@ -13392,7 +13411,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         setIsEditingUsername(false);
                                       }}
                                     >
-                                      <CheckCircle className="h-4 w-4 text-green-400" />
+                                      {isCheckingUsername ? (
+                                        <div className="h-4 w-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                      ) : isUsernameAvailable === true ? (
+                                        <CheckCircle className="h-4 w-4 text-green-400" />
+                                      ) : isUsernameAvailable === false ? (
+                                        <X className="h-4 w-4 text-red-500" />
+                                      ) : null}
                                     </button>
                                   </div>
                                 ) : (
