@@ -13465,7 +13465,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                               <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
                                   <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
                                   <button
                                     onClick={(e) => {
