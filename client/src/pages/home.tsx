@@ -13414,11 +13414,44 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       {isCheckingUsername ? (
                                         <div className="h-4 w-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                                       ) : isUsernameAvailable === true ? (
-                                        <CheckCircle className="h-4 w-4 text-green-400" />
+                                        <button 
+                                          onClick={async (e) => {
+                                            e.stopPropagation();
+                                            setIsCheckingUsername(true);
+                                            try {
+                                              const res = await fetch('/api/users/update-username', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({
+                                                  userId: currentUser?.uid || currentUser?.id || localStorage.getItem('currentUserId'),
+                                                  oldUsername: currentUser?.username,
+                                                  newUsername: newUsername
+                                                })
+                                              });
+                                              const data = await res.json();
+                                              if (data.success) {
+                                                setIsEditingUsername(false);
+                                                // Refresh page or update local state to reflect change
+                                                window.location.reload();
+                                              } else {
+                                                alert(data.error || "Failed to update username");
+                                              }
+                                            } catch (err) {
+                                              console.error("Error updating username:", err);
+                                            } finally {
+                                              setIsCheckingUsername(false);
+                                            }
+                                          }}
+                                          className="p-1 hover:bg-white/10 rounded-md transition-all"
+                                          title="Save username"
+                                        >
+                                          <Save className="h-4 w-4 text-green-400" />
+                                        </button>
                                       ) : isUsernameAvailable === false ? (
                                         <X className="h-4 w-4 text-red-500" />
-                                      ) : null}
-                                    </button>
+                                      ) : (
+                                        <X className="h-4 w-4 text-gray-500" onClick={() => setIsEditingUsername(false)} />
+                                      )}
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
