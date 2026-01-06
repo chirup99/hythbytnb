@@ -216,23 +216,12 @@ app.use((req, res, next) => {
     }
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
+// ALWAYS serve the app on the port specified in the environment variable PORT
   // Cloud Run provides PORT dynamically, default to 8080 for production, 5000 for development
   // this serves both the API and the client.
   const port = parseInt(process.env.PORT || (app.get("env") === "development" ? '5000' : '8080'), 10);
 
-// Configure server options - simple config for Cloud Run compatibility
-const listenOptions: any = {
-  port,
-  host: '0.0.0.0',
-};
-
-// Only add reusePort in development (not on Cloud Run)
-if (process.env.NODE_ENV === 'development' && process.platform !== 'win32') {
-  listenOptions.reusePort = true;
-}
-
-server.listen(listenOptions, () => {
+server.listen({ port, host: "0.0.0.0" }, () => {
     log(`serving on port ${port}`);
     log(`Server ready - environment: ${app.get("env")}`);
     
