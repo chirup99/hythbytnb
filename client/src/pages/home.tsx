@@ -13375,51 +13375,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </div>
                           <div className="flex flex-col min-w-0">
                             <p className="text-white font-semibold text-base">
-                                <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
-                                <div className="flex items-center gap-2 group">
-                                  {isEditingUsername ? (
-                                    <div className="flex items-center gap-2 w-full">
-                                      <Input
-                                        value={newUsername}
-                                        onChange={(e) => setNewUsername(e.target.value)}
-                                        className="h-8 bg-gray-800 border-gray-700 text-white text-sm"
-                                        autoFocus
-                                        onKeyDown={(e) => {
-                                          if (e.key === "Enter") handleUpdateUsername();
-                                          if (e.key === "Escape") setIsEditingUsername(false);
-                                        }}
-                                      />
-                                      <button 
-                                        className="p-1 hover:bg-green-600/20 rounded-md transition-colors text-green-400"
-                                        onClick={handleUpdateUsername}
-                                      >
-                                        <CheckCircle className="h-4 w-4" />
-                                      </button>
-                                      <button 
-                                        className="p-1 hover:bg-red-600/20 rounded-md transition-colors text-red-400"
-                                        onClick={() => setIsEditingUsername(false)}
-                                      >
-                                        <X className="h-4 w-4" />
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-white font-medium">@{currentUser?.username || "Not available"}</span>
-                                      <button 
-                                        onClick={() => {
-                                          setNewUsername(currentUser?.username || "");
-                                          setIsEditingUsername(true);
-                                        }}
-                                        className="p-1 hover:bg-white/10 rounded-md transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                      >
-                                        <Pencil className="h-3 w-3 text-blue-400" />
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
+                              {currentUser.displayName ||
+                                currentUser.username ||
+                                "User"}
                             </p>
-                          </div>
-                        </div>
 
                         {/* Navigation Menu Items - Left aligned */}
                         <div className="space-y-3 flex flex-col">
@@ -13468,9 +13427,50 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
                                 <button
                                   onClick={() => {
-                                    setTabWithAuthCheck("dashboard");
-                                    setIsNavOpen(false);
-                                  }}
+                              <div className="flex flex-col">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
+                                <div className="flex items-center gap-2 group">
+                                  {isEditingUsername ? (
+                                    <div className="flex items-center gap-2 w-full">
+                                      <Input
+                                        value={newUsername}
+                                        onChange={(e) => setNewUsername(e.target.value)}
+                                        className="h-8 bg-gray-800 border-gray-700 text-white text-sm"
+                                        autoFocus
+                                        onKeyDown={(e) => {
+                                          if (e.key === "Enter") handleUpdateUsername();
+                                          if (e.key === "Escape") setIsEditingUsername(false);
+                                        }}
+                                      />
+                                      <button 
+                                        className="p-1 hover:bg-green-600/20 rounded-md transition-colors text-green-400"
+                                        onClick={handleUpdateUsername}
+                                      >
+                                        <CheckCircle className="h-4 w-4" />
+                                      </button>
+                                      <button 
+                                        className="p-1 hover:bg-red-600/20 rounded-md transition-colors text-red-400"
+                                        onClick={() => setIsEditingUsername(false)}
+                                      >
+                                        <X className="h-4 w-4" />
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-white font-medium">@{currentUser?.username || "Not available"}</span>
+                                      <button 
+                                        onClick={() => {
+                                          setNewUsername(currentUser?.username || "");
+                                          setIsEditingUsername(true);
+                                        }}
+                                        className="p-1 hover:bg-white/10 rounded-md transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                      >
+                                        <Pencil className="h-3 w-3 text-blue-400" />
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
                                   className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
                                   data-testid="nav-dashboard"
                                 >
