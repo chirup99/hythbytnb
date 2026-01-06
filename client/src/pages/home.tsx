@@ -13407,8 +13407,24 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     />
                                     <button
                                       className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all z-10"
-                                      onClick={() => {
-                                        setIsEditingUsername(false);
+                                      onClick={async () => {
+                                        if (isUsernameAvailable === true) {
+                                          try {
+                                            const response = await fetch("/api/user/profile", {
+                                              method: "PATCH",
+                                              headers: { "Content-Type": "application/json" },
+                                              body: JSON.stringify({ username: newUsername.toLowerCase() }),
+                                            });
+                                            if (response.ok) {
+                                              setIsEditingUsername(false);
+                                              window.location.reload();
+                                            }
+                                          } catch (err) {
+                                            console.error("Error saving username:", err);
+                                          }
+                                        } else {
+                                          setIsEditingUsername(false);
+                                        }
                                       }}
                                     >
                                       {isCheckingUsername ? (
