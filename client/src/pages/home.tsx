@@ -13379,22 +13379,21 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                             <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
                                 {isEditingUsername ? (
-                                  <div className="flex items-center gap-2">
+                                  <div className="relative flex items-center gap-2">
                                     <Input
                                       value={newUsername}
                                       onChange={(e) => setNewUsername(e.target.value)}
-                                      className="h-7 bg-gray-800 border-gray-700 text-white text-xs"
+                                      className="h-8 bg-gray-800 border-gray-700 text-white text-sm pr-10"
                                       autoFocus
                                     />
-                                    <Button
-                                      size="sm"
-                                      className="h-7 px-2"
+                                    <button
+                                      className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all z-10"
                                       onClick={() => {
                                         setIsEditingUsername(false);
                                       }}
                                     >
-                                      <CheckCircle className="h-3 w-3 text-green-400" />
-                                    </Button>
+                                      <CheckCircle className="h-4 w-4 text-green-400" />
+                                    </button>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
