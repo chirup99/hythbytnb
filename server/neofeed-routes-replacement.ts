@@ -1269,6 +1269,39 @@ export function registerNeoFeedAwsRoutes(app: any) {
     }
   });
 
+  // Update username in neofeed-user-profiles
+  app.post('/api/users/update-username', async (req: any, res: any) => {
+    try {
+      const { userId, oldUsername, newUsername } = req.body;
+      if (!userId || !newUsername) return res.status(400).json({ error: 'User ID and new username are required' });
+      
+      console.log(`🔄 Updating username: ${oldUsername} -> ${newUsername} for user ${userId}`);
+      
+      // Check if new username is taken
+      const existingProfile = await getUserProfileByUsername(newUsername.toLowerCase());
+      if (existingProfile && existingProfile.userId !== userId) {
+        return res.status(400).json({ error: 'Username already taken' });
+      }
+
+      // Get current profile to preserve other fields
+      const currentProfile = await getUserProfile(userId);
+      const updatedProfile = {
+        ...(currentProfile || {}),
+        userId,
+        username: newUsername.toLowerCase(),
+        displayName: currentProfile?.displayName || newUsername,
+        updatedAt: new Date().toISOString()
+      };
+
+      await createOrUpdateUserProfile(updatedProfile);
+      console.log(`✅ Username updated successfully for ${userId}`);
+      res.json({ success: true, username: newUsername.toLowerCase() });
+    } catch (error: any) {
+      console.error('❌ Error updating username:', error);
+      res.status(500).json({ error: 'Failed to update username' });
+    }
+  });
+
   app.get('/api/user/votes', async (req: any, res: any) => {
     try {
       const currentUser = await getAuthenticatedUser(req);
