@@ -13481,13 +13481,33 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">email id</span>
                                 <span className="text-white font-medium">{currentUser?.email || (localStorage.getItem('currentUserEmail') === "chiranjeevi.perala99@gmail.com" ? "chiranjeevi.perala99@gmail.com" : "empty")}</span>
                               </div>
-                              <div className="flex flex-col">
+                              <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">dob</span>
-                                <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                    }}
+                                    className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"
+                                  >
+                                    <Pencil className="h-3 w-3 text-blue-400" />
+                                  </button>
+                                </div>
                               </div>
-                              <div className="flex flex-col">
+                              <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">location</span>
-                                <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                    }}
+                                    className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"
+                                  >
+                                    <Pencil className="h-3 w-3 text-blue-400" />
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           )}
