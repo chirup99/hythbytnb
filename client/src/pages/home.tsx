@@ -1902,6 +1902,12 @@ export default function Home() {
   // Shared timeframe state for chart and crossings display
   const [chartTimeframe, setChartTimeframe] = useState<string>("1");
   const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [isEditingDisplayName, setIsEditingDisplayName] = useState(false);
+  const [isEditingDOB, setIsEditingDOB] = useState(false);
+  const [isEditingLocation, setIsEditingLocation] = useState(false);
+  const [tempDisplayName, setTempDisplayName] = useState("");
+  const [tempDOB, setTempDOB] = useState("");
+  const [tempLocation, setTempLocation] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [isUsernameAvailable, setIsUsernameAvailable] = useState<boolean | null>(null);
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
@@ -13465,16 +13471,119 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                               <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
-                                <div className="flex items-center justify-between">
-                                  <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                    }}
-                                    className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"
-                                  >
-                                    <Pencil className="h-3 w-3 text-blue-400" />
-                                  </button>
+                                <div className="flex items-center justify-between group">
+                                  {isEditingDisplayName ? (
+                                    <div className="flex items-center gap-2 w-full">
+                                      <Input 
+                                        value={tempDisplayName} 
+                                        onChange={(e) => setTempDisplayName(e.target.value)} 
+                                        className="h-8 bg-gray-800 border-gray-700 text-white text-sm"
+                                        placeholder="Display Name"
+                                      />
+                                      <button onClick={() => { updateProfile(currentUser?.username || "", tempDisplayName, currentUser?.dob, currentUser?.location); setIsEditingDisplayName(false); }} className="p-1 hover:bg-white/10 rounded-md text-green-400"><CheckCircle className="h-4 w-4" /></button>
+                                      <button onClick={() => setIsEditingDisplayName(false)} className="p-1 hover:bg-white/10 rounded-md text-red-400"><X className="h-4 w-4" /></button>
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center justify-between w-full">
+                                      <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
+                                      <button onClick={() => { setTempDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    </div>
+                                  )}
+                                </div>
+                                      <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
+                                      <button onClick={() => { setTempDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                                  ) : (
+                                    <>
+                                      <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
+                                      <button onClick={() => { setTempDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    </>
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">dob</span>
+                                <div className="flex items-center justify-between group">
+                                  {isEditingDOB ? (
+                                    <div className="flex items-center gap-2 w-full">
+                                      <Input 
+                                        type="date" 
+                                        value={tempDOB} 
+                                        onChange={(e) => setTempDOB(e.target.value)} 
+                                        className="h-8 bg-gray-800 border-gray-700 text-white text-sm"
+                                      />
+                                      <button onClick={() => { updateProfile(currentUser?.username || "", currentUser?.displayName || "", tempDOB, currentUser?.location); setIsEditingDOB(false); }} className="p-1 hover:bg-white/10 rounded-md text-green-400"><CheckCircle className="h-4 w-4" /></button>
+                                      <button onClick={() => setIsEditingDOB(false)} className="p-1 hover:bg-white/10 rounded-md text-red-400"><X className="h-4 w-4" /></button>
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center justify-between w-full">
+                                      <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
+                                      <button onClick={() => { setTempDOB(currentUser?.dob || ""); setIsEditingDOB(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    </div>
+                                  )}
+                                </div>
+                                      <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
+                                      <button onClick={() => { setTempDOB(currentUser?.dob || ""); setIsEditingDOB(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    </>
+                                  )}
+                                </div>
+                                  {isEditingDOB ? (
+                                    <div className="flex items-center gap-2 w-full">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">location</span>
+                                <div className="flex items-center justify-between group">
+                                  {isEditingLocation ? (
+                                    <div className="flex items-center gap-2 w-full">
+                                      <Input 
+                                        value={tempLocation} 
+                                        onChange={(e) => setTempLocation(e.target.value)} 
+                                        className="h-8 bg-gray-800 border-gray-700 text-white text-sm"
+                                        placeholder="Location"
+                                      />
+                                      <button onClick={() => { updateProfile(currentUser?.username || "", currentUser?.displayName || "", currentUser?.dob, tempLocation); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md text-green-400"><CheckCircle className="h-4 w-4" /></button>
+                                      <button onClick={() => setIsEditingLocation(false)} className="p-1 hover:bg-white/10 rounded-md text-red-400"><X className="h-4 w-4" /></button>
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center justify-between w-full">
+                                      <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
+                                      <button onClick={() => { setTempLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    </div>
+                                  )}
+                                </div>
+                                      <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
+                                      <button onClick={() => { setTempLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    </>
+                                  )}
+                                </div>
+                                  {isEditingLocation ? (
+                                    <div className="flex items-center gap-2 w-full">
+                                      <Input 
+                                        value={tempLocation} 
+                                        onChange={(e) => setTempLocation(e.target.value)} 
+                                        className="h-8 bg-gray-800 border-gray-700 text-white text-sm"
+                                        placeholder="Location"
+                                      />
+                                      <button onClick={() => { updateProfile(currentUser?.username || "", currentUser?.displayName || "", currentUser?.dob, tempLocation); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md text-green-400"><CheckCircle className="h-4 w-4" /></button>
+                                      <button onClick={() => setIsEditingLocation(false)} className="p-1 hover:bg-white/10 rounded-md text-red-400"><X className="h-4 w-4" /></button>
+                                    </div>
+                                  ) : (
+                                    <>
+                                      <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
+                                      <button onClick={() => { setTempLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    </>
+                                  )}
+                                </div>
+                                        value={tempDOB} 
+                                        onChange={(e) => setTempDOB(e.target.value)} 
+                                        className="h-8 bg-gray-800 border-gray-700 text-white text-sm"
+                                      />
+                                      <button onClick={() => { updateProfile(currentUser?.username || "", currentUser?.displayName || "", tempDOB, currentUser?.location); setIsEditingDOB(false); }} className="p-1 hover:bg-white/10 rounded-md text-green-400"><CheckCircle className="h-4 w-4" /></button>
+                                      <button onClick={() => setIsEditingDOB(false)} className="p-1 hover:bg-white/10 rounded-md text-red-400"><X className="h-4 w-4" /></button>
+                                    </div>
+                                  ) : (
+                                    <>
+                                      <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
+                                      <button onClick={() => { setTempDOB(currentUser?.dob || ""); setIsEditingDOB(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    </>
+                                  )}
                                 </div>
                               </div>
                               <div className="flex flex-col">
