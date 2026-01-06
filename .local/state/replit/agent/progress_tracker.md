@@ -45,8 +45,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed successfully - All core systems operational
 
 ### Notes:
-- Minor issue: Gemini API key missing for podcast generation feature (non-critical)
+- Vite HMR websocket warning is expected in Replit proxy environment (non-blocking)
 - Core trading functionality: Working
 - Angel One integration: Working
 - Real-time WebSocket: Working
-- AWS DynamoDB journal: Working
+- AWS DynamoDB journal: Requires AWS credentials
