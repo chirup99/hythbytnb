@@ -13463,9 +13463,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 )}
                               </div>
 
-                              <div className="flex flex-col">
+                              <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
-                                <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
+                                <div className="flex items-center justify-between">
+                                  <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                    }}
+                                    className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"
+                                  >
+                                    <Pencil className="h-3 w-3 text-blue-400" />
+                                  </button>
+                                </div>
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">email id</span>
