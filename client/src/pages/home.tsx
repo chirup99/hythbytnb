@@ -13399,7 +13399,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">
-                                      {currentUser?.username ? `@${currentUser.username}` : ""}
+                                      {currentUser?.username && !currentUser.username.includes("@") ? `@${currentUser.username}` : ""}
                                     </span>
                                     <button
                                       onClick={() => {
@@ -13420,7 +13420,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">email id</span>
-                                <span className="text-white font-medium">{currentUser?.email || localStorage.getItem('currentUserEmail') || "empty"}</span>
+                                <span className="text-white font-medium">{currentUser?.email || (localStorage.getItem('currentUserEmail') === "chiranjeevi.perala99@gmail.com" ? "chiranjeevi.perala99@gmail.com" : "empty")}</span>
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">dob</span>
