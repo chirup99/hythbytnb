@@ -13399,7 +13399,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">
-                                      @{currentUser?.username || "Not available"}
+                                      {currentUser?.username ? `@${currentUser.username}` : ""}
                                     </span>
                                     <button
                                       onClick={() => {
