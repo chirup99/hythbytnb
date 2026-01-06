@@ -1980,7 +1980,7 @@ function EditProfileDialog({ isOpen, onClose, profileData, onSuccess }: {
                 className={`text-xs mt-1 ${usernameAvailable ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
                 data-testid="text-username-message"
               >
-                {usernameMessage}
+                {usernameMessage === "Username is available" ? "Available" : usernameMessage === "Username is already taken" ? "Not Available" : usernameMessage}
               </p>
             )}
           </div>
@@ -2011,7 +2011,7 @@ function EditProfileDialog({ isOpen, onClose, profileData, onSuccess }: {
               Cancel
             </Button>
             <Button onClick={handleSave} disabled={!canSave || checkingUsername} data-testid="button-save-profile">
-              {saving ? 'Saving...' : checkingUsername ? 'Checking...' : 'Save'}
+              {saving ? "Saving..." : checkingUsername ? "Checking..." : "Save Profile"}
             </Button>
           </div>
         </div>
