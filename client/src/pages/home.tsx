@@ -44,7 +44,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAngelOneAutoconnect } from "@/hooks/useAngelOneAutoconnect";
 import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmailVerification, checkEmailVerified } from "@/cognito";
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, LineSeries, HistogramSeries, IPriceLine, createSeriesMarkers } from 'lightweight-charts';
-import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil } from "lucide-react";
+import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle } from "lucide-react";
 import { parseBrokerTrades, ParseError } from "@/utils/trade-parser";
 
 // Global window type declaration for audio control
@@ -139,7 +139,7 @@ import {
   Edit,
   Check,
   Mail,
-  CheckCircle,
+  
   ChevronLeft,
   ChevronRight,
   ChevronDown,
@@ -13376,10 +13376,44 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           
                           {isProfileActive && (
                             <div className="px-4 py-2 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                              <div className="flex flex-col">
+                                                            <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
-                                <span className="text-white font-medium group cursor-pointer" onClick={(e) => { const pencil = e.currentTarget.querySelector('.pencil-icon'); if (pencil) pencil.classList.toggle('hidden'); }}>@{currentUser?.username || "Not available"}<Pencil className="pencil-icon hidden h-3 w-3 inline-block ml-1 text-blue-400" /></span>
+                                {isEditingUsername ? (
+                                  <div className="flex items-center gap-2">
+                                    <Input
+                                      value={newUsername}
+                                      onChange={(e) => setNewUsername(e.target.value)}
+                                      className="h-7 bg-gray-800 border-gray-700 text-white text-xs"
+                                      autoFocus
+                                    />
+                                    <Button
+                                      size="sm"
+                                      className="h-7 px-2"
+                                      onClick={() => {
+                                        setIsEditingUsername(false);
+                                      }}
+                                    >
+                                      <CheckCircle className="h-3 w-3 text-green-400" />
+                                    </Button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 group">
+                                    <span className="text-white font-medium">
+                                      @{currentUser?.username || "Not available"}
+                                    </span>
+                                    <button
+                                      onClick={() => {
+                                        setNewUsername(currentUser?.username || "");
+                                        setIsEditingUsername(true);
+                                      }}
+                                      className="p-1 hover:bg-white/10 rounded-md transition-all"
+                                    >
+                                      <Pencil className="h-3 w-3 text-blue-400 opacity-0 group-hover:opacity-100" />
+                                    </button>
+                                  </div>
+                                )}
                               </div>
+
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
                                 <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
