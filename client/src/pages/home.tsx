@@ -13410,9 +13410,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       onClick={async () => {
                                         if (isUsernameAvailable === true) {
                                           try {
+                                            const token = await getCognitoToken();
                                             const response = await fetch("/api/user/profile", {
                                               method: "PATCH",
-                                              headers: { "Content-Type": "application/json" },
+                                              headers: {
+                                                "Content-Type": "application/json",
+                                                "Authorization": `Bearer ${token}`
+                                              },
                                               body: JSON.stringify({ username: newUsername.toLowerCase() }),
                                             });
                                             if (response.ok) {
