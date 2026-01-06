@@ -1901,6 +1901,8 @@ export default function Home() {
   const [statisticsTab, setStatisticsTab] = useState("overview");
   // Shared timeframe state for chart and crossings display
   const [chartTimeframe, setChartTimeframe] = useState<string>("1");
+  const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
