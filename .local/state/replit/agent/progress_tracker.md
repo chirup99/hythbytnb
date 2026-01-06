@@ -49,4 +49,4 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 - Core trading functionality: Working
 - Angel One integration: Working
 - Real-time WebSocket: Working
-- AWS DynamoDB journal: Requires AWS credentials
+- AWS DynamoDB journal: Configured and ready
