@@ -13373,7 +13373,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             data-testid="nav-profile"
                           >
                             <span>profile</span>
-                            {isProfileActive && <X className="h-4 w-4" />}
+                            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isProfileActive ? "rotate-180" : ""}`} />
                           </button>
                           
                           {isProfileActive && (
