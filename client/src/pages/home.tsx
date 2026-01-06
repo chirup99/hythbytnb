@@ -13381,7 +13381,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                             <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
                                 {isEditingUsername ? (
-<div className="relative flex items-center gap-2">
+                                  <div className="relative flex items-center gap-2">
                                     <Input
                                       value={newUsername}
                                       onChange={async (e) => {
@@ -13405,48 +13405,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       className="h-8 bg-gray-800 border-gray-700 text-white text-sm pr-10"
                                       autoFocus
                                     />
-                                    <div className="absolute right-2 flex items-center gap-1">
+                                    <button
+                                      className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all z-10"
+                                      onClick={() => {
+                                        setIsEditingUsername(false);
+                                      }}
+                                    >
                                       {isCheckingUsername ? (
                                         <div className="h-4 w-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                                       ) : isUsernameAvailable === true ? (
-                                        <button 
-                                          onClick={async (e) => {
-                                            e.stopPropagation();
-                                            setIsCheckingUsername(true);
-                                            try {
-                                              const res = await fetch('/api/users/update-username', {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json' },
-                                                body: JSON.stringify({
-                                                  userId: currentUser?.uid || currentUser?.id || localStorage.getItem('currentUserId'),
-                                                  oldUsername: currentUser?.username,
-                                                  newUsername: newUsername
-                                                })
-                                              });
-                                              const data = await res.json();
-                                              if (data.success) {
-                                                setIsEditingUsername(false);
-                                                window.location.reload();
-                                              } else {
-                                                alert(data.error || "Failed to update username");
-                                              }
-                                            } catch (err) {
-                                              console.error("Error updating username:", err);
-                                            } finally {
-                                              setIsCheckingUsername(false);
-                                            }
-                                          }}
-                                          className="p-1 hover:bg-white/10 rounded-md transition-all"
-                                          title="Save username"
-                                        >
-                                          <Save className="h-4 w-4 text-green-400" />
-                                        </button>
+                                        <CheckCircle className="h-4 w-4 text-green-400" />
                                       ) : isUsernameAvailable === false ? (
                                         <X className="h-4 w-4 text-red-500" />
-                                      ) : (
-                                        <X className="h-4 w-4 text-gray-500 hover:text-white cursor-pointer" onClick={() => setIsEditingUsername(false)} />
-                                      )}
-                                    </div>
+                                      ) : null}
+                                    </button>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
@@ -13458,13 +13430,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         setNewUsername(currentUser?.username || "");
                                         setIsEditingUsername(true);
                                       }}
-                                      className="opacity-0 group-hover:opacity-100 p-1 hover:bg-white/10 rounded-md transition-all"
-                                    >
-                                      <Pencil className="h-3 w-3 text-gray-400" />
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
                                       className="p-1 hover:bg-white/10 rounded-md transition-all"
                                     >
                                       <Pencil className="h-3 w-3 text-blue-400 opacity-0 group-hover:opacity-100" />
