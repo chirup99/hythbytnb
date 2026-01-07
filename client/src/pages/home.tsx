@@ -13409,7 +13409,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
                                 {isEditingUsername ? (
                                   <div className="relative flex items-center gap-2">
-                                    <div className="relative max-w-[240px]">
+                                    <div className="relative w-full">
                                       <Input value={newUsername} onChange={(e) => setNewUsername(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" autoFocus />
                                       <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ username: newUsername }); setIsEditingUsername(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
                                         <CheckCircle className="h-4 w-4 text-green-400" />
@@ -13436,7 +13436,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
                                 {isEditingDisplayName ? (
                                   <div className="relative flex items-center gap-2">
-                                    <div className="relative max-w-[240px]">
+                                    <div className="relative w-full">
                                       <Input value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" autoFocus />
                                       <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
                                         <CheckCircle className="h-4 w-4 text-green-400" />
