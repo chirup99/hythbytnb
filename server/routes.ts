@@ -5509,28 +5509,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/user/profile', async (req, res) => {
     try {
-      const { username, dob } = req.body;
+      const { username, displayName, dob, location, bio, profilePicUrl, coverPicUrl } = req.body;
       const authHeader = req.headers.authorization;
 
-      console.log('📝 Profile save request:', { username, dob, hasAuth: !!authHeader });
+      console.log('📝 Profile save/update request:', { 
+        username, 
+        displayName,
+        dob, 
+        location,
+        hasAuth: !!authHeader 
+      });
 
       if (!authHeader || !authHeader.startsWith('Bearer ')) {
         console.log('❌ No auth header');
         return res.status(401).json({ success: false, message: 'No authentication token provided' });
-      }
-
-      if (!username || !dob) {
-        console.log('❌ Missing username or dob');
-        return res.status(400).json({ success: false, message: 'Username and date of birth are required' });
-      }
-
-      // Validate username format (alphanumeric and underscore only)
-      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-        console.log('❌ Invalid username format');
-        return res.status(400).json({ 
-          success: false,
-          message: 'Username must be 3-20 characters and contain only letters, numbers, and underscores' 
-        });
       }
 
       // Verify Cognito token
@@ -5552,19 +5544,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Use AWS DynamoDB for profile storage
       const { DynamoDBClient } = await import('@aws-sdk/client-dynamodb');
-      const { DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand } = await import('@aws-sdk/lib-dynamodb');
+      const { DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, UpdateCommand } = await import('@aws-sdk/lib-dynamodb');
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
       const awsRegion = process.env.AWS_REGION || 'eu-north-1';
 
-      console.log('🔑 AWS Credentials Check (POST /api/user/profile):');
-      console.log('  - AWS_ACCESS_KEY_ID present:', !!awsAccessKeyId, awsAccessKeyId ? `(${awsAccessKeyId.substring(0, 4)}...)` : '');
-      console.log('  - AWS_SECRET_ACCESS_KEY present:', !!awsSecretAccessKey);
-      console.log('  - AWS_REGION:', awsRegion);
-
       if (!awsAccessKeyId || !awsSecretAccessKey) {
-        console.log('❌ AWS credentials not configured - Check secrets are set in Replit');
+        console.log('❌ AWS credentials not configured');
         return res.status(500).json({ success: false, message: 'Server configuration error' });
       }
 
@@ -5577,38 +5564,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       const docClient = DynamoDBDocumentClient.from(dynamoClient);
 
-      console.log('🔍 Checking username availability in DynamoDB...');
-
-      // Check for username uniqueness using GSI or scan
-      const queryCommand = new QueryCommand({
-        TableName: 'neofeed-user-profiles',
-        IndexName: 'username-index',
-        KeyConditionExpression: 'username = :username',
-        ExpressionAttributeValues: {
-          ':username': username.toLowerCase()
+      // Check username availability if provided
+      if (username) {
+        if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+          console.log('❌ Invalid username format');
+          return res.status(400).json({ 
+            success: false,
+            message: 'Username must be 3-20 characters and contain only letters, numbers, and underscores' 
+          });
         }
-      });
 
-      try {
-        const existingUser = await docClient.send(queryCommand);
-        if (existingUser.Items && existingUser.Items.length > 0) {
-          const existingUserId = existingUser.Items[0].pk?.replace('USER#', '');
-          if (existingUserId !== userId) {
-            console.log('❌ Username already taken by another user');
-            return res.status(400).json({ 
-              success: false, 
-              message: 'Username already taken. Please choose a different one.' 
-            });
+        const checkUsernameCommand = new GetCommand({
+          TableName: 'neofeed-user-profiles',
+          Key: {
+            pk: `USERNAME#${username.toLowerCase()}`,
+            sk: 'MAPPING'
           }
-        }
-      } catch (queryError: any) {
-        // If GSI doesn't exist, we'll skip the uniqueness check for now
-        if (queryError.name !== 'ResourceNotFoundException') {
-          console.log('⚠️ Username uniqueness check skipped (GSI may not exist)');
+        });
+
+        const usernameResult = await docClient.send(checkUsernameCommand);
+        if (usernameResult.Item && usernameResult.Item.userId !== userId) {
+          console.log('❌ Username already taken');
+          return res.status(400).json({ 
+            success: false, 
+            message: 'Username already taken. Please choose a different one.' 
+          });
         }
       }
-
-      console.log('✅ Username available, saving to DynamoDB...');
 
       // Fetch existing profile
       const getCommand = new GetCommand({
@@ -5621,22 +5603,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const existingResult = await docClient.send(getCommand);
       const existingData = existingResult.Item || {};
+      const oldUsername = existingData.username;
 
-      console.log('📄 Existing profile data:', {
-        hasDisplayName: !!existingData?.displayName,
-        displayName: existingData?.displayName
-      });
-
-      // Save user profile
+      // Prepare updated profile
       const userProfile = {
+        ...existingData,
         pk: `USER#${userId}`,
         sk: 'PROFILE',
-        username: username.toLowerCase(),
-        displayName: existingData.displayName || cognitoUser.name || username,
-        dob: dob,
+        username: username ? username.toLowerCase() : (existingData.username || email.split('@')[0]),
+        displayName: displayName || existingData.displayName || cognitoUser.name || username || email.split('@')[0],
+        dob: dob || existingData.dob,
+        location: location || existingData.location,
         email: email,
         userId: userId,
-        bio: existingData.bio || '',
+        bio: bio !== undefined ? bio : (existingData.bio || ''),
+        profilePicUrl: profilePicUrl || existingData.profilePicUrl,
+        coverPicUrl: coverPicUrl || existingData.coverPicUrl,
         updatedAt: new Date().toISOString(),
         createdAt: existingData.createdAt || new Date().toISOString()
       };
@@ -5651,39 +5633,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
       await docClient.send(putCommand);
       console.log('✅ User profile saved to DynamoDB');
 
-      // Save username mapping for faster lookups
-      const usernameMappingCommand = new PutCommand({
-        TableName: 'neofeed-user-profiles',
-        Item: {
-          pk: `USERNAME#${username.toLowerCase()}`,
-          sk: 'MAPPING',
-          userId: userId,
-          username: username.toLowerCase(),
-          updatedAt: new Date().toISOString()
+      // Update username mapping if changed
+      const newUsername = userProfile.username;
+      if (newUsername !== oldUsername) {
+        // Create new mapping
+        await docClient.send(new PutCommand({
+          TableName: 'neofeed-user-profiles',
+          Item: {
+            pk: `USERNAME#${newUsername}`,
+            sk: 'MAPPING',
+            userId: userId,
+            username: newUsername,
+            updatedAt: new Date().toISOString()
+          }
+        }));
+        
+        // Delete old mapping if exists
+        if (oldUsername) {
+          const { DeleteCommand } = await import('@aws-sdk/lib-dynamodb');
+          await docClient.send(new DeleteCommand({
+            TableName: 'neofeed-user-profiles',
+            Key: {
+              pk: `USERNAME#${oldUsername}`,
+              sk: 'MAPPING'
+            }
+          }));
         }
-      });
-
-      await docClient.send(usernameMappingCommand);
-      console.log('✅ Username mapping saved');
-      console.log('✅✅ Profile save completed successfully!');
+        console.log('✅ Username mapping updated');
+      }
 
       res.json({ 
         success: true,
         message: 'Profile saved successfully',
-        profile: {
-          username: username.toLowerCase(),
-          dob: dob,
-          email: email
-        }
+        profile: userProfile
       });
     } catch (error: any) {
       console.error('❌ Save profile error:', error);
-      console.error('Error details:', {
-        message: error?.message,
-        code: error?.code,
-        stack: error?.stack
-      });
-
       res.status(500).json({ success: false, message: `Failed to save profile: ${error?.message || 'Unknown error'}` });
     }
   });
