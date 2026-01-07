@@ -5339,6 +5339,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                  username: userData.username,
                  displayName: userData.displayName,
                  dob: userData.dob,
+                 location: userData.location,
                  bio: userData.bio,
                  email: userData.email,
                  profilePicUrl: userData.profilePicUrl,
@@ -5373,6 +5374,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           username: userData.username,
           displayName: userData.displayName,
           dob: userData.dob,
+          location: userData.location,
           bio: userData.bio,
           email: userData.email,
           profilePicUrl: userData.profilePicUrl,
@@ -5522,6 +5524,88 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       if (!authHeader || !authHeader.startsWith('Bearer ')) {
         console.log('❌ No auth header');
+        return res.status(401).json({ message: 'No authentication token provided' });
+      }
+
+      const claims = await authenticateRequest(authHeader);
+      if (!claims) {
+        return res.status(401).json({ message: 'Invalid or expired token' });
+      }
+
+      // Check for identity mapping
+      const { DynamoDBClient, GetItemCommand, PutItemCommand } = await import('@aws-sdk/client-dynamodb');
+      const dynamoClient = new DynamoDBClient({
+        region: process.env.AWS_REGION || 'eu-north-1',
+        credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        } : undefined,
+      });
+
+      let canonicalUserId = claims.sub;
+      try {
+        const mappingCheck = await dynamoClient.send(new GetItemCommand({
+          TableName: 'neofeed-user-profiles',
+          Key: {
+            pk: { S: `USER#${claims.sub}` },
+            sk: { S: 'IDENTITY_MAPPING' }
+          }
+        }));
+        if (mappingCheck.Item && mappingCheck.Item.canonicalUserId?.S) {
+          canonicalUserId = mappingCheck.Item.canonicalUserId.S;
+        }
+      } catch (err) {
+        console.warn('⚠️ Mapping check failed during save:', err);
+      }
+
+      const userId = canonicalUserId;
+      const { DynamoDBDocumentClient, PutCommand } = await import('@aws-sdk/lib-dynamodb');
+      const docClient = DynamoDBDocumentClient.from(dynamoClient);
+
+      // Prepare item for DynamoDB
+      const item = {
+        pk: `USER#${userId}`,
+        sk: 'PROFILE',
+        userId,
+        username,
+        displayName,
+        dob,
+        location,
+        bio,
+        email: claims.email,
+        profilePicUrl,
+        coverPicUrl,
+        updatedAt: new Date().toISOString()
+      };
+
+      await docClient.send(new PutCommand({
+        TableName: 'neofeed-user-profiles',
+        Item: item
+      }));
+
+      // Also update username mapping for search
+      if (username) {
+        await docClient.send(new PutCommand({
+          TableName: 'neofeed-user-profiles',
+          Item: {
+            pk: `USERNAME#${username.toLowerCase()}`,
+            sk: 'MAPPING',
+            userId,
+            username: username.toLowerCase(),
+            displayName,
+            profilePicUrl,
+            updatedAt: new Date().toISOString()
+          }
+        }));
+      }
+
+      console.log('✅ Profile updated in DynamoDB for user:', userId);
+      res.json({ success: true, profile: item });
+    } catch (error) {
+      console.error('Save profile error:', error);
+      res.status(500).json({ message: 'Failed to save profile' });
+    }
+  });
         return res.status(401).json({ success: false, message: 'No authentication token provided' });
       }
 
