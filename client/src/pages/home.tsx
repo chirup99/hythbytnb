@@ -13498,6 +13498,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
+                                    </div>
                                     <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
                                     <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
