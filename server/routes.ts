@@ -5808,6 +5808,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         expressionAttributeValues[':coverPicUrl'] = coverPicUrl;
       }
 
+      // Add dob and location handling
+      const { dob, location } = req.body;
+      if (dob !== undefined) {
+        updateExpression += ', dob = :dob';
+        expressionAttributeValues[':dob'] = dob;
+      }
+      if (location !== undefined) {
+        updateExpression += ', #location = :location';
+        expressionAttributeNames['#location'] = 'location';
+        expressionAttributeValues[':location'] = location;
+      }
+
       console.log('💾 Updating profile with DynamoDB...');
 
       const updateCommand = new UpdateCommand({
@@ -5818,6 +5830,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
         UpdateExpression: updateExpression,
         ExpressionAttributeValues: expressionAttributeValues,
+        ExpressionAttributeNames: Object.keys(expressionAttributeNames).length > 0 ? expressionAttributeNames : undefined,
         ReturnValues: 'ALL_NEW'
       });
 

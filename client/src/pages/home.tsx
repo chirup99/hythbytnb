@@ -1917,12 +1917,15 @@ export default function Home() {
 
   const handleUpdateProfile = async (updates: any) => {
     try {
+      const token = await getCognitoToken();
       const response = await fetch("/api/user/profile", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify(updates),
       });
-      if (response.ok) {
         toast({ description: "Profile updated successfully" });
         // Trigger a refresh if possible, or just let the next query fetch it
         window.location.reload();
