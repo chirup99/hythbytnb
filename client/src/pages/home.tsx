@@ -13491,7 +13491,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 {isEditingDisplayName ? (
                                   <div className="flex items-center gap-2">
                                     <Input value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
-                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); }} className="p-1 hover:bg-white/10 rounded-md"><Check className="h-3 w-3 text-green-400" /></button>
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); }} className="p-1 hover:bg-white/10 rounded-md"><CheckCircle className="h-4 w-4 text-green-400" /></button>
                                     <button onClick={(e) => { e.stopPropagation(); setIsEditingDisplayName(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
                                   </div>
                                 ) : (
@@ -13510,7 +13510,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 {isEditingDob ? (
                                   <div className="flex items-center gap-2">
                                     <Input type="date" value={newDob} onChange={(e) => setNewDob(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
-                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ dob: newDob }); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md"><Check className="h-3 w-3 text-green-400" /></button>
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ dob: newDob }); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md"><CheckCircle className="h-4 w-4 text-green-400" /></button>
                                     <button onClick={(e) => { e.stopPropagation(); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
                                   </div>
                                 ) : (
@@ -13525,7 +13525,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 {isEditingLocation ? (
                                   <div className="flex items-center gap-2">
                                     <Input value={newLocation} onChange={(e) => setNewLocation(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
-                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ location: newLocation }); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md"><Check className="h-3 w-3 text-green-400" /></button>
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ location: newLocation }); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md"><CheckCircle className="h-4 w-4 text-green-400" /></button>
                                     <button onClick={(e) => { e.stopPropagation(); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
                                   </div>
                                 ) : (
