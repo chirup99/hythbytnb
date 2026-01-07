@@ -13471,9 +13471,33 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">location</span>
                                 {isEditingLocation ? (
-                                  <div className="flex items-center gap-2">
-                                    <Input value={newLocation} onChange={(e) => setNewLocation(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
-                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ location: newLocation }); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md transition-all"><CheckCircle className="h-4 w-4 text-green-400" /></button>
+                                  <div className="relative flex items-center group">
+                                    <Input
+                                      value={newLocation}
+                                      onChange={(e) => setNewLocation(e.target.value)}
+                                      className="h-9 bg-gray-800 border-gray-700 text-white pr-10 focus:ring-1 focus:ring-blue-500"
+                                      autoFocus
+                                      onKeyDown={async (e) => {
+                                        if (e.key === "Enter") {
+                                          e.stopPropagation();
+                                          await handleUpdateProfile({ location: newLocation });
+                                          setIsEditingLocation(false);
+                                        } else if (e.key === "Escape") {
+                                          setIsEditingLocation(false);
+                                        }
+                                      }}
+                                    />
+                                    <button
+                                      onClick={async (e) => {
+                                        e.stopPropagation();
+                                        await handleUpdateProfile({ location: newLocation });
+                                        setIsEditingLocation(false);
+                                      }}
+                                      className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all"
+                                      data-testid="button-save-location"
+                                    >
+                                      <CheckCircle className="h-4 w-4 text-green-400" />
+                                    </button>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">

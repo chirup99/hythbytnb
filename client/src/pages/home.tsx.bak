@@ -1,3 +1,4 @@
+﻿import { motion, AnimatePresence } from "framer-motion";
 import { BrokerData } from "@/components/broker-data";
 import React, {
   useState,
@@ -28,11 +29,11 @@ import {
   MultipleImageUploadRef,
 } from "@/components/multiple-image-upload";
 import { IndicatorCrossingsDisplay } from "@/components/indicator-crossings-display";
-import { BattuScanSimulation } from "@/components/battu-scan-simulation";
-import { FourCandleRuleScanner } from "@/components/four-candle-rule-scanner";
+// import { BattuScanSimulation } from "@/components/battu-scan-simulation";
+// import { FourCandleRuleScanner } from "@/components/four-candle-rule-scanner";
 import NeoFeedSocialFeed from "@/components/neofeed-social-feed";
 import SimpleCompleteScanner from "@/components/simple-complete-scanner";
-import { BattuDocumentationDisplay } from "@/components/battu-documentation-display";
+// import { BattuDocumentationDisplay } from "@/components/battu-documentation-display";
 import { StrategyBuilder } from "@/components/strategy-builder";
 import { TradingMaster } from "@/components/trading-master";
 import { WorldMap } from "@/components/world-map";
@@ -43,7 +44,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAngelOneAutoconnect } from "@/hooks/useAngelOneAutoconnect";
 import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmailVerification, checkEmailVerified } from "@/cognito";
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, LineSeries, HistogramSeries, IPriceLine, createSeriesMarkers } from 'lightweight-charts';
-import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award } from "lucide-react";
+import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle } from "lucide-react";
 import { parseBrokerTrades, ParseError } from "@/utils/trade-parser";
 
 // Global window type declaration for audio control
@@ -53,7 +54,7 @@ declare global {
   }
 }
 
-import ThreeCycleScanner from "@/components/three-cycle-scanner";
+// import ThreeCycleScanner from "@/components/three-cycle-scanner";
 import HistoricalTradeSimulator from "@/components/historical-trade-simulator";
 import {
   PriceChangeAnimation,
@@ -111,7 +112,7 @@ import {
   Activity,
   Calendar,
   BarChart3,
-  Play,
+  
   Pause,
   RotateCcw,
   RotateCw,
@@ -137,9 +138,8 @@ import {
   Timer,
   Edit,
   Check,
-  X,
   Mail,
-  CheckCircle,
+  
   ChevronLeft,
   ChevronRight,
   ChevronDown,
@@ -1870,6 +1870,24 @@ const getFullApiUrl = (path: string): string => {
 export default function Home() {
   const [location, setLocation] = useLocation();
 
+  // 🔶 Detect Angel One OAuth callback from redirect
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("angelone_connected")) {
+      console.log("✅ Angel One connected successfully (redirect callback)");
+      setAngelOneIsConnected(true);
+      setAngelOneAccessToken(params.get("angelone_client_code") || "P176266");
+      localStorage.setItem("angel_one_client_code", params.get("angelone_client_code") || "P176266");
+      toast({ title: "Success", description: "Angel One connected successfully" });
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    if (params.has("angelone_error")) {
+      const error = decodeURIComponent(params.get("angelone_error") || "");
+      console.error("❌ Angel One auth error:", error);
+      toast({ variant: "destructive", title: "Error", description: error });
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
   // AUTO-CONNECT: Angel One API - Automatically connect when app loads
   useAngelOneAutoconnect();
   const { theme, toggleTheme } = useTheme();
@@ -1883,8 +1901,40 @@ export default function Home() {
   const [statisticsTab, setStatisticsTab] = useState("overview");
   // Shared timeframe state for chart and crossings display
   const [chartTimeframe, setChartTimeframe] = useState<string>("1");
+  const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [isEditingDisplayName, setIsEditingDisplayName] = useState(false);
+  const [newDisplayName, setNewDisplayName] = useState("");
+  const [isEditingDob, setIsEditingDob] = useState(false);
+  const [newDob, setNewDob] = useState("");
+  const [isEditingLocation, setIsEditingLocation] = useState(false);
+  const [newLocation, setNewLocation] = useState("");
+  const [newUsername, setNewUsername] = useState("");
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState<boolean | null>(null);
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isProfileActive, setIsProfileActive] = useState(false);
+
+  const handleUpdateProfile = async (updates: any) => {
+    try {
+      const response = await fetch("/api/user/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      if (response.ok) {
+        toast({ description: "Profile updated successfully" });
+        // Trigger a refresh if possible, or just let the next query fetch it
+        window.location.reload();
+      } else {
+        throw new Error("Failed to update profile");
+      }
+    } catch (error) {
+      console.error("Profile update error:", error);
+      toast({ description: "Error updating profile", variant: "destructive" });
+    }
+  };
+
   // Mobile bottom navigation state (home, insight, ranking, paper-trade)
   const [mobileBottomTab, setMobileBottomTab] = useState<
     "home" | "insight" | "ranking" | "paper-trade"
@@ -1908,6 +1958,85 @@ export default function Home() {
   const [authInitialized, setAuthInitialized] = useState(false);
   // View-only mode for unauthenticated users - they can view but not interact with protected features
   const [isViewOnlyMode, setIsViewOnlyMode] = useState(false);
+  const [selectedAudioTrack, setSelectedAudioTrack] = useState<{title: string, duration: string, id: string, youtubeId: string} | null>({ title: 'Bruce Lee: "Your Greatest Enemy Is Within"', duration: "22:30", id: "p1", youtubeId: "KnppzfiZcgM" });
+  const [audioProgress, setAudioProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const youtubePlayerRef = useRef<any>(null);
+
+  useEffect(() => {
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+    (window as any).onYouTubeIframeAPIReady = () => {
+      console.log("📺 YouTube IFrame API Ready");
+    };
+  }, []);
+
+  useEffect(() => {
+    if (selectedAudioTrack?.youtubeId) {
+      if (youtubePlayerRef.current) {
+        youtubePlayerRef.current.destroy();
+      }
+
+      const playerContainer = document.getElementById("youtube-audio-player");
+      if (playerContainer) {
+        youtubePlayerRef.current = new (window as any).YT.Player("youtube-audio-player", {
+          height: "0",
+          width: "0",
+          videoId: selectedAudioTrack.youtubeId,
+          playerVars: {
+            autoplay: 1,
+            controls: 0,
+            showinfo: 0,
+            modestbranding: 1,
+            loop: 1,
+            fs: 0,
+            cc_load_policy: 0,
+            iv_load_policy: 3,
+            autohide: 0
+          },
+          events: {
+            onReady: (event: any) => {
+              setDuration(event.target.getDuration());
+              const interval = setInterval(() => {
+                if (youtubePlayerRef.current && youtubePlayerRef.current.getCurrentTime) {
+                  const time = youtubePlayerRef.current.getCurrentTime();
+                  setCurrentTime(time);
+                  if (youtubePlayerRef.current.getDuration) {
+                    const dur = youtubePlayerRef.current.getDuration();
+                    setDuration(dur);
+                    setAudioProgress((time / dur) * 100);
+                  }
+                }
+              }, 1000);
+              console.log("🎵 YouTube Audio Ready");
+              event.target.playVideo();
+              setIsAudioPlaying(true);
+            },
+            onStateChange: (event: any) => {
+              if (event.data === (window as any).YT.PlayerState.ENDED) {
+                event.target.playVideo();
+              }
+            }
+          }
+        });
+      }
+    }
+  }, [selectedAudioTrack]);
+
+  useEffect(() => {
+    if (youtubePlayerRef.current) {
+      if (isAudioPlaying) {
+        youtubePlayerRef.current.playVideo();
+      } else {
+        youtubePlayerRef.current.pauseVideo();
+      }
+    }
+  }, [isAudioPlaying]);
 
   // Get current user data from AWS DynamoDB
   const { currentUser } = useCurrentUser();
@@ -3959,7 +4088,22 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     const handleMessage = (event: MessageEvent) => {
       console.log("📡 [MESSAGE] Received message:", event.data.type, event.data);
       
-      if (event.data.type === 'ZERODHA_TOKEN' && event.data.token) {
+      if (event.data.type === 'ANGELONE_AUTH_SUCCESS' && event.data.token) {
+        const token = event.data.token;
+        console.log('✅ [ANGELONE] Token received from popup:', token.substring(0, 20) + '...');
+        
+        localStorage.setItem("angelone_token", token);
+        if (event.data.feedToken) localStorage.setItem("angelone_feed_token", event.data.feedToken);
+        if (event.data.refreshToken) localStorage.setItem("angelone_refresh_token", event.data.refreshToken);
+        if (event.data.clientCode) localStorage.setItem("angelone_client_code", event.data.clientCode);
+        
+        document.cookie = `angelone_token=${token}; path=/; SameSite=Lax; Secure`;
+        setAngelOneAccessToken(token);
+        setAngelOneIsConnected(true);
+        setShowConnectDialog(false);
+        
+        console.log('✅ [ANGELONE] Connection established and saved to localStorage');
+      } else if (event.data.type === 'ZERODHA_TOKEN' && event.data.token) {
         const token = event.data.token;
         console.log('✅ [ZERODHA] Token received from popup:', token.substring(0, 20) + '...');
         
@@ -4170,64 +4314,158 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       alert('Error: ' + (error instanceof Error ? error.message : 'Failed to connect to Upstox'));
     }
   };
+
+  const handleUpstoxDisconnect = async () => {
+    try {
+      const token = upstoxAccessToken;
+      if (!token) {
+        // No token to revoke, just clear locally
+        localStorage.removeItem("upstox_token");
+        localStorage.removeItem("upstox_user_id");
+        localStorage.removeItem("upstox_user_email");
+        localStorage.removeItem("upstox_user_name");
+        setUpstoxAccessToken(null);
+        setUpstoxIsConnected(false);
+        return;
+      }
+
+      // Call Upstox logout API
+      const response = await fetch('https://api.upstox.com/v2/logout', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      console.log('🔵 Upstox logout response:', response.status);
+      
+      // Clear local storage regardless of API response
+      localStorage.removeItem("upstox_token");
+      localStorage.removeItem("upstox_user_id");
+      localStorage.removeItem("upstox_user_email");
+      localStorage.removeItem("upstox_user_name");
+      setUpstoxAccessToken(null);
+      setUpstoxIsConnected(false);
+    } catch (error) {
+      console.error('❌ Upstox disconnect error:', error);
+      // Clear local storage even if API call fails
+      localStorage.removeItem("upstox_token");
+      localStorage.removeItem("upstox_user_id");
+      localStorage.removeItem("upstox_user_email");
+      localStorage.removeItem("upstox_user_name");
+      setUpstoxAccessToken(null);
+      setUpstoxIsConnected(false);
+    }
+  };
+
   const handleAngelOneConnect = async () => {
     try {
-      console.log("🔶 Starting Angel One OAuth redirect flow...");
-      const response = await fetch("/api/angelone/auth-url");
-      const data = await response.json();
+      console.log("🔶 Attempting Angel One auto-login (web scraping)...");
       
-      if (!data.authUrl) {
-        alert("Error: Could not generate Angel One authorization URL");
+      // Try auto-login first (uses backend credentials + TOTP)
+      const autoLoginResponse = await fetch("/api/angelone/auto-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      const autoLoginData = await autoLoginResponse.json();
+      
+      if (autoLoginData.success && autoLoginData.token && autoLoginData.feedToken) {
+        console.log("✅ [ANGEL ONE] Auto-login successful! Using backend credentials...");
+        localStorage.setItem("angel_one_token", autoLoginData.token);
+        localStorage.setItem("angel_one_refresh_token", autoLoginData.refreshToken || "");
+        localStorage.setItem("angel_one_feed_token", autoLoginData.feedToken);
+        localStorage.setItem("angel_one_client_code", autoLoginData.clientCode);
+        setAngelOneAccessToken(autoLoginData.token);
+        setAngelOneIsConnected(true);
+        toast({ title: "Success", description: `Connected to Angel One (${autoLoginData.clientCode})` });
         return;
       }
       
-      console.log("🔗 Angel One auth URL:", data.authUrl);
+      console.log("⚠️ Auto-login failed, checking status endpoint...");
+      const response = await fetch("/api/angelone/status");
+      const data = await response.json();
       
-      const width = 500;
-      const height = 600;
-      const left = window.screenX + (window.outerWidth - width) / 2;
-      const top = window.screenY + (window.outerHeight - height) / 2;
+      if (data.isConnected && data.token && data.feedToken) {
+        console.log("✅ [ANGEL ONE] Using status endpoint tokens!");
+        localStorage.setItem("angel_one_token", data.token);
+        localStorage.setItem("angel_one_refresh_token", data.refreshToken || "");
+        localStorage.setItem("angel_one_feed_token", data.feedToken);
+        localStorage.setItem("angel_one_client_code", data.clientCode || "P176266");
+        setAngelOneAccessToken(data.token);
+        setAngelOneIsConnected(true);
+        toast({ title: "Success", description: `Connected to Angel One (${data.clientCode || "P176266"})` });
+        return;
+      }
+      
+      console.log("⚠️ No tokens available, attempting popup OAuth...");
+      const authResponse = await fetch("/api/angelone/auth-url");
+      const authData = await authResponse.json();
+      
+      if (!authData.authUrl) {
+        toast({ variant: "destructive", title: "Error", description: "Could not generate authorization URL" });
+        return;
+      }
+      
+      console.log("🔗 Angel One auth URL generated");
       
       const popup = window.open(
-        data.authUrl,
-        "AngelOneLogin",
-        `width=${width},height=${height},left=${left},top=${top}`
+        authData.authUrl,
+        "angel_one_oauth",
+        "width=600,height=800,resizable=yes,scrollbars=yes"
       );
       
       if (!popup) {
-        alert("Popup blocked! Please enable popups for this site.");
+        toast({ variant: "destructive", title: "Error", description: "Popup blocked. Please enable popups and try again." });
         return;
       }
       
+      console.log("✅ Angel One popup opened, waiting for authentication...");
+      
       const messageListener = (event: MessageEvent) => {
         if (event.data.type === "ANGELONE_AUTH_SUCCESS") {
-          console.log("✅ Angel One authentication successful!");
-          localStorage.setItem("angelone_token", event.data.token); localStorage.setItem("angel_one_token", event.data.token);
-          if (event.data.feedToken) localStorage.setItem("angelone_feed_token", event.data.feedToken);
-          localStorage.setItem("angel_one_client_code", event.data.clientCode || "P176266");
+          console.log("✅ [ANGEL ONE] Successfully authenticated via popup!");
+          localStorage.setItem("angel_one_token", event.data.token);
+          localStorage.setItem("angel_one_refresh_token", event.data.refreshToken);
+          localStorage.setItem("angel_one_feed_token", event.data.feedToken);
+          localStorage.setItem("angel_one_client_code", event.data.clientCode);
           setAngelOneAccessToken(event.data.token);
           setAngelOneIsConnected(true);
           window.removeEventListener("message", messageListener);
-          toast({
-            title: "Success",
-            description: "Angel One connected successfully",
-          });
-          setConnectDialogOpen(false);
+          clearInterval(monitorPopupRef);
+          toast({ title: "Success", description: `Connected to Angel One (${event.data.clientCode})` });
         } else if (event.data.type === "ANGELONE_AUTH_ERROR") {
-          console.error("❌ Angel One auth error:", event.data.error);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: event.data.error || "Login failed",
-          });
+          console.error("❌ Angel One error:", event.data.error);
           window.removeEventListener("message", messageListener);
+          clearInterval(monitorPopupRef);
+          toast({ variant: "destructive", title: "Error", description: event.data.error || "Authentication failed" });
         }
       };
-
+      
       window.addEventListener("message", messageListener);
+      
+      let checkCount = 0;
+      const monitorPopupRef = setInterval(() => {
+        checkCount++;
+        if (popup.closed) {
+          clearInterval(monitorPopupRef);
+          window.removeEventListener("message", messageListener);
+          console.log("⚠️ Angel One popup closed");
+          return;
+        }
+        if (checkCount > 300) {
+          clearInterval(monitorPopupRef);
+          window.removeEventListener("message", messageListener);
+          popup.close();
+          toast({ variant: "destructive", title: "Error", description: "Authentication timeout" });
+        }
+      }, 100);
+      
     } catch (error) {
       console.error("❌ Angel One error:", error);
-      alert("Error: " + (error instanceof Error ? error.message : "Failed to connect"));
+      toast({ variant: "destructive", title: "Error", description: error instanceof Error ? error.message : "Failed to connect" });
     }
   };
 
@@ -7806,6 +8044,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   }, [selectedJournalSymbol, activeTab, fetchJournalChartData]);
 
   // ========== HEATMAP CHART FETCH FUNCTION (Completely Separate) ==========
+
+  // ✅ INSTANT REFETCH when Angel One token refreshes (next day or new session)
+  useEffect(() => {
+    if (!selectedJournalSymbol || !angelOneAccessToken || activeTab !== 'journal') return;
+    
+    console.log(`🔄 [TOKEN-REFRESH] Journal chart refetching with new Angel One token`);
+    fetchJournalChartData();
+  }, [angelOneAccessToken, selectedJournalSymbol, activeTab, fetchJournalChartData]);
   const fetchHeatmapChartData = useCallback(async (symbol: string, date: string) => {
     try {
       console.log(`🗓️ [HEATMAP FETCH] Starting fetch for ${symbol} on ${date}`);
@@ -9215,11 +9461,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         console.log(`  🎯 Final markers to apply: ${chartMarkers.length}`);
 
         // ✅ Markers disabled - LightweightCharts doesn't support setMarkers on series
-        // (journalCandlestickSeriesRef.current as any).setMarkers(chartMarkers);
-        console.log(`📊 ✅ Markers disabled in this version`);
+        (journalCandlestickSeriesRef.current as any).setMarkers(chartMarkers);
+        console.log(`📊 ✅ Markers applied to series: ${chartMarkers.length}`);
       } else {
         console.log('📊 No markers to apply - clearing');
- // setMarkers removed - not supported in LightweightCharts
+ if (journalCandlestickSeriesRef.current) (journalCandlestickSeriesRef.current as any).setMarkers([]);
       }
     } catch (e) {
       console.error('📊 ❌ Marker Error:', e);
@@ -11998,12 +12244,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       if (errors.length === 0) {
         setShowImportModal(false);
         setImportData("");
-        setShowOrderModal(true);
+        // setShowOrderModal(true);
         // Reset user format selection for fresh start next time
         setUserSelectedFormatId(null);
       } else {
         // Keep modal open to show errors but still set the data
-        setShowOrderModal(true);
+        // setShowOrderModal(true);
       }
     } catch (error) {
       setImportError(
@@ -12171,7 +12417,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <div className="relative z-10 h-full flex flex-col justify-center items-center text-center">
                       <div className="text-6xl mb-4">📚</div>
                       <div className="text-white text-2xl font-bold">Study</div>
-                      <div className="text-white/60 text-sm mt-2">Learning Materials</div>
+                      <div className="text-black text-sm mt-2">Learning Materials</div>
                     </div>
                   </div>
 
@@ -12181,7 +12427,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <div className="relative z-10 h-full flex flex-col justify-center items-center text-center">
                       <div className="text-6xl mb-4">🎓</div>
                       <div className="text-white text-2xl font-bold">Courses</div>
-                      <div className="text-white/60 text-sm mt-2">Training Programs</div>
+                      <div className="text-black text-sm mt-2">Training Programs</div>
                     </div>
                   </div>
 
@@ -12191,7 +12437,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <div className="relative z-10 h-full flex flex-col justify-center items-center text-center">
                       <div className="text-6xl mb-4">🔴</div>
                       <div className="text-white text-2xl font-bold">Live</div>
-                      <div className="text-white/60 text-sm mt-2">Live Sessions</div>
+                      <div className="text-black text-sm mt-2">Live Sessions</div>
                     </div>
                   </div>
                 </div>
@@ -12762,7 +13008,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <div className="absolute bottom-1 left-1 w-1 h-1 bg-pink-400/60 rounded-full"></div>
                             <div className="relative z-10 text-center">
                               <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mb-1">
-                                <Zap className="w-4 h-4 text-white/60" />
+                                <Zap className="w-4 h-4 text-black" />
                               </div>
                               <div className="text-white/70 text-[8px] font-medium">TECH</div>
                             </div>
@@ -13058,149 +13304,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       isSharedReportMode ? 'pointer-events-none opacity-30 blur-sm' : ''
     }`}>
       {/* Vertical Sidebar - Fixed Position */}
-      <div className="hidden fixed left-0 top-0 bottom-0 w-64 chatgpt-sidebar border-r border-gray-700 flex flex-col z-40 md:bottom-0 bottom-[env(safe-area-inset-bottom)] pb-[env(safe-area-inset-bottom)] touch-none">
-        {/* Header */}
-        <div className="p-4 border-b border-gray-700">
-          <h1 className="text-xl font-semibold sidebar-text">
-            Trading Platform
-          </h1>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2">
-          <div className="space-y-1 bg-white dark:bg-gray-900/50 rounded-lg p-3">
-            <p className="text-xs font-medium sidebar-muted uppercase tracking-wide mb-3">
-              Dashboard & Overview
-            </p>
-
-            <button
-              onClick={() => handleTabClick("dashboard")}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 sidebar-text ${
-                activeTab === "dashboard"
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-accent hover:bg-opacity-50"
-              }`}
-            >
-              <Star className="h-4 w-4" />
-              Market Dashboard
-            </button>
-          </div>
-
-          <div className="space-y-1 pt-4">
-            <p className="text-xs font-medium sidebar-muted uppercase tracking-wide mb-3">
-              Core Trading Tools
-            </p>
-
-            <button
-              onClick={() => handleTabClick("backtest")}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors sidebar-text ${
-                activeTab === "backtest"
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-accent hover:bg-opacity-50"
-              }`}
-            >
-              Backtest
-            </button>
-
-            <button
-              onClick={handleTradingMasterAccess}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors sidebar-text ${
-                activeTab === "trading-master"
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-accent hover:bg-opacity-50"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <Activity className="h-4 w-4" />
-                Trading Master
-              </div>
-            </button>
-          </div>
-
-          <div className="space-y-1 pt-4">
-            <p className="text-xs font-medium sidebar-muted uppercase tracking-wide mb-3">
-              Analysis & Monitoring
-            </p>
-
-            <button
-              onClick={() => checkAuthAndNavigate("journal")}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors sidebar-text ${
-                activeTab === "journal"
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-accent hover:bg-opacity-50"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                Journal
-              </div>
-            </button>
-          </div>
-
-          <div className="space-y-1 pt-4">
-            <p className="text-xs font-medium sidebar-muted uppercase tracking-wide mb-3">
-              Tools & Support
-            </p>
-
-            <button
-              onClick={() => handleTabClick("trading-home")}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors sidebar-text ${
-                activeTab === "trading-home"
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-accent hover:bg-opacity-50"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <HomeIcon className="h-4 w-4" />
-                Trading Home
-              </div>
-            </button>
-
-            <button
-              onClick={() => checkAuthAndNavigate("voice")}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors sidebar-text ${
-                activeTab === "voice"
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-accent hover:bg-opacity-50"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" />
-                Social Feed
-              </div>
-            </button>
-          </div>
-        </nav>
-
-        {/* Status Section */}
-        <div className="p-4 border-t border-gray-700 space-y-3">
-          {/* Theme Toggle */}
-          <div className="flex items-center justify-between">
-            <span className="text-xs sidebar-muted">Theme</span>
-            <button
-              onClick={toggleTheme}
-              className="flex items-center gap-2 px-2 py-1 rounded-md bg-accent hover:bg-accent/80 transition-colors text-xs sidebar-text border border-border"
-              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            >
-              {theme === "dark" ? (
-                <>
-                  <Sun className="h-3 w-3" />
-                  Light
-                </>
-              ) : (
-                <>
-                  <Moon className="h-3 w-3" />
-                  Dark
-                </>
-              )}
-            </button>
-          </div>
-
-          <div className="text-xs sidebar-muted text-center">
-            Trading Platform v1.0
-          </div>
-        </div>
-      </div>
 
       {/* Main Content Area - Full Width */}
       <div className="flex flex-col chatgpt-main-content min-h-screen md:min-h-screen min-h-[100dvh] overscroll-none">
@@ -13284,7 +13387,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               {currentUser.displayName || "User"}
                             </p>
                             <p className="text-blue-200 text-sm">
-                              @{currentUser.username || "username"}
+                              {currentUser.username && !currentUser.username.includes("@") ? `@${currentUser.username}` : ""}
                             </p>
                           </div>
                         </div>
@@ -13292,75 +13395,163 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* Navigation Menu Items - Left aligned */}
                         <div className="space-y-3 flex flex-col">
                           <button
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
+                            onClick={() => { if (isEditingUsername || isEditingDisplayName || isEditingDob || isEditingLocation) { setIsEditingUsername(false); setIsEditingDisplayName(false); setIsEditingDob(false); setIsEditingLocation(false); } else { setIsProfileActive(!isProfileActive); } }}
+                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-between"
                             data-testid="nav-profile"
                           >
-                            profile
+                            <span>profile</span>
+                            {isEditingUsername || isEditingDisplayName || isEditingDob || isEditingLocation ? ( <X className="h-4 w-4" /> ) : ( <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isProfileActive ? "rotate-180" : ""}`} /> )}
                           </button>
-                          <button
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
-                            data-testid="nav-saved"
-                          >
-                            saved
-                          </button>
-                          {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
-                            <button
-                              onClick={() => {
-                                setTabWithAuthCheck("dashboard");
-                                setIsNavOpen(false);
-                              }}
-                              className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                              data-testid="nav-dashboard"
-                            >
-                              <BarChart3 className="h-4 w-4" />
-                              <span>dashboard</span>
-                            </button>
+                          
+                          {isProfileActive && (
+                            <div className="px-4 py-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                              <div className="flex flex-col group relative">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
+                                {isEditingUsername ? (
+                                  <div className="relative flex items-center gap-2">
+                                    <div className="relative max-w-[240px]">
+                                      <Input value={newUsername} onChange={(e) => setNewUsername(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" autoFocus />
+                                      <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ username: newUsername }); setIsEditingUsername(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
+                                        <CheckCircle className="h-4 w-4 text-green-400" />
+                                      </button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 group">
+                                    <span className="text-white font-medium">{currentUser?.username || "Not available"}</span>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setNewUsername(currentUser?.username || "");
+                                        setIsEditingUsername(true);
+                                      }}
+                                      className="p-1 hover:bg-white/10 rounded-md transition-all"
+                                    >
+                                      <Pencil className="h-3 w-3 text-blue-400 opacity-0 group-hover:opacity-100" />
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex flex-col group relative">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
+                                {isEditingDisplayName ? (
+                                  <div className="relative flex items-center gap-2">
+                                    <div className="relative max-w-[240px]">
+                                      <Input value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" autoFocus />
+                                      <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
+                                        <CheckCircle className="h-4 w-4 text-green-400" />
+                                      </button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 group">
+                                    <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">email id</span>
+                                <span className="text-white font-medium">{currentUser?.email || "empty"}</span>
+                              </div>
+                              <div className="flex flex-col group relative">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">dob</span>
+                                {isEditingDob ? (
+                                  <div className="flex items-center gap-2">
+                                    <Input type="date" value={newDob} onChange={(e) => setNewDob(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ dob: newDob }); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md transition-all"><CheckCircle className="h-4 w-4 text-green-400" /></button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 group">
+                                    <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewDob(currentUser?.dob || ""); setIsEditingDob(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex flex-col group relative">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">location</span>
+                                {isEditingLocation ? (
+                                  <div className="flex items-center gap-2">
+                                    <Input value={newLocation} onChange={(e) => setNewLocation(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ location: newLocation }); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md transition-all"><CheckCircle className="h-4 w-4 text-green-400" /></button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 group">
+                                    <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                           )}
-                          <button
-                            onClick={() => setShowSettingsPanel(true)}
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
-                            data-testid="nav-settings"
-                          >
-                            <Settings className="h-4 w-4" />
-                            <span>setting & privacy</span>
-                          </button>
-                          <button
-                            onClick={toggleTheme}
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                            data-testid="nav-dark-theme"
-                          >
-                            {theme === 'dark' ? (
-                              <>
-                                <Sun className="h-4 w-4" />
-                                <span>light mode</span>
-                              </>
-                            ) : (
-                              <>
-                                <Moon className="h-4 w-4" />
-                                <span>dark mode</span>
-                              </>
-                            )}
-                          </button>
-                          <button
-                            onClick={async () => {
-                              try {
-                                await cognitoSignOut();
-                                localStorage.clear();
-                                window.location.href = "/login";
-                              } catch (error) {
-                                console.error("Logout error:", error);
-                              }
-                            }}
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                            data-testid="nav-logout"
-                          >
-                            <LogOut className="h-4 w-4" />
-                            <span>logout</span>
-                          </button>
+                          
+                          {!isProfileActive && (
+                            <>
+                              <button
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
+                                data-testid="nav-saved"
+                              >
+                                saved
+                              </button>
+                              {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
+                                <button
+                                  onClick={() => {
+                                    setTabWithAuthCheck("dashboard");
+                                    setIsNavOpen(false);
+                                  }}
+                                  className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                  data-testid="nav-dashboard"
+                                >
+                                  <BarChart3 className="h-4 w-4" />
+                                  <span>dashboard</span>
+                                </button>
+                              )}
+                              <button
+                                onClick={() => setShowSettingsPanel(true)}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                                data-testid="nav-settings"
+                              >
+                                <Settings className="h-4 w-4" />
+                                <span>setting & privacy</span>
+                              </button>
+                              <button
+                                onClick={toggleTheme}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                data-testid="nav-dark-theme"
+                              >
+                                {theme === 'dark' ? (
+                                  <>
+                                    <Sun className="h-4 w-4" />
+                                    <span>light mode</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Moon className="h-4 w-4" />
+                                    <span>dark mode</span>
+                                  </>
+                                )}
+                              </button>
+                              <button
+                                onClick={async () => {
+                                  try {
+                                    await cognitoSignOut();
+                                    localStorage.clear();
+                                    window.location.href = "/login";
+                                  } catch (error) {
+                                    console.error("Logout error:", error);
+                                  }
+                                }}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                data-testid="nav-logout"
+                              >
+                                <LogOut className="h-4 w-4" />
+                                <span>logout</span>
+                              </button>
+                            </>
+                          )}
                         </div>
                       </>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center space-y-4">
+                    ) : (<div className="flex flex-col items-center justify-center space-y-4">
                         <button
                           onClick={() => {
                             window.location.href = "/login";
@@ -15935,6 +16126,82 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               </div>
             )}
 
+            {activeTab === "backtest" && (
+              <div className="h-full relative">
+                <Button
+                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  data-testid="button-back-to-home-backtest"
+                >
+                  <ArrowLeft className="h-6 w-6" />
+                </Button>
+                <ThreeCycleScanner />
+              </div>
+            )}
+
+            {activeTab === "chart" && (
+              <div className="h-full relative">
+                <Button
+                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  data-testid="button-back-to-home-chart"
+                >
+                  <ArrowLeft className="h-6 w-6" />
+                </Button>
+                <AdvancedCandlestickChart />
+                <IndicatorCrossingsDisplay />
+              </div>
+            )}
+
+            {activeTab === "check" && (
+              <div className="h-full relative">
+                <Button
+                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  data-testid="button-back-to-home-check"
+                >
+                  <ArrowLeft className="h-6 w-6" />
+                </Button>
+                <BattuScanSimulation />
+              </div>
+            )}
+
+            {activeTab === "4candle" && (
+              <div className="h-full relative">
+                <Button
+                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  data-testid="button-back-to-home-4candle"
+                >
+                  <ArrowLeft className="h-6 w-6" />
+                </Button>
+                <FourCandleRuleScanner />
+              </div>
+            )}
+
+            {activeTab === "scanner" && (
+              <div className="h-full relative">
+                <Button
+                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  data-testid="button-back-to-home-scanner"
+                >
+                  <ArrowLeft className="h-6 w-6" />
+                </Button>
+                <SimpleCompleteScanner />
+              </div>
+            )}
+
             {activeTab === "journal" && (
                 <div className="space-y-6 px-0.5 md:px-6 py-0.5 relative">
                 {/* Back Button - Mobile Only */}
@@ -17637,7 +17904,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <td className="p-1">{trade.symbol}</td>
                                       <td className="p-1">{trade.type}</td>
                                       <td className="p-1">{trade.qty}</td>
-                                      <td className="p-1">₹{trade.price}</td>
+                                      <td className="p-1">₹{typeof trade.price === "number" ? trade.price.toFixed(2) : trade.price}</td>
                                       <td
                                         className={`p-2 ${
                                           (trade.pnl || "").includes("+")
@@ -17891,7 +18158,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </td>
                                     <td className="px-2 py-2 text-indigo-600 dark:text-indigo-300 font-semibold">MIS</td>
                                     <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.qty}</td>
-                                    <td className="px-2 py-2 text-amber-600 dark:text-amber-300 font-medium">₹{trade.price}</td>
+                                    <td className="px-2 py-2 text-amber-600 dark:text-amber-300 font-medium">₹{typeof trade.price === "number" ? trade.price.toFixed(2) : trade.price}</td>
                                     <td
                                       className={`px-2 py-2 font-bold ${
                                         (trade.pnl || "").includes("+")
@@ -18021,11 +18288,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 variant="ghost" 
                                 size="icon" 
                                 className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
-                                onClick={() => {
-                                  localStorage.removeItem("upstox_token");
-                                  setUpstoxAccessToken(null);
-                                  setUpstoxIsConnected(false);
-                                }}
+                                onClick={handleUpstoxDisconnect}
                                 title="Disconnect Upstox"
                               >
                                 <X className="h-4 w-4" />
@@ -18048,11 +18311,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </Button>
                           )}
                           {angelOneIsConnected ? (
-                            <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 border border-green-500 rounded h-10">
-                              <div className="flex items-center">
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                className="flex-1 h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 cursor-default"
+                                data-testid="button-angelone-connected-display"
+                              >
                                 <img src="https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701" alt="Angel One" className="h-4 mr-2" />
-                                <span className="text-black dark:text-white font-medium">Angel One</span>
-                              </div>
+                                Angel One
+                              </Button>
                               <Button 
                                 variant="ghost" 
                                 size="icon" 
@@ -18084,11 +18351,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </Button>
                           )}
                           {dhanIsConnected ? (
-                            <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 border border-green-500 rounded h-10">
-                              <div className="flex items-center">
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                className="flex-1 h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 cursor-default"
+                                data-testid="button-dhan-connected-display"
+                              >
                                 <img src="https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701" alt="Dhan" className="h-4 mr-2" />
-                                <span className="text-black dark:text-white font-medium">Dhan</span>
-                              </div>
+                                Dhan
+                              </Button>
                               <Button 
                                 variant="ghost" 
                                 size="icon" 
@@ -18132,7 +18403,160 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                       <CardContent className="p-6 px-0.5 md:px-4 md:py-4 pt-[10px] pb-[10px]">
                         <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-between gap-2">
-                          <div>Trade Book</div>
+                          <div className="flex items-center gap-1">
+                            <div>Trade Book</div>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button size="icon" variant="ghost" className="h-4 w-4" data-testid="button-tradebook-help">
+                                  <Headset className="h-3 w-3" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-[700px] p-0 overflow-hidden bg-white dark:bg-slate-900 border-none rounded-xl shadow-2xl">
+                                <div className="flex flex-col md:flex-row h-full min-h-[350px]">
+                                  {/* Left Side: Card Display */}
+                                  <div className="w-full md:w-1/2 p-8 bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative overflow-hidden border-r border-slate-200 dark:border-slate-700">
+                                    <div className="absolute inset-0 opacity-10">
+                                      <div className="absolute top-[-20%] left-[-20%] w-[140%] h-[140%] rounded-full bg-gradient-to-br from-violet-500 via-transparent to-transparent"></div>
+                                    </div>
+                                    <motion.div key={selectedAudioTrack?.id || "none"} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className={`relative w-full aspect-[1.6/1] rounded-2xl shadow-2xl flex flex-col justify-between border border-white/10 overflow-hidden`}>
+                                      {selectedAudioTrack?.youtubeId && (
+                                        <div className="absolute inset-0 z-0">
+                                          <img 
+                                            src={`https://img.youtube.com/vi/${selectedAudioTrack.youtubeId}/maxresdefault.jpg`} 
+                                            className="w-full h-full object-cover"
+                                            alt=""
+                                          />
+                                        </div>
+                                      )}
+                                      <div className="flex justify-between items-start">
+                                        <div className="text-[10px] font-medium tracking-widest text-black uppercase"></div>
+                                        <div className="text-[10px] font-bold text-green-400 uppercase tracking-wider"></div>
+                                      </div>
+                                      <div className="space-y-4">
+                                        <div className="flex items-center gap-2">
+                                          <div className="text-sm font-bold text-white tracking-[0.2em]"></div>
+                                          <button onClick={() => selectedAudioTrack?.youtubeId && window.open(`https://www.youtube.com/watch?v=${selectedAudioTrack.youtubeId}`, "_blank")} className="absolute bottom-4 right-4 z-10 hover:scale-110 transition-transform active:scale-95"><Info className="w-4 h-4 text-black" /></button>
+                                        </div>
+                                        <div className="flex justify-between items-end">
+                                          <div className="text-xs font-medium text-white/80 uppercase tracking-widest"></div>
+                                          <div className="text-[10px] font-mono text-black"></div>
+                                        </div>
+                                      </div>
+                                    </motion.div>
+                                  </div>
+                                  <div className="w-full md:w-1/2 flex flex-col bg-white dark:bg-slate-900">
+                                    <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-center relative">
+                                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] opacity-50">Mini Play</div>
+                                    </div>
+                                    
+                                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                                      {/* Meditation Section */}
+                                      <div>
+                                        <h4 className="text-[10px] font-bold text-violet-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                          <span className="w-1 h-1 rounded-full bg-violet-500"></span>
+                                          Meditation
+                                        </h4>
+                                        <div className="space-y-1">
+                                          {[
+                                            { title: "Deep Relaxation Meditation", duration: "10:05", id: "m1", youtubeId: "B7nkVhC10Gw" }
+                                          ].map((track) => (
+                                            <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors">
+                                              <div className="flex items-center gap-3">
+                                                <div className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center group-hover:bg-violet-500 transition-colors">
+                                                  <Play className="w-3 h-3 text-violet-500 group-hover:text-white" />
+                                                </div>
+                                                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{track.title}</span>
+                                              </div>
+                                              <span className="text-[10px] font-mono text-slate-400">{track.duration}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+
+                                      {/* Psychology Section */}
+                                      <div>
+                                        <h4 className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                          <span className="w-1 h-1 rounded-full bg-blue-500"></span>
+                                          Psychology
+                                        </h4>
+                                        <div className="space-y-1">
+                                          {[
+                                            { title: 'Bruce Lee: "Your Greatest Enemy Is Within"', duration: "22:30", id: "p1", youtubeId: "KnppzfiZcgM" }
+                                          ].map((track) => (
+                                            <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors">
+                                              <div className="flex items-center gap-3">
+                                                <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
+                                                  <Play className="w-3 h-3 text-blue-500 group-hover:text-white" />
+                                                </div>
+                                                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{track.title}</span>
+                                              </div>
+                                              <span className="text-[10px] font-mono text-slate-400">{track.duration}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                                                        {/* Footer / Now Playing Stub */}
+                                    <div className="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                                      <div className="flex items-center justify-between gap-3">
+                                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                                          <div className={`w-8 h-8 rounded bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg ${selectedAudioTrack ? "animate-none" : "animate-pulse"}`}>
+                                            <Music2 className="w-4 h-4 text-white" />
+                                          </div>
+                                          <div className="flex-1 min-w-0">
+                                            <div className="text-[10px] font-bold text-slate-900 dark:text-slate-100 truncate">
+                                              {selectedAudioTrack ? selectedAudioTrack.title : "Select a session"}
+                                            </div>
+                                            <div className="text-[9px] text-slate-500 uppercase tracking-tighter">
+                                              {selectedAudioTrack ? `Playing • ${selectedAudioTrack.duration}` : "Ready to play"}
+                                            <div id="youtube-audio-player" className="hidden"></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        
+                                        {/* Audio Controls */}
+                                        <div className="flex items-center gap-1">
+                                          <Button size="icon" variant="ghost" className="h-6 w-6 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
+                                            <SkipBack className="h-3 w-3" />
+                                          </Button>
+                                          <Button 
+                                            size="icon" 
+                                            variant="ghost" 
+                                            className="h-8 w-8 text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
+                                            onClick={() => setIsAudioPlaying(!isAudioPlaying)}
+                                          >
+                                            {isAudioPlaying ? <Pause className="h-4 w-4 fill-current" /> : <Play className="h-4 w-4 fill-current" />}
+                                          </Button>
+                                          <Button size="icon" variant="ghost" className="h-6 w-6 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
+                                            <SkipForward className="h-3 w-3" />
+                                          </Button>
+                                        </div>
+                                      </div>
+                                      
+                                      {/* Audio Progress Slider */}
+                                      <div className="px-1">
+                                        <div className="relative w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden cursor-pointer" onClick={(e) => { if (selectedAudioTrack && youtubePlayerRef.current && duration > 0) { const rect = e.currentTarget.getBoundingClientRect(); const x = e.clientX - rect.left; const clickedProgress = x / rect.width; const newTime = clickedProgress * duration; youtubePlayerRef.current.seekTo(newTime, true); setCurrentTime(newTime); setAudioProgress(clickedProgress * 100); } } }>
+                                          <div 
+                                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-violet-500 to-purple-600 transition-all duration-300"
+                                            style={{ width: `${selectedAudioTrack ? audioProgress : 0}%` }}
+                                          ></div>
+                                        </div>
+                                        <div className="flex justify-between mt-1">
+                                          <span className="text-[8px] font-mono text-slate-400">
+                                            {selectedAudioTrack ? new Date(currentTime * 1000).toISOString().substr(14, 5) : "0:00"}
+                                          </span>
+                                          <span className="text-[8px] font-mono text-slate-400">
+                                            {selectedAudioTrack ? (duration > 0 ? new Date(duration * 1000).toISOString().substr(14, 5) : selectedAudioTrack.duration) : "0:00"}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
                           <div className="flex items-center gap-1">
                             <span className="text-[10px] text-gray-600 dark:text-gray-400">
                               {isDemoMode ? "Preview" : "Personal"}
@@ -18144,11 +18568,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 setHasManuallyToggledMode(true);
                                 localStorage.setItem("hasManuallyToggledMode", "true");
                                 setIsDemoMode(checked);
-                                localStorage.setItem("tradingJournalDemoMode", String(checked));
-                                setSelectedDate(null);
-                                setNotesContent("");
-                                setTempNotesContent("");
-                                setSelectedTags([]);
                                 setSelectedDailyFactors([]);
                                 setSelectedIndicators([]);
                                 setTradeHistoryData([]);
@@ -18176,7 +18595,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </Button>
                           </div>
                         </div>
-
                         {/* ✅ NEW CLEAN HEATMAP IMPLEMENTATION - Separate components for Demo & Personal */}
                         <div className="relative">
                          <div ref={heatmapContainerRef} className="pt-0.5">
@@ -18602,7 +19020,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           onClick={() => setActiveTagHighlight(activeTagHighlight?.tag === tag ? null : { tag, dates: tagDates[tag] || [] })}
                                           data-testid={`stat-toptag-${tag}`}
                                         >
-                                          {tag} <span className="text-white/60">({count})</span>
+                                          {tag} <span className="text-black">({count})</span>
                                         </button>
                                       ))}
                                     </div>
