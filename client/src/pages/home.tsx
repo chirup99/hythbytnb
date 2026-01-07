@@ -13495,10 +13495,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
                                         <CheckCircle className="h-4 w-4 text-green-400" />
                                       </button>
-                                    </div>
-                                    <button onClick={(e) => { e.stopPropagation(); setIsEditingDisplayName(false); }} className="p-1 hover:bg-white/10 rounded-md">
-                                      <X className="h-3 w-3 text-red-400" />
-                                    </button>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
