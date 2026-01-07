@@ -1288,5 +1288,56 @@ export function registerNeoFeedAwsRoutes(app: any) {
     }
   });
 
+  app.get('/api/user/profile', async (req: any, res: any) => {
+    try {
+      const user = await getAuthenticatedUser(req);
+      if (!user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      const profile = await getUserProfile(user.userId);
+      if (profile) {
+        res.json({ success: true, profile });
+      } else {
+        res.json({ 
+          success: true, 
+          profile: { 
+            username: user.username, 
+            displayName: user.displayName, 
+            email: user.userId,
+            bio: '',
+            location: '',
+            dob: ''
+          } 
+        });
+      }
+    } catch (error: any) {
+      console.error('❌ Error fetching user profile:', error);
+      res.status(500).json({ error: 'Failed to fetch profile' });
+    }
+  });
+
+  app.patch('/api/user/profile', async (req: any, res: any) => {
+    try {
+      const user = await getAuthenticatedUser(req);
+      if (!user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      const { displayName, bio, location, dob } = req.body;
+      const updates: any = {};
+      if (displayName !== undefined) updates.displayName = displayName;
+      if (bio !== undefined) updates.bio = bio;
+      if (location !== undefined) updates.location = location;
+      if (dob !== undefined) updates.dob = dob;
+
+      const profile = await createOrUpdateUserProfile(user.userId, updates);
+      res.json({ success: true, profile });
+    } catch (error: any) {
+      console.error('❌ Error updating user profile:', error);
+      res.status(500).json({ error: 'Failed to update profile' });
+    }
+  });
+
   console.log('✅ NeoFeed AWS DynamoDB routes registered successfully');
 }

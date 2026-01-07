@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from './ui/dialog';
-import { User, Edit, LogOut, Settings, Users, UserPlus, Loader2, CheckCircle } from 'lucide-react';
+import { User, Edit, LogOut, Settings, Users, UserPlus, Loader2, CheckCircle, MapPin } from 'lucide-react';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useToast } from '@/hooks/use-toast';
 import { getCognitoToken, cognitoSignOut } from '@/cognito';
@@ -46,6 +46,7 @@ export function UserProfileDropdown() {
   const [editedBio, setEditedBio] = useState('');
   const [editedDisplayName, setEditedDisplayName] = useState('');
   const [editedLocation, setEditedLocation] = useState('');
+  const [editedDob, setEditedDob] = useState('');
 
   const { data: profile } = useQuery<UserProfile | null>({
     queryKey: ['user-profile-dropdown', currentUser.email],
@@ -91,6 +92,7 @@ export function UserProfileDropdown() {
       setEditedBio(profile.bio || '');
       setEditedDisplayName(profile.displayName || '');
       setEditedLocation(profile.location || '');
+      setEditedDob(profile.dob || '');
     }
   }, [profile]);
 
@@ -117,7 +119,8 @@ export function UserProfileDropdown() {
         body: JSON.stringify({
           displayName: editedDisplayName.trim(),
           bio: editedBio.trim(),
-          location: editedLocation.trim()
+          location: editedLocation.trim(),
+          dob: editedDob
         })
       });
 
@@ -130,7 +133,8 @@ export function UserProfileDropdown() {
         ...prev,
         displayName: editedDisplayName.trim(),
         bio: editedBio.trim(),
-        location: editedLocation.trim()
+        location: editedLocation.trim(),
+        dob: editedDob
       } : null);
 
       setIsEditing(false);
@@ -317,21 +321,20 @@ export function UserProfileDropdown() {
 
             <div className="space-y-2">
               <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Location
+                Date of Birth
               </Label>
               {isEditing ? (
                 <Input
-                  value={editedLocation}
-                  onChange={(e) => setEditedLocation(e.target.value)}
+                  type="date"
+                  value={editedDob}
+                  onChange={(e) => setEditedDob(e.target.value)}
                   className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
-                  placeholder="Where are you based?"
-                  data-testid="input-location"
+                  data-testid="input-dob"
                 />
               ) : (
-                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                  <MapPin className="h-4 w-4" />
-                  <span>{profile?.location || 'Not set'}</span>
-                </div>
+                <p className="text-gray-900 dark:text-white font-medium">
+                  {profile?.dob || 'Not set'}
+                </p>
               )}
             </div>
 
