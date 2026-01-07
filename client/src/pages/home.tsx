@@ -1926,8 +1926,8 @@ export default function Home() {
         },
         body: JSON.stringify(updates),
       });
+      if (response.ok) {
         toast({ description: "Profile updated successfully" });
-        // Trigger a refresh if possible, or just let the next query fetch it
         window.location.reload();
       } else {
         throw new Error("Failed to update profile");
