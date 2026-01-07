@@ -13395,12 +13395,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* Navigation Menu Items - Left aligned */}
                         <div className="space-y-3 flex flex-col">
                           <button
-                            onClick={() => { if (isEditingUsername) { setIsEditingUsername(false); } else { setIsProfileActive(!isProfileActive); } }}
+                            onClick={() => { if (isEditingUsername || isEditingDisplayName || isEditingDob || isEditingLocation) { setIsEditingUsername(false); setIsEditingDisplayName(false); setIsEditingDob(false); setIsEditingLocation(false); } else { setIsProfileActive(!isProfileActive); } }}
                             className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-between"
                             data-testid="nav-profile"
                           >
                             <span>profile</span>
-                            {isEditingUsername ? ( <X className="h-4 w-4" /> ) : ( <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isProfileActive ? "rotate-180" : ""}`} /> )}
+                            {isEditingUsername || isEditingDisplayName || isEditingDob || isEditingLocation ? ( <X className="h-4 w-4" /> ) : ( <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isProfileActive ? "rotate-180" : ""}`} /> )}
                           </button>
                           
                           {isProfileActive && (
