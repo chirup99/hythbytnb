@@ -13409,18 +13409,82 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
                                 {isEditingUsername ? (
                                   <div className="relative flex items-center gap-2">
-                                    <Input value={newUsername} onChange={(e) => setNewUsername(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
-                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ username: newUsername }); setIsEditingUsername(false); }} className="p-1 hover:bg-white/10 rounded-md"><Check className="h-3 w-3 text-green-400" /></button>
-                                    <button onClick={(e) => { e.stopPropagation(); setIsEditingUsername(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
+                                    <Input
+                                      value={newUsername}
+                                      onChange={async (e) => {
+                                        const val = e.target.value;
+                                        setNewUsername(val);
+                                        if (val.length >= 3) {
+                                          setIsCheckingUsername(true);
+                                          try {
+                                            const res = await fetch(`/api/users/check-username/${val.toLowerCase()}`);
+                                            const data = await res.json();
+                                            setIsUsernameAvailable(data.available);
+                                          } catch (err) {
+                                            console.error("Error checking username:", err);
+                                          } finally {
+                                            setIsCheckingUsername(false);
+                                          }
+                                        } else {
+                                          setIsUsernameAvailable(null);
+                                        }
+                                      }}
+                                      className="h-8 bg-gray-800 border-gray-700 text-white text-sm pr-10"
+                                      autoFocus
+                                    />
+                                    <button
+                                      className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all z-10"
+                                      onClick={async () => {
+                                        if (isUsernameAvailable === true) {
+                                          try {
+                                            const token = await getCognitoToken();
+                                            const response = await fetch("/api/user/profile", {
+                                              method: "PATCH",
+                                              headers: {
+                                                "Content-Type": "application/json",
+                                                "Authorization": `Bearer ${token}`
+                                              },
+                                              body: JSON.stringify({ username: newUsername.toLowerCase() }),
+                                            });
+                                            if (response.ok) {
+                                              setIsEditingUsername(false);
+                                              window.location.reload();
+                                            }
+                                          } catch (err) {
+                                            console.error("Error saving username:", err);
+                                          }
+                                        } else {
+                                          setIsEditingUsername(false);
+                                        }
+                                      }}
+                                    >
+                                      {isCheckingUsername ? (
+                                        <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                      ) : (
+                                        <Check className="h-3 w-3 text-green-400" />
+                                      )}
+                                    </button>
+                                    {isUsernameAvailable !== null && !isCheckingUsername && (
+                                      <span className={`absolute -bottom-4 right-0 text-[10px] font-medium ${isUsernameAvailable ? "text-green-400" : "text-red-400"}`}>
+                                        {isUsernameAvailable ? "available" : "taken"}
+                                      </span>
+                                    )}
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
-                                    <span className="text-white font-medium">{currentUser?.username ? `@${currentUser.username}` : ""}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewUsername(currentUser?.username || ""); setIsEditingUsername(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <span className="text-white font-medium">{currentUser?.username && !currentUser.username.includes("@") ? `@${currentUser.username}` : ""}</span>
+                                    <button
+                                      onClick={() => {
+                                        setNewUsername(currentUser?.username || "");
+                                        setIsEditingUsername(true);
+                                      }}
+                                      className="p-1 hover:bg-white/10 rounded-md transition-all"
+                                    >
+                                      <Pencil className="h-3 w-3 text-blue-400 opacity-0 group-hover:opacity-100" />
+                                    </button>
                                   </div>
                                 )}
-                              </div>
-                              <div className="flex flex-col group relative">
+                              </div><div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
                                 {isEditingDisplayName ? (
                                   <div className="flex items-center gap-2">
