@@ -13495,10 +13495,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
                                         <CheckCircle className="h-4 w-4 text-green-400" />
                                       </button>
+                                    </div>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
-                                    </div>
                                     <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
                                     <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
@@ -13537,13 +13537,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
-                              </div>
-                            </div>
-                          )}
-                          
-                          {!isProfileActive && (
-                            <>
-                              <button
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
                                 data-testid="nav-saved"
                               >
