@@ -13463,7 +13463,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       ) : isUsernameAvailable === false ? (
                                         <X className="h-3 w-3 text-red-400" />
                                       ) : (
-                                        <Check className="h-3 w-3 text-green-400" />
+                                        <CheckCircle className="h-4 w-4 text-green-400" />
                                       )}
                                     </button>
                                     {isUsernameAvailable !== null && !isCheckingUsername && (
