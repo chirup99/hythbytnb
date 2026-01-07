@@ -13405,78 +13405,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           
                           {isProfileActive && (
                             <div className="px-4 py-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
-                              <div className="flex flex-col">
+                              <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
                                 {isEditingUsername ? (
-                                  <div className="relative flex items-center gap-2 max-w-[240px]">
-                                    <Input
-                                      value={newUsername}
-                                      onChange={async (e) => {
-                                        const val = e.target.value;
-                                        setNewUsername(val);
-                                        if (val.length >= 3) {
-                                          setIsCheckingUsername(true);
-                                          try {
-                                            const res = await fetch(`/api/users/check-username/${val.toLowerCase()}`);
-                                            const data = await res.json();
-                                            setIsUsernameAvailable(data.available);
-                                          } catch (err) {
-                                            console.error("Error checking username:", err);
-                                          } finally {
-                                            setIsCheckingUsername(false);
-                                          }
-                                        } else {
-                                          setIsUsernameAvailable(null);
-                                        }
-                                      }}
-                                      className="h-8 bg-gray-800 border-gray-700 text-white text-sm pr-10 w-full"
-                                      autoFocus
-                                    />
-                                    <button
-                                      className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all z-10"
-                                      onClick={async () => {
-                                        if (isUsernameAvailable === true) {
-                                          try {
-                                            const token = await getCognitoToken();
-                                            const response = await fetch("/api/user/profile", {
-                                              method: "PATCH",
-                                              headers: {
-                                                "Content-Type": "application/json",
-                                                "Authorization": `Bearer ${token}`
-                                              },
-                                              body: JSON.stringify({ username: newUsername.toLowerCase() }),
-                                            });
-                                            if (response.ok) {
-                                              setIsEditingUsername(false);
-                                              window.location.reload();
-                                            }
-                                          } catch (err) {
-                                            console.error("Error saving username:", err);
-                                          }
-                                        } else {
-                                          setIsEditingUsername(false);
-                                        }
-                                      }}
-                                    >
-                                      {isCheckingUsername ? (
-                                        <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                      ) : isUsernameAvailable === false ? (
-                                        <X className="h-3 w-3 text-red-400" />
-                                      ) : (
-                                        <CheckCircle className="h-4 w-4 text-green-400" />
-                                      )}
-                                    </button>
-                                    {isUsernameAvailable !== null && !isCheckingUsername && (
-                                      <span className={`absolute -bottom-4 right-0 text-[10px] font-medium ${isUsernameAvailable ? "text-green-400" : "text-red-400"}`}>
-                                        {isUsernameAvailable ? "available" : "taken"}
-                                      </span>
-                                    )}
+                                  <div className="flex items-center gap-2">
+                                    <Input value={newUsername} onChange={(e) => setNewUsername(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ username: newUsername }); setIsEditingUsername(false); }} className="p-1 hover:bg-white/10 rounded-md transition-all"><CheckCircle className="h-4 w-4 text-green-400" /></button>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
-                                    <span className="text-white font-medium">{currentUser?.username && !currentUser.username.includes("@") ? `@${currentUser.username}` : ""}</span>
+                                    <span className="text-white font-medium">{currentUser?.username || "Not available"}</span>
                                     <button
-                                      onClick={() => {
+                                      onClick={(e) => {
+                                        e.stopPropagation();
                                         setNewUsername(currentUser?.username || "");
                                         setIsEditingUsername(true);
                                       }}
@@ -13486,7 +13427,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </button>
                                   </div>
                                 )}
-                              </div><div className="flex flex-col group relative">
+                              </div>
+                              <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
                                 {isEditingDisplayName ? (
                                   <div className="relative flex items-center gap-2">
@@ -13513,8 +13455,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 {isEditingDob ? (
                                   <div className="flex items-center gap-2">
                                     <Input type="date" value={newDob} onChange={(e) => setNewDob(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
-                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ dob: newDob }); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md"><CheckCircle className="h-4 w-4 text-green-400" /></button>
-                                    <button onClick={(e) => { e.stopPropagation(); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ dob: newDob }); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md transition-all"><CheckCircle className="h-4 w-4 text-green-400" /></button>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
@@ -13528,8 +13469,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 {isEditingLocation ? (
                                   <div className="flex items-center gap-2">
                                     <Input value={newLocation} onChange={(e) => setNewLocation(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
-                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ location: newLocation }); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md"><CheckCircle className="h-4 w-4 text-green-400" /></button>
-                                    <button onClick={(e) => { e.stopPropagation(); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ location: newLocation }); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md transition-all"><CheckCircle className="h-4 w-4 text-green-400" /></button>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
@@ -13607,8 +13547,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           )}
                         </div>
                       </>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center space-y-4">
+                    ) : (<div className="flex flex-col items-center justify-center space-y-4">
                         <button
                           onClick={() => {
                             window.location.href = "/login";
