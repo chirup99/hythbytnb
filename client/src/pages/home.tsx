@@ -13457,9 +13457,34 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">dob</span>
                                 {isEditingDob ? (
-                                  <div className="flex items-center gap-2">
-                                    <Input type="date" value={newDob} onChange={(e) => setNewDob(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
-                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ dob: newDob }); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md transition-all"><CheckCircle className="h-4 w-4 text-green-400" /></button>
+                                  <div className="relative flex items-center group">
+                                    <Input
+                                      type="date"
+                                      value={newDob}
+                                      onChange={(e) => setNewDob(e.target.value)}
+                                      className="h-9 bg-gray-800 border-gray-700 text-white pr-10 focus:ring-1 focus:ring-blue-500"
+                                      autoFocus
+                                      onKeyDown={async (e) => {
+                                        if (e.key === "Enter") {
+                                          e.stopPropagation();
+                                          await handleUpdateProfile({ dob: newDob });
+                                          setIsEditingDob(false);
+                                        } else if (e.key === "Escape") {
+                                          setIsEditingDob(false);
+                                        }
+                                      }}
+                                    />
+                                    <button
+                                      onClick={async (e) => {
+                                        e.stopPropagation();
+                                        await handleUpdateProfile({ dob: newDob });
+                                        setIsEditingDob(false);
+                                      }}
+                                      className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all"
+                                      data-testid="button-save-dob"
+                                    >
+                                      <CheckCircle className="h-4 w-4 text-green-400" />
+                                    </button>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
