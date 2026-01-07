@@ -46,7 +46,6 @@ export function UserProfileDropdown() {
   const [editedBio, setEditedBio] = useState('');
   const [editedDisplayName, setEditedDisplayName] = useState('');
   const [editedLocation, setEditedLocation] = useState('');
-  const [editedDob, setEditedDob] = useState('');
 
   const { data: profile } = useQuery<UserProfile | null>({
     queryKey: ['user-profile-dropdown', currentUser.email],
@@ -73,13 +72,18 @@ export function UserProfileDropdown() {
             location: data.profile.location || '',
             followers: data.profile.followers || 0,
             following: data.profile.following || 0,
-            dob: data.profile.dob || ''
+            dob: data.profile.dob
           };
         }
       }
       return null;
     },
     enabled: !!currentUser.email,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   useEffect(() => {
@@ -87,7 +91,6 @@ export function UserProfileDropdown() {
       setEditedBio(profile.bio || '');
       setEditedDisplayName(profile.displayName || '');
       setEditedLocation(profile.location || '');
-      setEditedDob(profile.dob || '');
     }
   }, [profile]);
 
@@ -106,7 +109,7 @@ export function UserProfileDropdown() {
       if (!idToken) throw new Error('Not authenticated');
 
       const response = await fetch('/api/user/profile', {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${idToken}`
@@ -114,8 +117,7 @@ export function UserProfileDropdown() {
         body: JSON.stringify({
           displayName: editedDisplayName.trim(),
           bio: editedBio.trim(),
-          location: editedLocation.trim(),
-          dob: editedDob
+          location: editedLocation.trim()
         })
       });
 
@@ -128,8 +130,7 @@ export function UserProfileDropdown() {
         ...prev,
         displayName: editedDisplayName.trim(),
         bio: editedBio.trim(),
-        location: editedLocation.trim(),
-        dob: editedDob
+        location: editedLocation.trim()
       } : null);
 
       setIsEditing(false);
@@ -274,7 +275,6 @@ export function UserProfileDropdown() {
           setEditedBio(profile?.bio || '');
           setEditedDisplayName(profile?.displayName || '');
           setEditedLocation(profile?.location || '');
-          setEditedDob(profile?.dob || '');
         }
       }}>
         <DialogContent className="sm:max-w-lg bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
@@ -317,20 +317,20 @@ export function UserProfileDropdown() {
 
             <div className="space-y-2">
               <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Date of Birth
+                Location
               </Label>
               {isEditing ? (
                 <Input
-                  type="date"
-                  value={editedDob}
-                  onChange={(e) => setEditedDob(e.target.value)}
+                  value={editedLocation}
+                  onChange={(e) => setEditedLocation(e.target.value)}
                   className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
-                  data-testid="input-dob"
+                  placeholder="Where are you based?"
+                  data-testid="input-location"
                 />
               ) : (
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                  <Calendar className="h-4 w-4" />
-                  <span>{profile?.dob || 'Not set'}</span>
+                  <MapPin className="h-4 w-4" />
+                  <span>{profile?.location || 'Not set'}</span>
                 </div>
               )}
             </div>
@@ -413,7 +413,6 @@ export function UserProfileDropdown() {
                     setEditedBio(profile?.bio || '');
                     setEditedDisplayName(profile?.displayName || '');
                     setEditedLocation(profile?.location || '');
-                    setEditedDob(profile?.dob || '');
                   }}
                   className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
                 >
