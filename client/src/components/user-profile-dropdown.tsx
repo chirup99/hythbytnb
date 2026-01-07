@@ -30,6 +30,7 @@ interface UserProfile {
   displayName: string;
   email: string;
   bio?: string;
+  location?: string;
   followers?: number;
   following?: number;
   dob?: string;
@@ -44,6 +45,7 @@ export function UserProfileDropdown() {
   const [isSaving, setIsSaving] = useState(false);
   const [editedBio, setEditedBio] = useState('');
   const [editedDisplayName, setEditedDisplayName] = useState('');
+  const [editedLocation, setEditedLocation] = useState('');
 
   const { data: profile } = useQuery<UserProfile | null>({
     queryKey: ['user-profile-dropdown', currentUser.email],
@@ -67,6 +69,7 @@ export function UserProfileDropdown() {
             displayName: data.profile.displayName || currentUser.email?.split('@')[0] || 'User',
             email: data.profile.email || currentUser.email || '',
             bio: data.profile.bio || '',
+            location: data.profile.location || '',
             followers: data.profile.followers || 0,
             following: data.profile.following || 0,
             dob: data.profile.dob
@@ -87,6 +90,7 @@ export function UserProfileDropdown() {
     if (profile) {
       setEditedBio(profile.bio || '');
       setEditedDisplayName(profile.displayName || '');
+      setEditedLocation(profile.location || '');
     }
   }, [profile]);
 
@@ -112,7 +116,8 @@ export function UserProfileDropdown() {
         },
         body: JSON.stringify({
           displayName: editedDisplayName.trim(),
-          bio: editedBio.trim()
+          bio: editedBio.trim(),
+          location: editedLocation.trim()
         })
       });
 
@@ -124,7 +129,8 @@ export function UserProfileDropdown() {
       queryClient.setQueryData(['user-profile-dropdown', currentUser.email], (prev: UserProfile | null) => prev ? {
         ...prev,
         displayName: editedDisplayName.trim(),
-        bio: editedBio.trim()
+        bio: editedBio.trim(),
+        location: editedLocation.trim()
       } : null);
 
       setIsEditing(false);
@@ -268,6 +274,7 @@ export function UserProfileDropdown() {
           setIsEditing(false);
           setEditedBio(profile?.bio || '');
           setEditedDisplayName(profile?.displayName || '');
+          setEditedLocation(profile?.location || '');
         }
       }}>
         <DialogContent className="sm:max-w-lg bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
@@ -305,6 +312,46 @@ export function UserProfileDropdown() {
                 <p className="text-gray-900 dark:text-white font-medium">
                   {profile?.displayName || 'Not set'}
                 </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Location
+              </Label>
+              {isEditing ? (
+                <Input
+                  value={editedLocation}
+                  onChange={(e) => setEditedLocation(e.target.value)}
+                  className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                  placeholder="Where are you based?"
+                  data-testid="input-location"
+                />
+              ) : (
+                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                  <MapPin className="h-4 w-4" />
+                  <span>{profile?.location || 'Not set'}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Location
+              </Label>
+              {isEditing ? (
+                <Input
+                  value={editedLocation}
+                  onChange={(e) => setEditedLocation(e.target.value)}
+                  className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                  placeholder="Where are you based?"
+                  data-testid="input-location"
+                />
+              ) : (
+                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                  <MapPin className="h-4 w-4" />
+                  <span>{profile?.location || 'Not set'}</span>
+                </div>
               )}
             </div>
 
@@ -365,6 +412,7 @@ export function UserProfileDropdown() {
                     setIsEditing(false);
                     setEditedBio(profile?.bio || '');
                     setEditedDisplayName(profile?.displayName || '');
+                    setEditedLocation(profile?.location || '');
                   }}
                   className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
                 >
