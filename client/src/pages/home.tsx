@@ -1902,12 +1902,39 @@ export default function Home() {
   // Shared timeframe state for chart and crossings display
   const [chartTimeframe, setChartTimeframe] = useState<string>("1");
   const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [isEditingDisplayName, setIsEditingDisplayName] = useState(false);
+  const [newDisplayName, setNewDisplayName] = useState("");
+  const [isEditingDob, setIsEditingDob] = useState(false);
+  const [newDob, setNewDob] = useState("");
+  const [isEditingLocation, setIsEditingLocation] = useState(false);
+  const [newLocation, setNewLocation] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [isUsernameAvailable, setIsUsernameAvailable] = useState<boolean | null>(null);
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
+
+  const handleUpdateProfile = async (updates: any) => {
+    try {
+      const response = await fetch("/api/user/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      if (response.ok) {
+        toast({ description: "Profile updated successfully" });
+        // Trigger a refresh if possible, or just let the next query fetch it
+        window.location.reload();
+      } else {
+        throw new Error("Failed to update profile");
+      }
+    } catch (error) {
+      console.error("Profile update error:", error);
+      toast({ description: "Error updating profile", variant: "destructive" });
+    }
+  };
+
   // Mobile bottom navigation state (home, insight, ranking, paper-trade)
   const [mobileBottomTab, setMobileBottomTab] = useState<
     "home" | "insight" | "ranking" | "paper-trade"
@@ -13377,137 +13404,70 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </button>
                           
                           {isProfileActive && (
-                            <div className="px-4 py-2 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                                                            <div className="flex flex-col">
+                            <div className="px-4 py-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                              <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
                                 {isEditingUsername ? (
                                   <div className="relative flex items-center gap-2">
-                                    <Input
-                                      value={newUsername}
-                                      onChange={async (e) => {
-                                        const val = e.target.value;
-                                        setNewUsername(val);
-                                        if (val.length >= 3) {
-                                          setIsCheckingUsername(true);
-                                          try {
-                                            const res = await fetch(`/api/users/check-username/${val.toLowerCase()}`);
-                                            const data = await res.json();
-                                            setIsUsernameAvailable(data.available);
-                                          } catch (err) {
-                                            console.error("Error checking username:", err);
-                                          } finally {
-                                            setIsCheckingUsername(false);
-                                          }
-                                        } else {
-                                          setIsUsernameAvailable(null);
-                                        }
-                                      }}
-                                      className="h-8 bg-gray-800 border-gray-700 text-white text-sm pr-10"
-                                      autoFocus
-                                    />
-                                    <button
-                                      className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all z-10"
-                                      onClick={async () => {
-                                        if (isUsernameAvailable === true) {
-                                          try {
-                                            const token = await getCognitoToken();
-                                            const response = await fetch("/api/user/profile", {
-                                              method: "PATCH",
-                                              headers: {
-                                                "Content-Type": "application/json",
-                                                "Authorization": `Bearer ${token}`
-                                              },
-                                              body: JSON.stringify({ username: newUsername.toLowerCase() }),
-                                            });
-                                            if (response.ok) {
-                                              setIsEditingUsername(false);
-                                              window.location.reload();
-                                            }
-                                          } catch (err) {
-                                            console.error("Error saving username:", err);
-                                          }
-                                        } else {
-                                          setIsEditingUsername(false);
-                                        }
-                                      }}
-                                    >
-                                      {isCheckingUsername ? (
-                                        <div className="h-4 w-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                                      ) : isUsernameAvailable === true ? (
-                                        <CheckCircle className="h-4 w-4 text-green-400" />
-                                      ) : isUsernameAvailable === false ? (
-                                        <X className="h-4 w-4 text-red-500" />
-                                      ) : null}
-                                    </button>
-                                    {isUsernameAvailable !== null && !isCheckingUsername && (
-                                      <span className={`absolute -bottom-4 right-0 text-[10px] font-medium ${isUsernameAvailable ? "text-green-400" : "text-red-400"}`}>
-                                        {isUsernameAvailable ? "available" : "taken"}
-                                      </span>
-                                    )}
+                                    <Input value={newUsername} onChange={(e) => setNewUsername(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ username: newUsername }); setIsEditingUsername(false); }} className="p-1 hover:bg-white/10 rounded-md"><Check className="h-3 w-3 text-green-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setIsEditingUsername(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
-                                    <span className="text-white font-medium">
-                                      {currentUser?.username && !currentUser.username.includes("@") ? `@${currentUser.username}` : ""}
-                                    </span>
-                                    <button
-                                      onClick={() => {
-                                        setNewUsername(currentUser?.username || "");
-                                        setIsEditingUsername(true);
-                                      }}
-                                      className="p-1 hover:bg-white/10 rounded-md transition-all"
-                                    >
-                                      <Pencil className="h-3 w-3 text-blue-400 opacity-0 group-hover:opacity-100" />
-                                    </button>
+                                    <span className="text-white font-medium">{currentUser?.username ? `@${currentUser.username}` : ""}</span>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewUsername(currentUser?.username || ""); setIsEditingUsername(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
-
                               <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">display name</span>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                    }}
-                                    className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"
-                                  >
-                                    <Pencil className="h-3 w-3 text-blue-400" />
-                                  </button>
-                                </div>
+                                {isEditingDisplayName ? (
+                                  <div className="flex items-center gap-2">
+                                    <Input value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); }} className="p-1 hover:bg-white/10 rounded-md"><Check className="h-3 w-3 text-green-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setIsEditingDisplayName(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 group">
+                                    <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                  </div>
+                                )}
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">email id</span>
-                                <span className="text-white font-medium">{currentUser?.email || (localStorage.getItem('currentUserEmail') === "chiranjeevi.perala99@gmail.com" ? "chiranjeevi.perala99@gmail.com" : "empty")}</span>
+                                <span className="text-white font-medium">{currentUser?.email || "empty"}</span>
                               </div>
                               <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">dob</span>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                    }}
-                                    className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"
-                                  >
-                                    <Pencil className="h-3 w-3 text-blue-400" />
-                                  </button>
-                                </div>
+                                {isEditingDob ? (
+                                  <div className="flex items-center gap-2">
+                                    <Input type="date" value={newDob} onChange={(e) => setNewDob(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ dob: newDob }); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md"><Check className="h-3 w-3 text-green-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setIsEditingDob(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 group">
+                                    <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewDob(currentUser?.dob || ""); setIsEditingDob(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                  </div>
+                                )}
                               </div>
                               <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">location</span>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                    }}
-                                    className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"
-                                  >
-                                    <Pencil className="h-3 w-3 text-blue-400" />
-                                  </button>
-                                </div>
+                                {isEditingLocation ? (
+                                  <div className="flex items-center gap-2">
+                                    <Input value={newLocation} onChange={(e) => setNewLocation(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white" autoFocus />
+                                    <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ location: newLocation }); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md"><Check className="h-3 w-3 text-green-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setIsEditingLocation(false); }} className="p-1 hover:bg-white/10 rounded-md"><X className="h-3 w-3 text-red-400" /></button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 group">
+                                    <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           )}
