@@ -46,7 +46,28 @@ export function UserProfileDropdown() {
   const [editedBio, setEditedBio] = useState('');
   const [editedDisplayName, setEditedDisplayName] = useState('');
   const [editedLocation, setEditedLocation] = useState('');
+  const [locationSuggestions, setLocationSuggestions] = useState<any[]>([]);
+  const [isSearchingLocation, setIsSearchingLocation] = useState(false);
   const [editedDob, setEditedDob] = useState('');
+
+  const fetchLocationSuggestions = async (query: string) => {
+    if (!query || query.length < 3) {
+      setLocationSuggestions([]);
+      return;
+    }
+    setIsSearchingLocation(true);
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=5`);
+      if (response.ok) {
+        const data = await response.json();
+        setLocationSuggestions(data);
+      }
+    } catch (error) {
+      console.error('Error fetching location suggestions:', error);
+    } finally {
+      setIsSearchingLocation(false);
+    }
+  };
 
   const { data: profile } = useQuery<UserProfile | null>({
     queryKey: ['user-profile-dropdown', currentUser.email],
@@ -343,13 +364,41 @@ export function UserProfileDropdown() {
                 Location
               </Label>
               {isEditing ? (
-                <Input
-                  value={editedLocation}
-                  onChange={(e) => setEditedLocation(e.target.value)}
-                  className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
-                  placeholder="Where are you based?"
-                  data-testid="input-location"
-                />
+                <div className="relative">
+                  <Input
+                    value={editedLocation}
+                    onChange={(e) => {
+                      setEditedLocation(e.target.value);
+                      fetchLocationSuggestions(e.target.value);
+                    }}
+                    className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 pr-10"
+                    placeholder="Where are you based?"
+                    data-testid="input-location"
+                  />
+                  {isSearchingLocation && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                    </div>
+                  )}
+                  {locationSuggestions.length > 0 && (
+                    <div className="absolute z-[100] w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
+                      {locationSuggestions.map((suggestion, index) => (
+                        <button
+                          key={index}
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b last:border-0 border-gray-100 dark:border-gray-700"
+                          onClick={() => {
+                            setEditedLocation(suggestion.display_name);
+                            setLocationSuggestions([]);
+                            // Reset suggestions explicitly to hide dropdown
+                            setIsSearchingLocation(false);
+                          }}
+                        >
+                          {suggestion.display_name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ) : (
                 <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                   <MapPin className="h-4 w-4" />
