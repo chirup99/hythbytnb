@@ -6,19 +6,13 @@ import { useEffect, useState } from "react";
 interface TradingJournalModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  manualOpen?: boolean;
 }
 
-export function TradingJournalModal({ open, onOpenChange, manualOpen }: TradingJournalModalProps) {
+export function TradingJournalModal({ open, onOpenChange }: TradingJournalModalProps) {
   const [shouldShow, setShouldShow] = useState(false);
 
   useEffect(() => {
     if (open) {
-      if (manualOpen) {
-        setShouldShow(true);
-        return;
-      }
-      
       const today = new Date().toISOString().split('T')[0];
       const lastDismissed = localStorage.getItem('journal_disclaimer_dismissed_date');
       
@@ -28,7 +22,7 @@ export function TradingJournalModal({ open, onOpenChange, manualOpen }: TradingJ
         onOpenChange(false);
       }
     }
-  }, [open, onOpenChange, manualOpen]);
+  }, [open, onOpenChange]);
 
   const handleDismiss = () => {
     const today = new Date().toISOString().split('T')[0];
@@ -37,17 +31,9 @@ export function TradingJournalModal({ open, onOpenChange, manualOpen }: TradingJ
     onOpenChange(false);
   };
 
-  const handleManualClose = () => {
-    setShouldShow(false);
-    onOpenChange(false);
-  };
-
   return (
     <Dialog open={open && shouldShow} onOpenChange={(val) => {
-      if (!val) {
-        if (manualOpen) handleManualClose();
-        else handleDismiss();
-      }
+      if (!val) handleDismiss();
       else onOpenChange(val);
     }}>
       <DialogContent className="max-w-sm w-[90vw] pl-[5px] pr-[5px] pt-[12px] pb-[12px]">
@@ -119,7 +105,7 @@ export function TradingJournalModal({ open, onOpenChange, manualOpen }: TradingJ
           </div>
         </div>
         <Button 
-          onClick={manualOpen ? handleManualClose : handleDismiss}
+          onClick={handleDismiss}
           className="w-full"
           data-testid="button-close-journal-modal"
         >
