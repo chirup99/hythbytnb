@@ -44,4 +44,5 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. UI Update - Add logo, tagline, and loop icon to landing page
 [x] 4. Verify the project is working - Angel One auto-connected (P176266), live prices streaming
 [x] 5. Import completed - Application fully operational
-[x] 6. Verified username fetching from AWS NeoFeed user profile table.
+[x] 6. Verified username fetching from AWS NeoFeed user profile table and adjusted display logic.
+[x] 7. Modified profile display to hide missing or placeholder email and username data.
