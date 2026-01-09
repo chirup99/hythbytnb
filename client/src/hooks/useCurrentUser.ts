@@ -8,6 +8,7 @@ interface CurrentUser {
   displayName: string | null;
   dob: string | null;
   location: string | null;
+  profilePicUrl: string | null;
 }
 
 export function useCurrentUser() {
@@ -17,7 +18,8 @@ export function useCurrentUser() {
     username: null,
     displayName: null,
     dob: null,
-    location: null
+    location: null,
+    profilePicUrl: null
   });
   const [loading, setLoading] = useState(true);
   const [profileChecked, setProfileChecked] = useState(false);
@@ -32,6 +34,7 @@ export function useCurrentUser() {
       const savedDisplayName = localStorage.getItem('currentDisplayName') || localStorage.getItem('currentUserName');
       const savedDob = localStorage.getItem('currentUserDob');
       const savedLocation = localStorage.getItem('currentUserLocation');
+      const savedProfilePicUrl = localStorage.getItem('currentUserProfilePicUrl');
       
       setCurrentUser({
         userId: savedUserId,
@@ -39,7 +42,8 @@ export function useCurrentUser() {
         username: savedUsername,
         displayName: savedDisplayName,
         dob: savedDob,
-        location: savedLocation
+        location: savedLocation,
+        profilePicUrl: savedProfilePicUrl
       });
 
       if (savedUserId && savedUserEmail) {
@@ -66,10 +70,11 @@ export function useCurrentUser() {
                   profile.username || savedUserEmail,
                   profile.displayName,
                   profile.dob,
-                  profile.location
+                  profile.location,
+                  profile.profilePicUrl
                 );
               } else {
-                updateUser(savedUserId, savedUserEmail, null, savedDisplayName, savedDob, savedLocation);
+                updateUser(savedUserId, savedUserEmail, null, savedDisplayName, savedDob, savedLocation, savedProfilePicUrl);
               }
             }
           }
@@ -91,7 +96,8 @@ export function useCurrentUser() {
     username?: string | null, 
     displayName?: string | null,
     dob?: string | null,
-    location?: string | null
+    location?: string | null,
+    profilePicUrl?: string | null
   ) => {
     localStorage.setItem('currentUserId', userId);
     localStorage.setItem('currentUserEmail', email);
@@ -121,6 +127,12 @@ export function useCurrentUser() {
     } else {
       localStorage.removeItem('currentUserLocation');
     }
+
+    if (profilePicUrl) {
+      localStorage.setItem('currentUserProfilePicUrl', profilePicUrl);
+    } else {
+      localStorage.removeItem('currentUserProfilePicUrl');
+    }
     
     setCurrentUser({ 
       userId, 
@@ -128,23 +140,26 @@ export function useCurrentUser() {
       username: username || null,
       displayName: displayName || null,
       dob: dob || null,
-      location: location || null
+      location: location || null,
+      profilePicUrl: profilePicUrl || null
     });
   };
 
-  const updateProfile = (username: string, displayName: string, dob?: string | null, location?: string | null) => {
+  const updateProfile = (username: string, displayName: string, dob?: string | null, location?: string | null, profilePicUrl?: string | null) => {
     localStorage.setItem('currentUsername', username);
     localStorage.setItem('currentDisplayName', displayName);
     localStorage.setItem('currentUserName', displayName);
     if (dob) localStorage.setItem('currentUserDob', dob);
     if (location) localStorage.setItem('currentUserLocation', location);
+    if (profilePicUrl) localStorage.setItem('currentUserProfilePicUrl', profilePicUrl);
 
     setCurrentUser(prev => ({
       ...prev,
       username,
       displayName,
       dob: dob !== undefined ? dob : prev.dob,
-      location: location !== undefined ? location : prev.location
+      location: location !== undefined ? location : prev.location,
+      profilePicUrl: profilePicUrl !== undefined ? profilePicUrl : prev.profilePicUrl
     }));
   };
 

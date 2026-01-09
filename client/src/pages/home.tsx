@@ -13431,7 +13431,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* User Profile Section - Horizontal Layout */}
                         <div className="flex items-center gap-4 pb-2">
                           <Avatar className="w-14 h-14 border-2 border-white/20">
-                            <AvatarImage src={currentUser?.profilePicUrl || currentUser?.avatarUrl} />
+                            <AvatarImage src={currentUser?.profilePicUrl} />
                             <AvatarFallback className="bg-gradient-to-br from-purple-500 to-blue-500 text-white font-semibold text-xl">
                               {(currentUser?.displayName || currentUser?.username || "U").charAt(0).toUpperCase()}
                             </AvatarFallback>
