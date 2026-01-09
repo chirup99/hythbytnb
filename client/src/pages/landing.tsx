@@ -595,16 +595,15 @@ export default function Landing() {
               fill="none" 
               xmlns="http://www.w3.org/2000/svg"
               className="text-purple-500"
-              style={{ transform: 'rotate(-15deg)' }}
             >
               {/* Left loop */}
               <path 
-                d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6" 
+                d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" 
                 stroke="currentColor" 
                 strokeWidth="1.5" 
                 strokeLinecap="round" 
               />
-              {/* Right loop with a small symbolic break at the top-right corner */}
+              {/* Right loop with a gap at the top right outer corner */}
               <path 
                 d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" 
                 stroke="currentColor" 
@@ -612,7 +611,7 @@ export default function Landing() {
                 strokeLinecap="round" 
               />
               <path 
-                d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C14.5 3 13.2 4.5 12.5 5.5" 
+                d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" 
                 stroke="currentColor" 
                 strokeWidth="1.5" 
                 strokeLinecap="round" 
