@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Eye, EyeOff, Infinity } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Scissors } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { 
   cognitoSignIn, 
@@ -586,7 +586,13 @@ export default function Landing() {
         <img src="/logo.png" alt="Perala Logo" className="w-24 h-24 mx-auto mb-6 rounded-xl" />
         <h1 className="text-7xl md:text-8xl font-bold text-white tracking-tight">PERALA</h1>
         <span className="absolute -bottom-4 -right-8 text-[10px] md:text-xs text-gray-500 font-medium tracking-widest uppercase italic flex items-center gap-1">
-          Break the Loop, Find Your Edge <Infinity className="w-4 h-4" />
+          Break the Loop, Find Your Edge 
+          <div className="relative flex items-center justify-center w-5 h-5">
+            <div className="absolute inset-0 flex items-center justify-center opacity-30">
+              <span className="text-sm font-bold rotate-90">∞</span>
+            </div>
+            <Scissors className="w-3 h-3 text-purple-500 relative z-10" />
+          </div>
         </span>
       </div>
       <div className="max-w-xl w-full space-y-6">
