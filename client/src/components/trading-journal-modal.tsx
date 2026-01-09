@@ -6,12 +6,36 @@ import { useEffect, useState } from "react";
 interface TradingJournalModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  isManual?: boolean;
 }
 
-export function TradingJournalModal({ open, onOpenChange, isManual }: TradingJournalModalProps) {
+export function TradingJournalModal({ open, onOpenChange }: TradingJournalModalProps) {
+  const [shouldShow, setShouldShow] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      const today = new Date().toISOString().split('T')[0];
+      const lastDismissed = localStorage.getItem('journal_disclaimer_dismissed_date');
+      
+      if (lastDismissed !== today) {
+        setShouldShow(true);
+      } else {
+        onOpenChange(false);
+      }
+    }
+  }, [open, onOpenChange]);
+
+  const handleDismiss = () => {
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem('journal_disclaimer_dismissed_date', today);
+    setShouldShow(false);
+    onOpenChange(false);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open && shouldShow} onOpenChange={(val) => {
+      if (!val) handleDismiss();
+      else onOpenChange(val);
+    }}>
       <DialogContent className="max-w-sm w-[90vw] pl-[5px] pr-[5px] pt-[12px] pb-[12px]">
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-2">
@@ -81,7 +105,7 @@ export function TradingJournalModal({ open, onOpenChange, isManual }: TradingJou
           </div>
         </div>
         <Button 
-          onClick={() => onOpenChange(false)}
+          onClick={handleDismiss}
           className="w-full"
           data-testid="button-close-journal-modal"
         >
