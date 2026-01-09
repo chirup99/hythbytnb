@@ -583,6 +583,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center px-6 py-8">
       <div className="text-center mb-12">
+        <img src="/logo.png" alt="Perala Logo" className="w-24 h-24 mx-auto mb-6 rounded-xl" />
         <h1 className="text-7xl md:text-8xl font-bold text-white tracking-tight">PERALA</h1>
       </div>
       <div className="max-w-xl w-full space-y-6">
