@@ -1,5 +1,7 @@
 ﻿import { motion, AnimatePresence } from "framer-motion";
+
 import { BrokerData } from "@/components/broker-data";
+
 import React, {
   useState,
   useEffect,
@@ -8,44 +10,77 @@ import React, {
   useRef,
 } from "react";
 import { useLocation } from "wouter";
+
 import { useToast } from "@/hooks/use-toast";
+
 import { AuthButtonAngelOne, AngelOneStatus, AngelOneApiStatistics, AngelOneSystemStatus, AngelOneLiveMarketPrices } from "@/components/auth-button-angelone";
+
 import { AuthButtonUpstox } from "@/components/auth-button-upstox";
+
 import { TradingJournalModal } from "@/components/trading-journal-modal";
+
 // REMOVED: All Fyers-related imports
 // import { AuthButton } from "@/components/auth-button";
+
 // import { ConnectionStatus } from "@/components/connection-status";
+
 // import { MonthlyProgressTracker } from "@/components/monthly-progress-tracker";
+
 // import { ApiStatistics } from "@/components/api-statistics";
+
 // import { ErrorPanel } from "@/components/error-panel";
+
 import { SigninDataWindow } from "@/components/signin-data-window";
+
 import { TradingViewWidget } from "@/components/tradingview-widget";
+
 import { AdvancedCandlestickChart } from "@/components/advanced-candlestick-chart";
+
 import { EnhancedTradingViewWidget } from "@/components/enhanced-tradingview-widget";
+
 import { TradingViewStyleChart } from "@/components/tradingview-style-chart";
+
 import { MinimalChart } from "@/components/minimal-chart";
+
 import {
+
   MultipleImageUpload,
   MultipleImageUploadRef,
 } from "@/components/multiple-image-upload";
 import { IndicatorCrossingsDisplay } from "@/components/indicator-crossings-display";
+
 // import { BattuScanSimulation } from "@/components/battu-scan-simulation";
+
 // import { FourCandleRuleScanner } from "@/components/four-candle-rule-scanner";
+
 import NeoFeedSocialFeed from "@/components/neofeed-social-feed";
 import SimpleCompleteScanner from "@/components/simple-complete-scanner";
 // import { BattuDocumentationDisplay } from "@/components/battu-documentation-display";
+
 import { StrategyBuilder } from "@/components/strategy-builder";
+
 import { TradingMaster } from "@/components/trading-master";
+
 import { WorldMap } from "@/components/world-map";
+
 import { DemoHeatmap } from "@/components/DemoHeatmap";
+
 import { PersonalHeatmap } from "@/components/PersonalHeatmap";
+
 import { useTheme } from "@/components/theme-provider";
+
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+
 import { useAngelOneAutoconnect } from "@/hooks/useAngelOneAutoconnect";
+
 import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmailVerification, checkEmailVerified } from "@/cognito";
+
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, LineSeries, HistogramSeries, IPriceLine, createSeriesMarkers } from 'lightweight-charts';
+
 import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle } from "lucide-react";
+
 import { parseBrokerTrades, ParseError } from "@/utils/trade-parser";
+
 
 // Global window type declaration for audio control
 declare global {
@@ -57,6 +92,7 @@ declare global {
 // import ThreeCycleScanner from "@/components/three-cycle-scanner";
 import HistoricalTradeSimulator from "@/components/historical-trade-simulator";
 import {
+
   PriceChangeAnimation,
   TradeExecutionAnimation,
   VolumeSpikeAnimation,
@@ -66,18 +102,26 @@ import {
   MarketDataSkeleton,
 } from "@/components/micro-animations";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
 import {
+
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
+
 import { Label } from "@/components/ui/label";
+
 import { Switch } from "@/components/ui/switch";
+
 import {
+
   Dialog,
   DialogContent,
   DialogFooter,
@@ -86,7 +130,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+
 import {
+
   Select,
   SelectContent,
   SelectItem,
@@ -94,6 +140,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+
   Table,
   TableBody,
   TableCell,
@@ -102,12 +149,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import {
+
   TrendingDown,
   Activity,
   Calendar,
@@ -185,8 +235,11 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { AIChatWindow } from "@/components/ai-chat-window";
+
 import { BrokerImportDialog } from "@/components/broker-import-dialog";
+
 import { TradeBlockEditor } from "@/components/TradeBlockEditor";
+
 import type { BrokerTrade } from "@shared/schema";
 
 // Type definitions for stock data and trading
@@ -870,8 +923,11 @@ function SwipeableCardStack({
   );
 }
 import { format } from "date-fns";
+
 import { apiRequest } from "@/lib/queryClient";
+
 import {
+
   LineChart,
   Line,
   AreaChart,
