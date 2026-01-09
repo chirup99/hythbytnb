@@ -93,7 +93,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - All services initialized:
    - Express server serving on port 5000
    - Angel One authenticated (P176266) with JWT tokens persisted
-   - WebSocket streaming live market data (BANKNIFTY: 59412, SENSEX: 83919, GOLD: 37931)
+   - WebSocket streaming live market data (BANKNIFTY: 59364.55, SENSEX: 83747.99, GOLD: 38004.34)
    - AWS DynamoDB connected (eu-north-1)
    - NeoFeed tables ready (posts, likes, comments, profiles, etc.)
    - Gemini AI routes configured
