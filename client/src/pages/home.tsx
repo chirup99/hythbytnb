@@ -77,7 +77,7 @@ import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmai
 
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, LineSeries, HistogramSeries, IPriceLine, createSeriesMarkers } from 'lightweight-charts';
 
-import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle, Infinity } from "lucide-react";
+import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle } from "lucide-react";
 
 import { parseBrokerTrades, ParseError } from "@/utils/trade-parser";
 
@@ -3647,11 +3647,11 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
     handleSearch(suggestion);
   };
 
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+  // Generate Trading Journal AI Performance Report
   const generateJournalAIReport = async () => {
     setIsSearchLoading(true);
     setIsSearchActive(true);
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+    setSearchQuery("Trading Journal Performance Analysis");
 
     try {
       // Fetch all journal dates and data
@@ -3665,7 +3665,7 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
 
       if (Object.keys(journalData).length === 0) {
         setSearchResults(
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+          "## 📝 Trading Journal Analysis\n\n❌ **No journal data found**\n\nPlease add some trading entries in the Journal tab to see your performance analysis.",
         );
         setIsSearchLoading(false);
         return;
@@ -3770,7 +3770,7 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
         date: day.date,
       }));
 
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+      const performanceReport = `## 📝 Trading Journal AI Performance Report
 
 ### 📊 **Overall Performance Metrics**
 **🎯 Total Trades:** ${totalTrades}
@@ -3826,7 +3826,7 @@ ${
     } catch (error) {
       console.error("Error generating journal report:", error);
       setSearchResults(
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+        "## 📝 Trading Journal Analysis\n\n❌ **Error loading journal data**\n\nPlease try again or check your internet connection.",
       );
     } finally {
       setIsSearchLoading(false);
@@ -5378,7 +5378,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   // ============================================
   const [showPaperTradingModal, setShowPaperTradingModal] = useState(false);
   const [showTradingChallengeModal, setShowTradingChallengeModal] = useState(false); // Trading Challenge Coming Soon modal
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+  const [showJournalInfoModal, setShowJournalInfoModal] = useState(false); // Trading Journal Info modal
   const [hidePositionDetails, setHidePositionDetails] = useState(false); // Eye icon toggle
   const [swipedPositionId, setSwipedPositionId] = useState<string | null>(null);
   const swipeStartXRef = useRef<number>(0);
@@ -12561,7 +12561,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-medium inline-block mb-4">
                                 PODCAST OF THE WEEK
                               </div>
-                              <h2 className="text-3xl font-bold mb-2 ${paperTradingTotalPnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">Rich Mindset
+                              <h2 className="text-3xl font-bold mb-2 ${paperTradingTotalPnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">Rich Mindset</h2>
                               <p className="text-white/80 mb-4">Finance Expert</p>
 
                               {/* Play Button */}
@@ -13376,7 +13376,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 <div className="text-center space-y-4">
                   <div className="flex items-center justify-center gap-3">
                     <Star className="h-6 w-6 text-yellow-400" />
-                    <h2 className="text-2xl font-bold text-orange-400">Trading Dashboard
+                    <h2 className="text-2xl font-bold text-orange-400">Trading Dashboard</h2>
                   </div>
                   <p className="text-orange-300">Real-time market data via Angel One SmartAPI</p>
                 </div>
@@ -13678,7 +13678,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-xl font-semibold text-white">Settings & Privacy
+                        <h2 className="text-xl font-semibold text-white">Settings & Privacy</h2>
                         <button
                           onClick={() => setShowSettingsPanel(false)}
                           className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
@@ -15212,7 +15212,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
                                 <Trophy className="w-12 h-12 text-white" />
                               </div>
-                              <h2 className="text-4xl font-bold text-white mb-2">Trading Challenge
+                              <h2 className="text-4xl font-bold text-white mb-2">Trading Challenge</h2>
                               <p className="text-xl text-gray-400">Coming Soon</p>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
@@ -15404,7 +15404,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         >
                           <div className="flex items-center gap-2">
                             <FileText className="h-3 w-3" />
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+                            <span>Trading Journal</span>
                           </div>
                         </Button>
 
@@ -15594,7 +15594,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               >
                                 <div className="flex items-center gap-1">
                                   <FileText className="h-3 w-3" />
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+                                  <span>Trading Journal</span>
                                 </div>
                               </Button>
 
@@ -15753,7 +15753,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <div className="w-24 h-24 bg-orange-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
                                             <Trophy className="h-12 w-12 text-white" />
                                           </div>
-                                          <h2 className="text-3xl font-bold text-white text-center mb-2">Trading Challenge
+                                          <h2 className="text-3xl font-bold text-white text-center mb-2">Trading Challenge</h2>
                                           <p className="text-gray-400 text-lg">Coming Soon</p>
                                         </div>
 
@@ -16023,7 +16023,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="text-center space-y-2">
                                 <h2 className="text-xl font-bold text-white">
                                   Learn & Master Trading
-                                
+                                </h2>
                                 <p className="text-slate-300 text-sm">
                                   Interactive lessons and personalized guidance
                                 </p>
@@ -16167,7 +16167,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       <div className="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
                         <Activity className="h-10 w-10 text-primary" />
                       </div>
-                      <h2 className="text-2xl font-semibold">Backtest Feature Coming Soon
+                      <h2 className="text-2xl font-semibold">Backtest Feature Coming Soon</h2>
                       <p className="text-muted-foreground max-w-md mx-auto">
                         We're building a powerful backtesting engine to help you validate your trading strategies with historical market data.
                       </p>
@@ -16317,15 +16317,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 >
                   <ArrowLeft className="h-6 w-6" />
                 </Button>
-                <div className="space-y-1">
-                  <h2 className="text-2xl font-bold text-foreground">
-                    Trading Journal
-                  </h2>
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase">
-                    <span>BREAK THE LOOP, FIND YOUR EDGE</span>
-                    <Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" />
-                  </div>
-                </div>
+                <h2 className="text-2xl font-bold text-foreground">
+                  Trading Journal
+                </h2>
 
                 {/* Main Journal Content - Mobile: Show only in "home" tab | Desktop: Always visible */}
                 <div
@@ -22902,7 +22896,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   <Bot className="h-5 w-5 text-white" />
                 </div>
                 <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent font-bold">
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+                  Trading Journal AI Assistant
                 </span>
               </DialogTitle>
             </DialogHeader>
@@ -24275,7 +24269,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       <span className="text-white text-xs font-bold">★</span>
                     </div>
                     <div>
-                  <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase"><span>BREAK THE LOOP, FIND YOUR EDGE</span><Infinity className="w-3 h-3 md:w-4 h-4 text-purple-500" /></div></div>
+                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">Advanced Trading Journal</p>
                       <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Tracks emotional decisions • Works on all brokers • NSE, Crypto, Commodity, Forex</p>
                     </div>
                   </div>
