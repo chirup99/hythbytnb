@@ -16318,7 +16318,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   <ArrowLeft className="h-6 w-6" />
                 </Button>
                 <h2 className="text-2xl font-bold text-foreground">
-                <h2 className="text-2xl font-bold text-foreground flex items-center gap-2 relative">
                   Trading Journal
                   <span className="text-[10px] md:text-xs text-gray-500 font-medium tracking-widest uppercase italic flex items-center gap-1">
                     Break the Loop, Find Your Edge 
