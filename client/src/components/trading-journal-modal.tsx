@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Info, Calendar, BarChart3, TrendingUp, TrendingDown, AlertCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface TradingJournalModalProps {
   open: boolean;
@@ -8,8 +9,33 @@ interface TradingJournalModalProps {
 }
 
 export function TradingJournalModal({ open, onOpenChange }: TradingJournalModalProps) {
+  const [shouldShow, setShouldShow] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      const today = new Date().toISOString().split('T')[0];
+      const lastDismissed = localStorage.getItem('journal_disclaimer_dismissed_date');
+      
+      if (lastDismissed !== today) {
+        setShouldShow(true);
+      } else {
+        onOpenChange(false);
+      }
+    }
+  }, [open, onOpenChange]);
+
+  const handleDismiss = () => {
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem('journal_disclaimer_dismissed_date', today);
+    setShouldShow(false);
+    onOpenChange(false);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open && shouldShow} onOpenChange={(val) => {
+      if (!val) handleDismiss();
+      else onOpenChange(val);
+    }}>
       <DialogContent className="max-w-sm w-[90vw] pl-[5px] pr-[5px] pt-[12px] pb-[12px]">
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-2">
@@ -79,7 +105,7 @@ export function TradingJournalModal({ open, onOpenChange }: TradingJournalModalP
           </div>
         </div>
         <Button 
-          onClick={() => onOpenChange(false)}
+          onClick={handleDismiss}
           className="w-full"
           data-testid="button-close-journal-modal"
         >
