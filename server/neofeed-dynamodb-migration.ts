@@ -677,15 +677,33 @@ export async function getFinanceNews(limit = 20) {
 
 export async function createOrUpdateUserProfile(userId: string, profileData: any) {
   try {
+    const timestamp = new Date().toISOString();
     const item = {
       pk: `USER#${userId}`,
       sk: 'PROFILE',
       userId,
       ...profileData,
-      updatedAt: new Date().toISOString()
+      updatedAt: timestamp
     };
 
     await docClient.send(new PutCommand({ TableName: TABLES.USER_PROFILES, Item: item }));
+    
+    // Also update username mapping for lookup by username
+    if (profileData.username) {
+      const normalizedUsername = profileData.username.toLowerCase();
+      await docClient.send(new PutCommand({
+        TableName: TABLES.USER_PROFILES,
+        Item: {
+          pk: `USERNAME#${normalizedUsername}`,
+          sk: 'MAPPING',
+          userId,
+          username: normalizedUsername,
+          updatedAt: timestamp
+        }
+      }));
+      console.log(`✅ Username mapping updated: ${normalizedUsername} -> ${userId}`);
+    }
+
     console.log(`✅ User profile saved: ${userId}`);
     return item;
   } catch (error) {

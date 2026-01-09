@@ -1296,21 +1296,22 @@ export function registerNeoFeedAwsRoutes(app: any) {
       }
 
       const profile = await getUserProfile(user.userId);
-      if (profile) {
-        res.json({ success: true, profile });
-      } else {
-        res.json({ 
-          success: true, 
-          profile: { 
-            username: user.username, 
-            displayName: user.displayName, 
-            email: user.userId,
-            bio: '',
-            location: '',
-            dob: ''
-          } 
-        });
-      }
+      
+      // If profile exists but is missing critical fields, or doesn't exist, provide defaults
+      const responseProfile = {
+        userId: user.userId,
+        username: profile?.username || user.username,
+        displayName: profile?.displayName || user.displayName || profile?.username || user.username,
+        bio: profile?.bio || '',
+        location: profile?.location || '',
+        dob: profile?.dob || '',
+        profilePicUrl: profile?.profilePicUrl || null,
+        coverPicUrl: profile?.coverPicUrl || null,
+        ...profile
+      };
+
+      console.log(`✅ /api/user/profile: Returning profile for ${user.userId}, username=${responseProfile.username}`);
+      res.json({ success: true, profile: responseProfile });
     } catch (error: any) {
       console.error('❌ Error fetching user profile:', error);
       res.status(500).json({ error: 'Failed to fetch profile' });
