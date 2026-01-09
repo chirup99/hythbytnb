@@ -9,7 +9,7 @@ interface TradingJournalModalProps {
   isManual?: boolean;
 }
 
-export function TradingJournalModal({ open, onOpenChange, isManual = false }: TradingJournalModalProps) {
+export function TradingJournalModal({ open, onOpenChange, isManual }: TradingJournalModalProps) {
   const [shouldShow, setShouldShow] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,6 @@ export function TradingJournalModal({ open, onOpenChange, isManual = false }: Tr
         setShouldShow(true);
         return;
       }
-      
       const today = new Date().toISOString().split('T')[0];
       const lastDismissed = localStorage.getItem('journal_disclaimer_dismissed_date');
       
@@ -31,10 +30,8 @@ export function TradingJournalModal({ open, onOpenChange, isManual = false }: Tr
   }, [open, onOpenChange, isManual]);
 
   const handleDismiss = () => {
-    if (!isManual) {
-      const today = new Date().toISOString().split('T')[0];
-      localStorage.setItem('journal_disclaimer_dismissed_date', today);
-    }
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem('journal_disclaimer_dismissed_date', today);
     setShouldShow(false);
     onOpenChange(false);
   };
