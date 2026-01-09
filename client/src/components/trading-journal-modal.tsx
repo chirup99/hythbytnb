@@ -6,13 +6,19 @@ import { useEffect, useState } from "react";
 interface TradingJournalModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  isAutoPopup?: boolean;
 }
 
-export function TradingJournalModal({ open, onOpenChange }: TradingJournalModalProps) {
+export function TradingJournalModal({ open, onOpenChange, isAutoPopup = false }: TradingJournalModalProps) {
   const [shouldShow, setShouldShow] = useState(false);
 
   useEffect(() => {
     if (open) {
+      if (!isAutoPopup) {
+        setShouldShow(true);
+        return;
+      }
+
       const today = new Date().toISOString().split('T')[0];
       const lastDismissed = localStorage.getItem('journal_disclaimer_dismissed_date');
       
@@ -22,11 +28,13 @@ export function TradingJournalModal({ open, onOpenChange }: TradingJournalModalP
         onOpenChange(false);
       }
     }
-  }, [open, onOpenChange]);
+  }, [open, onOpenChange, isAutoPopup]);
 
   const handleDismiss = () => {
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem('journal_disclaimer_dismissed_date', today);
+    if (isAutoPopup) {
+      const today = new Date().toISOString().split('T')[0];
+      localStorage.setItem('journal_disclaimer_dismissed_date', today);
+    }
     setShouldShow(false);
     onOpenChange(false);
   };
