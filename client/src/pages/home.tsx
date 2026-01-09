@@ -13387,7 +13387,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </div>
                           <div className="flex flex-col min-w-0">
                             <p className="text-white font-semibold text-base">
-                              {currentUser.displayName || currentUser.username || "User"}
+                              {currentUser.displayName && currentUser.displayName !== "Not available" ? currentUser.displayName : (currentUser.username && !currentUser.username.includes("@") ? currentUser.username : "")}
                             </p>
                             <p className="text-blue-200 text-sm">
                                {currentUser.username && !currentUser.username.includes("@") ? `@${currentUser.username}` : ""}
