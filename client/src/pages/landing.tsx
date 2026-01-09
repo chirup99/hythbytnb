@@ -586,7 +586,7 @@ export default function Landing() {
         <img src="/logo.png" alt="Perala Logo" className="w-24 h-24 mx-auto mb-6 rounded-xl" />
         <h1 className="text-7xl md:text-8xl font-bold text-white tracking-tight">PERALA</h1>
         <span className="absolute -bottom-4 -right-8 text-[10px] md:text-xs text-gray-500 font-medium tracking-widest uppercase italic flex items-center gap-1">
-          Break the Loop, Find Your Edge 
+          rethink . reinvest . 
           <div className="flex items-center ml-1">
             <svg 
               width="24" 

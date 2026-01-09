@@ -16320,7 +16320,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 <h2 className="text-2xl font-bold text-foreground">
                   Trading Journal
                   <span className="text-[10px] md:text-xs text-gray-500 font-medium tracking-widest uppercase italic flex items-center gap-1">
-                    Break the Loop, Find Your Edge 
+                    rethink . reinvest . 
                     <div className="flex items-center ml-1">
                       <svg 
                         width="24" 
