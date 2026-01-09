@@ -8088,16 +8088,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   }, [selectedJournalSymbol, journalChartTimeframe]);
 
   // ✅ AUTO-FETCH CHART DATA IN MANUAL MODE (only when symbol changes)
+  // ✅ AUTO-FETCH CHART DATA IN MANUAL MODE (only when symbol changes)
   useEffect(() => {
-    if (!selectedJournalSymbol) return;
-    if (activeTab !== 'journal') return;
+    if (!selectedJournalSymbol || activeTab !== "journal") return;
 
-    // Auto-fetch when symbol is selected (debounce to avoid too many requests)
+    // Auto-fetch when symbol is selected or journal tab is opened
     const timer = setTimeout(() => {
       console.log(`🔄 [AUTO-FETCH] Triggering auto-fetch for ${selectedJournalSymbol}`);
-      setJournalChartMode('search'); // Set mode here (before fetch completes)
+      setJournalChartMode("search"); 
       fetchJournalChartData();
-    }, 500); // 500ms debounce
+    }, 500); 
 
     return () => clearTimeout(timer);
   }, [selectedJournalSymbol, activeTab, fetchJournalChartData]);
