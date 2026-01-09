@@ -678,10 +678,15 @@ export async function getFinanceNews(limit = 20) {
 export async function createOrUpdateUserProfile(userId: string, profileData: any) {
   try {
     const timestamp = new Date().toISOString();
+    
+    // Fetch existing profile first to preserve other fields
+    const existingProfile = await getUserProfile(userId);
+    
     const item = {
       pk: `USER#${userId}`,
       sk: 'PROFILE',
       userId,
+      ...(existingProfile || {}),
       ...profileData,
       updatedAt: timestamp
     };
@@ -689,8 +694,10 @@ export async function createOrUpdateUserProfile(userId: string, profileData: any
     await docClient.send(new PutCommand({ TableName: TABLES.USER_PROFILES, Item: item }));
     
     // Also update username mapping for lookup by username
-    if (profileData.username) {
-      const normalizedUsername = profileData.username.toLowerCase();
+    // Use the merged username to ensure mapping stays up to date
+    const finalUsername = profileData.username || existingProfile?.username;
+    if (finalUsername) {
+      const normalizedUsername = finalUsername.toLowerCase();
       await docClient.send(new PutCommand({
         TableName: TABLES.USER_PROFILES,
         Item: {

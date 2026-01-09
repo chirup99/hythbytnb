@@ -1325,12 +1325,17 @@ export function registerNeoFeedAwsRoutes(app: any) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      const { displayName, bio, location, dob } = req.body;
+      const { username, displayName, bio, location, dob, profilePicUrl, coverPicUrl } = req.body;
       const updates: any = {};
+      if (username !== undefined) updates.username = username;
       if (displayName !== undefined) updates.displayName = displayName;
       if (bio !== undefined) updates.bio = bio;
       if (location !== undefined) updates.location = location;
       if (dob !== undefined) updates.dob = dob;
+      if (profilePicUrl !== undefined) updates.profilePicUrl = profilePicUrl;
+      if (coverPicUrl !== undefined) updates.coverPicUrl = coverPicUrl;
+
+      console.log(`📥 UPDATE PROFILE for ${user.userId}:`, updates);
 
       const profile = await createOrUpdateUserProfile(user.userId, updates);
       res.json({ success: true, profile });
