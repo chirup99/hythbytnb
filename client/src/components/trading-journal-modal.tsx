@@ -10,37 +10,8 @@ interface TradingJournalModalProps {
 }
 
 export function TradingJournalModal({ open, onOpenChange, isManual }: TradingJournalModalProps) {
-  const [shouldShow, setShouldShow] = useState(false);
-
-  useEffect(() => {
-    if (open) {
-      if (isManual) {
-        setShouldShow(true);
-        return;
-      }
-      const today = new Date().toISOString().split('T')[0];
-      const lastDismissed = localStorage.getItem('journal_disclaimer_dismissed_date');
-      
-      if (lastDismissed !== today) {
-        setShouldShow(true);
-      } else {
-        onOpenChange(false);
-      }
-    }
-  }, [open, onOpenChange, isManual]);
-
-  const handleDismiss = () => {
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem('journal_disclaimer_dismissed_date', today);
-    setShouldShow(false);
-    onOpenChange(false);
-  };
-
   return (
-    <Dialog open={open && shouldShow} onOpenChange={(val) => {
-      if (!val) handleDismiss();
-      else onOpenChange(val);
-    }}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm w-[90vw] pl-[5px] pr-[5px] pt-[12px] pb-[12px]">
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-2">
@@ -110,7 +81,7 @@ export function TradingJournalModal({ open, onOpenChange, isManual }: TradingJou
           </div>
         </div>
         <Button 
-          onClick={handleDismiss}
+          onClick={() => onOpenChange(false)}
           className="w-full"
           data-testid="button-close-journal-modal"
         >
