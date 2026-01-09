@@ -6,18 +6,13 @@ import { useEffect, useState } from "react";
 interface TradingJournalModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  isManual?: boolean;
 }
 
-export function TradingJournalModal({ open, onOpenChange, isManual }: TradingJournalModalProps) {
+export function TradingJournalModal({ open, onOpenChange }: TradingJournalModalProps) {
   const [shouldShow, setShouldShow] = useState(false);
 
   useEffect(() => {
     if (open) {
-      if (isManual) {
-        setShouldShow(true);
-        return;
-      }
       const today = new Date().toISOString().split('T')[0];
       const lastDismissed = localStorage.getItem('journal_disclaimer_dismissed_date');
       
@@ -27,7 +22,7 @@ export function TradingJournalModal({ open, onOpenChange, isManual }: TradingJou
         onOpenChange(false);
       }
     }
-  }, [open, onOpenChange, isManual]);
+  }, [open, onOpenChange]);
 
   const handleDismiss = () => {
     const today = new Date().toISOString().split('T')[0];
