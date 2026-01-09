@@ -603,9 +603,15 @@ export default function Landing() {
                 strokeWidth="1.5" 
                 strokeLinecap="round" 
               />
-              {/* Right loop with a gap at the top right connection */}
+              {/* Right loop with a gap at the top right outer corner */}
               <path 
-                d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 4.5 19.5 3 16.5 3C15.5 3 14.5 3.5 13.8 4.2" 
+                d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" 
+                stroke="currentColor" 
+                strokeWidth="1.5" 
+                strokeLinecap="round" 
+              />
+              <path 
+                d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" 
                 stroke="currentColor" 
                 strokeWidth="1.5" 
                 strokeLinecap="round" 
