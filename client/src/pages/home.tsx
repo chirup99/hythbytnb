@@ -13374,17 +13374,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       <>
                         {/* User Profile Section - Horizontal Layout */}
                         <div className="flex items-center gap-4 pb-2">
-                          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0">
-                            <span className="text-white font-semibold text-xl">
-                              {(
-                                currentUser.displayName ||
-                                currentUser.username ||
-                                "U"
-                              )
-                                .charAt(0)
-                                .toUpperCase()}
-                            </span>
-                          </div>
+                          <Avatar className="w-14 h-14 border-2 border-white/20">
+                            <AvatarImage src={currentUser?.profilePicUrl || currentUser?.avatarUrl} />
+                            <AvatarFallback className="bg-gradient-to-br from-purple-500 to-blue-500 text-white font-semibold text-xl">
+                              {(currentUser?.displayName || currentUser?.username || "U").charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
                           <div className="flex flex-col min-w-0">
                             <p className="text-white font-semibold text-base">
                               {currentUser.displayName && currentUser.displayName !== "Not available" ? currentUser.displayName : (currentUser.username && !currentUser.username.includes("@") ? currentUser.username : "")}
