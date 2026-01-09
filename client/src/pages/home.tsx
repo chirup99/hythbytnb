@@ -7750,7 +7750,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   } | null>(null);
 
   // Angel One Stock Token Mapping for Journal Chart (Expanded for all exchanges)
-  const journalAngelOneTokens: { [key: string]: { token: string, exchange: string, tradingSymbol: string } } = {
+  const journalAngelOneTokens: { [key: string]: { token: string, exchange: string, tradingSymbol: string } = {
     // NSE Indices
     'NIFTY50': { token: '99926000', exchange: 'NSE', tradingSymbol: 'Nifty 50' },
     'NIFTY': { token: '99926000', exchange: 'NSE', tradingSymbol: 'Nifty 50' },
