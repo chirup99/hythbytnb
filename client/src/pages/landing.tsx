@@ -616,6 +616,14 @@ export default function Landing() {
                 strokeWidth="1.5" 
                 strokeLinecap="round" 
               />
+              {/* Flying broken piece */}
+              <path 
+                d="M21 2L23 1" 
+                stroke="currentColor" 
+                strokeWidth="1.5" 
+                strokeLinecap="round" 
+                className="animate-pulse"
+              />
             </svg>
           </div>
         </span>
