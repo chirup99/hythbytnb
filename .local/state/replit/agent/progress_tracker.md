@@ -41,6 +41,6 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 [x] 1. Install the required packages - cross-env installed successfully
 [x] 2. Restart the workflow - Server running on port 5000 with webview output
-[x] 3. UI Update - Add logo before PERALA text in landing page
+[x] 3. UI Update - Add logo and tagline "Break the Loop, Find Your Edge" to landing page
 [x] 4. Verify the project is working - Angel One auto-connected (P176266), live prices streaming
 [x] 5. Import completed - Application fully operational

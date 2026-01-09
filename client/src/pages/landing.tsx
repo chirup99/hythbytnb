@@ -582,9 +582,12 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center px-6 py-8">
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 relative inline-block">
         <img src="/logo.png" alt="Perala Logo" className="w-24 h-24 mx-auto mb-6 rounded-xl" />
         <h1 className="text-7xl md:text-8xl font-bold text-white tracking-tight">PERALA</h1>
+        <span className="absolute -bottom-4 -right-8 text-[10px] md:text-xs text-gray-500 font-medium tracking-widest uppercase italic">
+          Break the Loop, Find Your Edge
+        </span>
       </div>
       <div className="max-w-xl w-full space-y-6">
         <div className="text-center">
