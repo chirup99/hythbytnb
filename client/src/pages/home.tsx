@@ -13448,7 +13448,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
-                                    <span className="text-white font-medium">{currentUser?.displayName || "Not available"}</span>
+                                    <span className="text-white font-medium">{currentUser?.displayName && currentUser.displayName !== "Not available" ? currentUser.displayName : ""}</span>
                                     <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
@@ -13529,7 +13529,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
-                                    <span className="text-white font-medium">{currentUser?.location || "empty"}</span>
+                                    <span className="text-white font-medium">{currentUser?.location && currentUser.location !== "empty" ? currentUser.location : ""}</span>
                                     <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
