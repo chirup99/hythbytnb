@@ -10,12 +10,12 @@ interface TradingJournalModalProps {
 }
 
 export function TradingJournalModal({ open, onOpenChange, isAutoPopup = false }: TradingJournalModalProps) {
-  const [shouldShow, setShouldShow] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
       if (!isAutoPopup) {
-        setShouldShow(true);
+        setInternalOpen(true);
         return;
       }
 
@@ -23,24 +23,27 @@ export function TradingJournalModal({ open, onOpenChange, isAutoPopup = false }:
       const lastDismissed = localStorage.getItem('journal_disclaimer_dismissed_date');
       
       if (lastDismissed !== today) {
-        setShouldShow(true);
+        setInternalOpen(true);
       } else {
+        // Auto popup already dismissed today, close the parent state
         onOpenChange(false);
       }
+    } else {
+      setInternalOpen(false);
     }
-  }, [open, onOpenChange, isAutoPopup]);
+  }, [open, isAutoPopup, onOpenChange]);
 
   const handleDismiss = () => {
     if (isAutoPopup) {
       const today = new Date().toISOString().split('T')[0];
       localStorage.setItem('journal_disclaimer_dismissed_date', today);
     }
-    setShouldShow(false);
+    setInternalOpen(false);
     onOpenChange(false);
   };
 
   return (
-    <Dialog open={open && shouldShow} onOpenChange={(val) => {
+    <Dialog open={internalOpen} onOpenChange={(val) => {
       if (!val) handleDismiss();
       else onOpenChange(val);
     }}>

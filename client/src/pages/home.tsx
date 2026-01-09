@@ -5378,7 +5378,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   // ============================================
   const [showPaperTradingModal, setShowPaperTradingModal] = useState(false);
   const [showTradingChallengeModal, setShowTradingChallengeModal] = useState(false); // Trading Challenge Coming Soon modal
-  const [showJournalInfoModal, setShowJournalInfoModal] = useState(false); // Trading Journal Info modal
+  const [showJournalInfoModal, setShowJournalInfoModal] = useState<boolean | 'auto' | 'manual'>(false); // Trading Journal Info modal
   const [hidePositionDetails, setHidePositionDetails] = useState(false); // Eye icon toggle
   const [swipedPositionId, setSwipedPositionId] = useState<string | null>(null);
   const swipeStartXRef = useRef<number>(0);
@@ -10453,7 +10453,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   // ✅ AUTO-OPEN JOURNAL INFO MODAL: Show modal when journal tab opens
   useEffect(() => {
     if (activeTab === "journal") {
-      setShowJournalInfoModal(true);
+      setShowJournalInfoModal("auto");
     }
   }, [activeTab]);
 
@@ -18224,7 +18224,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => setShowJournalInfoModal(true)}
+                              onClick={() => setShowJournalInfoModal("manual")}
                               className="h-7 w-7 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-full"
                               data-testid="button-journal-info"
                               title="Journal Information"
@@ -21602,7 +21602,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           </DialogContent>
         </Dialog>
 
-        <TradingJournalModal open={showJournalInfoModal} onOpenChange={setShowJournalInfoModal} />
+        <TradingJournalModal open={!!showJournalInfoModal} onOpenChange={setShowJournalInfoModal} isAutoPopup={showJournalInfoModal === "auto"} />
 
 
         {/* Paper Trading (Demo Trading) Modal - Minimalist Design */}
