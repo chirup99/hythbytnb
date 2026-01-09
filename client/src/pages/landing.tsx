@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Eye, EyeOff, Scissors } from "lucide-react";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { 
   cognitoSignIn, 
@@ -587,11 +587,30 @@ export default function Landing() {
         <h1 className="text-7xl md:text-8xl font-bold text-white tracking-tight">PERALA</h1>
         <span className="absolute -bottom-4 -right-8 text-[10px] md:text-xs text-gray-500 font-medium tracking-widest uppercase italic flex items-center gap-1">
           Break the Loop, Find Your Edge 
-          <div className="relative flex items-center justify-center w-5 h-5">
-            <div className="absolute inset-0 flex items-center justify-center opacity-30">
-              <span className="text-sm font-bold rotate-90">∞</span>
-            </div>
-            <Scissors className="w-3 h-3 text-purple-500 relative z-10" />
+          <div className="flex items-center ml-1">
+            <svg 
+              width="24" 
+              height="12" 
+              viewBox="0 0 24 12" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-purple-500"
+            >
+              {/* Left loop with a gap at the top connection */}
+              <path 
+                d="M12 6C12 6 10.5 9 7.5 9C4.5 9 3 7.5 3 6C3 4.5 4.5 3 7.5 3C9 3 10.2 3.8 11 4.8" 
+                stroke="currentColor" 
+                strokeWidth="1.5" 
+                strokeLinecap="round" 
+              />
+              {/* Right loop with a gap at the bottom connection */}
+              <path 
+                d="M13 7.2C13.8 8.2 15 9 16.5 9C19.5 9 21 7.5 21 6C21 4.5 19.5 3 16.5 3C13.5 3 12 6 12 6" 
+                stroke="currentColor" 
+                strokeWidth="1.5" 
+                strokeLinecap="round" 
+              />
+            </svg>
           </div>
         </span>
       </div>
