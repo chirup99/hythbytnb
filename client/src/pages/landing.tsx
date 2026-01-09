@@ -596,16 +596,16 @@ export default function Landing() {
               xmlns="http://www.w3.org/2000/svg"
               className="text-purple-500"
             >
-              {/* Left loop with a gap at the top connection */}
+              {/* Left loop with a larger gap */}
               <path 
-                d="M12 6C12 6 10.5 9 7.5 9C4.5 9 3 7.5 3 6C3 4.5 4.5 3 7.5 3C9 3 10.2 3.8 11 4.8" 
+                d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" 
                 stroke="currentColor" 
                 strokeWidth="1.5" 
                 strokeLinecap="round" 
               />
-              {/* Right loop with a gap at the bottom connection */}
+              {/* Right loop with a larger gap */}
               <path 
-                d="M13 7.2C13.8 8.2 15 9 16.5 9C19.5 9 21 7.5 21 6C21 4.5 19.5 3 16.5 3C13.5 3 12 6 12 6" 
+                d="M13 6.8C13.8 8 15 9 16.5 9C19.5 9 21 7.5 21 6C21 4.5 19.5 3 16.5 3C13.5 3 12 6 12 6" 
                 stroke="currentColor" 
                 strokeWidth="1.5" 
                 strokeLinecap="round" 
