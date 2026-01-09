@@ -16306,7 +16306,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             )}
 
             {activeTab === "journal" && (
-                <div className="gap-0 px-0.5 md:px-6 py-0.5 relative">
+                <div className="space-y-6 px-0.5 md:px-6 py-0.5 relative">
                 {/* Back Button - Mobile Only */}
                 <Button
                   onClick={() => setTabWithAuthCheck("trading-home")}
@@ -16319,20 +16319,57 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </Button>
                 <h2 className="text-2xl font-bold text-foreground">
                   Trading Journal
-                  <span className="block text-[8px] italic uppercase text-slate-500 dark:text-slate-400 font-medium tracking-widest mt-1 flex items-center gap-1">
-                    Break the Loop, Find Your Edge
-                    <div className="flex items-center ml-0.5">
-                      <svg width="16" height="8" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-500 dark:text-purple-400">
-                        <path d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M21 2L23 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="animate-pulse" />
+                  <span className="text-[10px] md:text-xs text-gray-500 font-medium tracking-widest uppercase italic flex items-center gap-1">
+                    Break the Loop, Find Your Edge 
+                    <div className="flex items-center ml-1">
+                      <svg 
+                        width="24" 
+                        height="12" 
+                        viewBox="0 0 24 12" 
+                        fill="none" 
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="text-purple-500"
+                      >
+                        {/* Left loop */}
+                        <path 
+                          d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" 
+                          stroke="currentColor" 
+                          strokeWidth="1.5" 
+                          strokeLinecap="round" 
+                        />
+                        {/* Right loop with a gap at the top right outer corner */}
+                        <path 
+                          d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" 
+                          stroke="currentColor" 
+                          strokeWidth="1.5" 
+                          strokeLinecap="round" 
+                        />
+                        <path 
+                          d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" 
+                          stroke="currentColor" 
+                          strokeWidth="1.5" 
+                          strokeLinecap="round" 
+                        />
+                        {/* Flying broken piece */}
+                        <path 
+                          d="M21 2L23 1" 
+                          stroke="currentColor" 
+                          strokeWidth="1.5" 
+                          strokeLinecap="round" 
+                          className="animate-pulse"
+                        />
                       </svg>
                     </div>
                   </span>
                 </h2>
-                <div className={`${mobileBottomTab !== "home" ? "hidden md:block" : "block"}`}>
+                {/* Main Journal Content - Mobile: Show only in "home" tab | Desktop: Always visible */}
+                <div
+                  className={`${mobileBottomTab !== "home" ? "hidden md:block" : "block"}`}
+                >
                   {/* PERFORMANCE TIMELINE - Responsive Three Blocks */}
+                  {/* Desktop: 3-column grid | Mobile: Single panel with carousel */}
+                  <div className="relative mb-6">
+                    {/* Desktop: Grid Layout | Mobile: Single Panel */}
                     <div className="md:grid md:grid-cols-3 gap-6">
                       {/* Left Block - Performance Chart */}
                       <div
@@ -19149,7 +19186,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         </div>
                       </CardContent>
                     </Card>
-              )
+                    </div>
                   </div>
                 </div>
                 {/* End of Main Journal Content */}
