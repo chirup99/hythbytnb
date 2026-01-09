@@ -16306,7 +16306,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             )}
 
             {activeTab === "journal" && (
-                <div className="space-y-6 px-0.5 md:px-6 pb-0.5 pt-0 relative">
+                <div className="gap-0 px-0.5 md:px-6 pb-0.5 pt-0 relative">
                 {/* Back Button - Mobile Only */}
                 <Button
                   onClick={() => setTabWithAuthCheck("trading-home")}
