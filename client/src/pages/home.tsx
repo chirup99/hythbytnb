@@ -738,7 +738,7 @@ function SwipeableCardStack({
 
               document.addEventListener("mousemove", handleMouseMove);
               document.addEventListener("mouseup", handleMouseUp);
-            }}
+            }
             onTouchStart={(e: React.TouchEvent<HTMLDivElement>) => {
               if (!isTop) return;
 
@@ -839,13 +839,13 @@ function SwipeableCardStack({
                 passive: false,
               });
               document.addEventListener("touchend", handleTouchEnd);
-            }}
+            }
             onClick={() => {
               if (isTop) {
                 console.log(`Clicked on ${card.title}`);
                 onSectorChange(card.sector);
               }
-            }}
+            }
           >
             <div
               className={`bg-gradient-to-br ${card.gradient} rounded-2xl p-5 md:p-6 h-full relative overflow-hidden shadow-xl border-2 border-white/10 flex flex-col`}
@@ -884,7 +884,7 @@ function SwipeableCardStack({
                         fetchAndPlayContent(card.title, card.sector);
                       }
                     }
-                  }}
+                  }
                   disabled={isLoading && isTop}
                 >
                   <div className="flex items-center gap-2">
@@ -1526,12 +1526,12 @@ function HistoricalDataSection() {
                                     ? "bg-green-500"
                                     : "bg-red-500"
                                 }`}
-                                style={{
+                                style={
                                   width: `${
                                     Math.abs(sentimentAnalysis[index].score) *
                                     100
                                   }%`,
-                                }}
+                                }
                               ></div>
                             </div>
                           </div>
@@ -5379,7 +5379,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [showPaperTradingModal, setShowPaperTradingModal] = useState(false);
   const [showTradingChallengeModal, setShowTradingChallengeModal] = useState(false); // Trading Challenge Coming Soon modal
   const [showJournalInfoModal, setShowJournalInfoModal] = useState(false);
-  const [manualJournalOpen, setManualJournalOpen] = useState(false); // Trading Journal Info modal
+  const [manualJournalOpen, setManualJournalOpen] = useState(false);
   const [hidePositionDetails, setHidePositionDetails] = useState(false); // Eye icon toggle
   const [swipedPositionId, setSwipedPositionId] = useState<string | null>(null);
   const swipeStartXRef = useRef<number>(0);
@@ -10454,7 +10454,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   // ✅ AUTO-OPEN JOURNAL INFO MODAL: Show modal when journal tab opens
   useEffect(() => {
     if (activeTab === "journal") {
-      setShowJournalInfoModal(true); setManualJournalOpen(true);
+       { { setShowJournalInfoModal(true); setManualJournalOpen(true); } } 
     }
   }, [activeTab]);
 
@@ -13450,7 +13450,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* Navigation Menu Items - Left aligned */}
                         <div className="space-y-3 flex flex-col">
                           <button
-                            onClick={() => { if (isEditingUsername || isEditingDisplayName || isEditingDob || isEditingLocation) { setIsEditingUsername(false); setIsEditingDisplayName(false); setIsEditingDob(false); setIsEditingLocation(false); } else { setIsProfileActive(!isProfileActive); } }}
+                            onClick={() => { if (isEditingUsername || isEditingDisplayName || isEditingDob || isEditingLocation) { setIsEditingUsername(false); setIsEditingDisplayName(false); setIsEditingDob(false); setIsEditingLocation(false); } else { setIsProfileActive(!isProfileActive); }
                             className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-between"
                             data-testid="nav-profile"
                           >
@@ -13466,7 +13466,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="relative flex items-center gap-2">
                                     <div className="relative w-full">
                                       <Input value={newUsername} onChange={(e) => setNewUsername(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" autoFocus />
-                                      <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ username: newUsername }); setIsEditingUsername(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
+                                      <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ username: newUsername }); setIsEditingUsername(false); } className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
                                         <CheckCircle className="h-4 w-4 text-green-400" />
                                       </button>
                                     </div>
@@ -13479,7 +13479,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         e.stopPropagation();
                                         setNewUsername(currentUser?.username || "");
                                         setIsEditingUsername(true);
-                                      }}
+                                      }
                                       className="p-1 hover:bg-white/10 rounded-md transition-all"
                                     >
                                       <Pencil className="h-3 w-3 text-blue-400 opacity-0 group-hover:opacity-100" />
@@ -13493,7 +13493,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="relative flex items-center gap-2">
                                     <div className="relative w-full">
                                       <Input value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" autoFocus />
-                                      <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
+                                      <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); } className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
                                         <CheckCircle className="h-4 w-4 text-green-400" />
                                       </button>
                                     </div>
@@ -13501,7 +13501,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.displayName && currentUser.displayName !== "Not available" ? currentUser.displayName : ""}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); } className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
@@ -13527,14 +13527,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         } else if (e.key === "Escape") {
                                           setIsEditingDob(false);
                                         }
-                                      }}
+                                      }
                                     />
                                     <button
                                       onClick={async (e) => {
                                         e.stopPropagation();
                                         await handleUpdateProfile({ dob: newDob });
                                         setIsEditingDob(false);
-                                      }}
+                                      }
                                       className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all"
                                       data-testid="button-save-dob"
                                     >
@@ -13544,7 +13544,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewDob(currentUser?.dob || ""); setIsEditingDob(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewDob(currentUser?.dob || ""); setIsEditingDob(true); } className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
@@ -13565,14 +13565,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         } else if (e.key === "Escape") {
                                           setIsEditingLocation(false);
                                         }
-                                      }}
+                                      }
                                     />
                                     <button
                                       onClick={async (e) => {
                                         e.stopPropagation();
                                         await handleUpdateProfile({ location: newLocation });
                                         setIsEditingLocation(false);
-                                      }}
+                                      }
                                       className="absolute right-2 p-1 hover:bg-white/10 rounded-md transition-all"
                                       data-testid="button-save-location"
                                     >
@@ -13582,7 +13582,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.location && currentUser.location !== "empty" ? currentUser.location : ""}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); } className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
@@ -13602,7 +13602,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   onClick={() => {
                                     setTabWithAuthCheck("dashboard");
                                     setIsNavOpen(false);
-                                  }}
+                                  }
                                   className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
                                   data-testid="nav-dashboard"
                                 >
@@ -13644,7 +13644,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   } catch (error) {
                                     console.error("Logout error:", error);
                                   }
-                                }}
+                                }
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
                                 data-testid="nav-logout"
                               >
@@ -13659,7 +13659,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <button
                           onClick={() => {
                             window.location.href = "/login";
-                          }}
+                          }
                           className="w-full px-6 py-3 bg-white text-blue-900 hover:bg-blue-50 rounded-lg transition-colors font-semibold text-center"
                           data-testid="nav-login"
                         >
@@ -13757,7 +13757,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onChange={(e) => {
                                       const value = e.target.value.replace(/\D/g, '');
                                       setVerificationOtp(value);
-                                    }}
+                                    }
                                     className="w-full bg-gray-800 border-gray-600 text-white text-center text-lg tracking-widest"
                                     data-testid="input-verification-code"
                                   />
@@ -13784,7 +13784,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       setVerificationCodeSent(false);
                                       setVerificationOtp("");
                                       setVerificationError("");
-                                    }}
+                                    }
                                     className="w-full py-2 text-gray-400 hover:text-white text-sm transition-colors"
                                     data-testid="button-resend-code"
                                   >
@@ -13818,7 +13818,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsNavOpen(!isNavOpen);
-                  }}
+                  }
                   className="md:hidden fixed top-4 right-4 z-50 w-10 h-10 flex flex-col items-center justify-center gap-1.5 bg-transparent hover:bg-black/10 dark:hover:bg-white/10 rounded-lg transition-all duration-300"
                   data-testid="button-nav-toggle"
                 >
@@ -13838,13 +13838,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       ? "scale-90 -translate-x-[70%] rounded-tr-3xl shadow-2xl"
                       : "scale-100 translate-x-0"
                   }`}
-                  style={{
+                  style={
                     transformOrigin: "right center",
-                  }}
+                  }
                 >
                   {/* World Map Section - At top of main content */}
                   {!searchResults && (
-                    <div className="w-full flex items-center justify-center py-3" style={{ background: theme === 'dark' ? '#1a1a1a' : '#e3f2fd' }}>
+                    <div className="w-full flex items-center justify-center py-3" style={ background: theme === 'dark' ? '#1a1a1a' : '#e3f2fd' }>
                       {/* Container for WorldMap - full width on mobile, constrained on desktop */}
                       <div className="w-full md:max-w-lg flex items-center justify-center">
                         <WorldMap />
@@ -13907,12 +13907,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             const value = e.target.value;
                             setSearchQuery(value);
                             setIsSearchActive(value.length > 0);
-                          }}
+                          }
                           onKeyPress={async (e) => {
                             if (e.key === "Enter" && searchQuery.trim()) {
                               await handleSearch();
                             }
-                          }}
+                          }
                           className={`w-full transition-all duration-300 bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-400 pr-12 text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                             isSearchActive
                               ? "h-14 rounded-xl"
@@ -13945,12 +13945,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               onChange={(e) => {
                                 const value = e.target.value;
                                 setSearchQuery(value);
-                              }}
+                              }
                               onKeyPress={async (e) => {
                                 if (e.key === "Enter" && searchQuery.trim()) {
                                   await handleSearch();
                                 }
-                              }}
+                              }
                               className="flex-1 bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-400 h-10 text-sm"
                             />
                             <Button
@@ -13973,7 +13973,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 setSearchQuery("");
                                 setIsSearchActive(false);
                                 setSearchResults("");
-                              }}
+                              }
                             >
                               <X className="h-4 w-4" />
                             </Button>
@@ -14068,7 +14068,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                                 console.warn("Failed to fetch chart data for timeframe:", error);
                                                               }
                                                             }
-                                                          }}
+                                                          }
                                                           data-testid={`button-timeframe-${tf}`}
                                                           className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                                                             selectedTimeframe === tf
@@ -14106,19 +14106,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                                 <div className="h-56 w-full">
                                                   <ResponsiveContainer width="100%" height="100%">
-                                                    <LineChart data={priceChartData} margin={{ top: 5, right: 20, left: 1.5, bottom: 5 }}>
+                                                    <LineChart data={priceChartData} margin={ top: 5, right: 20, left: 1.5, bottom: 5 }>
                                                       <XAxis 
                                                         dataKey="time" 
                                                         axisLine={false}
                                                         tickLine={false}
-                                                        tick={{ fontSize: 10, fill: '#64748b' }}
+                                                        tick={ fontSize: 10, fill: '#64748b' }
                                                         tickCount={8}
                                                       />
                                                       <YAxis 
                                                         domain={['dataMin - 10', 'dataMax + 10']}
                                                         axisLine={false}
                                                         tickLine={false}
-                                                        tick={{ fontSize: 10, fill: '#64748b' }}
+                                                        tick={ fontSize: 10, fill: '#64748b' }
                                                         width={35}
                                                         tickFormatter={(value) => `₹${(value/1000).toFixed(0)}K`}
                                                       />
@@ -14127,7 +14127,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           if (!active || !payload || !payload.length) return null;
                                                           const value = payload[0].value;
                                                           return (
-                                                            <div style={{
+                                                            <div style={
                                                               backgroundColor: '#1e293b',
                                                               border: '1px solid #334155',
                                                               borderRadius: '6px',
@@ -14139,21 +14139,21 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                               display: 'flex',
                                                               alignItems: 'center',
                                                               gap: '12px'
-                                                            }}>
-                                                              <span style={{ fontSize: '13px', fontWeight: '500' }}>
+                                                            }>
+                                                              <span style={ fontSize: '13px', fontWeight: '500' }>
                                                                 ₹{Number(value).toFixed(2)}
                                                               </span>
-                                                              <div style={{
+                                                              <div style={
                                                                 width: '1px',
                                                                 height: '20px',
                                                                 backgroundColor: '#475569'
-                                                              }}></div>
-                                                              <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                                                              }></div>
+                                                              <span style={ fontSize: '12px', color: '#94a3b8' }>
                                                                 {label}
                                                               </span>
                                                             </div>
                                                           );
-                                                        }}
+                                                        }
                                                       />
                                                       <Line 
                                                         type="linear" 
@@ -14161,7 +14161,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         stroke="#ef4444"
                                                         strokeWidth={2}
                                                         dot={false}
-                                                        activeDot={{ r: 4, fill: '#ef4444' }}
+                                                        activeDot={ r: 4, fill: '#ef4444' }
                                                       />
                                                       {currentPrice > 0 && (
                                                         <ReferenceLine 
@@ -14238,7 +14238,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         })
                                                         .finally(() => setIsWatchlistNewsLoading(false));
                                                     }
-                                                  }}
+                                                  }
                                                   data-testid="button-refresh-search-news"
                                                 >
                                                   <RefreshCw className={`h-3 w-3 mr-1 ${isWatchlistNewsLoading ? 'animate-spin' : ''}`} />
@@ -14319,12 +14319,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                                   <div className="h-48 w-full bg-gray-800/30 rounded-lg p-2">
                                                     <ResponsiveContainer width="100%" height="100%">
-                                                      <LineChart data={isNifty50Loading ? [] : nifty50FormattedData} margin={{ top: 5, right: 15, left: 50, bottom: 5 }}>
+                                                      <LineChart data={isNifty50Loading ? [] : nifty50FormattedData} margin={ top: 5, right: 15, left: 50, bottom: 5 }>
                                                         <XAxis 
                                                           dataKey="time" 
                                                           axisLine={false}
                                                           tickLine={false}
-                                                          tick={{ fontSize: 9, fill: '#64748b' }}
+                                                          tick={ fontSize: 9, fill: '#64748b' }
                                                           tickCount={5}
                                                         />
                                                         <YAxis 
@@ -14332,7 +14332,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           type="number"
                                                           axisLine={false}
                                                           tickLine={false}
-                                                          tick={{ fontSize: 9, fill: '#64748b' }}
+                                                          tick={ fontSize: 9, fill: '#64748b' }
                                                           width={10}
                                                         />
                                                         <Tooltip 
@@ -14340,7 +14340,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                             if (!active || !payload || !payload.length) return null;
                                                             const value = payload[0].value;
                                                             return (
-                                                              <div style={{
+                                                              <div style={
                                                                 backgroundColor: '#1e293b',
                                                                 border: '1px solid #334155',
                                                                 borderRadius: '6px',
@@ -14352,21 +14352,21 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                                 display: 'flex',
                                                                 alignItems: 'center',
                                                                 gap: '12px'
-                                                              }}>
-                                                                <span style={{ fontSize: '13px', fontWeight: '500' }}>
+                                                              }>
+                                                                <span style={ fontSize: '13px', fontWeight: '500' }>
                                                                   ₹{Number(value).toFixed(2)}
                                                                 </span>
-                                                                <div style={{
+                                                                <div style={
                                                                   width: '1px',
                                                                   height: '20px',
                                                                   backgroundColor: '#475569'
-                                                                }}></div>
-                                                                <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                                                                }></div>
+                                                                <span style={ fontSize: '12px', color: '#94a3b8' }>
                                                                   {label}
                                                                 </span>
                                                               </div>
                                                             );
-                                                          }}
+                                                          }
                                                         />
                                                         <Line 
                                                           type="linear" 
@@ -14374,7 +14374,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           stroke="#ef4444"
                                                           strokeWidth={2}
                                                           dot={false}
-                                                          activeDot={{ r: 4, fill: '#ef4444' }}
+                                                          activeDot={ r: 4, fill: '#ef4444' }
                                                         />
                                                         <ReferenceLine 
                                                           y={getNifty50Baseline()} 
@@ -14424,12 +14424,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                                   <div className="h-48 w-full bg-gray-800/30 rounded-lg p-2">
                                                     <ResponsiveContainer width="100%" height="100%">
-                                                      <LineChart data={isNiftyBankLoading ? [] : niftyBankFormattedData} margin={{ top: 5, right: 15, left: 50, bottom: 5 }}>
+                                                      <LineChart data={isNiftyBankLoading ? [] : niftyBankFormattedData} margin={ top: 5, right: 15, left: 50, bottom: 5 }>
                                                         <XAxis 
                                                           dataKey="time" 
                                                           axisLine={false}
                                                           tickLine={false}
-                                                          tick={{ fontSize: 9, fill: '#64748b' }}
+                                                          tick={ fontSize: 9, fill: '#64748b' }
                                                           tickCount={5}
                                                         />
                                                         <YAxis 
@@ -14437,7 +14437,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           type="number"
                                                           axisLine={false}
                                                           tickLine={false}
-                                                          tick={{ fontSize: 9, fill: '#64748b' }}
+                                                          tick={ fontSize: 9, fill: '#64748b' }
                                                           width={10}
                                                         />
                                                         <Tooltip 
@@ -14445,7 +14445,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                             if (!active || !payload || !payload.length) return null;
                                                             const value = payload[0].value;
                                                             return (
-                                                              <div style={{
+                                                              <div style={
                                                                 backgroundColor: '#1e293b',
                                                                 border: '1px solid #334155',
                                                                 borderRadius: '6px',
@@ -14457,21 +14457,21 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                                 display: 'flex',
                                                                 alignItems: 'center',
                                                                 gap: '12px'
-                                                              }}>
-                                                                <span style={{ fontSize: '13px', fontWeight: '500' }}>
+                                                              }>
+                                                                <span style={ fontSize: '13px', fontWeight: '500' }>
                                                                   ₹{Number(value).toFixed(2)}
                                                                 </span>
-                                                                <div style={{
+                                                                <div style={
                                                                   width: '1px',
                                                                   height: '20px',
                                                                   backgroundColor: '#475569'
-                                                                }}></div>
-                                                                <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                                                                }></div>
+                                                                <span style={ fontSize: '12px', color: '#94a3b8' }>
                                                                   {label}
                                                                 </span>
                                                               </div>
                                                             );
-                                                          }}
+                                                          }
                                                         />
                                                         <Line 
                                                           type="linear" 
@@ -14479,7 +14479,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           stroke="#10b981"
                                                           strokeWidth={2}
                                                           dot={false}
-                                                          activeDot={{ r: 4, fill: '#10b981' }}
+                                                          activeDot={ r: 4, fill: '#10b981' }
                                                         />
                                                         <ReferenceLine 
                                                           y={getNiftyBankBaseline()} 
@@ -14508,7 +14508,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     onChange={(e) => {
                                                       setWatchlistSearchQuery(e.target.value);
                                                       searchWatchlistStocks(e.target.value);
-                                                    }}
+                                                    }
                                                     className="h-8 text-xs bg-gray-800 border-gray-600 text-gray-200 placeholder:text-gray-500"
                                                     data-testid="input-watchlist-search"
                                                   />
@@ -14528,7 +14528,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                             onClick={() => {
                                                               addToWatchlist(result);
                                                               setWatchlistSearchQuery('');
-                                                            }}
+                                                            }
                                                             className="ml-2 flex-shrink-0 text-gray-400 hover:text-green-400 transition-colors p-1"
                                                             data-testid={`button-add-watchlist-${idx}`}
                                                           >
@@ -14566,7 +14566,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         onClick={(e) => {
                                                           e.stopPropagation();
                                                           removeFromWatchlist(stock.symbol);
-                                                        }}
+                                                        }
                                                         className="text-gray-500 hover:text-red-400 transition-colors p-1"
                                                         data-testid={`button-remove-watchlist-${idx}`}
                                                       >
@@ -14600,7 +14600,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         setWatchlistNews(newsItems.slice(0, 20));
                                                       })
                                                       .finally(() => setIsWatchlistNewsLoading(false));
-                                                  }}
+                                                  }
                                                   data-testid="button-refresh-news"
                                                 >
                                                   <RefreshCw className={`h-3 w-3 mr-1 ${isWatchlistNewsLoading ? 'animate-spin' : ''}`} />
@@ -14673,7 +14673,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           } finally {
                                                             setIsWatchlistQuarterlyLoading(false);
                                                           }
-                                                        }}
+                                                        }
                                                         data-testid="button-refresh-quarterly"
                                                         className="h-7 px-2"
                                                       >
@@ -14734,17 +14734,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       <>
                                                         <div className="h-40 w-full mb-3">
                                                           <ResponsiveContainer width="100%" height="100%">
-                                                            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
+                                                            <AreaChart data={chartData} margin={ top: 10, right: 10, left: 10, bottom: 20 }>
                                                               <defs>
                                                                 <linearGradient id={`grad-${searchResultsNewsSymbol}`} x1="0" y1="0" x2="0" y2="1">
                                                                   <stop offset="0%" stopColor={trendColor} stopOpacity={0.4} />
                                                                   <stop offset="100%" stopColor={trendColor} stopOpacity={0.05} />
                                                                 </linearGradient>
                                                               </defs>
-                                                              <XAxis dataKey="quarter" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
-                                                              <YAxis tick={{ fontSize: 10, fill: '#6b7280' }} tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K Cr`} axisLine={false} tickLine={false} />
+                                                              <XAxis dataKey="quarter" tick={ fontSize: 11, fill: '#9ca3af' } axisLine={false} tickLine={false} />
+                                                              <YAxis tick={ fontSize: 10, fill: '#6b7280' } tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K Cr`} axisLine={false} tickLine={false} />
                                                               <Tooltip 
-                                                                contentStyle={{ background: '#1f2937', border: '1px solid #374151', borderRadius: '6px', fontSize: '11px' }}
+                                                                contentStyle={ background: '#1f2937', border: '1px solid #374151', borderRadius: '6px', fontSize: '11px' }
                                                                 formatter={(value: any, name: any, props: any) => [`₹${Number(value).toLocaleString()} Cr`, 'Revenue']}
                                                               />
                                                               <Area 
@@ -14753,8 +14753,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                                 stroke={trendColor} 
                                                                 strokeWidth={2} 
                                                                 fill={`url(#grad-${searchResultsNewsSymbol})`}
-                                                                dot={{ r: 5, stroke: trendColor, strokeWidth: 2, fill: '#1f2937' }}
-                                                                activeDot={{ r: 7, stroke: trendColor, strokeWidth: 2, fill: '#ffffff' }}
+                                                                dot={ r: 5, stroke: trendColor, strokeWidth: 2, fill: '#1f2937' }
+                                                                activeDot={ r: 7, stroke: trendColor, strokeWidth: 2, fill: '#ffffff' }
                                                               />
                                                             </AreaChart>
                                                           </ResponsiveContainer>
@@ -14779,7 +14779,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                                     // Simply set the query which triggers the existing search handler
                                                                     handleSearch(symbol);
                                                                   }
-                                                                }}
+                                                                }
                                                                 className="text-xs text-blue-400 hover:text-blue-300 cursor-pointer"
                                                                 data-testid="button-ai-full-report"
                                                               >
@@ -14853,12 +14853,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   >
                                                     <AreaChart
                                                       data={chartData}
-                                                      margin={{
+                                                      margin={
                                                         top: 20,
                                                         right: 20,
                                                         left: 10,
                                                         bottom: 5,
-                                                      }}
+                                                      }
                                                     >
                                                       <defs>
                                                         <linearGradient
@@ -14890,10 +14890,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       <YAxis
                                                         axisLine={false}
                                                         tickLine={false}
-                                                        tick={{
+                                                        tick={
                                                           fontSize: 10,
                                                           fill: "#64748b",
-                                                        }}
+                                                        }
                                                         tickFormatter={(
                                                           value,
                                                         ) =>
@@ -14913,7 +14913,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         className="text-slate-500 dark:text-slate-400"
                                                       />
                                                       <Tooltip
-                                                        contentStyle={{
+                                                        contentStyle={
                                                           background:
                                                             "var(--background)",
                                                           border:
@@ -14923,7 +14923,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                             "var(--foreground)",
                                                           fontSize: "11px",
                                                           padding: "6px 10px",
-                                                        }}
+                                                        }
                                                         formatter={(
                                                           value: any,
                                                         ) => [
@@ -14947,12 +14947,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         strokeWidth={2}
                                                         fill="url(#aiAreaGradient)"
                                                         dot={false}
-                                                        activeDot={{
+                                                        activeDot={
                                                           r: 4,
                                                           stroke: "#000000",
                                                           strokeWidth: 1,
                                                           fill: "#ffffff",
-                                                        }}
+                                                        }
                                                       />
                                                     </AreaChart>
                                                   </ResponsiveContainer>
@@ -15024,12 +15024,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   >
                                                     <AreaChart
                                                       data={chartData}
-                                                      margin={{
+                                                      margin={
                                                         top: 10,
                                                         right: 10,
                                                         left: 10,
                                                         bottom: 20,
-                                                      }}
+                                                      }
                                                     >
                                                       <defs>
                                                         <linearGradient
@@ -15055,30 +15055,30 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         dataKey="quarter"
                                                         axisLine={false}
                                                         tickLine={false}
-                                                        tick={{
+                                                        tick={
                                                           fontSize: 11,
                                                           fill: "#9ca3af",
-                                                        }}
+                                                        }
                                                       />
                                                       <YAxis
                                                         axisLine={false}
                                                         tickLine={false}
-                                                        tick={{
+                                                        tick={
                                                           fontSize: 10,
                                                           fill: "#6b7280",
-                                                        }}
+                                                        }
                                                         tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K Cr`}
                                                         domain={['dataMin - 1000', 'dataMax + 1000']}
                                                       />
                                                       <Tooltip
-                                                        contentStyle={{
+                                                        contentStyle={
                                                           background: "#1f2937",
                                                           border: "1px solid #374151",
                                                           borderRadius: "8px",
                                                           color: "#f3f4f6",
                                                           fontSize: "12px",
                                                           padding: "8px 12px",
-                                                        }}
+                                                        }
                                                         formatter={(value: any, name: any, props: any) => [
                                                           `₹${Number(value).toLocaleString()} Cr (${props.payload.changePercent >= 0 ? '+' : ''}${props.payload.changePercent.toFixed(2)}%)`,
                                                           "Revenue"
@@ -15091,18 +15091,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         stroke={trendColor}
                                                         strokeWidth={2}
                                                         fill="url(#companyInsightsGradient)"
-                                                        dot={{
+                                                        dot={
                                                           r: 4,
                                                           stroke: trendColor,
                                                           strokeWidth: 2,
                                                           fill: "#1f2937",
-                                                        }}
-                                                        activeDot={{
+                                                        }
+                                                        activeDot={
                                                           r: 6,
                                                           stroke: trendColor,
                                                           strokeWidth: 2,
                                                           fill: "#ffffff",
-                                                        }}
+                                                        }
                                                       />
                                                     </AreaChart>
                                                   </ResponsiveContainer>
@@ -15276,7 +15276,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       setSearchQuery("");
                                       setIsSearchActive(false);
                                       setSearchResults("");
-                                    }}
+                                    }
                                     className="text-gray-400 hover:text-gray-200"
                                   >
                                     <X className="h-4 w-4 mr-2" />
@@ -15354,7 +15354,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               setSearchResultsNewsSymbol(firstStock.symbol);
                             }
                             setTimeout(() => setIsWatchlistLoading(false), 300);
-                          }}
+                          }
                           data-testid="button-watchlist"
                         >
                           <div className="flex items-center justify-center gap-1">
@@ -15415,7 +15415,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           onClick={() => {
                             setIsSearchActive(true);
                             setSearchResults("[CHART:TRADE]");
-                          }}
+                          }
                           data-testid="button-trade"
                         >
                           <div className="flex items-center justify-center gap-1">
@@ -15471,12 +15471,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 const value = e.target.value;
                                 setSearchQuery(value);
                                 setIsSearchActive(value.length > 0);
-                              }}
+                              }
                               onKeyPress={async (e) => {
                                 if (e.key === "Enter" && searchQuery.trim()) {
                                   await handleSearch();
                                 }
-                              }}
+                              }
                               className="w-full h-12 bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-400 pr-24 text-xs rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg mt-[0px] mb-[0px]"
                             />
                             {searchQuery && (
@@ -15488,7 +15488,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   setSearchQuery("");
                                   setIsSearchActive(false);
                                   setSearchResults("");
-                                }}
+                                }
                                 data-testid="button-clear-search"
                               >
                                 <X className="h-4 w-4" />
@@ -15516,7 +15516,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 setSearchQuery("");
                                 setIsSearchActive(false);
                                 setSearchResults("");
-                              }}
+                              }
                             />
                           )}
 
@@ -15524,10 +15524,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {isSearchActive && (
                             <div
                               className="mt-2 flex gap-2 overflow-x-auto scrollbar-hide pb-2 relative z-50"
-                              style={{
+                              style={
                                 scrollbarWidth: "none",
                                 msOverflowStyle: "none",
-                              }}
+                              }
                             >
                               <Button
                                 variant="secondary"
@@ -15544,7 +15544,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     setSearchResultsNewsSymbol(firstStock.symbol);
                                   }
                                   setTimeout(() => setIsWatchlistLoading(false), 300);
-                                }}
+                                }
                                 data-testid="button-watchlist-mobile"
                               >
                                 <div className="flex items-center justify-center gap-1">
@@ -15605,7 +15605,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 onClick={() => {
                                   setIsSearchActive(true);
                                   setSearchResults("[CHART:TRADE]");
-                                }}
+                                }
                                 data-testid="button-trade-challenge-mobile"
                               >
                                 <div className="flex items-center gap-1">
@@ -15652,7 +15652,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       setSearchQuery("");
                                       setIsSearchActive(false);
                                       setSearchResults("");
-                                    }}
+                                    }
                                     className="text-gray-400 hover:text-gray-200 h-6 w-6 p-0"
                                   >
                                     <X className="h-4 w-4" />
@@ -15690,10 +15690,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             </div>
                                             <div className="h-24 w-full bg-gray-800/30 rounded p-1">
                                               <ResponsiveContainer width="100%" height="100%">
-                                                <LineChart data={isNifty50Loading ? [] : nifty50FormattedData} margin={{ top: 2, right: 10, left: 30, bottom: 2 }}>
-                                                  <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 8, fill: '#64748b' }} tickCount={3} />
-                                                  <YAxis domain={['dataMin - 50', 'dataMax + 50']} axisLine={false} tickLine={false} tick={{ fontSize: 8, fill: '#64748b' }} width={8} />
-                                                  <Tooltip content={({ active, payload }) => {if (!active || !payload?.length) return null; const value = payload[0].value; return <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '4px', color: '#e2e8f0', padding: '4px 8px', fontSize: '11px' }}>₹{Number(value).toFixed(2)}</div>;}} />
+                                                <LineChart data={isNifty50Loading ? [] : nifty50FormattedData} margin={ top: 2, right: 10, left: 30, bottom: 2 }>
+                                                  <XAxis dataKey="time" axisLine={false} tickLine={false} tick={ fontSize: 8, fill: '#64748b' } tickCount={3} />
+                                                  <YAxis domain={['dataMin - 50', 'dataMax + 50']} axisLine={false} tickLine={false} tick={ fontSize: 8, fill: '#64748b' } width={8} />
+                                                  <Tooltip content={({ active, payload }) => {if (!active || !payload?.length) return null; const value = payload[0].value; return <div style={ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '4px', color: '#e2e8f0', padding: '4px 8px', fontSize: '11px' }>₹{Number(value).toFixed(2)}</div>;} />
                                                   <Line type="linear" dataKey="price" stroke="#ef4444" strokeWidth={1.5} dot={false} />
                                                 </LineChart>
                                               </ResponsiveContainer>
@@ -15713,16 +15713,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               </div>
                                               <div className="flex items-center gap-0.5">
                                                 {['1D', '5D', '1M'].map((tf) => (
-                                                  <Button key={tf} variant="ghost" size="sm" onClick={() => {}} className={`px-1 py-0 text-xs h-5 bg-blue-600/20 text-blue-400`}>
+                                                  <Button key={tf} variant="ghost" size="sm" onClick={() => {} className={`px-1 py-0 text-xs h-5 bg-blue-600/20 text-blue-400`}>
                                                     {tf}
                                                   </Button>
                                                 ))}
                                               </div>
                                               <div className="h-24 w-full bg-gray-800/30 rounded p-1">
                                                 <ResponsiveContainer width="100%" height="100%">
-                                                  <LineChart data={[]} margin={{ top: 2, right: 10, left: 30, bottom: 2 }}>
-                                                    <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 8 }} tickCount={3} />
-                                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 8 }} width={8} />
+                                                  <LineChart data={[]} margin={ top: 2, right: 10, left: 30, bottom: 2 }>
+                                                    <XAxis dataKey="time" axisLine={false} tickLine={false} tick={ fontSize: 8 } tickCount={3} />
+                                                    <YAxis axisLine={false} tickLine={false} tick={ fontSize: 8 } width={8} />
                                                     <Line type="linear" dataKey="price" stroke="#22c55e" strokeWidth={1.5} dot={false} />
                                                   </LineChart>
                                                 </ResponsiveContainer>
@@ -15949,7 +15949,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 const diff = index - currentCardIndex;
                                 // Navigate to the selected card (this would need to be implemented in SwipeableCardStack)
                                 setCurrentCardIndex(index);
-                              }}
+                              }
                               className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer hover:scale-110 ${
                                 index === currentCardIndex
                                   ? "bg-white scale-125"
@@ -15993,9 +15993,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* Sidebar */}
                         <div
                           className="fixed top-0 right-0 h-full w-96 bg-slate-900 z-50 shadow-2xl transition-transform duration-500 ease-out"
-                          style={{
+                          style={
                             animation: "slideInFromRight 0.5s ease-out",
-                          }}
+                          }
                         >
                           {/* Header with close button */}
                           <div className="flex items-center justify-between p-4 border-b border-slate-700">
@@ -16428,7 +16428,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             setJournalSearchType(e.target.value as 'STOCK' | 'COMMODITY' | 'F&O');
                                             setStockSearchQuery('');
                                             setSearchedInstruments([]);
-                                          }}
+                                          }
                                           className="h-7 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-gray-200 dark:border-slate-700 rounded px-2 text-xs font-medium"
                                           data-testid="select-journal-type"
                                         >
@@ -16509,7 +16509,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       });
                                                       setShowStockSearch(false);
                                                       setStockSearchQuery("");
-                                                    }}
+                                                    }
                                                     className={`w-full text-left px-3 py-2 rounded text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
                                                       selectedJournalSymbol === `${instrument.exchange}:${instrument.symbol}`
                                                         ? "bg-blue-100 dark:bg-blue-900 font-medium"
@@ -16621,7 +16621,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               });
                                               setShowStockSearch(false);
                                               setStockSearchQuery("");
-                                            }}
+                                            }
                                             className={`w-full text-left px-3 py-2 rounded text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
                                               selectedJournalSymbol === `${instrument.exchange}:${instrument.symbol}`
                                                 ? "bg-blue-100 dark:bg-blue-900 font-medium"
@@ -16721,7 +16721,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         if (heatmapSelectedDate) {
                                           fetchHeatmapChartData(newSymbol, heatmapSelectedDate);
                                         }
-                                      }}
+                                      }
                                       data-testid="button-next-symbol"
                                     >
                                       <ChevronRight className="w-3 h-3" />
@@ -16756,7 +16756,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               setJournalChartTimeframe(tf.value);
                                               setSelectedJournalInterval(tf.value); // ← CRITICAL: For countdown calculation
                                               setShowJournalTimeframeDropdown(false);
-                                            }}
+                                            }
                                             data-testid={`timeframe-option-${tf.value}`}
                                           >
                                             {tf.label}
@@ -16795,7 +16795,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               setHeatmapChartTimeframe(tf.value);
                                               setSelectedJournalInterval(tf.value); // ← CRITICAL: For countdown calculation
                                               setShowHeatmapTimeframeDropdown(false);
-                                            }}
+                                            }
                                             data-testid={`heatmap-timeframe-option-${tf.value}`}
                                           >
                                             {tf.label}
@@ -16961,7 +16961,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                                   // Use separate heatmap chart - no conflict with search chart!
                                                   fetchHeatmapChartData(symbolForDate, date);
-                                                }}
+                                                }
                                                 className={`h-6 text-xs font-medium rounded border ${color} ${heatmapSelectedDate === date ? 'ring-2 ring-purple-500 ring-offset-1' : 'border-gray-300 dark:border-gray-600'} hover:opacity-80 transition`}
                                                 title={`${date}: P&L ₹${pnl.toLocaleString('en-IN')}`}
                                                 data-testid={`button-heatmap-date-${date}`}
@@ -16984,7 +16984,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onClick={() => {
                                       console.log(`❌ Switching from heatmap to manual mode`);
                                       setJournalChartMode('search');
-                                    }}
+                                    }
                                     title="Switch to manual mode"
                                     data-testid="button-exit-heatmap-mode"
                                   >
@@ -16998,7 +16998,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onClick={() => {
                                       console.log(`🔶 SEARCH CHART: Fetching ${getJournalTimeframeLabel(journalChartTimeframe)} data for manual search`);
                                       fetchJournalChartData();
-                                    }}
+                                    }
                                     disabled={journalChartLoading}
                                     variant="outline"
                                     size="icon"
@@ -17480,7 +17480,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                 if (typeof window !== "undefined") {
                                                   localStorage.setItem("indicatorTimeframe", tf.value);
                                                 }
-                                              }}
+                                              }
                                               className={`px-2 py-1.5 text-xs rounded-md border transition-all duration-200 ${
                                                 indicatorTimeframe === tf.value
                                                   ? "bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600"
@@ -17496,7 +17496,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <button
                                               onClick={() => {
                                                 // Clicking on custom timeframe shows it's selected
-                                              }}
+                                              }
                                               className="px-2 py-1.5 text-xs rounded-md border bg-emerald-500 text-white border-emerald-500 transition-all duration-200 relative group"
                                               data-testid={`timeframe-custom-${indicatorTimeframe}`}
                                               title={`Custom: ${indicatorTimeframe}`}
@@ -17507,7 +17507,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   e.stopPropagation();
                                                   setIndicatorTimeframe("5min");
                                                   localStorage.setItem("indicatorTimeframe", "5min");
-                                                }}
+                                                }
                                                 className="absolute right-0.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
                                                 data-testid="button-remove-custom-timeframe"
                                               >
@@ -17544,7 +17544,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     onClick={() => {
                                                       setCustomTimeframeInput("");
                                                       setIsCustomTimeframeDialogOpen(false);
-                                                    }}
+                                                    }
                                                     className="flex-1 text-xs"
                                                     data-testid="button-cancel-custom-timeframe"
                                                   >
@@ -17561,7 +17561,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         setCustomTimeframeInput("");
                                                         setIsCustomTimeframeDialogOpen(false);
                                                       }
-                                                    }}
+                                                    }
                                                     className="flex-1 text-xs bg-emerald-600 hover:bg-emerald-700 text-white"
                                                     data-testid="button-confirm-custom-timeframe"
                                                   >
@@ -18225,7 +18225,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => setShowJournalInfoModal(true)}
+                              onClick={() => { setShowJournalInfoModal(true); setManualJournalOpen(true); }
                               className="h-7 w-7 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-full"
                               data-testid="button-journal-info"
                               title="Journal Information"
@@ -18240,7 +18240,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         </div>
 
                         <div className="max-h-80 overflow-y-auto overflow-x-auto custom-thin-scrollbar">
-                          <table className="text-xs" style={{minWidth: "100%"}}>
+                          <table className="text-xs" style={minWidth: "100%"}>
                             <thead className="sticky top-0 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
                               <tr>
                                 <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">Time</th>
@@ -18393,7 +18393,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   localStorage.removeItem("zerodha_token"); document.cookie = "zerodha_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
                                   setZerodhaAccessToken(null);
                                   setZerodhaIsConnected(false);
-                                }}
+                                }
                                 title="Disconnect Zerodha"
                               >
                                 <X className="h-4 w-4" />
@@ -18473,7 +18473,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   localStorage.removeItem("angel_one_token");
                                   setAngelOneAccessToken(null);
                                   setAngelOneIsConnected(false);
-                                }}
+                                }
                                 title="Disconnect Angel One"
                               >
                                 <X className="h-4 w-4" />
@@ -18513,7 +18513,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   localStorage.removeItem("dhan_token");
                                   setDhanAccessToken(null);
                                   setDhanIsConnected(false);
-                                }}
+                                }
                                 title="Disconnect Dhan"
                               >
                                 <X className="h-4 w-4" />
@@ -18563,7 +18563,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <div className="absolute inset-0 opacity-10">
                                       <div className="absolute top-[-20%] left-[-20%] w-[140%] h-[140%] rounded-full bg-gradient-to-br from-violet-500 via-transparent to-transparent"></div>
                                     </div>
-                                    <motion.div key={selectedAudioTrack?.id || "none"} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className={`relative w-full aspect-[1.6/1] rounded-2xl shadow-2xl flex flex-col justify-between border border-white/10 overflow-hidden`}>
+                                    <motion.div key={selectedAudioTrack?.id || "none"} initial={ y: 20, opacity: 0 } animate={ y: 0, opacity: 1 } transition={ type: "spring", stiffness: 300, damping: 30 } className={`relative w-full aspect-[1.6/1] rounded-2xl shadow-2xl flex flex-col justify-between border border-white/10 overflow-hidden`}>
                                       {selectedAudioTrack?.youtubeId && (
                                         <div className="absolute inset-0 z-0">
                                           <img 
@@ -18681,10 +18681,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       
                                       {/* Audio Progress Slider */}
                                       <div className="px-1">
-                                        <div className="relative w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden cursor-pointer" onClick={(e) => { if (selectedAudioTrack && youtubePlayerRef.current && duration > 0) { const rect = e.currentTarget.getBoundingClientRect(); const x = e.clientX - rect.left; const clickedProgress = x / rect.width; const newTime = clickedProgress * duration; youtubePlayerRef.current.seekTo(newTime, true); setCurrentTime(newTime); setAudioProgress(clickedProgress * 100); } } }>
+                                        <div className="relative w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden cursor-pointer" onClick={(e) => { if (selectedAudioTrack && youtubePlayerRef.current && duration > 0) { const rect = e.currentTarget.getBoundingClientRect(); const x = e.clientX - rect.left; const clickedProgress = x / rect.width; const newTime = clickedProgress * duration; youtubePlayerRef.current.seekTo(newTime, true); setCurrentTime(newTime); setAudioProgress(clickedProgress * 100); } }>
                                           <div 
                                             className="absolute top-0 left-0 h-full bg-gradient-to-r from-violet-500 to-purple-600 transition-all duration-300"
-                                            style={{ width: `${selectedAudioTrack ? audioProgress : 0}%` }}
+                                            style={ width: `${selectedAudioTrack ? audioProgress : 0}%` }
                                           ></div>
                                         </div>
                                         <div className="flex justify-between mt-1">
@@ -18720,7 +18720,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 setTradingDataByDate({});
                                 setPersonalHeatmapRevision(prev => prev + 1);
                                 console.log(`✅ Switched to ${checked ? 'Preview' : 'Personal'} mode - CLEARED cache, heatmap fetching fresh AWS data...`);
-                              }}
+                              }
                               data-testid="switch-demo-mode"
                               className="scale-75"
                             />
@@ -18760,7 +18760,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     }
                                   }
                                 }, 300);
-                              }}
+                              }
                               onRangeChange={handleDateRangeChange}
                               highlightedDates={activeTagHighlight}
                               refreshTrigger={personalHeatmapRevision}
@@ -18768,7 +18768,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 console.log(`📊 [HOME] Switching to heatmap mode - Symbol: ${symbol}, Date: ${date}`);
                                 setJournalChartMode('heatmap');
                                 fetchHeatmapChartData(symbol, date);
-                              }}
+                              }
                             />
                           ) : (
                             <PersonalHeatmap
@@ -18864,7 +18864,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                           return (
                             <svg
-                              style={{
+                              style={
                                 position: 'absolute',
                                 top: 0,
                                 left: 0,
@@ -18872,7 +18872,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 height: `${scrollHeight}px`,
                                 pointerEvents: 'none',
                                 zIndex: 10,
-                              }}
+                              }
                             >
                               {/* Define bright gradient for the curved lines */}
                               <defs>
@@ -19448,12 +19448,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="w-full bg-white/20 rounded-full h-2">
                                 <div
                                   className="bg-white rounded-full h-2 transition-all duration-1000"
-                                  style={{
+                                  style={
                                     width: `${Math.min(
                                       heatmapMetrics.winRate,
                                       100,
                                     )}%`,
-                                  }}
+                                  }
                                 ></div>
                               </div>
                             </div>
@@ -19543,12 +19543,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         return (
                                         <AreaChart
                                         data={chartData}
-                                        margin={{
+                                        margin={
                                           top: 40,
                                           right: 30,
                                           left: 0,
                                           bottom: 5,
-                                        }}
+                                        }
                                       >
                                         <defs>
                                           <linearGradient
@@ -19580,10 +19580,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <YAxis
                                           axisLine={false}
                                           tickLine={false}
-                                          tick={{
+                                          tick={
                                             fontSize: 12,
                                             fill: theme === 'dark' ? '#cbd5e1' : '#64748b',
-                                          }}
+                                          }
                                           tickFormatter={(value) =>
                                             `${value >= 0 ? "" : "-"}${(
                                               Math.abs(value) / 1000
@@ -19596,14 +19596,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           className="text-slate-500 dark:text-slate-400"
                                         />
                                         <Tooltip
-                                          contentStyle={{
+                                          contentStyle={
                                             background: tooltipBg,
                                             border: `1px solid ${theme === 'dark' ? '#334155' : '#e2e8f0'}`,
                                             borderRadius: "12px",
                                             color: tooltipText,
                                             fontSize: "12px",
                                             padding: "8px 12px",
-                                          }}
+                                          }
                                           formatter={(
                                             value: any,
                                             name: any,
@@ -19626,7 +19626,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               return `${data.formattedDate} • ${data.trades} trades`;
                                             }
                                             return label;
-                                          }}
+                                          }
                                         />
                                         <Area
                                           type="natural"
@@ -19635,12 +19635,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           strokeWidth={3}
                                           fill="url(#areaGradientPositive)"
                                           dot={false}
-                                          activeDot={{
+                                          activeDot={
                                             r: 6,
                                             fill: chartStrokeColor,
                                             stroke: "white",
                                             strokeWidth: 2,
-                                          }}
+                                          }
                                           isAnimationActive={true}
                                           animationDuration={600}
                                           animationEasing="ease-in-out"
@@ -19709,12 +19709,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               ? "bg-gradient-to-r from-emerald-400 to-green-500"
                                               : "bg-gradient-to-r from-red-400 to-rose-500"
                                           }`}
-                                          style={{
+                                          style={
                                             width: `${Math.min(
                                               tag.winRate,
                                               100,
                                             )}%`,
-                                          }}
+                                          }
                                         ></div>
                                       </div>
                                       <div className="text-xs text-slate-500 mt-1">
@@ -20529,7 +20529,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               onChange={(e) => {
                                 setBrokerSearchInput(e.target.value);
                                 setShowBrokerSuggestions(true);
-                              }}
+                              }
                               onFocus={() => setShowBrokerSuggestions(true)}
                               onBlur={() => setTimeout(() => setShowBrokerSuggestions(false), 200)}
                               className="h-8 w-56 text-xs"
@@ -20544,7 +20544,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       e.preventDefault();
                                       setBrokerSearchInput(broker);
                                       setShowBrokerSuggestions(false);
-                                    }}
+                                    }
                                     className="px-3 py-1.5 text-xs cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/30"
                                     data-testid={`broker-suggestion-${broker}`}
                                   >
@@ -20609,7 +20609,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   }
                                 }
                               }
-                            }}
+                            }
                             data-testid="button-save-format"
                             className="h-8 text-xs px-2"
                           >
@@ -20664,7 +20664,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       }
                                     }));
                                   }
-                                }}
+                                }
                               >
                                 {buildModeData.positions.time.length > 0 ? (
                                   <div 
@@ -20672,7 +20672,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onDragStart={(e) => {
                                       e.dataTransfer.setData("sourceField", "time");
                                       e.dataTransfer.setData("sourceValue", buildModeData.displayValues.time);
-                                    }}
+                                    }
                                     className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
                                   >
                                     <div className="flex items-center gap-1">
@@ -20715,7 +20715,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           }
                                         }
                                       }
-                                    }}
+                                    }
                                     className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                                     data-testid="add-time"
                                     title="Select text and click +"
@@ -20748,7 +20748,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       }
                                     }));
                                   }
-                                }}
+                                }
                               >
                                 {buildModeData.positions.order.length > 0 ? (
                                   <div 
@@ -20756,7 +20756,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onDragStart={(e) => {
                                       e.dataTransfer.setData("sourceField", "order");
                                       e.dataTransfer.setData("sourceValue", buildModeData.displayValues.order);
-                                    }}
+                                    }
                                     className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
                                   >
                                     <div className="flex items-center gap-1">
@@ -20799,7 +20799,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           }
                                         }
                                       }
-                                    }}
+                                    }
                                     className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                                     data-testid="add-order"
                                     title="Select text and click +"
@@ -20832,7 +20832,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       }
                                     }));
                                   }
-                                }}
+                                }
                               >
                                 {buildModeData.positions.symbol.length > 0 ? (
                                   <div 
@@ -20840,7 +20840,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onDragStart={(e) => {
                                       e.dataTransfer.setData("sourceField", "symbol");
                                       e.dataTransfer.setData("sourceValue", buildModeData.displayValues.symbol);
-                                    }}
+                                    }
                                     className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
                                   >
                                     <div className="flex items-center gap-1">
@@ -20883,7 +20883,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           }
                                         }
                                       }
-                                    }}
+                                    }
                                     className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                                     data-testid="add-symbol"
                                     title="Select text and click +"
@@ -20916,7 +20916,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       }
                                     }));
                                   }
-                                }}
+                                }
                               >
                                 {buildModeData.positions.type.length > 0 ? (
                                   <div 
@@ -20924,7 +20924,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onDragStart={(e) => {
                                       e.dataTransfer.setData("sourceField", "type");
                                       e.dataTransfer.setData("sourceValue", buildModeData.displayValues.type);
-                                    }}
+                                    }
                                     className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
                                   >
                                     <div className="flex items-center gap-1">
@@ -20967,7 +20967,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           }
                                         }
                                       }
-                                    }}
+                                    }
                                     className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                                     data-testid="add-type"
                                     title="Select text and click +"
@@ -21000,7 +21000,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       }
                                     }));
                                   }
-                                }}
+                                }
                               >
                                 {buildModeData.positions.qty.length > 0 ? (
                                   <div 
@@ -21008,7 +21008,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onDragStart={(e) => {
                                       e.dataTransfer.setData("sourceField", "qty");
                                       e.dataTransfer.setData("sourceValue", buildModeData.displayValues.qty);
-                                    }}
+                                    }
                                     className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
                                   >
                                     <div className="flex items-center gap-1">
@@ -21051,7 +21051,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           }
                                         }
                                       }
-                                    }}
+                                    }
                                     className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                                     data-testid="add-qty"
                                     title="Select text and click +"
@@ -21084,7 +21084,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       }
                                     }));
                                   }
-                                }}
+                                }
                               >
                                 {buildModeData.positions.price.length > 0 ? (
                                   <div 
@@ -21092,7 +21092,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onDragStart={(e) => {
                                       e.dataTransfer.setData("sourceField", "price");
                                       e.dataTransfer.setData("sourceValue", buildModeData.displayValues.price);
-                                    }}
+                                    }
                                     className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
                                   >
                                     <div className="flex items-center gap-1">
@@ -21135,7 +21135,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           }
                                         }
                                       }
-                                    }}
+                                    }
                                     className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                                     data-testid="add-price"
                                     title="Select text and click +"
@@ -21194,7 +21194,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             setActiveFormat(format);
                                             setDetectedFormatLabel(displayLabel);
                                             console.log("✅ Format loaded from table:", displayLabel, format);
-                                          }}
+                                          }
                                           data-testid={`button-use-format-${displayLabel}`}
                                         >
                                           Use
@@ -21219,7 +21219,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               }
                                               console.log("🗑️ Format deleted:", displayLabel);
                                             }
-                                          }}
+                                          }
                                           data-testid={`button-delete-format-${displayLabel}`}
                                         >
                                           <X className="w-3 h-3" />
@@ -21333,7 +21333,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 setIsBuildMode(true);
                                 console.log("✅ Format manually selected:", loadedFormat.label || formatId, loadedFormat);
                               }
-                            }}
+                            }
                             defaultValue=""
                             data-testid="select-load-format"
                             disabled={formatsLoading}
@@ -21383,7 +21383,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 } finally {
                                   setFormatsLoading(false);
                                 }
-                              }}
+                              }
                               data-testid="button-refresh-formats"
                               title="Refresh saved formats"
                             >
@@ -21470,8 +21470,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 }
                               });
                               setIsBuildMode(true);
-                              console.log("🔨 Build mode - auto-extracted from first line with CORRECT word positions", { positions: { timePos, orderPos, symbolPos, typePos, qtyPos, pricePos }, displayValues: { timeVal, orderVal, symbolVal, typeVal, qtyVal, priceVal } });
-                            }}
+                              console.log("🔨 Build mode - auto-extracted from first line with CORRECT word positions", { positions: { timePos, orderPos, symbolPos, typePos, qtyPos, pricePos }, displayValues: { timeVal, orderVal, symbolVal, typeVal, qtyVal, priceVal });
+                            }
                             data-testid="button-build"
                           >
                             <Hammer className="w-3.5 h-3.5" />
@@ -21539,7 +21539,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     setParseErrors([]);
                     // Reset user format selection for fresh start next time
                     setUserSelectedFormatId(null);
-                  }}
+                  }
                   className="h-8 text-xs"
                 >
                   Cancel
@@ -21603,7 +21603,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           </DialogContent>
         </Dialog>
 
-        <TradingJournalModal open={showJournalInfoModal} onOpenChange={(val) => { setShowJournalInfoModal(val); if (!val) setManualJournalOpen(false); }} manualOpen={manualJournalOpen} />
+        <TradingJournalModal open={showJournalInfoModal} onOpenChange={(val) => { setShowJournalInfoModal(val); if (!val) setManualJournalOpen(false); } manualOpen={manualJournalOpen} />
 
 
         {/* Paper Trading (Demo Trading) Modal - Minimalist Design */}
@@ -21675,7 +21675,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           } else {
                             setPaperTradeSearchResults([]);
                           }
-                        }}
+                        }
                         className="h-10 pl-10 text-sm rounded-lg bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                         data-testid="input-paper-trade-search-mobile"
                       />
@@ -21703,7 +21703,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     setPaperTradeLotInput("1");
                                   }
                                   fetchPaperTradePrice(stock);
-                                }}
+                                }
                                 className="w-full text-left px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center justify-between text-sm border-b border-gray-100 dark:border-gray-800 last:border-0"
                                 data-testid={`select-stock-mobile-${stock.symbol}`}
                               >
@@ -21736,7 +21736,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           setPaperTradeQuantity("");
                           setPaperTradeLotInput("");
                           setPaperTradingWsStatus('disconnected');
-                        }}
+                        }
                       >
                         <SelectTrigger className="flex-1 h-10 text-sm rounded-lg" data-testid="select-paper-trade-type-mobile">
                           <SelectValue />
@@ -21752,7 +21752,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         onClick={() => {
                           fetchOptionChainData();
                           setShowOptionChain(true);
-                        }}
+                        }
                         size="icon"
                         variant="outline"
                         className="h-10 w-10 rounded-lg"
@@ -21819,7 +21819,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         return (
                           <>
                             <Button
-                              onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }}
+                              onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }
                               disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                               className="flex-1 h-12 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-base"
                               data-testid="button-paper-buy-mobile"
@@ -21827,7 +21827,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               BUY
                             </Button>
                             <Button
-                              onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }}
+                              onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }
                               disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                               className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-base"
                               data-testid="button-paper-sell-mobile"
@@ -21925,7 +21925,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           setPaperTradeSLEnabled(false);
                                           setPaperTradeSLValue("");
                                           setShowMobilePaperTradeSLDropdown(false);
-                                        }}
+                                        }
                                         size="sm"
                                         variant="outline"
                                         className="flex-1 h-9"
@@ -21949,7 +21949,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             });
                                           }
                                           setShowMobilePaperTradeSLDropdown(false);
-                                        }}
+                                        }
                                         size="sm"
                                         className="flex-1 h-9 bg-orange-500 hover:bg-orange-600 text-white"
                                         data-testid="button-set-paper-sl-mobile"
@@ -22187,7 +22187,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             } else {
                               setPaperTradeSearchResults([]);
                             }
-                          }}
+                          }
                           className="h-8 pl-8 text-xs"
                           data-testid="input-paper-trade-search"
                         />
@@ -22216,7 +22216,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     setPaperTradeLotInput("1");
                                   }
                                   fetchPaperTradePrice(stock);
-                                }}
+                                }
                                 className="w-full text-left px-3 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center justify-between text-xs"
                                 data-testid={`select-stock-${stock.symbol}`}
                               >
@@ -22233,7 +22233,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       onClick={() => {
                         fetchOptionChainData();
                         setShowOptionChain(true);
-                      }}
+                      }
                       size="icon"
                       variant="outline"
                       className="h-8 w-8"
@@ -22262,7 +22262,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         setPaperTradeLotInput("");
                         setPaperTradeSLPrice("");
                         setPaperTradingWsStatus('disconnected');
-                      }}
+                      }
                     >
                       <SelectTrigger className="w-24 h-8 text-xs" data-testid="select-paper-trade-type">
                         <SelectValue />
@@ -22315,7 +22315,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       return (
                         <div className="flex gap-2 items-center justify-end">
                           <Button
-                            onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }}
+                            onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }
                             disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                             size="sm"
                             className="h-8 px-4 bg-green-600 hover:bg-green-700 text-white text-xs"
@@ -22324,7 +22324,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             BUY
                           </Button>
                           <Button
-                            onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }}
+                            onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }
                             disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                             size="sm"
                             className="h-8 px-4 bg-red-600 hover:bg-red-700 text-white text-xs"
@@ -22433,7 +22433,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         });
                                       }
                                       setShowPaperTradeSLDropdown(false);
-                                    }}
+                                    }
                                     size="sm"
                                     className="w-full h-6 text-xs bg-gray-600 hover:bg-gray-700 text-white"
                                     data-testid="button-set-paper-sl"
@@ -22708,7 +22708,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     if (e.key === "Enter") {
                       handlePasscodeSubmit();
                     }
-                  }}
+                  }
                   autoFocus
                   data-testid="input-passcode"
                 />
@@ -22733,7 +22733,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         </Dialog>
 
         {/* Option Chain Modal */}
-        <Dialog open={showOptionChain} onOpenChange={(open) => { setShowOptionChain(open); if (open) { fetchOptionChainData(selectedOptionIndex); } }}>
+        <Dialog open={showOptionChain} onOpenChange={(open) => { setShowOptionChain(open); if (open) { fetchOptionChainData(selectedOptionIndex); }>
           <DialogContent className="w-full max-w-2xl md:max-w-2xl p-0 md:p-0 bg-white dark:bg-gray-900 rounded-lg md:rounded-lg border border-gray-200 dark:border-gray-700">
 
             {/* Desktop Header */}
@@ -22744,7 +22744,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
               {/* Desktop Controls */}
               <div className="flex items-center justify-center gap-2">
-                <Select value={selectedOptionIndex} onValueChange={(val) => { setSelectedOptionIndex(val); setSelectedOptionExpiryDate(""); setOptionChainData(null); setTimeout(() => fetchOptionChainData(val), 0); }}>
+                <Select value={selectedOptionIndex} onValueChange={(val) => { setSelectedOptionIndex(val); setSelectedOptionExpiryDate(""); setOptionChainData(null); setTimeout(() => fetchOptionChainData(val), 0); }>
                   <SelectTrigger className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded text-gray-900 dark:text-white text-xs w-auto" data-testid="select-option-index-desktop">
                     <SelectValue />
                   </SelectTrigger>
@@ -22755,7 +22755,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   </SelectContent>
                 </Select>
 
-                <Select value={selectedOptionExpiryDate || (getOptionExpiryDates(selectedOptionIndex)[0]?.value || "")} onValueChange={(val) => { setSelectedOptionExpiryDate(val); fetchOptionChainData(selectedOptionIndex, val); }}>
+                <Select value={selectedOptionExpiryDate || (getOptionExpiryDates(selectedOptionIndex)[0]?.value || "")} onValueChange={(val) => { setSelectedOptionExpiryDate(val); fetchOptionChainData(selectedOptionIndex, val); }>
                   <SelectTrigger className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded text-gray-900 dark:text-white text-xs w-auto" data-testid="select-option-expiry-date-desktop">
                     <SelectValue />
                   </SelectTrigger>
@@ -22982,12 +22982,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <ResponsiveContainer width="100%" height="100%">
                           <AreaChart
                             data={journalAIData.performanceData}
-                            margin={{
+                            margin={
                               top: 20,
                               right: 20,
                               left: 20,
                               bottom: 20,
-                            }}
+                            }
                           >
                             <defs>
                               <linearGradient
@@ -23013,22 +23013,22 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               dataKey="day"
                               axisLine={false}
                               tickLine={false}
-                              tick={{ fontSize: 11, fill: "#6B7280" }}
+                              tick={ fontSize: 11, fill: "#6B7280" }
                             />
                             <YAxis
                               axisLine={false}
                               tickLine={false}
-                              tick={{ fontSize: 11, fill: "#6B7280" }}
+                              tick={ fontSize: 11, fill: "#6B7280" }
                               tickFormatter={(value) => `₹${value}`}
                             />
                             <Tooltip
-                              contentStyle={{
+                              contentStyle={
                                 backgroundColor: "rgba(17, 24, 39, 0.95)",
                                 border: "none",
                                 borderRadius: "8px",
                                 color: "white",
                                 fontSize: "12px",
-                              }}
+                              }
                               formatter={(value: any, name: string) => [
                                 `₹${parseFloat(value).toFixed(2)}`,
                                 "P&L",
@@ -23215,7 +23215,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         } else {
                           setPaperTradeSearchResults([]);
                         }
-                      }}
+                      }
                       className="h-10 pl-10 text-sm rounded-lg bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                       data-testid="input-paper-trade-search-mobile-tab"
                     />
@@ -23243,7 +23243,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   setPaperTradeLotInput("1");
                                 }
                                 fetchPaperTradePrice(stock);
-                              }}
+                              }
                               className="w-full text-left px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center justify-between text-sm border-b border-gray-100 dark:border-gray-800 last:border-0"
                               data-testid={`select-stock-mobile-tab-${stock.symbol}`}
                             >
@@ -23277,7 +23277,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         setPaperTradeLotInput("");
                         setPaperTradeSLPrice("");
                         setPaperTradingWsStatus('disconnected');
-                      }}
+                      }
                     >
                       <SelectTrigger className="flex-1 h-10 text-sm rounded-lg" data-testid="select-paper-trade-type-mobile-tab">
                         <SelectValue />
@@ -23293,7 +23293,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       onClick={() => {
                         fetchOptionChainData();
                         setShowOptionChain(true);
-                      }}
+                      }
                       size="icon"
                       variant="outline"
                       className="h-10 w-10 rounded-lg"
@@ -23426,7 +23426,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   setPaperTradeSLValue("");
                                   setPaperTradeSLPrice("");
                                   setShowMobilePaperTradeSLDropdown(false);
-                                }}
+                                }
                                 size="sm"
                                 variant="outline"
                                 className="flex-1 h-9"
@@ -23451,7 +23451,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     });
                                   }
                                   setShowMobilePaperTradeSLDropdown(false);
-                                }}
+                                }
                                 size="sm"
                                 className="flex-1 h-9 bg-orange-500 hover:bg-orange-600 text-white"
                                 data-testid="button-set-sl-mobile-tab"
@@ -23473,7 +23473,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       return (
                         <>
                           <Button
-                            onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }}
+                            onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }
                             disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                             className="flex-1 h-12 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-base"
                             data-testid="button-paper-buy-mobile-tab"
@@ -23481,7 +23481,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             BUY
                           </Button>
                           <Button
-                            onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }}
+                            onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }
                             disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                             className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-base"
                             data-testid="button-paper-sell-mobile-tab"
@@ -23542,7 +23542,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             swipeStartXRef.current = e.clientX;
                             swipeStartYRef.current = e.clientY;
                             console.log('🔴 MOUSE DOWN on', position.symbol, ':', swipeStartXRef.current);
-                          }}
+                          }
                           onMouseUp={(e) => {
                             const endX = e.clientX;
                             const endY = e.clientY;
@@ -23561,19 +23561,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               console.log('✅ RIGHT SWIPE DETECTED - HIDE EXIT BUTTON');
                               setSwipedPositionId(null);
                             }
-                          }}
+                          }
                           onTouchStart={(e) => {
                             if (e.touches && e.touches[0]) {
                               swipeStartXRef.current = e.touches[0].clientX;
                               swipeStartYRef.current = e.touches[0].clientY;
                               console.log('🔴 TOUCH START on', position.symbol, ':', swipeStartXRef.current);
                             }
-                          }}
+                          }
                           onTouchMove={(e) => {
                             if (Math.abs(swipeStartXRef.current - (e.touches[0]?.clientX || 0)) > 10) {
                               e.preventDefault();
                             }
-                          }}
+                          }
                           onTouchEnd={(e) => {
                             if (e.changedTouches && e.changedTouches[0]) {
                               const endX = e.changedTouches[0].clientX;
@@ -23592,7 +23592,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 setSwipedPositionId(null);
                               }
                             }
-                          }}
+                          }
                         >
                           {/* Exit button - always rendered, visible when card slides */}
                           <div className="absolute right-0 top-0 bottom-0 w-1/5 bg-red-500 flex items-center justify-center">
@@ -23610,17 +23610,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {/* Main position card content - slides left on swipe */}
                           <div 
                             className="w-full p-3 bg-white dark:bg-gray-900 cursor-pointer"
-                            style={{
+                            style={
                               transform: swipedPositionId === position.id ? 'translateX(-20%)' : 'translateX(0)',
                               transition: 'transform 300ms ease-in-out'
-                            }}
+                            }
                             onClick={() => {
                               // Clicking on main content (80% area) resets the swipe
                               if (swipedPositionId === position.id) {
                                 console.log('🔄 Tapped on content - resetting swipe');
                                 setSwipedPositionId(null);
                               }
-                            }}
+                            }
                           >
                             <div className="flex items-center justify-between mb-2">
                               <div className="flex items-center gap-2">
@@ -23739,7 +23739,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             } else {
               setShowShareDialog(open);
             }
-          }}
+          }
         >
           <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col" data-testid="dialog-share-tradebook">
             <DialogHeader className="flex-shrink-0">
@@ -23790,7 +23790,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 title: "Link copied!",
                                 description: "Shareable URL copied to clipboard",
                               });
-                            }}
+                            }
                             data-testid="button-copy-shareable-url"
                           >
                             <Copy className="w-4 h-4" />
@@ -23823,15 +23823,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     tradingDataByDate={isSharedReportMode && sharedReportData?.reportData?.tradingDataByDate 
                       ? sharedReportData.reportData.tradingDataByDate 
                       : getFilteredHeatmapData()}
-                    onDateSelect={() => {}}
+                    onDateSelect={() => {}
                     selectedDate={null}
-                    onDataUpdate={() => {}}
+                    onDataUpdate={() => {}
                     isPublicView={true}
                     onSelectDateForHeatmap={(symbol, date) => {
                       console.log(`📊 [REPORT] Switching to heatmap mode - Symbol: ${symbol}, Date: ${date}`);
                       setJournalChartMode('heatmap');
                       fetchHeatmapChartData(symbol, date);
-                    }}
+                    }
                   />
                 </div>
 
@@ -23914,7 +23914,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                   return (
                     <svg
-                      style={{
+                      style={
                         position: 'absolute',
                         top: 0,
                         left: 0,
@@ -23922,7 +23922,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         height: `${scrollHeight}px`,
                         pointerEvents: 'none',
                         zIndex: 10,
-                      }}
+                      }
                     >
                       {/* Define bright gradient for the curved lines */}
                       <defs>
@@ -24070,7 +24070,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             setReportDialogTagHighlight({ tag: 'fomo', dates: fomoDates });
                             console.log(`📍 Activated FOMO tag highlighting in report dialog for ${fomoDates.length} dates:`, fomoDates);
                           }
-                        }}
+                        }
                         title={`Click to ${reportDialogTagHighlight?.tag === 'fomo' ? 'hide' : 'show'} FOMO dates on heatmap`}
                       >
                         <div className="text-[10px] opacity-80">FOMO</div>
@@ -24196,7 +24196,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <div className="h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                               <div 
                                 className={`h-full rounded-full transition-all ${isProfitable ? 'bg-emerald-500' : 'bg-red-500'}`}
-                                style={{ width: `${successRate}%` }}
+                                style={ width: `${successRate}%` }
                               />
                             </div>
                           </div>
@@ -24226,7 +24226,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <ResponsiveContainer width="100%" height="100%">
                                   <AreaChart
                                     data={chartData}
-                                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                                    margin={ top: 10, right: 10, left: 0, bottom: 0 }
                                   >
                                     <defs>
                                       <linearGradient id="reportTrendGradient" x1="0" y1="0" x2="0" y2="1">
@@ -24237,13 +24237,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <XAxis dataKey="day" axisLine={false} tickLine={false} tick={false} />
                                     <YAxis axisLine={false} tickLine={false} tick={false} domain={['dataMin - 1000', 'dataMax + 1000']} />
                                     <Tooltip
-                                      contentStyle={{
+                                      contentStyle={
                                         background: 'var(--background)',
                                         border: '1px solid var(--border)',
                                         borderRadius: '8px',
                                         fontSize: '11px',
                                         padding: '6px 10px',
-                                      }}
+                                      }
                                       formatter={(value: any) => [
                                         `${value >= 0 ? '₹' : '-₹'}${Math.abs(value).toLocaleString()}`,
                                         'P&L',
@@ -24256,12 +24256,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       strokeWidth={2}
                                       fill="url(#reportTrendGradient)"
                                       dot={false}
-                                      activeDot={{
+                                      activeDot={
                                         r: 4,
                                         fill: isProfitable ? '#16a34a' : '#dc2626',
                                         stroke: 'white',
                                         strokeWidth: 2,
-                                      }}
+                                      }
                                       isAnimationActive={true}
                                       animationDuration={600}
                                       animationEasing="ease-in-out"
