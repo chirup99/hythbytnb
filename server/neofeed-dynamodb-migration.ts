@@ -681,7 +681,9 @@ export async function createOrUpdateUserProfile(userId: string, profileData: any
     
     // Fetch existing profile first to preserve other fields
     const existingProfile = await getUserProfile(userId);
+    console.log(`🔍 existingProfile for ${userId}:`, JSON.stringify(existingProfile));
     
+    // Explicitly merge fields to ensure nothing is lost
     const item = {
       pk: `USER#${userId}`,
       sk: 'PROFILE',
@@ -691,6 +693,7 @@ export async function createOrUpdateUserProfile(userId: string, profileData: any
       updatedAt: timestamp
     };
 
+    console.log(`💾 Saving item to DynamoDB for ${userId}:`, JSON.stringify(item));
     await docClient.send(new PutCommand({ TableName: TABLES.USER_PROFILES, Item: item }));
     
     // Also update username mapping for lookup by username
@@ -729,7 +732,7 @@ export async function getUserProfile(userId: string) {
     
     const profile = result.Item || null;
     if (profile) {
-      console.log(`🔍 getUserProfile(${userId}): FOUND - ${profile.username}, DOB: ${profile.dob || 'NOT SET'}`);
+      console.log(`🔍 getUserProfile(${userId}): FOUND - pk=${profile.pk}, username=${profile.username}, DOB=${profile.dob || 'NOT SET'}`);
     } else {
       console.log(`🔍 getUserProfile(${userId}): NOT FOUND`);
     }

@@ -1295,6 +1295,7 @@ export function registerNeoFeedAwsRoutes(app: any) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
+      console.log(`🔍 FETCH PROFILE for ${user.userId}`);
       const profile = await getUserProfile(user.userId);
       
       // If profile exists but is missing critical fields, or doesn't exist, provide defaults
