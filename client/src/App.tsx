@@ -32,6 +32,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Dashboard from "@/pages/home";
 import Landing from "@/pages/landing";
 import NotFound from "@/pages/not-found";
@@ -256,8 +257,8 @@ function MainLayout({ children }: { children: React.ReactNode }) {
     restoreScrollPosition(newPath);
   };
 
-  const currentUserEmail = localStorage.getItem('currentUserEmail');
-  const currentUserDisplayName = localStorage.getItem('currentDisplayName') || localStorage.getItem('currentUsername') || 'U';
+  const { currentUser, getUserDisplayName, isLoggedIn } = useCurrentUser();
+  const currentUserDisplayName = getUserDisplayName();
   
   const navigation = [
     {
@@ -266,7 +267,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
       icon: HomeIcon,
       current: location === "/app",
     },
-    ...(currentUserEmail === 'chiranjeevi.perala99@gmail.com' ? [{
+    ...(currentUser.email === 'chiranjeevi.perala99@gmail.com' ? [{
       name: "Dashboard", 
       href: "/dashboard", 
       icon: Sparkles,
@@ -301,7 +302,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                 variant="ghost"
                 size="default"
                 className={cn(
-                  "w-12 h-12 p-0 rounded-xl transition-all duration-200 flex items-center justify-center",
+                  "w-12 h-12 p-0 rounded-xl transition-all duration-200 flex items-center justify-center overflow-visible",
                   "text-gray-400 hover:text-white hover:bg-gray-800"
                 )}
                 title={item.name}
@@ -312,11 +313,12 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                 }}
                 data-testid="button-profile-menu-toggle"
               >
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
-                  <span className="text-white font-semibold text-sm">
-                    {item.displayName.charAt(0).toUpperCase()}
-                  </span>
-                </div>
+                <Avatar className="w-10 h-10 rounded-lg border border-white/10">
+                  <AvatarImage src={currentUser?.profilePicUrl} />
+                  <AvatarFallback className="bg-gradient-to-br from-purple-500 to-blue-500 text-white font-semibold text-sm rounded-lg">
+                    {currentUserDisplayName.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
               </Button>
             );
           }
