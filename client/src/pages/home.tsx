@@ -5378,7 +5378,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   // ============================================
   const [showPaperTradingModal, setShowPaperTradingModal] = useState(false);
   const [showTradingChallengeModal, setShowTradingChallengeModal] = useState(false); // Trading Challenge Coming Soon modal
-  const [showJournalInfoModal, setShowJournalInfoModal] = useState(false); // Trading Journal Info modal
+  const [showJournalInfoModal, setShowJournalInfoModal] = useState(false);
+  const [manualJournalOpen, setManualJournalOpen] = useState(false); // Trading Journal Info modal
   const [hidePositionDetails, setHidePositionDetails] = useState(false); // Eye icon toggle
   const [swipedPositionId, setSwipedPositionId] = useState<string | null>(null);
   const swipeStartXRef = useRef<number>(0);
@@ -10453,7 +10454,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   // ✅ AUTO-OPEN JOURNAL INFO MODAL: Show modal when journal tab opens
   useEffect(() => {
     if (activeTab === "journal") {
-      setShowJournalInfoModal(true);
+      setShowJournalInfoModal(true); setManualJournalOpen(true);
     }
   }, [activeTab]);
 
@@ -21602,7 +21603,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           </DialogContent>
         </Dialog>
 
-        <TradingJournalModal open={showJournalInfoModal} onOpenChange={setShowJournalInfoModal} />
+        <TradingJournalModal open={showJournalInfoModal} onOpenChange={(val) => { setShowJournalInfoModal(val); if (!val) setManualJournalOpen(false); }} manualOpen={manualJournalOpen} />
 
 
         {/* Paper Trading (Demo Trading) Modal - Minimalist Design */}

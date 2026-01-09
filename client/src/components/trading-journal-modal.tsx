@@ -37,9 +37,17 @@ export function TradingJournalModal({ open, onOpenChange, manualOpen }: TradingJ
     onOpenChange(false);
   };
 
+  const handleManualClose = () => {
+    setShouldShow(false);
+    onOpenChange(false);
+  };
+
   return (
     <Dialog open={open && shouldShow} onOpenChange={(val) => {
-      if (!val) handleDismiss();
+      if (!val) {
+        if (manualOpen) handleManualClose();
+        else handleDismiss();
+      }
       else onOpenChange(val);
     }}>
       <DialogContent className="max-w-sm w-[90vw] pl-[5px] pr-[5px] pt-[12px] pb-[12px]">
@@ -111,7 +119,7 @@ export function TradingJournalModal({ open, onOpenChange, manualOpen }: TradingJ
           </div>
         </div>
         <Button 
-          onClick={handleDismiss}
+          onClick={manualOpen ? handleManualClose : handleDismiss}
           className="w-full"
           data-testid="button-close-journal-modal"
         >
