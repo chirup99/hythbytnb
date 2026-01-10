@@ -17945,6 +17945,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <div className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded text-[10px] font-bold text-blue-600 dark:text-blue-400">
                             {calculateTotalDuration(tradeHistoryData)}
                           </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-full"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowJournalInfoModal("manual");
+                            }}
+                            data-testid="button-journal-info-mobile"
+                          >
+                            <Info className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                          </Button>
                           {showMobileTradeHistory ? (
                             <ChevronUp className="h-5 w-5 text-slate-400" />
                           ) : (
