@@ -17998,44 +17998,63 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
 
                             <div className="max-h-80 overflow-y-auto overflow-x-auto custom-thin-scrollbar">
-                              <table className="text-xs w-full">
+                              <table className="text-xs w-full" style={{minWidth: "600px"}}>
                                 <thead className="sticky top-0 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
                                   <tr>
-                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium">Time</th>
-                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium">Order</th>
-                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium">Symbol</th>
-                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium">P&L</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">Time</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[50px]">Order</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[80px]">Symbol</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[45px]">Type</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[40px]">Qty</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">Price</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">P&L</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[45px]">%</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[50px]">Duration</th>
                                   </tr>
                                 </thead>
                                 <tbody className="bg-white dark:bg-slate-900">
                                   {tradeHistoryData.length === 0 ? (
                                     <tr>
-                                      <td colSpan={4} className="p-6 text-center text-xs text-slate-500 dark:text-slate-400">
+                                      <td colSpan={9} className="p-6 text-center text-xs text-slate-500 dark:text-slate-400">
                                         No data yet
                                       </td>
                                     </tr>
                                   ) : (
                                     tradeHistoryData.map((trade, index) => (
-                                      <tr key={index} className="border-b border-slate-100 dark:border-slate-800/50">
+                                      <tr key={index} className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                                         <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.time}</td>
                                         <td className="px-2 py-2">
-                                          <span className={`text-[10px] font-bold px-1 py-0.5 rounded ${
-                                            trade.order === "BUY" ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"
+                                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                                            trade.order === "BUY" ? "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300" : "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300"
                                           }`}>
                                             {trade.order}
                                           </span>
                                         </td>
-                                        <td className="px-2 py-2 text-slate-700 dark:text-slate-300 font-medium truncate max-w-[80px]">
+                                        <td className="px-2 py-2 text-slate-700 dark:text-slate-300 font-medium truncate max-w-[100px]">
                                           {trade.symbol}
                                         </td>
+                                        <td className="px-2 py-2 text-indigo-600 dark:text-indigo-300 font-semibold">MIS</td>
+                                        <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.qty}</td>
+                                        <td className="px-2 py-2 text-amber-600 dark:text-amber-300 font-medium">₹{typeof trade.price === "number" ? trade.price.toFixed(2) : trade.price}</td>
                                         <td className={`px-2 py-2 font-bold ${(trade.pnl || "").includes("+") ? "text-emerald-600" : "text-red-600"}`}>
                                           {trade.pnl}
                                         </td>
+                                        <td className="px-2 py-2 font-bold text-slate-600 dark:text-slate-400">
+                                          {(() => {
+                                            if (!trade.pnl || trade.pnl === "-") return "-";
+                                            const pnlStr = (trade.pnl || "").replace(/[₹,+\s]/g, "");
+                                            const pnlValue = parseFloat(pnlStr) || 0;
+                                            const openPrice = trade.price;
+                                            const totalInvestment = openPrice * trade.qty || 1;
+                                            const percentage = (pnlValue / totalInvestment) * 100;
+                                            return `${percentage >= 0 ? "+" : ""}${percentage.toFixed(2)}%`;
+                                          })()}
+                                        </td>
+                                        <td className="px-2 py-2 text-violet-600 dark:text-violet-300 font-medium">{normalizeDurationForDisplay(trade.duration)}</td>
                                       </tr>
                                     ))
                                   )}
                                 </tbody>
-                              </table>
                             </div>
                           </CardContent>
                         </Card>
