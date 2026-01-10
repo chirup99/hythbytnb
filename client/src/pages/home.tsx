@@ -862,7 +862,7 @@ function SwipeableCardStack({
                 </div>
                 <h3 className="text-lg md:text-base font-bold text-white mb-3 md:mb-3 leading-snug flex-grow">
                   {card.subtitle.split("\n").map((line, i) => (
-                    <div key={i} className="block">{line}</div>
+                    <div key={i} className="hidden md:block">{line}</div>
                   ))}
                 </h3>
                 <Button
@@ -16370,7 +16370,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   {/* Desktop: 3-column grid | Mobile: Single panel with carousel */}
                   <div className="relative mb-6">
                     {/* Desktop: Grid Layout | Mobile: Single Panel */}
-                    <div className="md:grid md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       {/* Left Block - Performance Chart */}
                       <div
                         className={`h-[400px] ${mobileJournalPanel === 0 ? "block" : "hidden"} md:block`}
@@ -17926,193 +17926,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   {/* Two Column Layout: TRADE HISTORY SUMMARY (Left) and PROFIT CONSISTENCY (Right) */}
                   {/* Desktop: 2-column grid | Mobile: Show Trade Book with collapsible Trade History */}
                   <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 gap-6">
-                    {/* Mobile: Collapsible Trade History Summary Header (shows above calendar) */}
-                    <div className="md:hidden">
-                      <div
-                        onClick={() =>
-                          setShowMobileTradeHistory(!showMobileTradeHistory)
-                        }
-                        className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-700 rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors"
-                        data-testid="button-toggle-trade-history"
-                      >
-                        <div className="flex items-center gap-2">
-                          <BarChart3 className="h-4 w-4 text-slate-600 dark:text-slate-400" />
-                          <span className="text-sm font-semibold text-slate-800 dark:text-slate-100">
-                            TRADE HISTORY SUMMARY
-                          </span>
-                        </div>
-                        {showMobileTradeHistory ? (
-                          <ChevronUp className="h-5 w-5 text-slate-600 dark:text-slate-400" />
-                        ) : (
-                          <ChevronDown className="h-5 w-5 text-slate-600 dark:text-slate-400" />
-                        )}
-                      </div>
-
-                      {/* Mobile: Trade History Summary Content (Dropdown) */}
-                      {showMobileTradeHistory && (
-                        <Card className="mt-2 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-                          <CardContent className="p-3">
-                            <div className="flex items-center justify-end gap-1.5 mb-3">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setShowImportModal(true)}
-                                className="h-7 text-xs px-2"
-                                data-testid="button-import-pnl"
-                              >
-                                <Upload className="h-3 w-3 mr-1" />
-                                Import
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setShowPaperTradingModal(true)}
-                                className="h-7 text-xs px-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 hidden md:block"
-                                data-testid="button-demo-trade-mobile"
-                              >
-                                <TrendingUp className="h-3 w-3 mr-1" />
-                                Paper Trade
-                              </Button>
-                            </div>
-                            <div className="max-h-80 overflow-auto border border-slate-200 dark:border-slate-700 custom-thin-scrollbar">
-                              <table className="w-full text-xs">
-                                <thead className="bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-300 sticky top-0">
-                                  <tr>
-                                    <th className="p-1 text-left min-w-[60px]">
-                                      Time
-                                    </th>
-                                    <th className="p-1 text-left min-w-[50px]">
-                                      Order
-                                    </th>
-                                    <th className="p-1 text-left min-w-[80px]">
-                                      Symbol
-                                    </th>
-                                    <th className="p-1 text-left min-w-[50px]">
-                                      Type
-                                    </th>
-                                    <th className="p-1 text-left min-w-[40px]">
-                                      Qty
-                                    </th>
-                                    <th className="p-1 text-left min-w-[60px]">
-                                      Price
-                                    </th>
-                                    <th className="p-1 text-left min-w-[60px]">
-                                      P&L
-                                    </th>
-                                    <th className="p-1 text-left min-w-[40px]">
-                                      %
-                                    </th>
-                                    <th className="p-1 text-left min-w-[70px]">
-                                      Duration
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody className="bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300">
-                                  {isLoadingHeatmapData && tradeHistoryData.length === 0 ? (
-                                    <tr>
-                                      <td colSpan={9} className="p-8 text-center">
-                                        <div className="flex flex-col items-center gap-2">
-                                          <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                                          <span className="text-sm text-slate-500 dark:text-slate-400">Loading trade history...</span>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  ) : tradeHistoryData.length === 0 ? (
-                                    <tr>
-                                      <td colSpan={9} className="p-8 text-center text-sm text-slate-500 dark:text-slate-400">
-                                        {!isDemoMode 
-                                          ? "No personal data yet - switch to Paper Trade mode or start adding your trades!" 
-                                          : selectedDate 
-                                            ? "No trades for this date" 
-                                            : "Select a date from the calendar to view trades"}
-                                      </td>
-                                    </tr>
-                                  ) : (
-                                    tradeHistoryData.map((trade, index) => (
-                                      <tr
-                                        key={index}
-                                        className="border-b border-slate-200 dark:border-slate-700"
-                                      >
-                                      <td className="p-1">{trade.time}</td>
-                                      <td className="p-1">
-                                        <span
-                                          className={`px-2 py-1 rounded text-xs font-medium ${
-                                            trade.order === "BUY"
-                                              ? "bg-green-600 text-white"
-                                              : "bg-red-600 text-white"
-                                          }`}
-                                        >
-                                          {trade.order}
-                                        </span>
-                                      </td>
-                                      <td className="p-1">{trade.symbol}</td>
-                                      <td className="p-1">{trade.type}</td>
-                                      <td className="p-1">{trade.qty}</td>
-                                      <td className="p-1">₹{typeof trade.price === "number" ? trade.price.toFixed(2) : trade.price}</td>
-                                      <td
-                                        className={`p-2 ${
-                                          (trade.pnl || "").includes("+")
-                                            ? "text-green-600"
-                                            : (trade.pnl || "").includes("-")
-                                              ? "text-red-600"
-                                              : ""
-                                        }`}
-                                      >
-                                        {trade.pnl}
-                                      </td>
-                                      <td
-                                        className={`p-2 font-medium ${(() => {
-                                          if (!trade.pnl || trade.pnl === "-")
-                                            return "";
-                                          const pnlStr = (
-                                            trade.pnl || ""
-                                          ).replace(/[₹,+\s]/g, "");
-                                          const pnlValue =
-                                            parseFloat(pnlStr) || 0;
-                                          const openPrice = trade.price;
-                                          const totalInvestment =
-                                            openPrice * trade.qty || 1;
-                                          const percentage =
-                                            (pnlValue / totalInvestment) * 100;
-                                          return percentage > 0
-                                            ? "text-green-600"
-                                            : percentage < 0
-                                              ? "text-red-600"
-                                              : "text-gray-500";
-                                        })()}`}
-                                      >
-                                        {(() => {
-                                          if (!trade.pnl || trade.pnl === "-")
-                                            return "-";
-                                          const pnlStr = (
-                                            trade.pnl || ""
-                                          ).replace(/[₹,+\s]/g, "");
-                                          const pnlValue =
-                                            parseFloat(pnlStr) || 0;
-                                          const openPrice = trade.price;
-                                          const totalInvestment =
-                                            openPrice * trade.qty || 1;
-                                          const percentage =
-                                            (pnlValue / totalInvestment) * 100;
-                                          return `${
-                                            percentage >= 0 ? "+" : ""
-                                          }${percentage.toFixed(2)}%`;
-                                        })()}
-                                      </td>
-                                      <td className="p-1">{normalizeDurationForDisplay(trade.duration)}</td>
-                                    </tr>
-                                    ))
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      )}
-                    </div>
 
                     {/* Desktop: TRADE HISTORY SUMMARY - Left Side - MINIMALIST WITH BRIGHT COLORS */}
-                    <Card className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-[420px]">
+                    <Card className="hidden md:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-[420px]">
                       <CardContent className="p-3">
                         <div className="flex items-center justify-between mb-3 gap-2">
                           <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wide">
@@ -18295,6 +18111,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       {(() => {
                                         if (!selectedDate) return trade.symbol;
                                         const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                  {/* Desktop: TRADE HISTORY SUMMARY - Left Side - MINIMALIST WITH BRIGHT COLORS */}
                                         const selectedMonth = monthNames[selectedDate.getMonth()];
                                         const symbolWithoutMonth = trade.symbol.replace(/\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\b/, selectedMonth);
                                         return symbolWithoutMonth;
@@ -22736,7 +22553,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           <DialogContent className="w-full max-w-2xl md:max-w-2xl p-0 md:p-0 bg-white dark:bg-gray-900 rounded-lg md:rounded-lg border border-gray-200 dark:border-gray-700">
 
             {/* Desktop Header */}
-            <div className="block border-b border-gray-200 dark:border-gray-700 px-4 py-2">
+            <div className="hidden md:block border-b border-gray-200 dark:border-gray-700 px-4 py-2">
               <div className="flex items-center justify-center mb-2">
                 <span className="text-xs font-semibold text-green-600 dark:text-green-400">Spot: ₹{(optionChainData?.spotPrice || 0)?.toLocaleString()}</span>
               </div>
@@ -22771,7 +22588,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
             {/* Content Area */}
             {/* Desktop Table View */}
-            <div className="block px-6 py-4 overflow-y-auto max-h-96">
+            <div className="hidden md:block px-6 py-4 overflow-y-auto max-h-96">
               {optionChainLoading && (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
