@@ -8102,6 +8102,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     return () => clearTimeout(timer);
   }, [selectedJournalSymbol, activeTab, fetchJournalChartData]);
 
+  // ✅ AUTO-RELOAD CHART ON MOBILE PANEL SWITCH (Fixes zoom/resize issues)
+  useEffect(() => {
+    if (mobileJournalPanel === 0 && activeTab === 'journal') {
+      const timer = setTimeout(() => {
+        console.log("📱 [MOBILE-CHART] Switching to Chart panel, auto-reloading...");
+        fetchJournalChartData();
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [mobileJournalPanel, activeTab, fetchJournalChartData]);
+
   // ========== HEATMAP CHART FETCH FUNCTION (Completely Separate) ==========
 
   // ✅ INSTANT REFETCH when Angel One token refreshes (next day or new session)
