@@ -17927,8 +17927,129 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   {/* Desktop: 2-column grid | Mobile: Show Trade Book with collapsible Trade History */}
                   <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 gap-6">
 
+                    {/* Mobile: TRADE HISTORY SUMMARY - DROPDOWN HEADER */}
+                    <div className="md:hidden">
+                      <Button
+                        variant="ghost"
+                        onClick={() => setShowMobileTradeHistory(!showMobileTradeHistory)}
+                        className="w-full flex items-center justify-between h-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-4"
+                        data-testid="button-mobile-trade-history-toggle"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Timer className="h-4 w-4 text-blue-500" />
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wide">
+                            Trade History Summary
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded text-[10px] font-bold text-blue-600 dark:text-blue-400">
+                            {calculateTotalDuration(tradeHistoryData)}
+                          </div>
+                          {showMobileTradeHistory ? (
+                            <ChevronUp className="h-5 w-5 text-slate-400" />
+                          ) : (
+                            <ChevronDown className="h-5 w-5 text-slate-400" />
+                          )}
+                        </div>
+                      </Button>
+
+                      {showMobileTradeHistory && (
+                        <Card className="mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-h-[420px] overflow-hidden">
+                          <CardContent className="p-3">
+                            <div className="flex items-center justify-between mb-3 gap-2">
+                              <div className="flex gap-1.5 overflow-x-auto custom-thin-scrollbar pb-1">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setShowConnectDialog(true)}
+                                  className="h-7 px-2 text-xs shrink-0"
+                                  data-testid="button-connect-mobile"
+                                >
+                                  Connect
+                                </Button>
+                                {zerodhaIsConnected && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-7 px-2 text-xs shrink-0"
+                                    onClick={() => setShowOrderModal(true)}
+                                    data-testid="button-broker-orders-zerodha-mobile"
+                                  >
+                                    <img 
+                                      src="https://zerodha.com/static/images/products/kite-logo.svg" 
+                                      alt="Zerodha" 
+                                      className="h-4 w-4"
+                                    />
+                                  </Button>
+                                )}
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setShowImportModal(true)}
+                                  className="h-7 px-2 text-xs shrink-0"
+                                  data-testid="button-import-pnl-mobile"
+                                >
+                                  Import
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setShowPaperTradingModal(true)}
+                                  className="h-7 px-2 text-xs shrink-0 flex items-center gap-1"
+                                  data-testid="button-paper-trade-mobile"
+                                >
+                                  <TrendingUp className="h-4 w-4 mr-1" />
+                                  Paper Trade
+                                </Button>
+                              </div>
+                            </div>
+
+                            <div className="max-h-64 overflow-y-auto overflow-x-auto custom-thin-scrollbar">
+                              <table className="text-xs w-full">
+                                <thead className="sticky top-0 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
+                                  <tr>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium">Time</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium">Order</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium">Symbol</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium">P&L</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="bg-white dark:bg-slate-900">
+                                  {tradeHistoryData.length === 0 ? (
+                                    <tr>
+                                      <td colSpan={4} className="p-6 text-center text-xs text-slate-500 dark:text-slate-400">
+                                        No data yet
+                                      </td>
+                                    </tr>
+                                  ) : (
+                                    tradeHistoryData.map((trade, index) => (
+                                      <tr key={index} className="border-b border-slate-100 dark:border-slate-800/50">
+                                        <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.time}</td>
+                                        <td className="px-2 py-2">
+                                          <span className={`text-[10px] font-bold px-1 py-0.5 rounded ${
+                                            trade.order === "BUY" ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"
+                                          }`}>
+                                            {trade.order}
+                                          </span>
+                                        </td>
+                                        <td className="px-2 py-2 text-slate-700 dark:text-slate-300 font-medium truncate max-w-[80px]">
+                                          {trade.symbol}
+                                        </td>
+                                        <td className={`px-2 py-2 font-bold ${(trade.pnl || "").includes("+") ? "text-emerald-600" : "text-red-600"}`}>
+                                          {trade.pnl}
+                                        </td>
+                                      </tr>
+                                    ))
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+                    </div>
                     {/* Desktop: TRADE HISTORY SUMMARY - Left Side - MINIMALIST WITH BRIGHT COLORS */}
-                    <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-[420px]">
+                    <Card className="hidden md:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-[420px]">
                       <CardContent className="p-3">
                         <div className="flex items-center justify-between mb-3 gap-2">
                           <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wide">
