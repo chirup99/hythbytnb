@@ -17928,7 +17928,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 gap-6">
 
                     {/* Desktop: TRADE HISTORY SUMMARY - Left Side - MINIMALIST WITH BRIGHT COLORS */}
-                    <Card className="hidden md:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-[420px]">
+                    <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-[420px]">
                       <CardContent className="p-3">
                         <div className="flex items-center justify-between mb-3 gap-2">
                           <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wide">
