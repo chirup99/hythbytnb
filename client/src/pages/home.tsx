@@ -17997,7 +17997,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                             </div>
 
-                            <div className="max-h-64 overflow-y-auto overflow-x-auto custom-thin-scrollbar">
+                            <div className="max-h-80 overflow-y-auto overflow-x-auto custom-thin-scrollbar">
                               <table className="text-xs w-full">
                                 <thead className="sticky top-0 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
                                   <tr>
