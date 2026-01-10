@@ -17985,15 +17985,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => setShowImportModal(true)}
-                                  className="h-7 px-2 text-xs shrink-0"
-                                  data-testid="button-import-pnl-mobile"
-                                >
-                                  Import
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
                                   onClick={() => setShowPaperTradingModal(true)}
                                   className="h-7 px-2 text-xs shrink-0 flex items-center gap-1"
                                   data-testid="button-paper-trade-mobile"
