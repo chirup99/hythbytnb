@@ -18055,6 +18055,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     ))
                                   )}
                                 </tbody>
+                                  </table>
                             </div>
                           </CardContent>
                         </Card>
