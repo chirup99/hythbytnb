@@ -17982,16 +17982,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     />
                                   </Button>
                                 )}
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => setShowPaperTradingModal(true)}
-                                  className="h-7 px-2 text-xs shrink-0 flex items-center gap-1"
-                                  data-testid="button-paper-trade-mobile"
-                                >
-                                  <TrendingUp className="h-4 w-4 mr-1" />
-                                  Paper Trade
-                                </Button>
                               </div>
                             </div>
 
