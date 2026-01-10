@@ -17936,13 +17936,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         data-testid="button-mobile-trade-history-toggle"
                       >
                         <div className="flex items-center gap-2">
-                          <Timer className="h-4 w-4 text-blue-500" />
                           <span className="text-sm font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wide">
                             Trade History Summary
                           </span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded text-[10px] font-bold text-blue-600 dark:text-blue-400">
+                          <div className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded text-[10px] font-bold text-blue-600 dark:text-blue-400 flex items-center">
+                            <Timer className="h-3 w-3 mr-1" />
                             {calculateTotalDuration(tradeHistoryData)}
                           </div>
                           <Button
