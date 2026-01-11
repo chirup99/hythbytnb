@@ -991,9 +991,12 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
     setSelectedDatesForRange([]);
   };
 
-  // Count only dates with actual trading data (any data present)
+  // Count only dates with actual trading data (non-zero P&L)
   const countDatesWithData = (data: typeof heatmapData) => {
-    return Object.keys(data).length;
+    return Object.keys(data).filter(dateKey => {
+      const pnl = calculatePnL(data[dateKey], !!tradingDataByDate);
+      return pnl !== 0;
+    }).length;
   };
 
   return (
