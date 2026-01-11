@@ -60,7 +60,7 @@ function calculatePnL(data: any, isPublicMode: boolean = false): number {
 
 // Get color based on P&L value - SIMPLE AND CLEAR
 function getPnLColor(pnl: number): string {
-  if (pnl === 0) return "bg-purple-500 dark:bg-purple-400"; // Consistent with PersonalHeatmap
+  if (pnl === 0) return "bg-gray-200 dark:bg-gray-700";
   
   const amount = Math.abs(pnl);
   
@@ -991,9 +991,12 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
     setSelectedDatesForRange([]);
   };
 
-  // Count only dates with actual trading data (any data present)
+  // Count only dates with actual trading data (non-zero P&L)
   const countDatesWithData = (data: typeof heatmapData) => {
-    return Object.keys(data).length;
+    return Object.keys(data).filter(dateKey => {
+      const pnl = calculatePnL(data[dateKey], !!tradingDataByDate);
+      return pnl !== 0;
+    }).length;
   };
 
   return (
