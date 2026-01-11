@@ -79,7 +79,7 @@ function calculatePnL(data: any): number {
 
 // Get color based on P&L value - SIMPLE AND CLEAR
 function getPnLColor(pnl: number): string {
-  if (pnl === 0) return "bg-gray-200 dark:bg-gray-700";
+  if (pnl === 0) return "bg-purple-500 dark:bg-purple-400"; // Added purple for 0 P&L
 
   const amount = Math.abs(pnl);
 
@@ -1157,6 +1157,13 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
             <div className="w-2.5 h-2.5 bg-red-300 dark:bg-red-300 rounded-full" title="Small Loss"></div>
           </div>
         </div>
+        
+        {/* Zero P&L Indicator */}
+        <div className="flex items-center gap-1.5 px-2 py-0.5 bg-purple-50 dark:bg-purple-900/20 rounded-full border border-purple-100 dark:border-purple-800/30">
+          <div className="w-2 h-2 bg-purple-500 dark:bg-purple-400 rounded-full"></div>
+          <span className="text-[10px] font-medium text-purple-700 dark:text-purple-300">₹0</span>
+        </div>
+
         <div className="flex items-center gap-2">
           <div className="flex gap-1">
             <div className="w-2.5 h-2.5 bg-green-300 dark:bg-green-300 rounded-full" title="Small Profit"></div>
