@@ -838,12 +838,9 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
     setSelectedDatesForRange([]);
   };
 
-  // Count only dates with actual trading data (non-zero P&L)
+  // Count only dates with actual trading data (any data present)
   const countDatesWithData = (data: typeof heatmapData) => {
-    return Object.keys(data).filter(dateKey => {
-      const pnl = calculatePnL(data[dateKey]);
-      return pnl !== 0;
-    }).length;
+    return Object.keys(data).length;
   };
 
   if (!userId) {
