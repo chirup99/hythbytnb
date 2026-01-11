@@ -1068,8 +1068,8 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
                           // Calculate P&L from FIREBASE DATA ONLY
                           const netPnL = calculatePnL(data);
 
-                          // Only show P&L colors if date is within range, otherwise show grey
-                          let cellColor = isWithinRange ? getPnLColor(netPnL) : "bg-gray-200 dark:bg-gray-700";
+                          // Only show P&L colors if date is within range AND has data, otherwise show grey
+                          let cellColor = (isWithinRange && data) ? getPnLColor(netPnL) : "bg-gray-200 dark:bg-gray-700";
 
                           // Override for selected date
                           const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
