@@ -16692,42 +16692,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       }
                                     </span>
                                   )}
-                                  {/* Export Button - ONLY in Heatmap Mode */}
-                                  {journalChartMode === "heatmap" && heatmapChartData.length > 0 && (
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="h-8 px-2 text-xs text-slate-700 dark:text-slate-300"
-                                      onClick={() => {
-                                        console.log("📥 Exporting Heatmap OHLC data to CSV...");
-                                        try {
-                                          const headers = ["Time", "Open", "High", "Low", "Close", "Volume"];
-                                          const rows = heatmapChartData.map(d => {
-                                            const date = new Date(d.time * 1000);
-                                            const timeStr = date.toISOString().replace("T", " ").replace(/\..+/, "");
-                                            return [timeStr, d.open, d.high, d.low, d.close, d.volume || 0];
-                                          });
-
-                                          let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(r => r.join(",")).join("\n");
-                                          const encodedUri = encodeURI(csvContent);
-                                          const link = document.createElement("a");
-                                          link.setAttribute("href", encodedUri);
-                                          const fileName = `heatmap_${heatmapSelectedSymbol.replace(/[:]/g, "_")}_${heatmapSelectedDate}.csv`;
-                                          link.setAttribute("download", fileName);
-                                          document.body.appendChild(link);
-                                          link.click();
-                                          document.body.removeChild(link);
-                                          console.log("✅ Export complete:", fileName);
-                                        } catch (error) {
-                                          console.error("❌ Export failed:", error);
-                                        }
-                                      }}
-                                      title="Export to CSV"
-                                      data-testid="button-heatmap-export"
-                                    >
-                                      <Download className="w-3 h-3" />
-                                    </Button>
-                                  )}
 
 
                                   {/* Next Symbol Button - ONLY in Heatmap Mode */}
