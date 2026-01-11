@@ -16684,6 +16684,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           if (parts.length > 1) {
                                             const underlying = parts[0];
                                             if (underlying === 'NIFTY') return 'NIFTY50';
+                                            if (underlying === 'FINNIFTY') return 'NIFTYFIN';
                                             if (['SENSEX', 'BANKNIFTY', 'FINNIFTY', 'MIDCPNIFTY'].includes(underlying)) return underlying;
                                           }
                                           return sym || 'No symbol';
@@ -17070,6 +17071,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         if (parts.length > 1) {
                                           const underlying = parts[0];
                                           if (underlying === 'NIFTY') return 'NIFTY50';
+                                          if (underlying === 'FINNIFTY') return 'NIFTYFIN';
                                           if (['SENSEX', 'BANKNIFTY', 'FINNIFTY', 'MIDCPNIFTY'].includes(underlying)) return underlying;
                                         }
                                         return sym || 'No symbol';
