@@ -60,7 +60,7 @@ function calculatePnL(data: any, isPublicMode: boolean = false): number {
 
 // Get color based on P&L value - SIMPLE AND CLEAR
 function getPnLColor(pnl: number): string {
-  if (pnl === 0) return "bg-gray-200 dark:bg-gray-700";
+  if (pnl === 0) return "bg-purple-500 dark:bg-purple-400"; // Consistent with PersonalHeatmap
   
   const amount = Math.abs(pnl);
   
