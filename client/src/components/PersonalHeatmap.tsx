@@ -142,11 +142,10 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
     }
 
     console.log("🔥 PersonalHeatmap: CLEARING old data and fetching FRESH AWS data for userId:", userId);
-    // ✅ CRITICAL FIX: Clear old data IMMEDIATELY before fetching to prevent stale cache display
     setHeatmapData({});
     setIsLoading(true);
 
-    fetch(`/api/user-journal/${userId}/all`)
+    fetch(`/api/user-journal/${userId}/all?t=${Date.now()}`)
       .then(res => res.json())
       .then(data => {
         console.log("✅ PersonalHeatmap: Raw AWS DynamoDB data received:", data);

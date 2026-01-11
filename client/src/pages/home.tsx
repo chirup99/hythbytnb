@@ -11370,6 +11370,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         console.log("🔄 Reloading FULL heatmap data to sync all windows...");
 
         // Reload the full heatmap data based on current mode
+        setPersonalHeatmapRevision(prev => prev + 1);
         if (isDemoMode) {
           console.log("📊 Refreshing demo mode heatmap...");
           const allDatesResponse = await fetch("/api/journal/all-dates");
