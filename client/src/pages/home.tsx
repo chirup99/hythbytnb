@@ -6402,6 +6402,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     previousBrokerOrdersLengthRef.current = brokerOrders.length;
   }, [brokerOrders]);
   const exitAllPaperPositions = () => {
+    const openPositions = paperPositions.filter(p => p.isOpen);
     if (openPositions.length === 0) {
       toast({
         title: "No Positions",
