@@ -106,18 +106,10 @@ export default function Landing() {
         }
         
         if (hasCode) {
-          const logDiv = document.getElementById('auth-debug-log');
+
           const log = (msg: string) => {
              console.log(msg);
-             if (logDiv) {
-               const p = document.createElement('div');
-               p.innerHTML = `> ${msg}`;
-               logDiv.appendChild(p);
-               logDiv.scrollTop = logDiv.scrollHeight;
-             }
           };
-
-          log('🔐 [Google OAuth] Callback code detected..');
           
           // Process the OAuth callback - this exchanges the code for tokens
           const user = await handleCognitoCallback();
@@ -662,13 +654,6 @@ export default function Landing() {
                   {!isEmailLoading && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
 
-                {/* DEBUG CONSOLE FOR AUTH FLOW */}
-                <div className="mt-8 p-4 bg-gray-900 border border-gray-800 rounded-lg text-xs font-mono text-green-400 overflow-hidden">
-                  <div className="mb-2 font-bold text-gray-500">AUTH DEBUG LOG:</div>
-                  <div id="auth-debug-log" className="h-32 overflow-y-auto space-y-1">
-                     <div>Waiting for action...</div>
-                  </div>
-                </div>
                 <div className="flex justify-center">
                   <button
                     onClick={() => {
