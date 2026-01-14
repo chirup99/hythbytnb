@@ -37,11 +37,11 @@ const getRegionColor = (
   let regionName = "";
 
   // North America - Canada (approximate x: 100-265, y: 70-180)
-  if (x >= 100 && x <= 265 && y >= 70 && y <= 180) {
+  if (x >= 100 && x <= 265 && y >= 70 && y <= 170) {
     regionName = "CANADA";
   }
   // North America - USA (approximate x: 100-350, y: 180-260)
-  else if (x >= 100 && x <= 350 && y >= 180 && y <= 260) {
+  else if (x >= 100 && x <= 350 && y >= 170 && y <= 215) {
     regionName = "USA";
   }
   // India (approximate x: 520-600, y: 200-280)
