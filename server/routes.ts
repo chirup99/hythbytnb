@@ -20758,34 +20758,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('❌ [ZERODHA] Error fetching trades:', error);
       
-      // Fallback to demo trades if API fails
-      const demoTrades = [
-        { 
-          time: '3:16:47 PM',
-          order: 'BUY', 
-          symbol: 'NIFTY23DEC25250CE', 
-          qty: 7500, 
-          price: 143.9, 
-          pnl: '-',
-          type: 'MIS',
-          status: 'PENDING'
-        },
-        { 
-          time: '3:19:37 PM',
-          order: 'SELL', 
-          symbol: 'NIFTY23DEC25250CE', 
-          qty: 7500, 
-          price: 146.5, 
-          pnl: '₹19500.00',
-          type: 'MIS',
-          status: 'COMPLETE'
-        }
-      ];
+      // No demo trades fallback
+      const trades: any[] = [];
       
       res.json({ 
-        trades: demoTrades,
+        trades: [],
         success: false,
-        message: 'Using demo data - Zerodha API call failed'
+        message: 'Zerodha API call failed'
       });
     }
   });
