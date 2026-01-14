@@ -1158,12 +1158,6 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
           </div>
         </div>
         
-        {/* Zero P&L Indicator */}
-        <div className="flex items-center gap-1.5 px-2 py-0.5 bg-purple-50 dark:bg-purple-900/20 rounded-full border border-purple-100 dark:border-purple-800/30">
-          <div className="w-2 h-2 bg-purple-500 dark:bg-purple-400 rounded-full"></div>
-          <span className="text-[10px] font-medium text-purple-700 dark:text-purple-300">₹0</span>
-        </div>
-
         <div className="flex items-center gap-2">
           <div className="flex gap-1">
             <div className="w-2.5 h-2.5 bg-green-300 dark:bg-green-300 rounded-full" title="Small Profit"></div>
@@ -1174,7 +1168,6 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
         </div>
       </div>
 
-      {/* Year Navigation / Edit Mode / Delete Mode Control */}
       <div className="relative pt-2 border-t border-gray-200 dark:border-gray-700">
         {isDeleteMode ? (
           // Delete Mode: Show single date selection interface
