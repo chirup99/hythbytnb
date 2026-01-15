@@ -13620,64 +13620,63 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               )}
 
                               {!isVoiceActive && (
-                              {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
-                                <button
-                                  onClick={() => {
-                                    setTabWithAuthCheck("dashboard");
-                                    setIsNavOpen(false);
-                                  }}
-                                  className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                                  data-testid="nav-dashboard"
-                                >
-                                  <BarChart3 className="h-4 w-4" />
-                                  <span>dashboard</span>
-                                </button>
+                                <>
+                                  {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
+                                    <button
+                                      onClick={() => {
+                                        setTabWithAuthCheck("dashboard");
+                                        setIsNavOpen(false);
+                                      }}
+                                      className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                      data-testid="nav-dashboard"
+                                    >
+                                      <BarChart3 className="h-4 w-4" />
+                                      <span>dashboard</span>
+                                    </button>
+                                  )}
+                                  <button
+                                    onClick={() => setShowSettingsPanel(true)}
+                                    className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                                    data-testid="nav-settings"
+                                  >
+                                    <Settings className="h-4 w-4" />
+                                    <span>setting & privacy</span>
+                                  </button>
+                                  <button
+                                    onClick={toggleTheme}
+                                    className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                    data-testid="nav-dark-theme"
+                                  >
+                                    {theme === 'dark' ? (
+                                      <>
+                                        <Sun className="h-4 w-4" />
+                                        <span>light mode</span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Moon className="h-4 w-4" />
+                                        <span>dark mode</span>
+                                      </>
+                                    )}
+                                  </button>
+                                  <button
+                                    onClick={async () => {
+                                      try {
+                                        await cognitoSignOut();
+                                        localStorage.clear();
+                                        window.location.href = "/login";
+                                      } catch (error) {
+                                        console.error("Logout error:", error);
+                                      }
+                                    }}
+                                    className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                    data-testid="nav-logout"
+                                  >
+                                    <LogOut className="h-4 w-4" />
+                                    <span>logout</span>
+                                  </button>
+                                </>
                               )}
-                              <button
-                                onClick={() => setShowSettingsPanel(true)}
-                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
-                                data-testid="nav-settings"
-                              >
-                                <Settings className="h-4 w-4" />
-                                <span>setting & privacy</span>
-                              </button>
-                              <button
-                                onClick={toggleTheme}
-                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                                data-testid="nav-dark-theme"
-                              >
-                                {theme === 'dark' ? (
-                                  <>
-                                    <Sun className="h-4 w-4" />
-                                    <span>light mode</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Moon className="h-4 w-4" />
-                                    <span>dark mode</span>
-                                  </>
-                                )}
-                              </button>
-                              <button
-                                onClick={async () => {
-                                  try {
-                                    await cognitoSignOut();
-                                    localStorage.clear();
-                                    window.location.href = "/login";
-                                  } catch (error) {
-                                    console.error("Logout error:", error);
-                                  }
-                                }}
-                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                                data-testid="nav-logout"
-                              >
-                                <LogOut className="h-4 w-4" />
-                                <span>logout</span>
-                              </button>
-                            </>
-                          )}
-                            </>
-                          )}
                         </div>
                       </>
                     ) : (<div className="flex flex-col items-center justify-center space-y-4">
