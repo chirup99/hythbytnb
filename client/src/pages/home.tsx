@@ -1970,7 +1970,6 @@ export default function Home() {
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
-  const [isSettingsActive, setIsSettingsActive] = useState(false);
 
   const handleUpdateProfile = async (updates: any) => {
     try {
@@ -13602,19 +13601,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                           )}
                           
-                          {!isSettingsActive && (
-                            <>
-                              <button
-                                onClick={() => setIsSettingsActive(!isSettingsActive)}
-                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
-                                data-testid="nav-settings"
-                              >
-                                <Settings className="h-4 w-4" />
-                                <span>setting & privacy</span>
-                              </button>
-                            </>
-                          )}
-                          {!isProfileActive && !isSettingsActive && (
+                          {!isProfileActive && (
                             <>
                               <button
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
@@ -13635,6 +13622,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <span>dashboard</span>
                                 </button>
                               )}
+                              <button
+                                onClick={() => setShowSettingsPanel(true)}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                                data-testid="nav-settings"
+                              >
+                                <Settings className="h-4 w-4" />
+                                <span>setting & privacy</span>
+                              </button>
                               <button
                                 onClick={toggleTheme}
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
