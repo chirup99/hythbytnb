@@ -339,36 +339,81 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
   const mockProfiles = [
     {
       id: 1,
-      name: 'Your Profile',
-      handle: 'Active Trader',
-      avatar: 'YP',
+      name: 'Ravi',
+      handle: '@ravi',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
       isOwn: true,
       status: 'online',
-      bgColor: 'bg-purple-500'
+      bgColor: 'bg-gray-500'
     },
     {
       id: 2,
-      name: 'Henry Mercer',
-      handle: 'Active trader',
-      avatar: 'HM',
+      name: 'Vaib',
+      handle: '@vaib',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop',
       following: false,
       status: 'online',
-      bgColor: 'bg-teal-500'
+      bgColor: 'bg-pink-400'
     },
     {
       id: 3,
-      name: 'Amelia Rowann',
-      handle: 'Day trader',
-      avatar: 'AR',
+      name: 'Kids',
+      handle: '@kids',
+      avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=150&h=150&fit=crop',
       following: false,
       status: 'offline',
-      bgColor: 'bg-orange-500'
+      bgColor: 'bg-amber-700'
+    },
+    {
+      id: 4,
+      name: 'Add',
+      handle: '',
+      avatar: null,
+      isAdd: true,
+      status: 'none',
+      bgColor: 'bg-gray-800'
     }
   ];
+
+  const [activeProfileId, setActiveProfileId] = useState<number>(1);
 
   return (
     <Card className="w-full max-w-md mx-auto bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm transition-none">
       
+      {/* Profiles Row */}
+      <div className="flex items-center justify-center gap-6 p-6 border-b border-gray-200 dark:border-gray-700 overflow-x-auto no-scrollbar">
+        {mockProfiles.map((profile) => (
+          <div 
+            key={profile.id} 
+            className="flex flex-col items-center gap-2 group cursor-pointer"
+            onClick={() => !profile.isAdd && setActiveProfileId(profile.id)}
+          >
+            <div className={`relative w-20 h-20 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 active:scale-95 overflow-hidden ${
+              activeProfileId === profile.id 
+                ? 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]' 
+                : 'border-transparent'
+            } ${profile.isAdd ? 'bg-gray-800/80' : 'bg-gray-200'}`}>
+              {profile.isAdd ? (
+                <Plus className="h-8 w-8 text-gray-400" />
+              ) : (
+                <img 
+                  src={profile.avatar || ''} 
+                  alt={profile.name}
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </div>
+            <span className={`text-sm font-medium transition-colors ${
+              activeProfileId === profile.id 
+                ? 'text-blue-500 font-bold' 
+                : 'text-gray-700 dark:text-gray-300'
+            }`}>
+              {profile.name}
+            </span>
+          </div>
+        ))}
+      </div>
+
       <CardHeader className="border-b border-gray-200 dark:border-gray-700 transition-none">
         <CardTitle className="flex items-center justify-between text-gray-900 dark:text-white">
           <div className="flex items-center gap-2">
