@@ -448,14 +448,13 @@ function SwipeableCardStack({
     const utterance = new SpeechSynthesisUtterance(cleanText);
 
     const voices = speechSynthesis.getVoices();
-    const voiceProfileMap: Record<string, {keywords: string[], displayName: string}> = {
-      ravi: { keywords: ["ravi", "moira", "samantha", "aria", "ava"], displayName: "Moira" },
-      vaib: { keywords: ["vaib", "susan", "karen", "claire", "hazel"], displayName: "Susan" },
-      kids: { keywords: ["kids", "allison", "serena", "zira", "fiona"], displayName: "Aria" }
+    const voiceProfileMap: Record<string, string[]> = {
+      ravi: ["ravi", "moira", "samantha", "aria", "ava"],
+      vaib: ["vaib", "susan", "karen", "claire", "hazel"],
+      kids: ["kids", "allison", "serena", "zira", "fiona"]
     };
     const selectedProfile = activeVoiceProfileId || "ravi";
-    const profileConfig = voiceProfileMap[selectedProfile] || voiceProfileMap.ravi;
-    const priorityKeywords = profileConfig.keywords;
+    const priorityKeywords = voiceProfileMap[selectedProfile] || voiceProfileMap.ravi;
 
     let preferredVoice = voices.find(v => 
       v.lang.startsWith("en") && 
@@ -469,16 +468,6 @@ function SwipeableCardStack({
     if (preferredVoice) {
       utterance.voice = preferredVoice;
     }
-      setCurrentAudio(null);
-    }
-  };
-    // Settings for natural, human-like delivery
-    utterance.rate = 0.9; // Slightly slower for more natural pacing
-    utterance.pitch = 1.05; // Slight variation for more natural sound
-    utterance.volume = 0.85; // Comfortable listening volume
-
-    // Set language for neutral pronunciation
-    utterance.lang = "en-US";
 
     utterance.onstart = () => setIsPlaying(true);
     utterance.onend = () => {
@@ -487,6 +476,32 @@ function SwipeableCardStack({
     };
     utterance.onerror = () => {
       setIsPlaying(false);
+      setCurrentAudio(null);
+    };
+
+    setCurrentAudio(utterance);
+    speechSynthesis.speak(utterance);
+  };
+
+  // Stop audio playback
+  const stopAudio = () => {
+    if (currentAudio) {
+      speechSynthesis.cancel();
+      setIsPlaying(false);
+      setCurrentAudio(null);
+    }
+  };
+
+  const swipeCard = (direction: "left" | "right") => {
+    // Immediately stop current audio
+    globalStopAudio();
+
+    setCards((prev) => {
+      const newCards = [...prev];
+      let newIndex = currentCardIndex;
+
+      if (direction === "right") {
+        // Right swipe: Move to next card (current card goes to back)
         const topCard = newCards.shift();
         if (topCard) {
           newCards.push(topCard);
@@ -12670,7 +12685,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <span>👥 {podcast.listeners}</span>
                                   </div>
                                 </div>
-                                <Button size="sm" className="w-8 h-8 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border-0 rounded-full p-0 opacity-100 transition-opacity">
+                                <Button size="sm" className="w-8 h-8 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border-0 rounded-full p-0 opacity-0 group-hover:opacity-100 transition-opacity">
                                   <Play className="w-4 h-4 ml-0.5" />
                                 </Button>
                               </div>
@@ -12693,7 +12708,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <span className="text-4xl">🤖</span>
                             </div>
                             <div className="absolute bottom-2 left-2 text-white text-xs font-bold">AI FINANCE</div>
-                            <div className="absolute top-2 right-2 opacity-100 transition-opacity">
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Button size="sm" className="w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-0 rounded-full p-0">
                                 <Play className="w-4 h-4 ml-0.5" />
                               </Button>
@@ -12711,7 +12726,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <span className="text-4xl">📰</span>
                             </div>
                             <div className="absolute bottom-2 left-2 text-white text-xs font-bold">MARKET NEWS</div>
-                            <div className="absolute top-2 right-2 opacity-100 transition-opacity">
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Button size="sm" className="w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-0 rounded-full p-0">
                                 <Play className="w-4 h-4 ml-0.5" />
                               </Button>
@@ -12729,7 +12744,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <span className="text-4xl">🛡️</span>
                             </div>
                             <div className="absolute bottom-2 left-2 text-white text-xs font-bold">RISK MGMT</div>
-                            <div className="absolute top-2 right-2 opacity-100 transition-opacity">
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Button size="sm" className="w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-0 rounded-full p-0">
                                 <Play className="w-4 h-4 ml-0.5" />
                               </Button>
@@ -12747,7 +12762,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <span className="text-4xl">🚀</span>
                             </div>
                             <div className="absolute bottom-2 left-2 text-white text-xs font-bold">STARTUP</div>
-                            <div className="absolute top-2 right-2 opacity-100 transition-opacity">
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Button size="sm" className="w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-0 rounded-full p-0">
                                 <Play className="w-4 h-4 ml-0.5" />
                               </Button>
@@ -12765,7 +12780,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <span className="text-4xl">🎓</span>
                             </div>
                             <div className="absolute bottom-2 left-2 text-white text-xs font-bold">FELLOWSHIP</div>
-                            <div className="absolute top-2 right-2 opacity-100 transition-opacity">
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Button size="sm" className="w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-0 rounded-full p-0">
                                 <Play className="w-4 h-4 ml-0.5" />
                               </Button>
@@ -12783,7 +12798,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <span className="text-4xl">💼</span>
                             </div>
                             <div className="absolute bottom-2 left-2 text-white text-xs font-bold">BUSINESS</div>
-                            <div className="absolute top-2 right-2 opacity-100 transition-opacity">
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Button size="sm" className="w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-0 rounded-full p-0">
                                 <Play className="w-4 h-4 ml-0.5" />
                               </Button>
@@ -12801,7 +12816,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <span className="text-4xl">⭐</span>
                             </div>
                             <div className="absolute bottom-2 left-2 text-white text-xs font-bold">HERO ZERO</div>
-                            <div className="absolute top-2 right-2 opacity-100 transition-opacity">
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Button size="sm" className="w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-0 rounded-full p-0">
                                 <Play className="w-4 h-4 ml-0.5" />
                               </Button>
@@ -13446,7 +13461,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       }}
                                       className="p-1 hover:bg-white/10 rounded-md transition-all"
                                     >
-                                      <Pencil className="h-3 w-3 text-blue-400 opacity-100" />
+                                      <Pencil className="h-3 w-3 text-blue-400 opacity-0 group-hover:opacity-100" />
                                     </button>
                                   </div>
                                 )}
@@ -13465,7 +13480,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.displayName && currentUser.displayName !== "Not available" ? currentUser.displayName : ""}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
@@ -13508,7 +13523,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewDob(currentUser?.dob || ""); setIsEditingDob(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewDob(currentUser?.dob || ""); setIsEditingDob(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
@@ -13546,7 +13561,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.location && currentUser.location !== "empty" ? currentUser.location : ""}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
@@ -17381,7 +17396,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   setIndicatorTimeframe("5min");
                                                   localStorage.setItem("indicatorTimeframe", "5min");
                                                 }}
-                                                className="absolute right-0.5 top-1/2 -translate-y-1/2 opacity-100 transition-opacity"
+                                                className="absolute right-0.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
                                                 data-testid="button-remove-custom-timeframe"
                                               >
                                                 <X className="w-2.5 h-2.5" />
