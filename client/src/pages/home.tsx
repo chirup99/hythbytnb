@@ -1969,7 +1969,6 @@ export default function Home() {
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isSettingsActive, setIsSettingsActive] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
 
   const handleUpdateProfile = async (updates: any) => {
@@ -13601,8 +13600,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                             </div>
                           )}
-
-                          {!isProfileActive && !isSettingsActive && (
+                          
+                          {!isProfileActive && (
                             <>
                               <button
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
@@ -13610,7 +13609,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               >
                                 saved
                               </button>
-                              {localStorage.getItem("currentUserEmail") === "chiranjeevi.perala99@gmail.com" && (
+                              {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
                                 <button
                                   onClick={() => {
                                     setTabWithAuthCheck("dashboard");
@@ -13624,7 +13623,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 </button>
                               )}
                               <button
-                                onClick={() => setIsSettingsActive(true)}
+                                onClick={() => setShowSettingsPanel(true)}
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
                                 data-testid="nav-settings"
                               >
@@ -13636,7 +13635,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
                                 data-testid="nav-dark-theme"
                               >
-                                {theme === "dark" ? (
+                                {theme === 'dark' ? (
                                   <>
                                     <Sun className="h-4 w-4" />
                                     <span>light mode</span>
@@ -13666,33 +13665,42 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </button>
                             </>
                           )}
+                        </div>
+                      </>
+                    ) : (<div className="flex flex-col items-center justify-center space-y-4">
+                        <button
+                          onClick={() => {
+                            window.location.href = "/login";
+                          }}
+                          className="w-full px-6 py-3 bg-white text-blue-900 hover:bg-blue-50 rounded-lg transition-colors font-semibold text-center"
+                          data-testid="nav-login"
+                        >
+                          Login
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
 
-                          {isSettingsActive && (
-                            <div className="px-4 py-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
-                              <button 
-                                onClick={() => setIsSettingsActive(false)}
-                                className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors mb-4"
-                              >
-                                <ChevronDown className="h-4 w-4 rotate-90" />
-                                <span className="text-sm font-medium uppercase tracking-wider">back to menu</span>
-                              </button>
-                              
-                              <div className="space-y-4">
-                                <div className="flex flex-col">
-                                  <span className="text-xs text-gray-400 uppercase tracking-wider">Settings & Privacy</span>
-                                  <p className="text-sm text-gray-300 mt-1">Configure your account preferences and security settings.</p>
-                                </div>
-                                
-                                <button
-                                  onClick={() => setShowSettingsPanel(true)}
-                                  className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2"
-                                >
-                                  <Settings className="h-4 w-4" />
-                                  <span>Open Settings Dialog</span>
-                                </button>
-                              </div>
-                            </div>
-                          )}
+
+
+                {/* Two-line Hamburger Icon - Mobile only - Theme responsive - Fixed position */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsNavOpen(!isNavOpen);
+                  }}
+                  className="md:hidden fixed top-4 right-4 z-50 w-10 h-10 flex flex-col items-center justify-center gap-1.5 bg-transparent hover:bg-black/10 dark:hover:bg-white/10 rounded-lg transition-all duration-300"
+                  data-testid="button-nav-toggle"
+                >
+                  <div
+                    className={`h-0.5 bg-gray-900 dark:bg-white transition-all duration-300 ${isNavOpen ? "w-5 rotate-45 translate-y-1" : "w-5"}`}
+                  ></div>
+                  <div
+                    className={`h-0.5 bg-gray-900 dark:bg-white transition-all duration-300 ${isNavOpen ? "w-5 -rotate-45 -translate-y-1" : "w-4 ml-1"}`}
+                  ></div>
+                </button>
+
                 {/* Home Screen - Stacks on top with card effect */}
                 <div
                   onClick={() => isNavOpen && setIsNavOpen(false)}
