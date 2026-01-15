@@ -1970,7 +1970,6 @@ export default function Home() {
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
-  const [isSettingsActive, setIsSettingsActive] = useState(false);
 
   const handleUpdateProfile = async (updates: any) => {
     try {
@@ -13597,80 +13596,115 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <span className="text-white font-medium">{currentUser?.location && currentUser.location !== "empty" ? currentUser.location : ""}</span>
                                     <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
-                                )} 
-                              </div> 
-                            </div> 
-                          )} 
-                           
-                          {isSettingsActive && ( 
-                            <div className="px-4 py-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200"> 
-                              <button 
-                                className="w-full py-3 bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg border border-red-500/30 font-medium transition-colors flex items-center justify-center gap-2" 
-                                data-testid="button-reset-password" 
-                              > 
-                                <span>Reset Password</span> 
-                              </button> 
-                            </div> 
-                          )} 
-                           
-                          {!isProfileActive && !isSettingsActive && ( 
-                            <> 
-                              <button 
-                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left" 
-                                data-testid="nav-saved" 
-                              > 
-                                saved 
+                                )}
+                              </div>
+                            </div>
+                          )}
+                          
+                          {!isProfileActive && (
+                            <>
+                              <button
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
+                                data-testid="nav-saved"
+                              >
+                                saved
                               </button>
-                                  className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2" 
-                                  data-testid="nav-dashboard" 
-                                > 
-                                  <BarChart3 className="h-4 w-4" /> 
-                                  <span>dashboard</span> 
-                                </button> 
-                              )} 
-                              <button 
-                                onClick={() => setIsSettingsActive(!isSettingsActive)} 
-                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2" 
-                                data-testid="nav-settings" 
-                              > 
-                                <Settings className="h-4 w-4" /> 
-                                <span>setting & privacy</span> 
-                              </button> 
-                              <button 
-                                onClick={toggleTheme} 
-                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2" 
-                                data-testid="nav-dark-theme" 
-                              > 
-                                {theme === "dark" ? ( 
-                                  <> 
-                                    <Sun className="h-4 w-4" /> 
-                                    <span>light mode</span> 
-                                  </> 
-                                ) : ( 
-                                  <> 
-                                    <Moon className="h-4 w-4" /> 
-                                    <span>dark mode</span> 
-                                  </> 
-                                )} 
-                              </button> 
-                              <button 
-                                onClick={async () => { 
-                                  try { 
-                                    await cognitoSignOut(); 
-                                    localStorage.clear(); 
-                                    window.location.href = "/login"; 
-                                  } catch (error) { 
-                                    console.error("Logout error:", error); 
-                                  } 
-                                }} 
-                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2" 
-                                data-testid="nav-logout" 
-                              > 
-                                <LogOut className="h-4 w-4" /> 
-                                <span>logout</span> 
-                              </button> 
+                              {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
+                                <button
+                                  onClick={() => {
+                                    setTabWithAuthCheck("dashboard");
+                                    setIsNavOpen(false);
+                                  }}
+                                  className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                  data-testid="nav-dashboard"
+                                >
+                                  <BarChart3 className="h-4 w-4" />
+                                  <span>dashboard</span>
+                                </button>
+                              )}
+                              <button
+                                onClick={() => setShowSettingsPanel(true)}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                                data-testid="nav-settings"
+                              >
+                                <Settings className="h-4 w-4" />
+                                <span>setting & privacy</span>
+                              </button>
+                              <button
+                                onClick={toggleTheme}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                data-testid="nav-dark-theme"
+                              >
+                                {theme === 'dark' ? (
+                                  <>
+                                    <Sun className="h-4 w-4" />
+                                    <span>light mode</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Moon className="h-4 w-4" />
+                                    <span>dark mode</span>
+                                  </>
+                                )}
+                              </button>
+                              <button
+                                onClick={async () => {
+                                  try {
+                                    await cognitoSignOut();
+                                    localStorage.clear();
+                                    window.location.href = "/login";
+                                  } catch (error) {
+                                    console.error("Logout error:", error);
+                                  }
+                                }}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                                data-testid="nav-logout"
+                              >
+                                <LogOut className="h-4 w-4" />
+                                <span>logout</span>
+                              </button>
                             </>
                           )}
+                        </div>
+                      </>
+                    ) : (<div className="flex flex-col items-center justify-center space-y-4">
+                        <button
+                          onClick={() => {
+                            window.location.href = "/login";
+                          }}
+                          className="w-full px-6 py-3 bg-white text-blue-900 hover:bg-blue-50 rounded-lg transition-colors font-semibold text-center"
+                          data-testid="nav-login"
+                        >
+                          Login
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+
+
+                {/* Two-line Hamburger Icon - Mobile only - Theme responsive - Fixed position */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsNavOpen(!isNavOpen);
+                  }}
+                  className="md:hidden fixed top-4 right-4 z-50 w-10 h-10 flex flex-col items-center justify-center gap-1.5 bg-transparent hover:bg-black/10 dark:hover:bg-white/10 rounded-lg transition-all duration-300"
+                  data-testid="button-nav-toggle"
+                >
+                  <div
+                    className={`h-0.5 bg-gray-900 dark:bg-white transition-all duration-300 ${isNavOpen ? "w-5 rotate-45 translate-y-1" : "w-5"}`}
+                  ></div>
+                  <div
+                    className={`h-0.5 bg-gray-900 dark:bg-white transition-all duration-300 ${isNavOpen ? "w-5 -rotate-45 -translate-y-1" : "w-4 ml-1"}`}
+                  ></div>
+                </button>
+
+                {/* Home Screen - Stacks on top with card effect */}
+                <div
+                  onClick={() => isNavOpen && setIsNavOpen(false)}
+                  className={`min-h-screen bg-gray-900 flex flex-col transition-all duration-500 ease-out relative z-20 ${
                     isNavOpen
                       ? "scale-90 -translate-x-[70%] rounded-tr-3xl shadow-2xl"
                       : "scale-100 translate-x-0"
