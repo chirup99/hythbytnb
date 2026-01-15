@@ -472,17 +472,21 @@ function SwipeableCardStack({
       setCurrentAudio(null);
     }
   };
+    // Settings for natural, human-like delivery
+    utterance.rate = 0.9; // Slightly slower for more natural pacing
+    utterance.pitch = 1.05; // Slight variation for more natural sound
+    utterance.volume = 0.85; // Comfortable listening volume
 
-  const swipeCard = (direction: "left" | "right") => {
-    // Immediately stop current audio
-    globalStopAudio();
+    // Set language for neutral pronunciation
+    utterance.lang = "en-US";
 
-    setCards((prev) => {
-      const newCards = [...prev];
-      let newIndex = currentCardIndex;
-
-      if (direction === "right") {
-        // Right swipe: Move to next card (current card goes to back)
+    utterance.onstart = () => setIsPlaying(true);
+    utterance.onend = () => {
+      setIsPlaying(false);
+      setCurrentAudio(null);
+    };
+    utterance.onerror = () => {
+      setIsPlaying(false);
         const topCard = newCards.shift();
         if (topCard) {
           newCards.push(topCard);
