@@ -447,61 +447,27 @@ function SwipeableCardStack({
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
 
-    // Get available voices and select neutral/direct voices
     const voices = speechSynthesis.getVoices();
+    const voiceProfileMap: Record<string, string[]> = {
+      ravi: ["ravi", "moira", "samantha", "aria", "ava"],
+      vaib: ["vaib", "susan", "karen", "claire", "hazel"],
+      kids: ["kids", "allison", "serena", "zira", "fiona"]
+    };
+    const selectedProfile = activeVoiceProfileId || "ravi";
+    const priorityKeywords = voiceProfileMap[selectedProfile] || voiceProfileMap.ravi;
 
-    // Prioritize Moira voice specifically, then other natural voices
-    const moiraVoice = voices.find(
-      (voice) =>
-        voice.lang.startsWith("en") &&
-        voice.name.toLowerCase().includes("moira"),
+    let preferredVoice = voices.find(v => 
+      v.lang.startsWith("en") && 
+      priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
     );
 
-    const otherNaturalVoices = voices.filter(
-      (voice) =>
-        voice.lang.startsWith("en") &&
-        !voice.name.toLowerCase().includes("moira") &&
-        // Other premium female voices that sound very natural
-        (voice.name.toLowerCase().includes("samantha") ||
-          voice.name.toLowerCase().includes("karen") ||
-          voice.name.toLowerCase().includes("susan") ||
-          voice.name.toLowerCase().includes("fiona") ||
-          voice.name.toLowerCase().includes("serena") ||
-          voice.name.toLowerCase().includes("allison") ||
-          voice.name.toLowerCase().includes("ava") ||
-          voice.name.toLowerCase().includes("claire") ||
-          voice.name.toLowerCase().includes("aria") ||
-          voice.name.toLowerCase().includes("zira") ||
-          voice.name.toLowerCase().includes("hazel") ||
-          // Neural/premium indicators
-          voice.name.toLowerCase().includes("neural") ||
-          voice.name.toLowerCase().includes("premium") ||
-          voice.name.toLowerCase().includes("enhanced")),
-    );
-
-    // Use Moira first, then other natural voices, then any English voice
-    if (moiraVoice) {
-      utterance.voice = moiraVoice;
-    } else if (otherNaturalVoices.length > 0) {
-      utterance.voice = otherNaturalVoices[0];
-    } else {
-      const englishVoices = voices.filter(
-        (voice) =>
-          voice.lang.startsWith("en") &&
-          !voice.name.toLowerCase().includes("novelty"),
-      );
-      if (englishVoices.length > 0) {
-        utterance.voice = englishVoices[0];
-      }
+    if (!preferredVoice) {
+      preferredVoice = voices.find(v => v.lang.startsWith("en"));
     }
 
-    // Settings for natural, human-like delivery
-    utterance.rate = 0.9; // Slightly slower for more natural pacing
-    utterance.pitch = 1.05; // Slight variation for more natural sound
-    utterance.volume = 0.85; // Comfortable listening volume
-
-    // Set language for neutral pronunciation
-    utterance.lang = "en-US";
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
 
     utterance.onstart = () => setIsPlaying(true);
     utterance.onend = () => {
