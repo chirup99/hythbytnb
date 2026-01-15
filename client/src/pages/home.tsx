@@ -13677,7 +13677,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </button>
                                 </>
                               )}
-                        </div>
+                            </>
+                          )}</div>
                       </>
                     ) : (<div className="flex flex-col items-center justify-center space-y-4">
                         <button
