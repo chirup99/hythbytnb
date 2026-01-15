@@ -1970,6 +1970,7 @@ export default function Home() {
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
+  const [isSettingsActive, setIsSettingsActive] = useState(false);
 
   const handleUpdateProfile = async (updates: any) => {
     try {
@@ -13602,6 +13603,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           )}
                           
                           {!isProfileActive && (
+                          {isSettingsActive && (
+                            <div className="px-4 py-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                              <button
+                                className="w-full py-3 bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg border border-red-500/30 font-medium transition-colors flex items-center justify-center gap-2"
+                                data-testid="button-reset-password"
+                              >
+                                <span>Reset Password</span>
+                              </button>
+                            </div>
+                          )}
+                          
+                          {!isProfileActive && !isSettingsActive && (
                             <>
                               <button
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
@@ -13609,7 +13622,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               >
                                 saved
                               </button>
-                              {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
+                              {localStorage.getItem("currentUserEmail") === "chiranjeevi.perala99@gmail.com" && (
                                 <button
                                   onClick={() => {
                                     setTabWithAuthCheck("dashboard");
@@ -13623,7 +13636,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 </button>
                               )}
                               <button
-                                onClick={() => setShowSettingsPanel(true)}
+                                onClick={() => setIsSettingsActive(!isSettingsActive)}
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
                                 data-testid="nav-settings"
                               >
@@ -13635,7 +13648,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
                                 data-testid="nav-dark-theme"
                               >
-                                {theme === 'dark' ? (
+                                {theme === "dark" ? (
                                   <>
                                     <Sun className="h-4 w-4" />
                                     <span>light mode</span>
@@ -13663,6 +13676,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <LogOut className="h-4 w-4" />
                                 <span>logout</span>
                               </button>
+                            </>
+                          )}
                             </>
                           )}
                         </div>
