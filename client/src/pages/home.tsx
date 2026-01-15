@@ -13605,9 +13605,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <>
                               <button
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
-                                data-testid="nav-saved"
+                                data-testid="nav-voice"
                               >
-                                saved
+                                Voice
                               </button>
                               {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
                                 <button
