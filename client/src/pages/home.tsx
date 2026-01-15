@@ -13683,27 +13683,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </div>
 
 
-                {/* Settings & Privacy Panel - Email Verification */}
-                {showSettingsPanel && (
-                  <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowSettingsPanel(false)}>
-                    <div 
-                      className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl border border-gray-700"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-xl font-semibold text-white">Settings & Privacy</h2>
-                        <button
-                          onClick={() => setShowSettingsPanel(false)}
-                          className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-                          data-testid="button-close-settings"
-                        >
-                          <X className="h-5 w-5 text-gray-400" />
-                        </button>
-                      </div>
-
-                    </div>
-                  </div>
-                )}
 
                 {/* Two-line Hamburger Icon - Mobile only - Theme responsive - Fixed position */}
                 <button
