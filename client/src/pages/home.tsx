@@ -1970,6 +1970,7 @@ export default function Home() {
   // Navigation menu state
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
+  const [isVoiceActive, setIsVoiceActive] = useState(false);
 
   const handleUpdateProfile = async (updates: any) => {
     try {
@@ -13604,11 +13605,21 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {!isProfileActive && (
                             <>
                               <button
-                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left"
+                                onClick={() => setIsVoiceActive(!isVoiceActive)}
+                                className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-between"
                                 data-testid="nav-voice"
                               >
-                                Voice
+                                <span>Voice</span>
+                                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isVoiceActive ? "rotate-180" : ""}`} />
                               </button>
+
+                              {isVoiceActive && (
+                                <div className="px-4 py-6 text-center text-gray-400 border border-dashed border-gray-700 rounded-lg animate-in fade-in slide-in-from-top-2 duration-200">
+                                  Voice settings will appear here
+                                </div>
+                              )}
+
+                              {!isVoiceActive && (
                               {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
                                 <button
                                   onClick={() => {
@@ -13663,6 +13674,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <LogOut className="h-4 w-4" />
                                 <span>logout</span>
                               </button>
+                            </>
+                          )}
                             </>
                           )}
                         </div>
