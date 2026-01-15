@@ -60,6 +60,18 @@ export function StackedSwipeableCards({ snippets, onRemove }: StackedSwipeableCa
       
       const cleanText = removeEmojis(card.text);
       const utterance = new SpeechSynthesisUtterance(cleanText);
+      const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'ravi';
+      const voiceProfileMap: Record<string, string[]> = {
+        ravi: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
+        vaib: ["Google US English", "Microsoft Vaibhav Online (Natural) - English (India)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
+        kids: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
+      };
+      const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
+      const voices = window.speechSynthesis.getVoices();
+      const selectedVoice = voices.find(v => 
+        priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
+      );
+      if (selectedVoice) utterance.voice = selectedVoice;
       utterance.rate = 1.0;
       utterance.pitch = 1.0;
       utterance.volume = 1.0;
