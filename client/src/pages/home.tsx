@@ -1936,6 +1936,7 @@ export default function Home() {
   useAngelOneAutoconnect();
   const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState("trading-home");
+  const [showTutorOverlay, setShowTutorOverlay] = useState(false);
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
   const userEmail = localStorage.getItem("currentUserEmail");
   const [swipeStartY, setSwipeStartY] = useState(0);
@@ -15906,6 +15907,172 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     </div>
                     )}
 
+                    {/* Tutor Vertical Sidebar - Slides from right */}
+{/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">              <button                 onClick={() => setShowComingSoonDialog(false)}                className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"              >                <X className="h-5 w-5 text-slate-500" />              </button>                            <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Advanced Trading Master                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                We"re working on bringing you advanced trading features and analytics.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
+                    {showTutorOverlay && (
+                      <>
+                        {/* Backdrop */}
+                        <div
+                          className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
+                          onClick={() => setShowTutorOverlay(false)}
+                        />
+
+                        {/* Sidebar */}
+                        <div
+                          className="fixed top-0 right-0 h-full w-96 bg-slate-900 z-50 shadow-2xl transition-transform duration-500 ease-out"
+                          style={{
+                            animation: "slideInFromRight 0.5s ease-out",
+                          }}
+                        >
+                          {/* Header with close button */}
+                          <div className="flex items-center justify-between p-4 border-b border-slate-700">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                                <GraduationCap className="h-5 w-5 text-white" />
+                              </div>
+                              <span className="text-lg font-semibold text-white">
+                                AI Trading Tutor
+                              </span>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setShowTutorOverlay(false)}
+                              className="text-slate-400 hover:text-white hover:bg-slate-800"
+                            >
+                              <X className="h-5 w-5" />
+                            </Button>
+                          </div>
+
+                          {/* Scrollable content */}
+                          <div className="h-full overflow-y-auto pb-20 custom-thin-scrollbar">
+                            <div className="p-4 space-y-6">
+                              {/* Welcome message */}
+                              <div className="text-center space-y-2">
+                                <h2 className="text-xl font-bold text-white">
+                                  Learn & Master Trading
+                                </h2>
+                                <p className="text-slate-300 text-sm">
+                                  Interactive lessons and personalized guidance
+                                </p>
+                              </div>
+
+                              {/* Quick access cards - vertical stack */}
+                              <div className="space-y-4">
+                                <div className="bg-slate-800 rounded-xl p-4 hover:bg-slate-700 transition-colors cursor-pointer">
+                                  <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                                      <BookOpen className="h-5 w-5 text-white" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-white">
+                                      Trading Basics
+                                    </h3>
+                                  </div>
+                                  <p className="text-slate-300 text-sm">
+                                    Learn fundamental concepts and strategies
+                                  </p>
+                                </div>
+
+                                <div className="bg-slate-800 rounded-xl p-4 hover:bg-slate-700 transition-colors cursor-pointer">
+                                  <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                                      <BarChart3 className="h-5 w-5 text-white" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-white">
+                                      Chart Analysis
+                                    </h3>
+                                  </div>
+                                  <p className="text-slate-300 text-sm">
+                                    Master technical analysis and patterns
+                                  </p>
+                                </div>
+
+                                <div className="bg-slate-800 rounded-xl p-4 hover:bg-slate-700 transition-colors cursor-pointer">
+                                  <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                                      <Target className="h-5 w-5 text-white" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-white">
+                                      Risk Management
+                                    </h3>
+                                  </div>
+                                  <p className="text-slate-300 text-sm">
+                                    Protect your capital with smart strategies
+                                  </p>
+                                </div>
+                              </div>
+
+                              {/* Additional learning sections */}
+                              <div className="space-y-4">
+                                <h3 className="text-lg font-semibold text-white">
+                                  Quick Actions
+                                </h3>
+
+                                <div className="bg-slate-800 rounded-xl p-4 hover:bg-slate-700 transition-colors cursor-pointer">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                                      <Lightbulb className="h-4 w-4 text-white" />
+                                    </div>
+                                    <span className="text-white font-medium">
+                                      Trading Tips
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="bg-slate-800 rounded-xl p-4 hover:bg-slate-700 transition-colors cursor-pointer">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center">
+                                      <AlertCircle className="h-4 w-4 text-white" />
+                                    </div>
+                                    <span className="text-white font-medium">
+                                      Market Alerts
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="bg-slate-800 rounded-xl p-4 hover:bg-slate-700 transition-colors cursor-pointer">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
+                                      <TrendingUp className="h-4 w-4 text-white" />
+                                    </div>
+                                    <span className="text-white font-medium">
+                                      Performance Insights
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {/* Global CSS for animations */}
+                    <style>{`
+                  @keyframes slideUpFromBottom {
+                    from {
+                      transform: translateY(100%);
+                    }
+                    to {
+                      transform: translateY(0);
+                    }
+                  }
+
+                  @keyframes slideInFromRight {
+                    from {
+                      transform: translateX(100%);
+                    }
+                    to {
+                      transform: translateX(0);
+                    }
+                  }
+                `}</style>
+                  </div>
+                </div>
+              </div>
+            )}
+
+
             {activeTab === "backtest" && (
               <div className="h-full p-6 space-y-6">
                 <div className="max-w-6xl mx-auto">
@@ -15948,8 +16115,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       </div>
                       <h3 className="font-semibold mb-2">Historical Data Analysis</h3>
                       <p className="text-sm text-muted-foreground">
+                        Test strategies against years of historical market data
                       </p>
                     </div>
+                    <div className="bg-card border border-border rounded-lg p-6">
+                      <div className="p-2 bg-green-500/10 rounded-lg w-fit mb-4">
+                        <TrendingUp className="h-5 w-5 text-green-500" />
+                      </div>
+                      <h3 className="font-semibold mb-2">Performance Metrics</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Comprehensive statistics on returns, drawdowns, and win rates
                       </p>
                     </div>
                     <div className="bg-card border border-border rounded-lg p-6">
