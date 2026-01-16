@@ -429,6 +429,9 @@ function SwipeableCardStack({
   };
 
   // Play audio using Speech Synthesis with optimized settings
+  // Play audio using Speech Synthesis with optimized settings
+    // Play audio using Speech Synthesis with optimized settings
+    // Play audio using Speech Synthesis with optimized settings
   const playAudio = (text: string) => {
     // Stop current audio if playing
     if (currentAudio) {
@@ -442,23 +445,35 @@ function SwipeableCardStack({
         "",
       )
       .replace(/^(ladies and gentlemen|dear listeners|in today's news)/gi, "")
-      .replace(/^[.,\s]+/, "") // Remove leading punctuation and spaces
+      .replace(/^[.,\\s]+/, "") // Remove leading punctuation and spaces
       .trim();
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
 
     const voiceProfileMap: Record<string, string[]> = {
-      samantha: ["Samantha", "Victoria", "Female", "US English", "en-US"],
-      amro: ["Daniel", "Oliver", "Arthur", "Male", "UK English", "en-GB"],
+      samantha: ["Samantha", "Victoria", "Female", "US", "Zira", "en-US"],
+      amro: ["Daniel", "Oliver", "Arthur", "Male", "UK", "GB", "en-GB"],
       heera: ["Hindi", "India", "Kalpana", "Female", "en-IN"]
     };
     const selectedProfile = (typeof window !== "undefined" && localStorage.getItem("activeVoiceProfileId")) || "samantha";
     const priorityKeywords = voiceProfileMap[selectedProfile as keyof typeof voiceProfileMap] || voiceProfileMap.samantha;
+
     const voices = window.speechSynthesis.getVoices();
+    
     let preferredVoice = voices.find(v => 
       v.lang.startsWith("en") && 
       priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
     );
+
+    if (!preferredVoice) {
+      if (selectedProfile === "samantha") {
+        preferredVoice = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
+      } else if (selectedProfile === "amro") {
+        preferredVoice = voices.find(v => (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
+      } else if (selectedProfile === "heera") {
+        preferredVoice = voices.find(v => v.name.includes("Hindi") || v.name.includes("India") || v.name.includes("Kalpana") || v.name.includes("Hemant"));
+      }
+    }
 
     if (!preferredVoice) {
       preferredVoice = voices.find(v => v.lang.startsWith("en"));

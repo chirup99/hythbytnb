@@ -1,21 +1,4 @@
-import sys
-
-with open('client/src/pages/home.tsx', 'r') as f:
-    content = f.read()
-
-# Marker for the start of the function
-start_marker = 'const playAudio = (text: string) => {'
-start_idx = content.find(start_marker)
-
-# Marker for the swipeCard function which reliably follows the audio section
-end_marker = 'const swipeCard = (direction: "left" | "right") => {'
-end_idx = content.find(end_marker)
-
-if start_idx != -1 and end_idx != -1:
-    # Backup to the start of the line for swipeCard
-    end_idx = content.rfind('\n', 0, end_idx) + 1
-    
-    new_block = """  // Play audio using Speech Synthesis with optimized settings
+  // Play audio using Speech Synthesis with optimized settings
   const playAudio = (text: string) => {
     // Stop current audio if playing
     if (currentAudio) {
@@ -29,7 +12,7 @@ if start_idx != -1 and end_idx != -1:
         "",
       )
       .replace(/^(ladies and gentlemen|dear listeners|in today's news)/gi, "")
-      .replace(/^[.,\\\\s]+/, "") // Remove leading punctuation and spaces
+      .replace(/^[.,\s]+/, "") // Remove leading punctuation and spaces
       .trim();
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
@@ -80,21 +63,3 @@ if start_idx != -1 and end_idx != -1:
     setCurrentAudio(utterance);
     speechSynthesis.speak(utterance);
   };
-
-  // Stop audio playback
-  const stopAudio = () => {
-    if (currentAudio) {
-      speechSynthesis.cancel();
-      setIsPlaying(false);
-      setCurrentAudio(null);
-    }
-  };
-
-"""
-    new_content = content[:start_idx] + new_block + content[end_idx:]
-    with open('client/src/pages/home.tsx', 'w') as f:
-        f.write(new_content)
-    print("Successfully rebuilt playAudio and stopAudio block")
-else:
-    print(f"Failed to find markers: start={start_idx}, end={end_idx}")
-    sys.exit(1)
