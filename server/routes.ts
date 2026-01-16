@@ -4259,7 +4259,14 @@ async function attemptAutoReconnection() {
 import { podcastRouter } from './podcast-routes.js';
 import { newsRouter } from './news-routes.js';
 
+import { registerChatRoutes } from "./replit_integrations/chat";
+import { registerImageRoutes } from "./replit_integrations/image";
+import { registerAudioRoutes } from "./replit_integrations/audio";
+
 export async function registerRoutes(app: Express): Promise<Server> {
+  registerChatRoutes(app);
+  registerImageRoutes(app);
+  registerAudioRoutes(app);
 
   // 🔶 Angel One OAuth Redirect Flow - Now with DYNAMIC domain support (like Upstox)
 

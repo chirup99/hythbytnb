@@ -46,6 +46,8 @@ export const activityLog = pgTable("activity_log", {
   message: text("message").notNull(),
 });
 
+export * from "./models/chat";
+
 // Analysis Instructions table for custom data processing
 export const analysisInstructions = pgTable("analysis_instructions", {
   id: serial("id").primaryKey(),
