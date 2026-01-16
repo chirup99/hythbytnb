@@ -308,13 +308,13 @@ export function UserProfileDropdown() {
             <div className="flex gap-4 mt-3 text-xs">
               <div className="flex items-center gap-1">
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  {profile?.following ?? 0}
+                  {profile?.following || 0}
                 </span>
                 <span className="text-gray-500 dark:text-gray-400">Following</span>
               </div>
               <div className="flex items-center gap-1">
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  {profile?.followers ?? 0}
+                  {profile?.followers || 0}
                 </span>
                 <span className="text-gray-500 dark:text-gray-400">Followers</span>
               </div>
@@ -472,13 +472,13 @@ export function UserProfileDropdown() {
             <div className="flex gap-6 py-4 border-t border-b border-gray-200 dark:border-gray-700">
               <div className="text-center">
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {profile?.following ?? 0}
+                  {profile?.following || 0}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Following</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {profile?.followers ?? 0}
+                  {profile?.followers || 0}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Followers</p>
               </div>
