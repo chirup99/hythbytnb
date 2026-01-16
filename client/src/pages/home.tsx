@@ -3762,8 +3762,6 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
 
       const performanceReport = `## 📝 Trading Journal AI Performance Report
 
-<PersonalHeatmap />
-
 <PersonalHeatmap data={[]} />
 ### 📊 **Overall Performance Metrics**
 **🎯 Total Trades:** ${totalTrades}
