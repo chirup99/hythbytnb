@@ -449,9 +449,9 @@ function SwipeableCardStack({
 
     const voices = speechSynthesis.getVoices();
     const voiceProfileMap: Record<string, string[]> = {
-      ravi: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
-      vaib: ["Google US English", "Microsoft Vaibhav Online (Natural) - English (India)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
-      kids: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"]
+      ravi: ["Samantha", "Google UK English Male", "Microsoft Ravi Online (Natural)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
+      vaib: ["Maro", "Google US English", "Microsoft Vaibhav Online (Natural)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
+      kids: ["Heera", "Google UK English Female", "Microsoft Heera Online (Natural)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"]
     };
     const selectedProfile = (typeof window !== "undefined" && localStorage.getItem("activeVoiceProfileId")) || "ravi";
     const priorityKeywords = voiceProfileMap[selectedProfile as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
