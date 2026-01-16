@@ -13604,7 +13604,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                 setActiveVoiceProfileId(profile.id);
                                                 if (typeof window !== "undefined" && "speechSynthesis" in window) {
                                                   const name = currentUser?.displayName || currentUser?.username || "Trader";
-                                                  const utterance = new SpeechSynthesisUtterance(`Hello ${name}, welcome to perala`);
+                                                  const utterance = new SpeechSynthesisUtterance(`Voice name ${profile.name}. Hello ${name}, welcome to perala`);
                                                   const voices = window.speechSynthesis.getVoices();
                                                   if (profile.id === "samantha") {
                                                     const v = voices.find(v => v.name.includes("Samantha") || v.name.includes("Female"));
