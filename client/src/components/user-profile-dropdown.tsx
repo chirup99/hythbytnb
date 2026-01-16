@@ -34,6 +34,7 @@ interface UserProfile {
   followers?: number;
   following?: number;
   dob?: string;
+  avatar?: string;
 }
 
 export function UserProfileDropdown() {
@@ -94,7 +95,8 @@ export function UserProfileDropdown() {
             location: data.profile.location || '',
             followers: data.profile.followers || 0,
             following: data.profile.following || 0,
-            dob: data.profile.dob
+            dob: data.profile.dob,
+            avatar: data.profile.profilePicUrl || ''
           };
         }
       }
@@ -215,9 +217,13 @@ export function UserProfileDropdown() {
             data-testid="button-profile-avatar"
           >
             <Avatar className="h-10 w-10 border-2 border-gray-200 dark:border-gray-600">
-              <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold text-sm">
-                {getInitials(displayName)}
-              </AvatarFallback>
+              {profile?.avatar ? (
+                <img src={profile.avatar} alt={displayName} className="h-full w-full object-cover" />
+              ) : (
+                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold text-sm">
+                  {getInitials(displayName)}
+                </AvatarFallback>
+              )}
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -228,9 +234,13 @@ export function UserProfileDropdown() {
           <DropdownMenuLabel className="font-normal">
             <div className="flex items-start gap-3 py-2">
               <Avatar className="h-12 w-12 border-2 border-gray-200 dark:border-gray-600">
-                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold">
-                  {getInitials(displayName)}
-                </AvatarFallback>
+                {profile?.avatar ? (
+                  <img src={profile.avatar} alt={displayName} className="h-full w-full object-cover" />
+                ) : (
+                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold">
+                    {getInitials(displayName)}
+                  </AvatarFallback>
+                )}
               </Avatar>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
