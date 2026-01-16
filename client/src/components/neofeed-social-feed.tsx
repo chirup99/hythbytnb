@@ -1263,6 +1263,9 @@ function ProfileHeader() {
     );
   }
 
+  const followersCount = profileData?.followersCount ?? 0;
+  const followingCount = profileData?.followingCount ?? 0;
+
   return (
     <>
       {/* Hidden file inputs for image selection */}
@@ -1366,7 +1369,7 @@ function ProfileHeader() {
               onClick={() => setShowFollowingDialog(true)}
               data-testid="button-show-following"
             >
-              <span className="font-bold text-gray-900 dark:text-white">{following}</span>
+              <span className="font-bold text-gray-900 dark:text-white">{followingCount}</span>
               <span className="text-gray-600 dark:text-gray-400 ml-1">Following</span>
             </button>
             <button 
@@ -1374,7 +1377,7 @@ function ProfileHeader() {
               onClick={() => setShowFollowersDialog(true)}
               data-testid="button-show-followers"
             >
-              <span className="font-bold text-gray-900 dark:text-white">{followers}</span>
+              <span className="font-bold text-gray-900 dark:text-white">{followersCount}</span>
               <span className="text-gray-600 dark:text-gray-400 ml-1">Followers</span>
             </button>
           </div>
