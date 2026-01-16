@@ -105,8 +105,8 @@ export function UserProfileDropdown() {
             email: data.profile.email || currentUser.email || '',
             bio: data.profile.bio || '',
             location: data.profile.location || '',
-            followers: data.profile.followersCount || 0,
-            following: data.profile.followingCount || 0,
+            followers: data.profile.followersCount ?? data.profile.followers ?? 0,
+            following: data.profile.followingCount ?? data.profile.following ?? 0,
             dob: data.profile.dob,
             avatar: data.profile.profilePicUrl || ''
           };
