@@ -3918,7 +3918,7 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
   const containerRef = useRef<HTMLDivElement>(null);
   const [showTopFilters, setShowTopFilters] = useState(true);
   const [showAppBar, setShowAppBar] = useState(true);
-  const [showBottomNav, setShowBottomNav] = useState(false);
+  const [showBottomNav, setShowBottomNav] = useState(true);
   const lastScrollYRef = useRef(0);
   const [showMobileCreatePost, setShowMobileCreatePost] = useState(false);
   const [showMobileAudioMinicast, setShowMobileAudioMinicast] = useState(false);
@@ -3933,8 +3933,6 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
   
   // Handle scroll to hide/show app bar and bottom navigation
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout;
-    
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
@@ -3950,19 +3948,11 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
         // Scrolling up - show app bar and bottom nav
         setShowAppBar(true);
         setShowBottomNav(true);
-      } else {
+      } else if (currentScrollY > lastScrollYRef.current) {
         // Scrolling down - hide app bar and bottom nav
         setShowAppBar(false);
         setShowBottomNav(false);
       }
-      
-      // Clear existing timeout
-      clearTimeout(scrollTimeout);
-      
-      // Hide navigation after scrolling stops
-      scrollTimeout = setTimeout(() => {
-        setShowBottomNav(false);
-      }, 1500); // Hide 1.5s after stop
       
       lastScrollYRef.current = currentScrollY;
       setIsAtTop(currentScrollY < 50);
@@ -3971,7 +3961,6 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimeout);
     };
   }, []);
   
