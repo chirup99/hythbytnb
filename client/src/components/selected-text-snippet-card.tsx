@@ -56,13 +56,12 @@ export function SelectedTextSnippetCard({ snippet, onRemove, index }: SelectedTe
     try {
       const cleanText = removeEmojis(snippet.text);
       const utterance = new SpeechSynthesisUtterance(cleanText);
-      const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'ravi';
+      const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'vaibhav';
       const voiceProfileMap: Record<string, string[]> = {
-        ravi: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
-        vaib: ["Google US English", "Microsoft Vaibhav Online (Natural) - English (India)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
-        kids: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
+        vaibhav: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
+        heera: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
       };
-      const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
+      const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.vaibhav;
       const voices = window.speechSynthesis.getVoices();
       const selectedVoice = voices.find(v => 
         priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
