@@ -19,7 +19,19 @@ import {
   DialogTitle,
   DialogDescription,
 } from './ui/dialog';
-import { User, Edit, LogOut, Settings, Users, UserPlus, Loader2, CheckCircle, MapPin } from 'lucide-react';
+import { 
+  User, 
+  Edit, 
+  LogOut, 
+  Settings, 
+  Users, 
+  UserPlus, 
+  Loader2, 
+  CheckCircle, 
+  MapPin,
+  Share2,
+  Copy
+} from 'lucide-react';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useToast } from '@/hooks/use-toast';
 import { getCognitoToken, cognitoSignOut } from '@/cognito';
@@ -249,6 +261,43 @@ export function UserProfileDropdown() {
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                   @{username}
                 </p>
+              </div>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-gray-500 hover:text-blue-600 dark:hover:text-blue-400"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const profileUrl = `${window.location.origin}/profile/${username}`;
+                    if (navigator.share) {
+                      navigator.share({
+                        title: `${displayName}'s Profile`,
+                        url: profileUrl
+                      }).catch(() => {});
+                    }
+                  }}
+                  title="Share Profile"
+                >
+                  <Share2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-gray-500 hover:text-blue-600 dark:hover:text-blue-400"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const profileUrl = `${window.location.origin}/profile/${username}`;
+                    navigator.clipboard.writeText(profileUrl);
+                    toast({
+                      title: "Link Copied",
+                      description: "Profile link copied to clipboard",
+                    });
+                  }}
+                  title="Copy Profile Link"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
               </div>
             </div>
             {profile?.bio && (
