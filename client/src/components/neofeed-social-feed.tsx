@@ -3919,7 +3919,9 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
   const [showTopFilters, setShowTopFilters] = useState(true);
   const lastScrollYRef = useRef(0);
   const [showAppBar, setShowAppBar] = useState(true);
-  const [showBottomNav, setShowBottomNav] = useState(true);
+  const [showBottomNav, setShowBottomNav] = useState(false);
+  const lastScrollYRef = useRef(0);
+  const [showAppBar, setShowAppBar] = useState(true);
   const [showMobileCreatePost, setShowMobileCreatePost] = useState(false);
   const [showMobileAudioMinicast, setShowMobileAudioMinicast] = useState(false);
   const [showMobileMessages, setShowMobileMessages] = useState(false);
@@ -3946,24 +3948,23 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
         (window as any).pauseBannerYouTube();
       }
       
-      if (currentScrollY > lastScrollYRef.current && currentScrollY > 100) {
-        // Scrolling down and past 100px - hide app bar and bottom nav
-        setShowAppBar(false);
-        setShowBottomNav(false);
-      } else {
+      if (currentScrollY < lastScrollYRef.current) {
         // Scrolling up - show app bar and bottom nav
         setShowAppBar(true);
         setShowBottomNav(true);
+      } else {
+        // Scrolling down - hide app bar and bottom nav
+        setShowAppBar(false);
+        setShowBottomNav(false);
       }
       
       // Clear existing timeout
       clearTimeout(scrollTimeout);
       
-      // Show navigation after scrolling stops for 150ms
+      // Hide navigation after scrolling stops
       scrollTimeout = setTimeout(() => {
-        setShowAppBar(true);
-        setShowBottomNav(true);
-      }, 150);
+        setShowBottomNav(false);
+      }, 1500); // Hide 1.5s after stop
       
       lastScrollYRef.current = currentScrollY;
       setIsAtTop(currentScrollY < 50);
