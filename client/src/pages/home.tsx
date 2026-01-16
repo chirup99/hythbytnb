@@ -13582,12 +13582,44 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isVoiceActive ? "rotate-180" : ""}`} />
                               </button>
 
+
                               {isVoiceActive && (
                                 <div className="px-4 py-6 bg-gray-800/50 border border-gray-700 rounded-lg animate-in fade-in slide-in-from-top-2 duration-200">
-                                  <div className="flex flex-col items-center gap-4"><span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">voice profiles</span><div className="flex items-center justify-center gap-4 overflow-x-auto no-scrollbar py-2">{[{ id: "ravi", name: "Samantha", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" }, { id: "vaib", name: "Maro", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop" }, { id: "kids", name: "Heera", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" }, { id: "add", name: "Add", isAdd: true }].map((profile) => (<div key={profile.id} className="flex flex-col items-center gap-1.5 group cursor-pointer" onClick={() => !profile.isAdd && setActiveVoiceProfileId(profile.id)}><div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 ${isSelected ? "border-blue-500 ring-2 ring-blue-500/50" : "border-transparent"} active:scale-95 overflow-hidden bg-gray-700 shadow-lg`}>{profile.isAdd ? (<Plus className="h-5 w-5 text-gray-400" />) : (<img src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />)}</div><span className="text-[10px] font-medium text-gray-300 group-hover:text-blue-400 transition-colors flex items-center gap-1">{profile.name} {isSelected && <Check className="h-2.5 w-2.5" />} </span></div>))}</div><div className="w-full h-px bg-gray-700/50 my-1" /><p className="text-[11px] text-gray-500 italic">Select a voice for your minicast</p></div>
+                                  <div className="flex flex-col items-center gap-4">
+                                    <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">voice profiles</span>
+                                    <div className="flex items-center justify-center gap-4 overflow-x-auto no-scrollbar py-2">
+                                      {[
+                                        { id: "ravi", name: "Samantha", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" },
+                                        { id: "vaib", name: "Maro", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop" },
+                                        { id: "kids", name: "Heera", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" },
+                                        { id: "add", name: "Add", isAdd: true }
+                                      ].map((profile) => {
+                                        const isSelected = typeof activeVoiceProfileId !== "undefined" && activeVoiceProfileId === profile.id;
+                                        return (
+                                          <div 
+                                            key={profile.id} 
+                                            className="flex flex-col items-center gap-1.5 group cursor-pointer" 
+                                            onClick={() => !profile.isAdd && setActiveVoiceProfileId(profile.id)}
+                                          >
+                                            <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 ${isSelected ? "border-blue-500 ring-2 ring-blue-500/50" : "border-transparent"} active:scale-95 overflow-hidden bg-gray-700 shadow-lg`}>
+                                              {profile.isAdd ? (
+                                                <Plus className="h-5 w-5 text-gray-400" />
+                                              ) : (
+                                                <img src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />
+                                              )}
+                                            </div>
+                                            <span className={`text-[10px] font-medium transition-colors flex items-center gap-1 ${isSelected ? "text-blue-400 font-bold" : "text-gray-300 group-hover:text-blue-400"}`}>
+                                              {profile.name} {isSelected && <Check className="h-2.5 w-2.5" />}
+                                            </span>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                    <div className="w-full h-px bg-gray-700/50 my-1" />
+                                    <p className="text-[11px] text-gray-500 italic">Select a voice for your minicast</p>
+                                  </div>
                                 </div>
                               )}
-
                               {!isVoiceActive && (
                                 <>
                                   {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
