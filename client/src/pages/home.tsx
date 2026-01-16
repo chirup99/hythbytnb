@@ -15908,7 +15908,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     )}
 
                     {/* Tutor Vertical Sidebar - Slides from right */}
-{/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">              <button                 onClick={() => setShowComingSoonDialog(false)}                className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"              >                <X className="h-5 w-5 text-slate-500" />              </button>                            <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Mini-cast                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                We"re working on bringing you advanced trading features and analytics.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
+{/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">              <button                 onClick={() => setShowComingSoonDialog(false)}                className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"              >                <X className="h-5 w-5 text-slate-500" />              </button>                            <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Advanced Trading Master                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                We"re working on bringing you advanced trading features and analytics.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
                     {showTutorOverlay && (
                       <>
                         {/* Backdrop */}
@@ -15931,7 +15931,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <GraduationCap className="h-5 w-5 text-white" />
                               </div>
                               <span className="text-lg font-semibold text-white">
-                                Mini-cast
+                                Advanced Trading Master
                               </span>
                             </div>
                             <Button
@@ -15950,7 +15950,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               {/* Welcome message */}
                               <div className="text-center space-y-2">
                                 <h2 className="text-xl font-bold text-white">
-                                  Mini-cast
+                                  Advanced Trading Master
                                 </h2>
                                 <p className="text-slate-300 text-sm">
                                   Interactive lessons and personalized guidance
@@ -22822,7 +22822,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </div>
                 <DialogHeader className="space-y-2">
                   <DialogTitle className="text-center text-2xl bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent font-bold">
-                    Mini-cast
+                    Advanced Trading Master
                   </DialogTitle>
                 </DialogHeader>
                 <div className="text-center space-y-2">
