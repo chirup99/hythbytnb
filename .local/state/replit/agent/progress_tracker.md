@@ -65,10 +65,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - All services initialized (Angel One OAuth, Dhan, Upstox, NLP Agent, Gemini AI)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 ## IMPORT SESSION (Jan 15, 2026 - Session 13)
@@ -85,10 +85,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 ## IMPORT SESSION (Jan 15, 2026 - Session 15)
@@ -98,10 +98,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated successfully, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 16)
@@ -111,10 +111,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated successfully, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 17)
@@ -124,10 +124,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - All services initialized (Angel One OAuth P176266, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 18)
@@ -137,10 +137,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, WebSocket streaming BANKNIFTY/SENSEX/GOLD, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 20)
@@ -150,10 +150,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, WebSocket streaming BANKNIFTY/SENSEX/GOLD live prices, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 
@@ -164,10 +164,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated successfully, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, Cognito JWT Verifier, NeoFeed tables ready)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 21)
@@ -177,10 +177,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 ## FEAT: SCROLL BEHAVIOR UPDATE (Jan 16, 2026)
@@ -194,10 +194,10 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, NeoFeed tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 23)
@@ -207,7 +207,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, WebSocket streaming BANKNIFTY/SENSEX/GOLD live prices, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, NeoFeed tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
-- Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
-- Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Reverted Trading Master tab content text to "Advanced Trading Master" while keeping bouncing ball redirection.
+## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
+- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
+- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
+- Updated `client/src/pages/home.tsx` to handle these labels independently.
