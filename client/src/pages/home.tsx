@@ -1,4 +1,3 @@
-import PersonalHeatmap from "@/components/trading/PersonalHeatmap";
 ﻿import { motion, AnimatePresence } from "framer-motion";
 
 import { BrokerData } from "@/components/broker-data";
@@ -3765,6 +3764,7 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
 
 <PersonalHeatmap />
 
+<PersonalHeatmap data={[]} />
 ### 📊 **Overall Performance Metrics**
 **🎯 Total Trades:** ${totalTrades}
 **✅ Winning Trades:** ${winningTrades} (${winRate}% Win Rate)
