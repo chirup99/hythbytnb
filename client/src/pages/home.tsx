@@ -1,3 +1,4 @@
+import PersonalHeatmap from "@/components/trading/PersonalHeatmap";
 ﻿import { motion, AnimatePresence } from "framer-motion";
 
 import { BrokerData } from "@/components/broker-data";
@@ -3761,6 +3762,8 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
       }));
 
       const performanceReport = `## 📝 Trading Journal AI Performance Report
+
+<PersonalHeatmap />
 
 ### 📊 **Overall Performance Metrics**
 **🎯 Total Trades:** ${totalTrades}
