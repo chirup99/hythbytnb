@@ -447,23 +447,13 @@ function SwipeableCardStack({
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
 
-    const voices = speechSynthesis.getVoices();
     const voiceProfileMap: Record<string, string[]> = {
-      ravi: ["Samantha", "Google UK English Male", "Microsoft Ravi Online (Natural)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
-      vaib: ["Maro", "Google US English", "Microsoft Vaibhav Online (Natural)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
-      kids: ["Heera", "Google UK English Female", "Microsoft Heera Online (Natural)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"]
+      samantha: ["Samantha", "Victoria", "Female", "US English", "en-US"],
+      amro: ["Daniel", "Oliver", "Arthur", "Male", "UK English", "en-GB"],
+      heera: ["Hindi", "India", "Kalpana", "Female", "en-IN"]
     };
-    const selectedProfile = (typeof window !== "undefined" && localStorage.getItem("activeVoiceProfileId")) || "ravi";
-    const priorityKeywords = voiceProfileMap[selectedProfile as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
-
-    let preferredVoice = voices.find(v => 
-      v.lang.startsWith("en") && 
-      priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
-    );
-
-    if (!preferredVoice) {
-      preferredVoice = voices.find(v => v.lang.startsWith("en"));
-    }
+    const selectedProfile = (typeof window !== "undefined" && localStorage.getItem("activeVoiceProfileId")) || "samantha";
+    const priorityKeywords = voiceProfileMap[selectedProfile as keyof typeof voiceProfileMap] || voiceProfileMap.samantha;
 
     if (preferredVoice) {
       utterance.voice = preferredVoice;
