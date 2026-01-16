@@ -13607,13 +13607,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   const utterance = new SpeechSynthesisUtterance(`Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`);
                                                   const voices = window.speechSynthesis.getVoices();
                                                   if (profile.id === "samantha" || profile.name.toLowerCase().includes("samantha")) {
-                                                    const v = voices.find(v => v.name.includes("Samantha") || v.name.includes("Female") || v.name.includes("Google US English"));
+                                                    const v = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
                                                     if (v) utterance.voice = v;
                                                   } else if (profile.id === "amro" || profile.name.toLowerCase().includes("amro")) {
-                                                    const v = voices.find(v => v.name.includes("Male") || v.name.includes("Google UK English Male") || v.name.includes("Microsoft David"));
+                                                    const v = voices.find(v => (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
                                                     if (v) utterance.voice = v;
                                                   } else if (profile.id === "heera" || profile.name.toLowerCase().includes("heera")) {
-                                                    const v = voices.find(v => v.name.includes("Google Hindi") || v.name.includes("Indian") || v.name.includes("Female"));
+                                                    const v = voices.find(v => v.name.includes("Hindi") || v.name.includes("India") || v.name.includes("Kalpana") || v.name.includes("Hemant"));
                                                     if (v) utterance.voice = v;
                                                   }
                                                   window.speechSynthesis.speak(utterance);
