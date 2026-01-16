@@ -13606,11 +13606,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   const name = currentUser?.displayName || currentUser?.username || "Trader";
                                                   const utterance = new SpeechSynthesisUtterance(`Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`);
                                                   const voices = window.speechSynthesis.getVoices();
-                                                  if (profile.id === "samantha") {
-                                                    const v = voices.find(v => v.name.includes("Samantha") || v.name.includes("Female"));
+                                                  if (profile.id === "samantha" || profile.name.toLowerCase().includes("samantha")) {
+                                                    const v = voices.find(v => v.name.includes("Samantha") || v.name.includes("Female") || v.name.includes("Google US English"));
                                                     if (v) utterance.voice = v;
-                                                  } else if (profile.id === "amro") {
-                                                    const v = voices.find(v => v.name.includes("Male") || v.name.includes("Google UK English Male"));
+                                                  } else if (profile.id === "amro" || profile.name.toLowerCase().includes("amro")) {
+                                                    const v = voices.find(v => v.name.includes("Male") || v.name.includes("Google UK English Male") || v.name.includes("Microsoft David"));
+                                                    if (v) utterance.voice = v;
+                                                  } else if (profile.id === "heera" || profile.name.toLowerCase().includes("heera")) {
+                                                    const v = voices.find(v => v.name.includes("Google Hindi") || v.name.includes("Indian") || v.name.includes("Female"));
                                                     if (v) utterance.voice = v;
                                                   }
                                                   window.speechSynthesis.speak(utterance);
