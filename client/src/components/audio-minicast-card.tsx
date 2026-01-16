@@ -233,17 +233,18 @@ export function AudioMinicastCard({
     return gradients[idx % gradients.length];
   };
 
-  // Clean text for speech: remove emojis, links, and special characters
-  const cleanTextForSpeech = (text: string): string => {
-    // Remove URLs
-    let cleaned = text.replace(/https?:\/\/[^\s]+/gi, '').replace(/www\.[^\s]+/gi, '');
-    
-    // Remove emojis by removing characters outside basic ASCII range
-    cleaned = cleaned.replace(/[^\x20-\x7E\s]/g, '');
-    
-    // Remove extra whitespace and return
-    return cleaned.replace(/\s+/g, ' ').trim();
-  }
+    const removeEmojis = (text: string): string => {
+      return text.replace(/[^\x20-\x7E\s]/g, '');
+    };
+
+    const cleanTextForSpeech = (text: string): string => {
+      // Remove URLs
+      let cleaned = text.replace(/https?:\/\/[^\s]+/gi, '').replace(/www\.[^\s]+/gi, '');
+      // Remove emojis
+      cleaned = removeEmojis(cleaned);
+      // Remove extra whitespace and return
+      return cleaned.replace(/\s+/g, ' ').trim();
+    };
 
   const togglePlay = () => {
     setShouldAutoPlay(false); // Disable auto-play for manual interactions
