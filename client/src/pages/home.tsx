@@ -2360,7 +2360,7 @@ export default function Home() {
     setPendingTab("");
   };
 
-  // Mini Cast Coming Soon Modal State
+  // Trading Master Coming Soon Modal State
   const [showTradingMasterComingSoon, setShowTradingMasterComingSoon] = useState(false);
   const { toast } = useToast();
 
@@ -2437,20 +2437,20 @@ export default function Home() {
     return setTabWithAuthCheck(tabName);
   };
 
-  // Handle Mini Cast access - only for chiranjeevi.perala99@gmail.com
+  // Handle Trading Master access - only for chiranjeevi.perala99@gmail.com
   const handleTradingMasterAccess = () => {
     const userId = localStorage.getItem('currentUserId');
     const userEmail = localStorage.getItem('currentUserEmail');
 
     // Robust check for Cloud Run compatibility
     if (!userId || !userEmail || userId === 'null' || userEmail === 'null') {
-      console.log('[AUTH] Authentication required for Mini Cast - redirecting to login');
+      console.log('[AUTH] Authentication required for Trading Master - redirecting to login');
       setLocation('/login');
       return;
     }
 
-    console.log('[AUTH] User authenticated for Mini Cast check - email:', userEmail);
-    // Check if user is authorized for Mini Cast
+    console.log('[AUTH] User authenticated for Trading Master check - email:', userEmail);
+    // Check if user is authorized for Trading Master
     if (userEmail === 'chiranjeevi.perala99@gmail.com') {
       // Authorized user - navigate to trading-master tab
       setActiveTab('trading-master');
@@ -2851,12 +2851,12 @@ ${
 }
 
 **💡 Technical Strategy:**
-Use Mini Cast for detailed chart analysis with all 14 timeframes and advanced indicators.`;
+Use Trading Master for detailed chart analysis with all 14 timeframes and advanced indicators.`;
 
           setSearchResults(technicalResult);
         } else {
           setSearchResults(
-            `📊 **Technical Analysis Hub**\n\nAccess advanced technical indicators through:\n• **Mini Cast:** Full charting suite with RSI, MACD, Bollinger Bands\n• **Live Options:** Greeks and technical levels\n• **Community Analysis:** Social Feed technical discussions\n\n🚀 Switch to Mini Cast for comprehensive technical analysis.`,
+            `📊 **Technical Analysis Hub**\n\nAccess advanced technical indicators through:\n• **Trading Master:** Full charting suite with RSI, MACD, Bollinger Bands\n• **Live Options:** Greeks and technical levels\n• **Community Analysis:** Social Feed technical discussions\n\n🚀 Switch to Trading Master for comprehensive technical analysis.`,
           );
         }
       }
@@ -3034,7 +3034,7 @@ ${
 • **Volume Alerts:** Unusual trading activity notifications
 
 **🎯 Quick Setup Actions:**
-• **Portfolio Sync:** Connect with Mini Cast for live tracking
+• **Portfolio Sync:** Connect with Trading Master for live tracking
 • **Risk Alerts:** Position size and stop-loss monitoring  
 • **Calendar Alerts:** Earnings, dividends, and event reminders
 • **Community Alerts:** Social Feed mentions and discussions
@@ -3046,7 +3046,7 @@ ${
 • **Market Regime:** Bull/bear market transition signals
 
 **🚀 Platform Integration:**
-Configure alerts through Mini Cast and monitor via Social Feed updates.`;
+Configure alerts through Trading Master and monitor via Social Feed updates.`;
 
         setSearchResults(quickResult);
       }
@@ -3162,7 +3162,7 @@ ${
                 : "Low"
           } Volatility | ${sentimentConfidence} Confidence
 
-🚀 **Platform Features:** Use Mini Cast for advanced charts and options analysis.`;
+🚀 **Platform Features:** Use Trading Master for advanced charts and options analysis.`;
 
           setSearchResults(analysisResult);
         } else {
@@ -3172,7 +3172,7 @@ ${
 ⏰ **Data Status:** Real-time data temporarily unavailable
 
 **🔧 Alternative Data Sources:**
-• **Mini Cast:** Live charts, options chain, technical indicators
+• **Trading Master:** Live charts, options chain, technical indicators
 • **Social Feed:** Community analysis and discussions
 • **Market Dashboard:** Real-time quotes and market sentiment
 
@@ -3182,7 +3182,7 @@ ${
 • **Community Insights:** Social trading feed
 • **Risk Management:** Journal and performance tracking
 
-💡 **Quick Access:** Switch to Mini Cast tab for live ${stock} data and analysis.`);
+💡 **Quick Access:** Switch to Trading Master tab for live ${stock} data and analysis.`);
         }
       }
 
@@ -3308,7 +3308,7 @@ ${newsArticles
 
 **💡 Platform Integration:**
 • **Social Feed:** Community discussions about these developments
-• **Mini Cast:** Technical analysis with news correlation
+• **Trading Master:** Technical analysis with news correlation
 • **Journal:** Track news-driven trading decisions
 
 🚀 **Next Steps:** Use Social Feed for community insights on these news developments.`;
@@ -3326,11 +3326,11 @@ ${newsArticles
 **📱 Platform Features:**
 • **Breaking News:** Check Social Feed for latest developments
 • **Market Analysis:** Community-driven insights and discussions
-• **Technical Updates:** Mini Cast for chart-based news correlation
+• **Technical Updates:** Trading Master for chart-based news correlation
 
 **💡 Alternative Sources:**
 • Switch to Social Feed tab for community market discussions
-• Check Mini Cast for technical news impact analysis
+• Check Trading Master for technical news impact analysis
 • Monitor Journal for news-driven trading patterns
 
 🚀 **Quick Access:** Social Feed contains the most up-to-date market discussions.`);
@@ -3338,7 +3338,7 @@ ${newsArticles
         } catch (error) {
           console.error("News fetch error:", error);
           setSearchResults(
-            `📰 **News Center**\n\nAccess the latest market news through our platform features:\n\n• **Social Feed:** Community market discussions\n• **Mini Cast:** Technical analysis and market updates\n• **Platform Dashboard:** Real-time market information\n\n💡 Use Social Feed for the most current market insights.`,
+            `📰 **News Center**\n\nAccess the latest market news through our platform features:\n\n• **Social Feed:** Community market discussions\n• **Trading Master:** Technical analysis and market updates\n• **Platform Dashboard:** Real-time market information\n\n💡 Use Social Feed for the most current market insights.`,
           );
         }
       }
@@ -3391,7 +3391,7 @@ The IPO market is experiencing selective activity with quality companies command
 • Retail participation remains strong but selective
 • Institutional investors focusing on long-term value creation
 
-💡 **Platform Integration:** Use our Social Feed for community IPO discussions and Mini Cast for technical analysis of newly listed stocks.`;
+💡 **Platform Integration:** Use our Social Feed for community IPO discussions and Trading Master for technical analysis of newly listed stocks.`;
 
         setSearchResults(ipoAnalysis);
       }
@@ -3510,7 +3510,7 @@ ${
             }
 
 ${fundamentalInsights}**💡 Platform Resources:**
-• **Mini Cast:** Complete financial ratios and technical analysis
+• **Trading Master:** Complete financial ratios and technical analysis
 • **Social Feed:** Community fundamental discussions and insights
 • **Market Dashboard:** Real-time valuation metrics
 
@@ -3523,7 +3523,7 @@ ${fundamentalInsights}**💡 Platform Resources:**
 
 **🔍 Platform Data Sources:**
 • **Social Feed:** Community fundamental analysis and insights
-• **Mini Cast:** Complete financial ratios and valuation metrics
+• **Trading Master:** Complete financial ratios and valuation metrics
 • **Market Data:** Real-time price and volume information
 
 ${fundamentalInsights}**📈 Essential Analysis Framework:**
@@ -3568,7 +3568,7 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
 
 **💡 Platform Integration:**
 • **Social Feed:** Real-time community fundamental discussions
-• **Mini Cast:** Detailed financial ratio analysis
+• **Trading Master:** Detailed financial ratio analysis
 • **Journal:** Track fundamental-based investment decisions
 
 🚀 **Quick Access:** Social Feed contains active fundamental analysis discussions.`;
@@ -3578,7 +3578,7 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
         } catch (error) {
           console.error("Fundamental analysis error:", error);
           setSearchResults(
-            `📊 **Fundamental Analysis Hub**\n\n**📱 Available Resources:**\n• **Social Feed:** Community fundamental discussions\n• **Mini Cast:** Financial ratios and analysis tools\n• **Platform Data:** Real-time market and company information\n\n💡 Check Social Feed for active fundamental analysis discussions.`,
+            `📊 **Fundamental Analysis Hub**\n\n**📱 Available Resources:**\n• **Social Feed:** Community fundamental discussions\n• **Trading Master:** Financial ratios and analysis tools\n• **Platform Data:** Real-time market and company information\n\n💡 Check Social Feed for active fundamental analysis discussions.`,
           );
         }
       }
@@ -3623,7 +3623,7 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
     } catch (error) {
       console.error("AI Search error:", error);
       setSearchResults(
-        "🤖 I'm here to help with all your trading and finance questions! I can assist with:\n\n• Stock analysis and live quotes\n• Market news and IPO updates\n• Trading strategies and risk management\n• Platform features (Mini Cast, Journal, Social Feed)\n• Options trading and Greeks calculation\n\nWhat would you like to know more about?",
+        "🤖 I'm here to help with all your trading and finance questions! I can assist with:\n\n• Stock analysis and live quotes\n• Market news and IPO updates\n• Trading strategies and risk management\n• Platform features (Trading Master, Journal, Social Feed)\n• Options trading and Greeks calculation\n\nWhat would you like to know more about?",
       );
     } finally {
       setIsSearchLoading(false);
@@ -7565,7 +7565,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     return `${diffDays}d ago`;
   };
 
-  // Journal chart timeframe options (same as Mini Cast OHLC window)
+  // Journal chart timeframe options (same as Trading Master OHLC window)
   const journalTimeframeOptions = [
     { value: '1', label: '1min' },
     { value: '3', label: '3min' },
@@ -8327,7 +8327,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     }
   }, [heatmapChartTimeframe, journalChartMode, fetchHeatmapChartData]);
 
-  // Reset OHLC display when chart data changes (simple - same as Mini Cast)
+  // Reset OHLC display when chart data changes (simple - same as Trading Master)
   useEffect(() => {
     if (journalChartData && journalChartData.length > 0) {
       const latest = journalChartData[journalChartData.length - 1];
@@ -15749,14 +15749,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                           </div>
 
-                          {/* Mini Cast Card */}
+                          {/* Trading Master Card */}
                           <div
                             className="bg-indigo-500 rounded-2xl overflow-hidden h-36 w-full relative cursor-pointer hover:scale-105 transition-transform"
                             onClick={handleTradingMasterAccess}
                           >
                             <div className="absolute top-3 left-3">
                               <span className="bg-white bg-opacity-90 text-indigo-600 px-2.5 py-1 rounded-full text-xs font-medium">
-                                Mini Cast
+                                Trading Master
                               </span>
                             </div>
                             <div className="absolute bottom-3 right-3">
@@ -15816,14 +15816,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                             </div>
 
-                            {/* Mini Cast Card */}
+                            {/* Trading Master Card */}
                             <div
                               className="bg-purple-500 rounded-xl overflow-hidden h-20 relative cursor-pointer active:scale-95 transition-transform"
                               onClick={handleTradingMasterAccess}
                             >
                               <div className="absolute top-2 left-2">
                                 <span className="bg-white bg-opacity-90 text-purple-600 px-2 py-0.5 rounded-full text-[10px] font-medium">
-                                  Mini Cast
+                                  Trading Master
                                 </span>
                               </div>
                               <div className="absolute bottom-2 right-2">
@@ -15908,7 +15908,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     )}
 
                     {/* Tutor Vertical Sidebar - Slides from right */}
-{/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">              <button                 onClick={() => setShowComingSoonDialog(false)}                className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"              >                <X className="h-5 w-5 text-slate-500" />              </button>                            <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Mini Cast                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                We"re working on bringing you interactive mini-cast lessons and advanced trading analytics.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
+{/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">              <button                 onClick={() => setShowComingSoonDialog(false)}                className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"              >                <X className="h-5 w-5 text-slate-500" />              </button>                            <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Advanced Trading Master                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                We"re working on bringing you advanced trading features and analytics.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
                     {showTutorOverlay && (
                       <>
                         {/* Backdrop */}
@@ -16303,7 +16303,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       <div
                         className={`h-[400px] ${mobileJournalPanel === 0 ? "block" : "hidden"} md:block`}
                       >
-                        {/* Professional Visual Chart with Fyers Data - Same as Mini Cast */}
+                        {/* Professional Visual Chart with Fyers Data - Same as Trading Master */}
                         <div className="h-full relative bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden">
                           <div className="h-full flex flex-col">
                             <div className="flex items-center justify-between px-2 py-2">
@@ -22812,7 +22812,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         </Dialog>
 
 
-        {/* Mini Cast Coming Soon Modal */}
+        {/* Trading Master Coming Soon Modal */}
         <Dialog open={showTradingMasterComingSoon} onOpenChange={setShowTradingMasterComingSoon}>
           <DialogContent className="max-w-md">
             <div className="space-y-6 py-6">
@@ -22822,7 +22822,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </div>
                 <DialogHeader className="space-y-2">
                   <DialogTitle className="text-center text-2xl bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent font-bold">
-                    Mini Cast
+                    Advanced Trading Master
                   </DialogTitle>
                 </DialogHeader>
                 <div className="text-center space-y-2">
