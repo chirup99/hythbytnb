@@ -261,35 +261,6 @@ export function UserProfileDropdown() {
               </div>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
-          <DropdownMenuItem
-            onClick={() => setShowProfileDialog(true)}
-            className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-            data-testid="menu-item-view-profile"
-          >
-            <User className="mr-2 h-4 w-4" />
-            <span>View Profile</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              setShowProfileDialog(true);
-              setIsEditing(true);
-            }}
-            className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-            data-testid="menu-item-edit-profile"
-          >
-            <Edit className="mr-2 h-4 w-4" />
-            <span>Edit Profile</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
-          <DropdownMenuItem
-            onClick={handleLogout}
-            className="cursor-pointer text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
-            data-testid="menu-item-logout"
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
