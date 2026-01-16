@@ -449,12 +449,12 @@ function SwipeableCardStack({
 
     const voices = speechSynthesis.getVoices();
     const voiceProfileMap: Record<string, string[]> = {
-      ravi: ["ravi", "moira", "samantha", "aria", "ava"],
-      vaib: ["vaib", "susan", "karen", "claire", "hazel"],
-      kids: ["kids", "allison", "serena", "zira", "fiona"]
+      ravi: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
+      vaib: ["Google US English", "Microsoft Vaibhav Online (Natural) - English (India)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
+      kids: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"]
     };
-    const selectedProfile = activeVoiceProfileId || "ravi";
-    const priorityKeywords = voiceProfileMap[selectedProfile] || voiceProfileMap.ravi;
+    const selectedProfile = activeVoiceProfileId;
+    const priorityKeywords = voiceProfileMap[selectedProfile as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
 
     let preferredVoice = voices.find(v => 
       v.lang.startsWith("en") && 
@@ -1890,6 +1890,9 @@ const getFullApiUrl = (path: string): string => {
 };
 
 export default function Home() {
+  const [activeVoiceProfileId, setActiveVoiceProfileId] = useState<string>(() => { if (typeof window !== 'undefined') { return localStorage.getItem('activeVoiceProfileId') || 'ravi'; } return 'ravi'; });
+
+  useEffect(() => { localStorage.setItem('activeVoiceProfileId', activeVoiceProfileId); }, [activeVoiceProfileId]);
   const [location, setLocation] = useLocation();
 
   // 🔶 Detect Angel One OAuth callback from redirect
