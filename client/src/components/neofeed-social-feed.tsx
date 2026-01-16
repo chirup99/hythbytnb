@@ -1169,8 +1169,8 @@ function ProfileHeader() {
   const postCount = userPosts.length;
   const displayName = profileData?.displayName || '';
   const bio = profileData?.bio || '';
-  const followers = stats?.followers || 0;
-  const following = stats?.following || 0;
+  const followers = stats?.followersCount || stats?.followers || 0;
+  const following = stats?.followingCount || stats?.following || 0;
   const profilePicUrl = profileData?.profilePicUrl;
   const coverPicUrl = profileData?.coverPicUrl;
   const initials = displayName ? displayName.charAt(0).toUpperCase() : username.charAt(0).toUpperCase();
