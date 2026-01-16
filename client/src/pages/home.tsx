@@ -453,7 +453,7 @@ function SwipeableCardStack({
       vaib: ["Google US English", "Microsoft Vaibhav Online (Natural) - English (India)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
       kids: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"]
     };
-    const selectedProfile = activeVoiceProfileId;
+    const selectedProfile = (typeof window !== "undefined" && localStorage.getItem("activeVoiceProfileId")) || "ravi";
     const priorityKeywords = voiceProfileMap[selectedProfile as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
 
     let preferredVoice = voices.find(v => 
