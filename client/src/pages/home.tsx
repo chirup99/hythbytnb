@@ -454,6 +454,15 @@ function SwipeableCardStack({
     };
     const selectedProfile = (typeof window !== "undefined" && localStorage.getItem("activeVoiceProfileId")) || "samantha";
     const priorityKeywords = voiceProfileMap[selectedProfile as keyof typeof voiceProfileMap] || voiceProfileMap.samantha;
+    const voices = window.speechSynthesis.getVoices();
+    let preferredVoice = voices.find(v => 
+      v.lang.startsWith("en") && 
+      priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
+    );
+
+    if (!preferredVoice) {
+      preferredVoice = voices.find(v => v.lang.startsWith("en"));
+    }
 
     if (preferredVoice) {
       utterance.voice = preferredVoice;
