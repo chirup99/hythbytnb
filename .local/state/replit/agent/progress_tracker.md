@@ -68,7 +68,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 ## IMPORT SESSION (Jan 15, 2026 - Session 13)
@@ -88,7 +88,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 ## IMPORT SESSION (Jan 15, 2026 - Session 15)
@@ -101,7 +101,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 16)
@@ -114,7 +114,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 17)
@@ -127,7 +127,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 18)
@@ -140,7 +140,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 20)
@@ -153,7 +153,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 
@@ -167,7 +167,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 21)
@@ -180,7 +180,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 ## FEAT: SCROLL BEHAVIOR UPDATE (Jan 16, 2026)
@@ -197,7 +197,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 23)
@@ -210,4 +210,4 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: BOUNCING BALL REDIRECT (Jan 16, 2026)
 - Changed animated bouncing ball button to open MiniCast tab instead of AI Tutor sidebar.
 - Updated `client/src/pages/home.tsx` to call `setTabWithAuthCheck("tutor")` instead of `setShowTutorOverlay(true)`.
-- Updated AI Trading Tutor and Learn & Master Trading text to "Mini-cast".
+- Updated AI Trading Tutor, Learn & Master Trading, and Advanced Trading Master text to "Mini-cast".
