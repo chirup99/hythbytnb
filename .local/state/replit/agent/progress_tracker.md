@@ -67,8 +67,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 ## IMPORT SESSION (Jan 15, 2026 - Session 13)
@@ -87,8 +87,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 ## IMPORT SESSION (Jan 15, 2026 - Session 15)
@@ -100,8 +100,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 16)
@@ -113,8 +113,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 17)
@@ -126,8 +126,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 18)
@@ -139,8 +139,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 20)
@@ -152,8 +152,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 
@@ -166,8 +166,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 21)
@@ -179,8 +179,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 ## FEAT: SCROLL BEHAVIOR UPDATE (Jan 16, 2026)
@@ -196,8 +196,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 23)
@@ -209,5 +209,5 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog reverted to "Advanced Trading Master" to distinguish from Mini-cast.
-- Updated `client/src/pages/home.tsx` to handle these labels independently.
+- Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
