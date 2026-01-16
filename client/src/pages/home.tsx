@@ -1936,7 +1936,6 @@ export default function Home() {
   useAngelOneAutoconnect();
   const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState("trading-home");
-  const [showTutorOverlay, setShowTutorOverlay] = useState(false);
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
   const userEmail = localStorage.getItem("currentUserEmail");
   const [swipeStartY, setSwipeStartY] = useState(0);
@@ -15907,24 +15906,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     </div>
                     )}
 
-                    {/* Tutor Vertical Sidebar - Slides from right */}
-{/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">              <button                 onClick={() => setShowComingSoonDialog(false)}                className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"              >                <X className="h-5 w-5 text-slate-500" />              </button>                            <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Advanced Trading Master                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                We"re working on bringing you advanced trading features and analytics.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
-                    {showTutorOverlay && (
-                      <>
-                    from {
-                      transform: translateX(100%);
-                    }
-                    to {
-                      transform: translateX(0);
-                    }
-                  }
-                `}</style>
-                  </div>
-                </div>
-              </div>
-            )}
-
-
             {activeTab === "backtest" && (
               <div className="h-full p-6 space-y-6">
                 <div className="max-w-6xl mx-auto">
@@ -15967,16 +15948,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       </div>
                       <h3 className="font-semibold mb-2">Historical Data Analysis</h3>
                       <p className="text-sm text-muted-foreground">
-                        Test strategies against years of historical market data
                       </p>
                     </div>
-                    <div className="bg-card border border-border rounded-lg p-6">
-                      <div className="p-2 bg-green-500/10 rounded-lg w-fit mb-4">
-                        <TrendingUp className="h-5 w-5 text-green-500" />
-                      </div>
-                      <h3 className="font-semibold mb-2">Performance Metrics</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Comprehensive statistics on returns, drawdowns, and win rates
                       </p>
                     </div>
                     <div className="bg-card border border-border rounded-lg p-6">
