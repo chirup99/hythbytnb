@@ -130,12 +130,13 @@ export function AudioMinicastCard({
         });
         
         const utterance = new SpeechSynthesisUtterance(textToSpeak);
-        const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'vaibhav';
+        const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'ravi';
         const voiceProfileMap: Record<string, string[]> = {
-          vaibhav: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
-          heera: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
+          ravi: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
+          vaib: ["Google US English", "Microsoft Vaibhav Online (Natural) - English (India)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
+          kids: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
         };
-        const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.vaibhav;
+        const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
         const voices = window.speechSynthesis.getVoices();
         const selectedVoice = voices.find(v => 
           priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
@@ -233,18 +234,17 @@ export function AudioMinicastCard({
     return gradients[idx % gradients.length];
   };
 
-    const removeEmojis = (text: string): string => {
-      return text.replace(/[^\x20-\x7E\s]/g, '');
-    };
-
-    const cleanTextForSpeech = (text: string): string => {
-      // Remove URLs
-      let cleaned = text.replace(/https?:\/\/[^\s]+/gi, '').replace(/www\.[^\s]+/gi, '');
-      // Remove emojis
-      cleaned = removeEmojis(cleaned);
-      // Remove extra whitespace and return
-      return cleaned.replace(/\s+/g, ' ').trim();
-    };
+  // Clean text for speech: remove emojis, links, and special characters
+  const cleanTextForSpeech = (text: string): string => {
+    // Remove URLs
+    let cleaned = text.replace(/https?:\/\/[^\s]+/gi, '').replace(/www\.[^\s]+/gi, '');
+    
+    // Remove emojis by removing characters outside basic ASCII range
+    cleaned = cleaned.replace(/[^\x20-\x7E\s]/g, '');
+    
+    // Remove extra whitespace and return
+    return cleaned.replace(/\s+/g, ' ').trim();
+  }
 
   const togglePlay = () => {
     setShouldAutoPlay(false); // Disable auto-play for manual interactions
@@ -266,12 +266,13 @@ export function AudioMinicastCard({
         });
         
         const utterance = new SpeechSynthesisUtterance(textToSpeak);
-        const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'vaibhav';
+        const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'ravi';
         const voiceProfileMap: Record<string, string[]> = {
-          vaibhav: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
-          heera: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
+          ravi: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
+          vaib: ["Google US English", "Microsoft Vaibhav Online (Natural) - English (India)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
+          kids: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
         };
-        const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.vaibhav;
+        const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
         const voices = window.speechSynthesis.getVoices();
         const selectedVoice = voices.find(v => 
           priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))

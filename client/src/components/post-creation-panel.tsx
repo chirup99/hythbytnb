@@ -339,8 +339,8 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
   const mockProfiles = [
     {
       id: 1,
-      name: 'Vaibhav',
-      handle: '@vaibhav',
+      name: 'Ravi',
+      handle: '@ravi',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
       isOwn: true,
       status: 'online',
@@ -348,12 +348,21 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
     },
     {
       id: 2,
-      name: 'Heera',
-      handle: '@heera',
-      avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=150&h=150&fit=crop',
+      name: 'Vaib',
+      handle: '@vaib',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop',
       following: false,
       status: 'online',
       bgColor: 'bg-pink-400'
+    },
+    {
+      id: 3,
+      name: 'Kids',
+      handle: '@kids',
+      avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=150&h=150&fit=crop',
+      following: false,
+      status: 'offline',
+      bgColor: 'bg-amber-700'
     },
     {
       id: 4,

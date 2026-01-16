@@ -60,12 +60,13 @@ export function StackedSwipeableCards({ snippets, onRemove }: StackedSwipeableCa
       
       const cleanText = removeEmojis(card.text);
       const utterance = new SpeechSynthesisUtterance(cleanText);
-      const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'vaibhav';
+      const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'ravi';
       const voiceProfileMap: Record<string, string[]> = {
-        vaibhav: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
-        heera: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
+        ravi: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
+        vaib: ["Google US English", "Microsoft Vaibhav Online (Natural) - English (India)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
+        kids: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
       };
-      const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.vaibhav;
+      const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
       const voices = window.speechSynthesis.getVoices();
       const selectedVoice = voices.find(v => 
         priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
@@ -149,7 +150,7 @@ export function StackedSwipeableCards({ snippets, onRemove }: StackedSwipeableCa
   };
 
   const removeEmojis = (text: string): string => {
-    return text.replace(/[^\x20-\x7E\s]/g, '');
+    return text.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F018}-\u{1F270}]|[\u{238C}-\u{2454}]|[\u{20D0}-\u{20FF}]/gu, '');
   };
 
   const handleReadNow = (card: CardWithColor, e: React.MouseEvent) => {
