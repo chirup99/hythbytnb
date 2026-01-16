@@ -15931,7 +15931,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <GraduationCap className="h-5 w-5 text-white" />
                               </div>
                               <span className="text-lg font-semibold text-white">
-                                AI Trading Tutor
+                                Mini-cast
                               </span>
                             </div>
                             <Button
@@ -15950,7 +15950,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               {/* Welcome message */}
                               <div className="text-center space-y-2">
                                 <h2 className="text-xl font-bold text-white">
-                                  Learn & Master Trading
+                                  Mini-cast
                                 </h2>
                                 <p className="text-slate-300 text-sm">
                                   Interactive lessons and personalized guidance
