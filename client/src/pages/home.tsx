@@ -486,9 +486,11 @@ function SwipeableCardStack({
     // Immediately stop current audio
     globalStopAudio();
 
+    let nextCard: any = null;
+    let nextIndex = currentCardIndex;
+
     setCards((prev) => {
       const newCards = [...prev];
-      let newIndex = currentCardIndex;
 
       if (direction === "right") {
         // Right swipe: Move to next card (current card goes to back)
@@ -496,31 +498,35 @@ function SwipeableCardStack({
         if (topCard) {
           newCards.push(topCard);
         }
-        newIndex = (currentCardIndex + 1) % 7;
+        nextIndex = (currentCardIndex + 1) % 7;
       } else {
         // Left swipe: Move to previous card (bottom card comes to front)
         const bottomCard = newCards.pop();
         if (bottomCard) {
           newCards.unshift(bottomCard);
         }
-        newIndex = (currentCardIndex - 1 + 7) % 7;
+        nextIndex = (currentCardIndex - 1 + 7) % 7;
       }
 
-      // Notify parent of index change
-      if (onCardIndexChange) {
-        onCardIndexChange(newIndex);
-      }
-
-      // Auto-play content for the new front card (faster response)
       if (newCards.length > 0) {
-        const frontCard = newCards[0];
-        setTimeout(() => {
-          fetchAndPlayContent(frontCard.title, frontCard.sector);
-        }, 100); // Reduced delay for faster response
+        nextCard = newCards[0];
       }
 
       return newCards;
     });
+
+    // Side effects should be outside of setCards
+    if (nextCard) {
+      // Notify parent of index change
+      if (onCardIndexChange) {
+        onCardIndexChange(nextIndex);
+      }
+
+      // Auto-play content for the new front card
+      setTimeout(() => {
+        fetchAndPlayContent(nextCard.title, nextCard.sector);
+      }, 150);
+    }
   };
 
   // Expose global stop function to window for tab switching
