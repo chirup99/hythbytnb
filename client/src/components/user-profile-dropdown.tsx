@@ -99,14 +99,29 @@ export function UserProfileDropdown() {
       if (response.ok) {
         const data = await response.json();
         if (data.profile) {
+          // Fetch stats to get accurate counts
+          let followers = data.profile.followersCount ?? data.profile.followers ?? 0;
+          let following = data.profile.followingCount ?? data.profile.following ?? 0;
+          
+          try {
+            const statsResponse = await fetch(`/api/profile/${data.profile.username}/stats`);
+            if (statsResponse.ok) {
+              const statsData = await statsResponse.json();
+              followers = statsData.followersCount ?? statsData.followers ?? followers;
+              following = statsData.followingCount ?? statsData.following ?? following;
+            }
+          } catch (e) {
+            console.error('Error fetching stats in dropdown:', e);
+          }
+
           return {
             username: data.profile.username || currentUser.email?.split('@')[0] || 'user',
             displayName: data.profile.displayName || currentUser.email?.split('@')[0] || 'User',
             email: data.profile.email || currentUser.email || '',
             bio: data.profile.bio || '',
             location: data.profile.location || '',
-            followers: data.profile.followersCount ?? data.profile.followers ?? 0,
-            following: data.profile.followingCount ?? data.profile.following ?? 0,
+            followers,
+            following,
             dob: data.profile.dob,
             avatar: data.profile.profilePicUrl || ''
           };
@@ -115,11 +130,8 @@ export function UserProfileDropdown() {
       return null;
     },
     enabled: !!currentUser.email,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    staleTime: 30000, // Reduced staleTime to catch updates faster
+    gcTime: 5 * 60 * 1000,
   });
 
   useEffect(() => {
