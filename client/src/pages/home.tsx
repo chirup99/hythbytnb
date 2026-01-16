@@ -13589,9 +13589,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">voice profiles</span>
                                     <div className="flex items-center justify-center gap-4 overflow-x-auto no-scrollbar py-2">
                                       {[
-                                        { id: "ravi", name: "Samantha", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" },
-                                        { id: "vaib", name: "Maro", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop" },
-                                        { id: "kids", name: "Heera", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" },
+                                        { id: "samantha", name: "Samantha", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" },
+                                        { id: "amro", name: "Amro", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" },
+                                        { id: "heera", name: "Heera", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" },
                                         { id: "add", name: "Add", isAdd: true }
                                       ].map((profile) => {
                                         const isSelected = typeof activeVoiceProfileId !== "undefined" && activeVoiceProfileId === profile.id;
@@ -13599,7 +13599,24 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <div 
                                             key={profile.id} 
                                             className="flex flex-col items-center gap-1.5 group cursor-pointer" 
-                                            onClick={() => !profile.isAdd && setActiveVoiceProfileId(profile.id)}
+                                            onClick={() => {
+                                              if (!profile.isAdd) {
+                                                setActiveVoiceProfileId(profile.id);
+                                                if (typeof window !== "undefined" && "speechSynthesis" in window) {
+                                                  const name = currentUser?.displayName || currentUser?.username || "Trader";
+                                                  const utterance = new SpeechSynthesisUtterance(`Hello ${name}, welcome to perala`);
+                                                  const voices = window.speechSynthesis.getVoices();
+                                                  if (profile.id === "samantha") {
+                                                    const v = voices.find(v => v.name.includes("Samantha") || v.name.includes("Female"));
+                                                    if (v) utterance.voice = v;
+                                                  } else if (profile.id === "amro") {
+                                                    const v = voices.find(v => v.name.includes("Male") || v.name.includes("Google UK English Male"));
+                                                    if (v) utterance.voice = v;
+                                                  }
+                                                  window.speechSynthesis.speak(utterance);
+                                                }
+                                              }
+                                            }}
                                           >
                                             <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 ${isSelected ? "border-blue-500 ring-2 ring-blue-500/50" : "border-transparent"} active:scale-95 overflow-hidden bg-gray-700 shadow-lg`}>
                                               {profile.isAdd ? (
