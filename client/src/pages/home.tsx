@@ -77,7 +77,7 @@ import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmai
 
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, LineSeries, HistogramSeries, IPriceLine, createSeriesMarkers } from 'lightweight-charts';
 
-import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle, Activity, Notebook } from "lucide-react";
+import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle, Activity, Book } from "lucide-react";
 
 import { parseBrokerTrades, ParseError } from "@/utils/trade-parser";
 
@@ -173,7 +173,7 @@ import {
   Download,
   Mic,
   MessageCircle,
-  NotebookOpen,
+  BookOpen,
   Home as HomeIcon,
   Search,
   Code,
@@ -6125,7 +6125,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       localStorage.setItem("paperTradeHistory", JSON.stringify(updatedHistory));
 
       toast({
-        title: pnl >= 0 ? "Profit Notebooked!" : "Loss Notebooked",
+        title: pnl >= 0 ? "Profit Booked!" : "Loss Booked",
         description: `Sold ${openPosition.quantity} ${paperTradeSymbol} @ ₹${paperTradeCurrentPrice.toFixed(2)} | P&L: ₹${pnl.toFixed(2)}`
       });
     }
@@ -12627,7 +12627,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             {/* Podcast Item 3 */}
                             <div className="flex items-center gap-3">
                               <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <NotebookOpen className="w-6 h-6 text-white" />
+                                <BookOpen className="w-6 h-6 text-white" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <h4 className="text-slate-900 dark:text-white font-medium text-sm">Entrepreneur Mindset</h4>
@@ -15844,8 +15844,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                               <div className="absolute bottom-2 right-2">
                                 <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                                  <Notebook className="h-6 w-6 text-white absolute translate-x-0.5 -translate-y-0.5" />
-                                  <Pencil className="h-4 w-4 text-white absolute -translate-x-1 translate-y-1" />
+                                  <Book className="h-5 w-5 text-white absolute translate-x-1 -translate-y-1" />
+                                  <Pencil className="h-3 w-3 text-white absolute -translate-x-2 translate-y-2" />
                                 </div>
                               </div>
                             </div>
@@ -15962,7 +15962,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <div className="bg-white dark:bg-slate-800 rounded-xl p-4 hover:bg-slate-100 dark:bg-slate-700 transition-colors cursor-pointer">
                                   <div className="flex items-center gap-3 mb-3">
                                     <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                                      <NotebookOpen className="h-5 w-5 text-white" />
+                                      <BookOpen className="h-5 w-5 text-white" />
                                     </div>
                                     <h3 className="text-lg font-semibold text-white">
                                       Trading Basics
@@ -17890,7 +17890,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   </div>
 
                   {/* Two Column Layout: TRADE HISTORY SUMMARY (Left) and PROFIT CONSISTENCY (Right) */}
-                  {/* Desktop: 2-column grid | Mobile: Show Trade Notebook with collapsible Trade History */}
+                  {/* Desktop: 2-column grid | Mobile: Show Trade Book with collapsible Trade History */}
                   <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 gap-6">
 
                     {/* Mobile: TRADE HISTORY SUMMARY - DROPDOWN HEADER */}
@@ -18459,13 +18459,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       </DialogContent>
                     </Dialog>
 
-                    {/* Trade Notebook - Right Side (Functional Calendar) */}
+                    {/* Trade Book - Right Side (Functional Calendar) */}
                     <div className="relative">
                     <Card className="bg-white dark:bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                       <CardContent className="p-6 px-0.5 md:px-4 md:py-4 pt-[10px] pb-[10px]">
                         <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-between gap-2">
                           <div className="flex items-center gap-1">
-                            <div>Trade Notebook</div>
+                            <div>Trade Book</div>
                             <Dialog>
                               <DialogTrigger asChild>
                                 <Button size="icon" variant="ghost" className="h-4 w-4" data-testid="button-tradebook-help">
