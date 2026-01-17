@@ -256,47 +256,6 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                     </Button>
                   </div>
                 </div>
-                {imageCaptions[img.id] ? (
-                  <div className="p-2 px-3 bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700">
-                    <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{imageCaptions[img.id]}</p>
-                  </div>
-                ) : (
-                  <button 
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setEditingImageId(img.id);
-                    }}
-                    className="w-full p-2 text-center text-[10px] text-gray-400 hover:text-blue-500 transition-colors border-t border-gray-100 dark:border-gray-700"
-                  >
-                    Add caption...
-                  </button>
-                )}
-                {editingImageId === img.id && (
-                  <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 flex flex-col p-4 animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Edit Caption</span>
-                      <Button type="button" size="icon" variant="ghost" className="h-6 w-6" onClick={() => setEditingImageId(null)}>
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <textarea
-                      autoFocus
-                      className="flex-1 bg-transparent border-0 text-sm resize-none focus:ring-0 text-gray-900 dark:text-white"
-                      placeholder="Enter image description..."
-                      value={imageCaptions[img.id] || ''}
-                      onChange={(e) => setImageCaptions(prev => ({ ...prev, [img.id]: e.target.value }))}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                          e.preventDefault();
-                          setEditingImageId(null);
-                        }
-                      }}
-                    />
-                    <Button type="button" size="sm" className="mt-2 w-full h-8" onClick={() => setEditingImageId(null)}>Done</Button>
-                  </div>
-                )}
               </div>
             ))}
             
