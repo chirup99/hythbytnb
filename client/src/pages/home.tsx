@@ -113,6 +113,7 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import journalImage from "@/assets/journal-image.png";
 
 import { Input } from "@/components/ui/input";
 
@@ -15843,8 +15844,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 </span>
                               </div>
                               <div className="absolute bottom-2 right-2">
-                                <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                                  <BarChart3 className="h-5 w-5 text-white" />
+                                <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center overflow-hidden">
+                                  <img src={journalImage} alt="Journal" className="w-full h-full object-cover" />
                                 </div>
                               </div>
                             </div>
