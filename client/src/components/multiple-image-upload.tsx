@@ -396,6 +396,37 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
           </div>
         </div>
 
+        {/* Curved Line Footer - Transparent Background */}
+        <div className="h-16 relative bg-transparent flex items-center justify-center overflow-hidden">
+          <svg
+            className="absolute inset-0 w-full h-full opacity-40"
+            viewBox="0 0 800 60"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M 0 15 Q 400 50, 800 15"
+              stroke="#9ca3af"
+              strokeWidth="1.5"
+              fill="none"
+            />
+          </svg>
+
+          {/* Counter Badge - Tiny and minimalistic */}
+          <div 
+            className={`relative z-10 bg-gray-500 dark:bg-gray-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-semibold shadow-md border border-gray-400 dark:border-gray-500 ${
+              isDragging ? "" : "transition-transform duration-400 ease-out"
+            }`}
+            style={{
+              transform: `translateX(${(dragOffset * 0.5)}px)`
+            }}
+          >
+            {images.length === 0 
+              ? `${currentIndex + 1}/5`
+              : `${Math.min(currentIndex + 1, images.length)}/${images.length}`
+            }
+          </div>
+        </div>
+
         {/* Hidden file input */}
         <input
           type="file"
