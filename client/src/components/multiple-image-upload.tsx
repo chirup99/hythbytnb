@@ -200,12 +200,16 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                   <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
                   <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button 
+                      type="button"
                       size="icon" 
                       variant="secondary" 
                       className="h-8 w-8 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-sm"
-                      onClick={() => {
-                        setImages(images.filter(i => i.id !== img.id));
-                        onImagesChange?.(images.filter(i => i.id !== img.id));
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const newImages = images.filter(i => i.id !== img.id);
+                        setImages(newImages);
+                        onImagesChange?.(newImages);
                       }}
                     >
                       <Trash2 className="h-4 w-4 text-red-500" />
@@ -452,6 +456,7 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
               const currentX = e.touches[0].clientX;
               const deltaX = currentX - touchStartX.current;
               if (Math.abs(deltaX) > 50) {
+                if (!selectedImage) return;
                 const currentImageIndex = cardsToShow.findIndex(card => card.image?.id === selectedImage.id);
                 if (deltaX > 0) {
                   // Swiped right - previous
@@ -514,7 +519,12 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                   <>
                     {/* Edit Button - Left Corner */}
                     <button
-                      onClick={() => setEditingImageId(editingImageId === selectedImage.id ? null : selectedImage.id)}
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setEditingImageId(editingImageId === selectedImage.id ? null : selectedImage.id);
+                      }}
                       className="flex-shrink-0 p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                       data-testid="button-edit-caption"
                     >
@@ -545,7 +555,11 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
 
                     {/* Delete Button - Right Corner */}
                     <button
-                      onClick={() => {
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (!selectedImage) return;
                         setImages(images.filter(img => img.id !== selectedImage.id));
                         setImageCaptions(prev => {
                           const updated = { ...prev };
@@ -566,7 +580,12 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                   </>
                 ) : (
                   <button
-                    onClick={() => fileInputRef.current?.click()}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      fileInputRef.current?.click();
+                    }}
                     className="w-full py-2 px-3 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white rounded text-xs font-medium transition-colors"
                     data-testid="button-upload-from-dialog"
                   >
@@ -586,6 +605,7 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                 const currentX = e.touches[0].clientX;
                 const deltaX = currentX - touchStartX.current;
                 if (Math.abs(deltaX) > 50) {
+                  if (!selectedImage) return;
                   const currentImageIndex = cardsToShow.findIndex(card => card.image?.id === selectedImage.id);
                   if (deltaX > 0) {
                     // Swiped right - previous
@@ -607,8 +627,10 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
             >
               {cardsToShow.map((card, idx) => (
                 <button
+                  type="button"
                   key={card.id}
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     setSelectedCardIndex(idx);
                     if (card.image) {
