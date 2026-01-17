@@ -12564,7 +12564,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-medium inline-block mb-4">
                                 PODCAST OF THE WEEK
                               </div>
-                              <h2 className={`text-3xl font-bold mb-2 ${paperTradingTotalPnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>Rich Mindset</h2>
+                              <h2 className="text-3xl font-bold mb-2 text-white">Rich Mindset</h2>
                               <p className="text-white/80 mb-4">Finance Expert</p>
 
                               {/* Play Button */}
