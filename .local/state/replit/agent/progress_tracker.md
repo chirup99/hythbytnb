@@ -66,7 +66,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -86,7 +86,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -99,7 +99,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -112,7 +112,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -125,7 +125,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -138,7 +138,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -151,7 +151,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -165,7 +165,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -178,7 +178,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -195,7 +195,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
 
@@ -208,6 +208,6 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
-- Corrected labels for the animated bouncing ball popup to "Mini-cast".
+- Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
 - Ensured the Trading Master card dialog correctly displays "Advanced Trading Master".
 - Removed duplicate X icon from the popup for a cleaner UI.
