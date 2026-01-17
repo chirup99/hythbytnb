@@ -229,7 +229,7 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
             </Button>
           </div>
 
-          <div className="flex-1 overflow-hidden flex flex-row gap-3 pb-4 scroll-smooth snap-x snap-mandatory">
+          <div className="flex-1 overflow-x-auto flex flex-row gap-3 pb-4 scroll-smooth snap-x snap-mandatory hide-scrollbar">
             {images.map((img, idx) => (
               <div key={img.id} className="group relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm transition-all hover:shadow-md flex-shrink-0 w-72 snap-start">
                 <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center relative">
