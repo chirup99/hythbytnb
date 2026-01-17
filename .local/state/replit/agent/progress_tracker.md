@@ -221,6 +221,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: NEOFEED IMAGE UPLOAD UI OPTIMIZATION (Jan 17, 2026)
 - Changed vertical scrolling to horizontal scrolling in `client/src/components/multiple-image-upload.tsx`.
-- Reduced image card size from `w-72` to `w-48` for the NeoFeed variant to fit better within the screen.
+- Reduced image card size from `w-72` to `w-36` for the NeoFeed variant to fit better within the screen.
 - Reduced internal padding and font sizes for a more compact, mobile-friendly design.
 - Added snap-scrolling for better UX.
+- Decreased the container height for NeoFeed image uploads for a more compact layout.
