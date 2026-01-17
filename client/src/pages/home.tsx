@@ -12468,7 +12468,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           <div className="lg:col-span-8 space-y-6">
             {/* Wallet View Section */}
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700">
-              <div className="mb-6"><h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Hey, {getTimeBasedGreeting()}!</h1></div>
+              
 
               {/* Swipe Cards Section */}
               <div>
