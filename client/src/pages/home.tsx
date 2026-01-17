@@ -3865,7 +3865,7 @@ ${
     } else if (hour >= 17 && hour < 21) {
       return "Hey, Good Evening! 🌆";
     } else {
-      return "Hey, Good Night! 🌙";
+      return "Hey, Good Night!";
     }
   };
 
