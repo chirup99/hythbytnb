@@ -12737,7 +12737,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </Button>
                             </div>
                           </div>
-                          <h4 className="text-slate-900 dark:text-white font-medium text-sm">{selectedPodcast ? selectedPodcast.title : `AI in ${selectedSector === 'FINANCE' ? 'Finance' : selectedSector === 'IT' ? 'Tech' : selectedSector === 'COMMODITY' ? 'Commodity' : selectedSector === 'GLOBAL' ? 'Global' : selectedSector === 'BANKS' ? 'Banking' : selectedSector === 'AUTOMOBILE' ? 'Auto' : 'Finance'}`}</h4>
+                          <h4 className="text-slate-500 dark:text-slate-400 font-medium text-sm">{selectedPodcast ? selectedPodcast.title : `AI in ${selectedSector === 'FINANCE' ? 'Finance' : selectedSector === 'IT' ? 'Tech' : selectedSector === 'COMMODITY' ? 'Commodity' : selectedSector === 'GLOBAL' ? 'Global' : selectedSector === 'BANKS' ? 'Banking' : selectedSector === 'AUTOMOBILE' ? 'Auto' : 'Finance'}`}</h4>
                           <p className="text-slate-500 dark:text-slate-400 text-xs">Tech Weekly</p>
                         </div>
 
@@ -13325,7 +13325,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <h4 className="text-white text-sm font-medium truncate">{selectedPodcast ? selectedPodcast.title : `AI in ${selectedSector === 'FINANCE' ? 'Finance' : selectedSector === 'IT' ? 'Tech' : selectedSector === 'COMMODITY' ? 'Commodity' : selectedSector === 'GLOBAL' ? 'Global' : selectedSector === 'BANKS' ? 'Banking' : selectedSector === 'AUTOMOBILE' ? 'Auto' : 'Finance'}`}</h4>
+                    <h4 className="text-slate-500 dark:text-slate-400 text-sm font-medium truncate">{selectedPodcast ? selectedPodcast.title : `AI in ${selectedSector === 'FINANCE' ? 'Finance' : selectedSector === 'IT' ? 'Tech' : selectedSector === 'COMMODITY' ? 'Commodity' : selectedSector === 'GLOBAL' ? 'Global' : selectedSector === 'BANKS' ? 'Banking' : selectedSector === 'AUTOMOBILE' ? 'Auto' : 'Finance'}`}</h4>
                     <Mic className="w-3 h-3 text-slate-500 dark:text-slate-400 flex-shrink-0" />
                   </div>
                   <p className="text-slate-500 dark:text-slate-400 text-xs mb-2">19 minutes</p>
