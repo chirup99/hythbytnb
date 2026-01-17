@@ -522,7 +522,7 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                         />
                       ) : (
                         <p className="text-xs font-medium text-center text-gray-800 dark:text-gray-100 truncate">
-                          {imageCaptions[selectedImage.id] || selectedImage.name}
+                          {selectedImage ? (imageCaptions[selectedImage.id] || selectedImage.name) : ''}
                         </p>
                       )}
                     </div>
@@ -602,7 +602,7 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                     }
                   }}
                   className={`flex-shrink-0 rounded-md overflow-hidden transition-all cursor-pointer ${
-                    selectedCardIndex === idx && card.image && selectedImage?.id === card.image.id 
+                    selectedCardIndex === idx && card.image && selectedImage && selectedImage.id === card.image.id 
                       ? 'ring-2 ring-white' 
                       : selectedCardIndex === idx
                       ? 'ring-2 ring-blue-400'
