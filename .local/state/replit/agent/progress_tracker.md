@@ -225,6 +225,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 - Updated cards and panels to `bg-white dark:bg-slate-800` with adaptive borders.
 - Updated greeting, podcast headers, and description text to use adaptive colors (`text-slate-900 dark:text-white`).
 - Adjusted secondary text colors and tab styles for better contrast in light mode.
+- Fixed MiniCast header and podcast card text visibility in light mode.
+- Corrected syntax for dynamic text colors in podcast titles.
 
 ## IMPORT SESSION (Jan 17, 2026 - Session 25)
 
