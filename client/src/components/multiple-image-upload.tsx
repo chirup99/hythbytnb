@@ -382,6 +382,10 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                           className="w-full h-full object-contain pointer-events-none"
                           data-testid={`img-card-${idx}`}
                         />
+                        {/* Number Indicator */}
+                        <div className="absolute top-2 left-2 bg-black/50 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md border border-white/20">
+                          {idx + 1}
+                        </div>
                       </div>
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-3 bg-gray-200 dark:bg-gray-900">
@@ -394,6 +398,34 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                 </div>
               );
             })}
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-2 pointer-events-none z-20">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 pointer-events-auto"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentIndex(prev => prev > 0 ? prev - 1 : cardsToShow.length - 1);
+              }}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 pointer-events-auto"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentIndex(prev => prev < cardsToShow.length - 1 ? prev + 1 : 0);
+              }}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
 
         </div>
