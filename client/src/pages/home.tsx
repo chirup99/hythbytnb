@@ -12521,14 +12521,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   <TabsList className="bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-600">
                     <TabsTrigger 
                       value="overview" 
-                      className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 data-[state=active]:text-white flex items-center gap-2"
+                      className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white flex items-center gap-2"
                     >
                       <BarChart3 className="w-4 h-4" />
                       Podcast
                     </TabsTrigger>
                     <TabsTrigger 
                       value="setup" 
-                      className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 data-[state=active]:text-white flex items-center gap-2"
+                      className="text-slate-600 dark:text-slate-300 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white flex items-center gap-2"
                     >
                       <Shield className="w-4 h-4" />
                       Events
