@@ -65,11 +65,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - All services initialized (Angel One OAuth, Dhan, Upstox, NLP Agent, Gemini AI)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 ## IMPORT SESSION (Jan 15, 2026 - Session 13)
@@ -86,11 +84,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 ## IMPORT SESSION (Jan 15, 2026 - Session 15)
@@ -100,11 +96,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated successfully, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 16)
@@ -114,11 +108,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated successfully, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 17)
@@ -128,11 +120,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - All services initialized (Angel One OAuth P176266, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 18)
@@ -142,11 +132,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, WebSocket streaming BANKNIFTY/SENSEX/GOLD, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 20)
@@ -156,11 +144,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, WebSocket streaming BANKNIFTY/SENSEX/GOLD live prices, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 
@@ -171,11 +157,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated successfully, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, Cognito JWT Verifier, NeoFeed tables ready)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 21)
@@ -185,11 +169,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 ## FEAT: SCROLL BEHAVIOR UPDATE (Jan 16, 2026)
@@ -203,11 +185,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, NeoFeed tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
 
 
 ## IMPORT SESSION (Jan 16, 2026 - Session 23)
@@ -217,8 +197,6 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, WebSocket streaming BANKNIFTY/SENSEX/GOLD live prices, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, NeoFeed tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
-- Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
-- Trading Master card and its dialog correctly display "Advanced Trading Master".
-- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
-- Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
+## FEAT: UI CLEANUP (Jan 16, 2026)
+- Removed duplicate X icon from the Advanced Trading Master popup.
+- Ensured correct labels for Mini-cast and Advanced Trading Master.
