@@ -943,7 +943,9 @@ function FeedHeader({ onAllClick, isRefreshing, selectedFilter, onFilterChange, 
 
   return (
     <>
-      <div className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 shadow-sm">
+      <div className={`bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 shadow-sm transition-transform duration-300 ${
+      showAppBar ? 'translate-y-0' : '-translate-y-full'
+    }`}>
         
         <div className="max-w-7xl mx-auto px-4 py-4">
           {/* App Header - Hides on mobile scroll */}
