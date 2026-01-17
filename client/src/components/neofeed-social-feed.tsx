@@ -4385,7 +4385,9 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
 
         {/* Post Creation Panel - Right Side (Desktop Only) */}
         <div className="hidden md:block w-80 xl:w-96 flex-shrink-0">
-          <div className="sticky top-[140px] xl:top-[200px] z-30">
+          <div className={`sticky z-30 transition-all duration-300 ${
+            showAppBar ? 'top-[140px] xl:top-[200px]' : 'top-[80px] xl:top-[100px]'
+          }`}>
             <PostCreationPanel />
           </div>
         </div>
