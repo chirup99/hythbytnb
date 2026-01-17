@@ -12431,13 +12431,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         <div className="flex items-center justify-between mb-8">
           {/* MiniCast Component - Left Side (replacing search bar) */}
           <div className="flex items-center gap-6">
-            <div className="bg-white dark:bg-gray-900 rounded-xl px-4 py-3 flex items-center gap-3 shadow-lg border border-gray-700">
+            <div className="bg-white dark:bg-slate-800 rounded-xl px-4 py-3 flex items-center gap-3 shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-slate-900 dark:text-white font-bold text-sm">M</span>
+                <span className="text-white font-bold text-sm">M</span>
               </div>
               <div>
-                <div className="text-white font-semibold text-sm">MiniCast</div>
-                <div className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs">Premium Podcasts</div>
+                <div className="text-slate-900 dark:text-white font-semibold text-sm">MiniCast</div>
+                <div className="text-slate-500 dark:text-slate-400 text-xs">Premium Podcasts</div>
               </div>
             </div>
           </div>
@@ -12565,7 +12565,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-medium inline-block mb-4">
                                 PODCAST OF THE WEEK
                               </div>
-                              <h2 className="text-3xl font-bold mb-2 ${paperTradingTotalPnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">Rich Mindset</h2>
+                              <h2 className={`text-3xl font-bold mb-2 ${paperTradingTotalPnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>Rich Mindset</h2>
                               <p className="text-white/80 mb-4">Finance Expert</p>
 
                               {/* Play Button */}
@@ -12580,7 +12580,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       {/* Top Charts - Right Side (1/3 width) */}
                       <div className="lg:col-span-1">
                         <div className="bg-white dark:bg-slate-800 rounded-2xl p-4">
-                          <h3 className="text-slate-900 dark:text-slate-900 dark:text-white text-lg font-bold mb-4">Saved Podcast</h3>
+                          <h3 className="text-slate-900 dark:text-white text-lg font-bold mb-4">Saved Podcast</h3>
 
                           <div className="space-y-1">
                             {/* Podcast Item 1 */}
