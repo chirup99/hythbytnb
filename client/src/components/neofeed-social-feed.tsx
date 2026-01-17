@@ -948,7 +948,7 @@ function FeedHeader({ onAllClick, isRefreshing, selectedFilter, onFilterChange, 
         <div className="max-w-7xl mx-auto px-4 py-4">
           {/* App Header - Hides on mobile scroll */}
           <div className={`flex items-center justify-between mb-4 transition-all duration-300 ${
-            showAppBar ? 'md:flex' : 'md:flex hidden'
+            showAppBar ? 'flex' : 'hidden'
           }`}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-600">
