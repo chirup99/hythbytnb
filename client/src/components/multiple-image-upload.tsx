@@ -192,13 +192,53 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
 
     if (variant === 'neofeed') {
       return (
-        <div className="w-full h-full p-4 flex flex-col bg-transparent relative overflow-hidden">
-          <div className="flex-1 overflow-x-auto overflow-y-hidden flex flex-row gap-3 pb-4 custom-scrollbar snap-x snap-mandatory">
+        <div className="w-full h-full p-4 flex flex-col bg-transparent relative overflow-hidden group/neofeed">
+          {/* Navigation Arrows for NeoFeed - Positioned in the corners */}
+          <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-30 opacity-0 group-hover/neofeed:opacity-100 transition-opacity">
+            <Button
+              type="button"
+              variant="secondary"
+              size="icon"
+              className="h-10 w-10 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-xl pointer-events-auto border border-gray-200 dark:border-gray-700"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const container = e.currentTarget.parentElement?.nextElementSibling;
+                if (container) {
+                  container.scrollBy({ left: -300, behavior: 'smooth' });
+                }
+              }}
+            >
+              <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-gray-200" />
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              size="icon"
+              className="h-10 w-10 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-xl pointer-events-auto border border-gray-200 dark:border-gray-700"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const container = e.currentTarget.parentElement?.nextElementSibling;
+                if (container) {
+                  container.scrollBy({ left: 300, behavior: 'smooth' });
+                }
+              }}
+            >
+              <ChevronRight className="h-6 w-6 text-gray-700 dark:text-gray-200" />
+            </Button>
+          </div>
+
+          <div className="flex-1 overflow-hidden flex flex-row gap-3 pb-4 scroll-smooth snap-x snap-mandatory">
             {images.map((img, idx) => (
               <div key={img.id} className="group relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm transition-all hover:shadow-md flex-shrink-0 w-72 snap-start">
-                <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center relative">
                   <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
-                  <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  {/* Number Indicator - More visible */}
+                  <div className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg border border-white/30 z-20">
+                    {idx + 1}
+                  </div>
+                  <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
                     <Button 
                       type="button"
                       size="icon" 
@@ -375,15 +415,15 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                     }}
                   >
                     {(card as any).image ? (
-                      <div className="w-full h-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center overflow-hidden">
+                      <div className="w-full h-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center overflow-hidden relative">
                         <img
                           src={(card as any).image.url}
                           alt={(card as any).label}
                           className="w-full h-full object-contain pointer-events-none"
                           data-testid={`img-card-${idx}`}
                         />
-                        {/* Number Indicator */}
-                        <div className="absolute top-2 left-2 bg-black/50 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md border border-white/20">
+                        {/* Number Indicator - More visible */}
+                        <div className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg border border-white/30 z-20">
                           {idx + 1}
                         </div>
                       </div>
