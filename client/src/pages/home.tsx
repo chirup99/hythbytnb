@@ -3863,7 +3863,7 @@ ${
     } else if (hour >= 12 && hour < 17) {
       return "Hey, Good Afternoon! ☀️";
     } else if (hour >= 17 && hour < 21) {
-      return "Hey, {getTimeBasedGreeting()}! 🌆";
+      return "<h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Hey, {getTimeBasedGreeting()}! 🌆</h1>";
     } else {
       return "Hey, Good Night! 🌙";
     }
@@ -12449,7 +12449,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         {/* Main Greeting */}
         <div className="mb-8">
           <h1 className="text-3xl font-normal text-slate-900 dark:text-white mb-2">
-            {getTimeBasedGreeting()}
+            <span className="text-slate-900 dark:text-white">{getTimeBasedGreeting()}</span>
           </h1>
         </div>
 
@@ -12480,7 +12480,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <div className="relative z-10 h-full flex flex-col justify-center items-center text-center">
                       <div className="text-6xl mb-4">📚</div>
                       <div className="text-white text-2xl font-bold">Study</div>
-                      <div className="text-black text-sm mt-2">Learning Materials</div>
+                      <div className="text-white/80 text-sm mt-2">Learning Materials</div>
                     </div>
                   </div>
 
@@ -12490,7 +12490,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <div className="relative z-10 h-full flex flex-col justify-center items-center text-center">
                       <div className="text-6xl mb-4">🎓</div>
                       <div className="text-white text-2xl font-bold">Courses</div>
-                      <div className="text-black text-sm mt-2">Training Programs</div>
+                      <div className="text-white/80 text-sm mt-2">Training Programs</div>
                     </div>
                   </div>
 
@@ -12500,7 +12500,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <div className="relative z-10 h-full flex flex-col justify-center items-center text-center">
                       <div className="text-6xl mb-4">🔴</div>
                       <div className="text-white text-2xl font-bold">Live</div>
-                      <div className="text-black text-sm mt-2">Live Sessions</div>
+                      <div className="text-white/80 text-sm mt-2">Live Sessions</div>
                     </div>
                   </div>
                 </div>
