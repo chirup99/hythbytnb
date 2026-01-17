@@ -68,6 +68,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -88,6 +89,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -101,6 +103,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -114,6 +117,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -127,6 +131,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -140,6 +145,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -153,6 +159,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -167,6 +174,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -180,6 +188,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -197,6 +206,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
 
 
@@ -210,4 +220,5 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## FEAT: UI TEXT SEPARATION (Jan 16, 2026)
 - Animated bouncing ball button remains as "Mini-cast" and redirects to MiniCast tab.
 - Trading Master card and its dialog correctly display "Advanced Trading Master".
+- Removed duplicate close button (X) from the Trading Master "Coming Soon" popup.
 - Updated `client/src/pages/home.tsx` to handle these labels independently for the two separate UI components.
