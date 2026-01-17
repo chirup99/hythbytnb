@@ -3858,15 +3858,10 @@ ${
   // Dynamic greeting based on local time
   const getTimeBasedGreeting = () => {
     const hour = new Date().getHours();
-    if (hour >= 5 && hour < 12) {
-      return "Hey, Good Morning! 🌅";
-    } else if (hour >= 12 && hour < 17) {
-      return "Hey, Good Afternoon! ☀️";
-    } else if (hour >= 17 && hour < 21) {
-      return `Hey, ${getTimeBasedGreeting()}! 🌆`;
-    } else {
-      return "Hey, Good Night! 🌙";
-    }
+    if (hour >= 5 && hour < 12) return "Good Morning";
+    if (hour >= 12 && hour < 17) return "Good Afternoon";
+    if (hour >= 17 && hour < 21) return "Good Evening";
+    return "Good Night";
   };
 
   // Handler for podcast selection
