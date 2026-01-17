@@ -12436,8 +12436,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 <span className="text-slate-900 dark:text-white font-bold text-sm">M</span>
               </div>
               <div>
-                <div className="text-white font-semibold text-sm">MiniCast</div>
-                <div className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs">Premium Podcasts</div>
+                <div className="text-slate-900 dark:text-white font-semibold text-sm">MiniCast</div>
+                <div className="text-slate-500 dark:text-slate-400 text-xs">Premium Podcasts</div>
               </div>
             </div>
           </div>

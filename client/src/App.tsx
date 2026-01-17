@@ -314,7 +314,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                 data-testid="button-profile-menu-toggle"
               >
                 <Avatar className="w-10 h-10 rounded-lg border border-white/10">
-                  <AvatarImage src={currentUser?.profilePicUrl} />
+                  <AvatarImage src={currentUser?.profilePicUrl || undefined} />
                   <AvatarFallback className="bg-gradient-to-br from-purple-500 to-blue-500 text-white font-semibold text-sm rounded-lg">
                     {currentUserDisplayName.charAt(0).toUpperCase()}
                   </AvatarFallback>
