@@ -943,30 +943,30 @@ function FeedHeader({ onAllClick, isRefreshing, selectedFilter, onFilterChange, 
 
   return (
     <>
-      <div className={`bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 shadow-sm transition-transform duration-300 ${
-      showAppBar ? 'translate-y-0' : '-translate-y-full'
-    }`}>
+      <div className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 shadow-sm">
         
         <div className="max-w-7xl mx-auto px-4 py-4">
-          {/* App Header - Hides on mobile scroll */}
-          <div className={`flex items-center justify-between mb-4 transition-all duration-300 ${
-            showAppBar ? 'flex' : 'hidden'
+          {/* App Header - Hides on scroll */}
+          <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            showAppBar ? 'max-h-20 opacity-100 mb-4' : 'max-h-0 opacity-0 mb-0'
           }`}>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-600">
-                <div className="text-gray-700 dark:text-gray-300 font-bold text-sm">⚡</div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-600">
+                  <div className="text-gray-700 dark:text-gray-300 font-bold text-sm">⚡</div>
+                </div>
+                <div>
+                  <h1 className="text-gray-900 dark:text-white font-bold text-xl">NeoFeed</h1>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">AI-Powered Trading Network</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-gray-900 dark:text-white font-bold text-xl">NeoFeed</h1>
-                <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">AI-Powered Trading Network</p>
+              <div className="flex items-center gap-2">
+               
+                <Button variant="ghost" size="sm" className="text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <Bell className="h-5 w-5" />
+                </Button>
+                <UserProfileDropdown />
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-             
-              <Button variant="ghost" size="sm" className="text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                <Bell className="h-5 w-5" />
-              </Button>
-              <UserProfileDropdown />
             </div>
           </div>
 
