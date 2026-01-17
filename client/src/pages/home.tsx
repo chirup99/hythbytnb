@@ -15777,8 +15777,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </span>
                             </div>
                             <div className="absolute bottom-3 right-3">
-                              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                                <BarChart3 className="h-6 w-6 text-white" />
+                              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center overflow-hidden">
+                                <img src={journalImage} alt="Journal" className="w-full h-full object-cover" />
                               </div>
                             </div>
                           </div>
