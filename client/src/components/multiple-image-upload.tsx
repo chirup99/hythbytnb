@@ -193,9 +193,9 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
     if (variant === 'neofeed') {
       return (
         <div className="w-full h-full p-4 flex flex-col bg-transparent relative overflow-hidden">
-          <div className="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+          <div className="flex-1 overflow-x-auto overflow-y-hidden flex flex-row gap-3 pb-4 custom-scrollbar snap-x snap-mandatory">
             {images.map((img, idx) => (
-              <div key={img.id} className="group relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm transition-all hover:shadow-md">
+              <div key={img.id} className="group relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm transition-all hover:shadow-md flex-shrink-0 w-72 snap-start">
                 <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                   <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
                   <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -268,7 +268,7 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                   e.stopPropagation();
                   fileInputRef.current?.click();
                 }}
-                className="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-blue-500 transition-all bg-gray-50/50 dark:bg-gray-900/20"
+                className="flex-shrink-0 w-72 aspect-video rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-blue-500 transition-all bg-gray-50/50 dark:bg-gray-900/20 snap-start"
               >
                 <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center border border-gray-100 dark:border-gray-700">
                   <Plus className="h-5 w-5" />
