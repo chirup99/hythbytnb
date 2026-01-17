@@ -221,5 +221,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI LIGHT MODE VISIBILITY (Jan 17, 2026)
 - Fixed text visibility issues in light mode for the home page.
+- Updated background to `bg-slate-50 dark:bg-slate-900`.
+- Updated cards and panels to `bg-white dark:bg-slate-800` with adaptive borders.
 - Updated greeting, podcast headers, and description text to use adaptive colors (`text-slate-900 dark:text-white`).
-- Adjusted secondary text colors for better contrast in light mode.
+- Adjusted secondary text colors and tab styles for better contrast in light mode.
