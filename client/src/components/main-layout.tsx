@@ -21,7 +21,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 flex">
+    <div className="min-h-screen bg-gray-900 flex">
       {/* Vertical Navigation */}
       <div className="w-20 bg-gray-950 border-r border-gray-800 flex flex-col items-center py-6 space-y-6">
         {navigation.map((item) => {

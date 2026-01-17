@@ -99,7 +99,7 @@ function NewHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 flex items-center justify-center p-4 sm:p-8">
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-8">
       <div className="max-w-4xl w-full space-y-8 sm:space-y-12">
         {/* Greeting */}
         <div className="text-center space-y-4">
@@ -291,7 +291,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-900">
       {/* Desktop: Fixed Vertical Navigation (hidden on mobile) */}
       <div className="hidden md:flex fixed right-0 top-0 w-20 h-full bg-gray-950 border-l border-gray-800 flex-col items-center py-6 space-y-6 z-50">
         {navigation.map((item) => {
@@ -314,7 +314,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                 data-testid="button-profile-menu-toggle"
               >
                 <Avatar className="w-10 h-10 rounded-lg border border-white/10">
-                  <AvatarImage src={currentUser?.profilePicUrl || undefined} />
+                  <AvatarImage src={currentUser?.profilePicUrl} />
                   <AvatarFallback className="bg-gradient-to-br from-purple-500 to-blue-500 text-white font-semibold text-sm rounded-lg">
                     {currentUserDisplayName.charAt(0).toUpperCase()}
                   </AvatarFallback>
