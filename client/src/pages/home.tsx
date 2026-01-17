@@ -12673,7 +12673,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                     {/* AI-Generated Trending Podcasts */}
                     <div className="mt-8">
-                      <h3 className="text-slate-900 dark:text-slate-900 dark:text-white text-lg font-medium mb-4">AI-Generated {selectedSector} Podcasts</h3>
+                      <h3 className="text-slate-900 dark:text-white text-lg font-medium mb-4">AI-Generated {selectedSector} Podcasts</h3>
 
                       {isPodcastsLoading ? (
                         <div className="text-center py-8">
@@ -12721,7 +12721,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                     {/* Weekly Top Tracks */}
                     <div className="mt-8">
-                      <h3 className="text-slate-900 dark:text-slate-900 dark:text-white text-lg font-medium mb-4">Weekly top tracks</h3>
+                      <h3 className="text-slate-900 dark:text-white text-lg font-medium mb-4">Weekly top tracks</h3>
 
                       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
                         {/* Track 1 */}
@@ -12859,10 +12859,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   <div className="h-full flex flex-col">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-4 flex-shrink-0">
-                      <h4 className="text-slate-900 dark:text-slate-900 dark:text-white text-lg font-medium">Upcoming Events</h4>
+                      <h4 className="text-slate-900 dark:text-white text-lg font-medium">Upcoming Events</h4>
                       <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
                         <span>Showing</span>
-                        <span className="text-white">10</span>
+                        <span className="text-slate-900 dark:text-white">10</span>
                         <span>out of 48</span>
                       </div>
                     </div>
