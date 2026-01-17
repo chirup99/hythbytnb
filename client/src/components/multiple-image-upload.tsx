@@ -381,10 +381,6 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                           className="w-full h-full object-contain pointer-events-none"
                           data-testid={`img-card-${idx}`}
                         />
-                        {/* Number Indicator - More visible */}
-                        <div className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg border border-white/30 z-20">
-                          {idx + 1}
-                        </div>
                       </div>
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-3 bg-gray-200 dark:bg-gray-900">
@@ -397,66 +393,6 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                 </div>
               );
             })}
-          </div>
-
-          {/* Navigation Arrows */}
-          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-2 pointer-events-none z-20">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 pointer-events-auto"
-              onClick={(e) => {
-                e.stopPropagation();
-                setCurrentIndex(prev => prev > 0 ? prev - 1 : cardsToShow.length - 1);
-              }}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 pointer-events-auto"
-              onClick={(e) => {
-                e.stopPropagation();
-                setCurrentIndex(prev => prev < cardsToShow.length - 1 ? prev + 1 : 0);
-              }}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-
-        </div>
-
-        {/* Curved Line Footer - Transparent Background */}
-        <div className="h-16 relative bg-transparent flex items-center justify-center overflow-hidden">
-          <svg
-            className="absolute inset-0 w-full h-full opacity-40"
-            viewBox="0 0 800 60"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M 0 15 Q 400 50, 800 15"
-              stroke="#9ca3af"
-              strokeWidth="1.5"
-              fill="none"
-            />
-          </svg>
-
-          {/* Counter Badge - Tiny and minimalistic */}
-          <div 
-            className={`relative z-10 bg-gray-500 dark:bg-gray-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-semibold shadow-md border border-gray-400 dark:border-gray-500 ${
-              isDragging ? '' : 'transition-transform duration-400 ease-out'
-            }`}
-            style={{
-              transform: `translateX(${(dragOffset * 0.5)}px)`
-            }}
-          >
-            {images.length === 0 
-              ? `${currentIndex + 1}/5`
-              : `${Math.min(currentIndex + 1, images.length)}/${images.length}`
-            }
           </div>
         </div>
 
