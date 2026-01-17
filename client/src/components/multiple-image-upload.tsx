@@ -192,18 +192,18 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
 
     if (variant === 'neofeed') {
       return (
-        <div className="w-full h-full p-4 flex flex-col bg-transparent relative overflow-hidden">
-          <div className="flex-1 overflow-x-auto overflow-y-hidden flex flex-row gap-3 pb-4 custom-scrollbar snap-x snap-mandatory">
+        <div className="w-full h-full p-2 flex flex-col bg-transparent relative overflow-hidden">
+          <div className="flex-1 overflow-x-auto overflow-y-hidden flex flex-row gap-2 pb-2 custom-scrollbar snap-x snap-mandatory">
             {images.map((img, idx) => (
-              <div key={img.id} className="group relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm transition-all hover:shadow-md flex-shrink-0 w-72 snap-start">
+              <div key={img.id} className="group relative rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm transition-all hover:shadow-md flex-shrink-0 w-48 snap-start">
                 <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                   <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
-                  <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button 
                       type="button"
                       size="icon" 
                       variant="secondary" 
-                      className="h-8 w-8 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-sm"
+                      className="h-6 w-6 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-sm"
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -212,13 +212,13 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                         onImagesChange?.(newImages);
                       }}
                     >
-                      <Trash2 className="h-4 w-4 text-red-500" />
+                      <Trash2 className="h-3 w-3 text-red-500" />
                     </Button>
                   </div>
                 </div>
                 {imageCaptions[img.id] ? (
-                  <div className="p-2 px-3 bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700">
-                    <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{imageCaptions[img.id]}</p>
+                  <div className="p-1.5 px-2 bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700">
+                    <p className="text-[10px] text-gray-600 dark:text-gray-400 truncate">{imageCaptions[img.id]}</p>
                   </div>
                 ) : (
                   <button 
@@ -228,23 +228,23 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                       e.stopPropagation();
                       setEditingImageId(img.id);
                     }}
-                    className="w-full p-2 text-center text-[10px] text-gray-400 hover:text-blue-500 transition-colors border-t border-gray-100 dark:border-gray-700"
+                    className="w-full p-1.5 text-center text-[9px] text-gray-400 hover:text-blue-500 transition-colors border-t border-gray-100 dark:border-gray-700"
                   >
                     Add caption...
                   </button>
                 )}
                 {editingImageId === img.id && (
-                  <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 flex flex-col p-4 animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Edit Caption</span>
-                      <Button type="button" size="icon" variant="ghost" className="h-6 w-6" onClick={() => setEditingImageId(null)}>
-                        <X className="h-4 w-4" />
+                  <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 flex flex-col p-2 animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-[10px] font-medium text-gray-700 dark:text-gray-300">Edit Caption</span>
+                      <Button type="button" size="icon" variant="ghost" className="h-5 w-5" onClick={() => setEditingImageId(null)}>
+                        <X className="h-3 w-3" />
                       </Button>
                     </div>
                     <textarea
                       autoFocus
-                      className="flex-1 bg-transparent border-0 text-sm resize-none focus:ring-0 text-gray-900 dark:text-white"
-                      placeholder="Enter image description..."
+                      className="flex-1 bg-transparent border-0 text-[11px] resize-none focus:ring-0 text-gray-900 dark:text-white"
+                      placeholder="Enter description..."
                       value={imageCaptions[img.id] || ''}
                       onChange={(e) => setImageCaptions(prev => ({ ...prev, [img.id]: e.target.value }))}
                       onKeyDown={(e) => {
@@ -254,7 +254,7 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                         }
                       }}
                     />
-                    <Button type="button" size="sm" className="mt-2 w-full h-8" onClick={() => setEditingImageId(null)}>Done</Button>
+                    <Button type="button" size="sm" className="mt-1 w-full h-6 text-[10px]" onClick={() => setEditingImageId(null)}>Done</Button>
                   </div>
                 )}
               </div>
@@ -268,14 +268,14 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                   e.stopPropagation();
                   fileInputRef.current?.click();
                 }}
-                className="flex-shrink-0 w-72 aspect-video rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-blue-500 transition-all bg-gray-50/50 dark:bg-gray-900/20 snap-start"
+                className="flex-shrink-0 w-48 aspect-video rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-blue-500 transition-all bg-gray-50/50 dark:bg-gray-900/20 snap-start"
               >
-                <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center border border-gray-100 dark:border-gray-700">
-                  <Plus className="h-5 w-5" />
+                <div className="w-8 h-8 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center border border-gray-100 dark:border-gray-700">
+                  <Plus className="h-4 w-4" />
                 </div>
                 <div className="text-center">
-                  <p className="text-sm font-medium">Add Image</p>
-                  <p className="text-[10px] opacity-70">Up to 5 images allowed</p>
+                  <p className="text-xs font-medium">Add Image</p>
+                  <p className="text-[9px] opacity-70">Up to 5 allowed</p>
                 </div>
               </button>
             )}

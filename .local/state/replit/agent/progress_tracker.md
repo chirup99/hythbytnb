@@ -219,7 +219,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, all services initialized (Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables ready, NeoFeed tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
-## FEAT: NEOFEED IMAGE UPLOAD SCROLLING (Jan 17, 2026)
-- Changed vertical scrolling to horizontal scrolling in `client/src/components/multiple-image-upload.tsx` for the neofeed variant.
+## FEAT: NEOFEED IMAGE UPLOAD UI OPTIMIZATION (Jan 17, 2026)
+- Changed vertical scrolling to horizontal scrolling in `client/src/components/multiple-image-upload.tsx`.
+- Reduced image card size from `w-72` to `w-48` for the NeoFeed variant to fit better within the screen.
+- Reduced internal padding and font sizes for a more compact, mobile-friendly design.
 - Added snap-scrolling for better UX.
-- Fixed image card width to 72 (18rem) for consistent horizontal layout.
