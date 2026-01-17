@@ -686,10 +686,11 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
           {/* Image Upload */}
           <div className="space-y-2 flex flex-col">
             <Label className="text-gray-800 dark:text-gray-200 font-medium text-base">Images (Optional)</Label>
-            <div className="h-80 rounded-lg border border-gray-200 dark:border-gray-700 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+            <div className="h-80 rounded-lg border border-gray-200 dark:border-gray-700 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
               <MultipleImageUpload
                 images={uploadedImages}
                 onImagesChange={setUploadedImages}
+                variant="neofeed"
                 data-testid="image-uploader"
               />
             </div>

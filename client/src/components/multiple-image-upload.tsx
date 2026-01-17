@@ -13,6 +13,7 @@ interface UploadedImage {
 interface MultipleImageUploadProps {
   images?: UploadedImage[];
   onImagesChange?: (images: UploadedImage[]) => void;
+  variant?: 'journal' | 'neofeed';
 }
 
 export interface MultipleImageUploadRef {
@@ -20,7 +21,7 @@ export interface MultipleImageUploadRef {
 }
 
 export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleImageUploadProps>(
-  function MultipleImageUpload({ images: externalImages = [], onImagesChange }, ref) {
+  function MultipleImageUpload({ images: externalImages = [], onImagesChange, variant = 'journal' }, ref) {
     const [images, setImages] = useState<UploadedImage[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
@@ -185,7 +186,91 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
     // Reorder: image cards first, then empty cards
     const imageCards = allCards.filter(card => card.image !== null);
     const emptyCards = allCards.filter(card => card.image === null);
-    const cardsToShow = [...imageCards, ...emptyCards];
+    const cardsToShow = variant === 'neofeed' 
+      ? (images.length < 5 ? [...images.map((img, i) => ({ id: img.id, label: 'Image', image: img })), { id: 'upload-new', label: 'Upload Image', image: null }] : images.map((img, i) => ({ id: img.id, label: 'Image', image: img })))
+      : [...imageCards, ...emptyCards];
+
+    if (variant === 'neofeed') {
+      return (
+        <div className="w-full h-full p-4 flex flex-col bg-transparent relative overflow-hidden">
+          <div className="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+            {images.map((img, idx) => (
+              <div key={img.id} className="group relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm transition-all hover:shadow-md">
+                <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                  <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
+                  <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button 
+                      size="icon" 
+                      variant="secondary" 
+                      className="h-8 w-8 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-sm"
+                      onClick={() => {
+                        setImages(images.filter(i => i.id !== img.id));
+                        onImagesChange?.(images.filter(i => i.id !== img.id));
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4 text-red-500" />
+                    </Button>
+                  </div>
+                </div>
+                {imageCaptions[img.id] ? (
+                  <div className="p-2 px-3 bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{imageCaptions[img.id]}</p>
+                  </div>
+                ) : (
+                  <button 
+                    onClick={() => setEditingImageId(img.id)}
+                    className="w-full p-2 text-center text-[10px] text-gray-400 hover:text-blue-500 transition-colors border-t border-gray-100 dark:border-gray-700"
+                  >
+                    Add caption...
+                  </button>
+                )}
+                {editingImageId === img.id && (
+                  <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 flex flex-col p-4 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Edit Caption</span>
+                      <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => setEditingImageId(null)}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <textarea
+                      autoFocus
+                      className="flex-1 bg-transparent border-0 text-sm resize-none focus:ring-0 text-gray-900 dark:text-white"
+                      placeholder="Enter image description..."
+                      value={imageCaptions[img.id] || ''}
+                      onChange={(e) => setImageCaptions(prev => ({ ...prev, [img.id]: e.target.value }))}
+                    />
+                    <Button size="sm" className="mt-2 w-full h-8" onClick={() => setEditingImageId(null)}>Done</Button>
+                  </div>
+                )}
+              </div>
+            ))}
+            
+            {images.length < 5 && (
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-blue-500 transition-all bg-gray-50/50 dark:bg-gray-900/20"
+              >
+                <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center border border-gray-100 dark:border-gray-700">
+                  <Plus className="h-5 w-5" />
+                </div>
+                <div className="text-center">
+                  <p className="text-sm font-medium">Add Image</p>
+                  <p className="text-[10px] opacity-70">Up to 5 images allowed</p>
+                </div>
+              </button>
+            )}
+          </div>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            multiple
+            accept="image/*"
+            className="hidden"
+          />
+        </div>
+      );
+    }
 
     return (
       <div 
