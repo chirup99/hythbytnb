@@ -218,17 +218,22 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                   </div>
                 ) : (
                   <button 
-                    onClick={() => setEditingImageId(img.id)}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setEditingImageId(img.id);
+                    }}
                     className="w-full p-2 text-center text-[10px] text-gray-400 hover:text-blue-500 transition-colors border-t border-gray-100 dark:border-gray-700"
                   >
                     Add caption...
                   </button>
                 )}
                 {editingImageId === img.id && (
-                  <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 flex flex-col p-4 animate-in fade-in zoom-in-95 duration-200">
+                  <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 flex flex-col p-4 animate-in fade-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Edit Caption</span>
-                      <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => setEditingImageId(null)}>
+                      <Button type="button" size="icon" variant="ghost" className="h-6 w-6" onClick={() => setEditingImageId(null)}>
                         <X className="h-4 w-4" />
                       </Button>
                     </div>
@@ -238,8 +243,14 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
                       placeholder="Enter image description..."
                       value={imageCaptions[img.id] || ''}
                       onChange={(e) => setImageCaptions(prev => ({ ...prev, [img.id]: e.target.value }))}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          setEditingImageId(null);
+                        }
+                      }}
                     />
-                    <Button size="sm" className="mt-2 w-full h-8" onClick={() => setEditingImageId(null)}>Done</Button>
+                    <Button type="button" size="sm" className="mt-2 w-full h-8" onClick={() => setEditingImageId(null)}>Done</Button>
                   </div>
                 )}
               </div>
@@ -247,7 +258,12 @@ export const MultipleImageUpload = forwardRef<MultipleImageUploadRef, MultipleIm
             
             {images.length < 5 && (
               <button
-                onClick={() => fileInputRef.current?.click()}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  fileInputRef.current?.click();
+                }}
                 className="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-blue-500 transition-all bg-gray-50/50 dark:bg-gray-900/20"
               >
                 <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center border border-gray-100 dark:border-gray-700">
