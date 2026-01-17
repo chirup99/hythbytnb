@@ -12595,10 +12595,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="flex items-center gap-2">
                                 <div className="w-8 h-2 bg-blue-500 rounded-full"></div>
                                 <span className="text-slate-500 dark:text-slate-400 text-xs">03:13</span>
-                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                                   <Heart className="w-3 h-3" />
                                 </Button>
-                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                                   <Play className="w-3 h-3" />
                                 </Button>
                               </div>
@@ -12616,10 +12616,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="flex items-center gap-2">
                                 <div className="w-8 h-2 bg-green-500 rounded-full"></div>
                                 <span className="text-slate-500 dark:text-slate-400 text-xs">05:26</span>
-                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                                   <Heart className="w-3 h-3" />
                                 </Button>
-                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                                   <Play className="w-3 h-3" />
                                 </Button>
                               </div>
@@ -12637,10 +12637,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="flex items-center gap-2">
                                 <div className="w-8 h-2 bg-yellow-500 rounded-full"></div>
                                 <span className="text-slate-500 dark:text-slate-400 text-xs">02:51</span>
-                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                                   <Heart className="w-3 h-3" />
                                 </Button>
-                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                                   <Play className="w-3 h-3" />
                                 </Button>
                               </div>
@@ -12658,10 +12658,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="flex items-center gap-2">
                                 <div className="w-8 h-2 bg-teal-500 rounded-full"></div>
                                 <span className="text-slate-500 dark:text-slate-400 text-xs">04:12</span>
-                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                                   <Heart className="w-3 h-3" />
                                 </Button>
-                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                                <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                                   <Play className="w-3 h-3" />
                                 </Button>
                               </div>
@@ -13221,23 +13221,23 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                       {/* Pagination */}
                       <div className="flex items-center justify-center gap-2 pt-4">
-                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                           <ChevronLeft className="w-4 h-4" />
                         </Button>
                         <Button variant="ghost" size="sm" className="bg-purple-600 text-white w-8 h-8 p-0">
                           1
                         </Button>
-                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white w-8 h-8 p-0">
+                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white w-8 h-8 p-0">
                           2
                         </Button>
-                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white w-8 h-8 p-0">
+                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white w-8 h-8 p-0">
                           3
                         </Button>
                         <span className="text-slate-500 dark:text-slate-400 px-2">...</span>
-                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white w-8 h-8 p-0">
+                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white w-8 h-8 p-0">
                           6
                         </Button>
-                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white">
+                        <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                           <ChevronRight className="w-4 h-4" />
                         </Button>
                       </div>
@@ -13342,13 +13342,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                   {/* Controls */}
                   <div className="flex items-center justify-center gap-3">
-                    <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white w-6 h-6 p-0">
+                    <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white w-6 h-6 p-0">
                       <SkipBack className="w-3 h-3" />
                     </Button>
                     <Button variant="ghost" size="sm" className="text-slate-900 dark:text-white w-6 h-6 p-0">
                       <Pause className="w-3 h-3" />
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white w-6 h-6 p-0">
+                    <Button variant="ghost" size="sm" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white w-6 h-6 p-0">
                       <SkipForward className="w-3 h-3" />
                     </Button>
                   </div>
@@ -15938,7 +15938,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               variant="ghost"
                               size="sm"
                               onClick={() => setShowTutorOverlay(false)}
-                              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-white dark:bg-slate-800"
+                              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:bg-slate-800"
                             >
                               <X className="h-5 w-5" />
                             </Button>
@@ -16148,7 +16148,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   onClick={() => setTabWithAuthCheck("trading-home")}
                   variant="ghost"
                   size="icon"
-                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
                   data-testid="button-back-to-home-trading-master"
                 >
                   <ArrowLeft className="h-6 w-6" />
@@ -16163,7 +16163,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   onClick={() => setTabWithAuthCheck("trading-home")}
                   variant="ghost"
                   size="icon"
-                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
                   data-testid="button-back-to-home-backtest"
                 >
                   <ArrowLeft className="h-6 w-6" />
@@ -16178,7 +16178,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   onClick={() => setTabWithAuthCheck("trading-home")}
                   variant="ghost"
                   size="icon"
-                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
                   data-testid="button-back-to-home-chart"
                 >
                   <ArrowLeft className="h-6 w-6" />
@@ -16194,7 +16194,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   onClick={() => setTabWithAuthCheck("trading-home")}
                   variant="ghost"
                   size="icon"
-                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
                   data-testid="button-back-to-home-check"
                 >
                   <ArrowLeft className="h-6 w-6" />
@@ -16209,7 +16209,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   onClick={() => setTabWithAuthCheck("trading-home")}
                   variant="ghost"
                   size="icon"
-                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
                   data-testid="button-back-to-home-4candle"
                 >
                   <ArrowLeft className="h-6 w-6" />
@@ -16224,7 +16224,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   onClick={() => setTabWithAuthCheck("trading-home")}
                   variant="ghost"
                   size="icon"
-                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
                   data-testid="button-back-to-home-scanner"
                 >
                   <ArrowLeft className="h-6 w-6" />
@@ -16240,7 +16240,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   onClick={() => setTabWithAuthCheck("trading-home")}
                   variant="ghost"
                   size="icon"
-                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                  className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
                   data-testid="button-back-to-home-journal"
                 >
                   <ArrowLeft className="h-6 w-6" />
@@ -17734,7 +17734,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     size="sm"
                                     variant="ghost"
                                     onClick={handleEditNotes}
-                                    className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white"
+                                    className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-slate-900 dark:hover:text-white"
                                     data-testid="button-edit-notes"
                                   >
                                     <Edit className="w-3 h-3" />
@@ -18524,7 +18524,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
                                               <div className="flex items-center gap-3">
                                                 <div className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center group-hover:bg-violet-500 transition-colors">
-                                                  <Play className="w-3 h-3 text-violet-500 group-hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white" />
+                                                  <Play className="w-3 h-3 text-violet-500 group-hover:text-slate-900 dark:hover:text-white" />
                                                 </div>
                                                 <span className="text-xs font-medium text-slate-700 dark:text-slate-600 dark:text-slate-300">{track.title}</span>
                                               </div>
@@ -18547,7 +18547,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
                                               <div className="flex items-center gap-3">
                                                 <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
-                                                  <Play className="w-3 h-3 text-blue-500 group-hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white" />
+                                                  <Play className="w-3 h-3 text-blue-500 group-hover:text-slate-900 dark:hover:text-white" />
                                                 </div>
                                                 <span className="text-xs font-medium text-slate-700 dark:text-slate-600 dark:text-slate-300">{track.title}</span>
                                               </div>
@@ -21553,7 +21553,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     onClick={() => setHidePositionDetails(!hidePositionDetails)}
                     size="icon"
                     variant="ghost"
-                    className="h-6 w-6 ml-auto text-gray-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white"
+                    className="h-6 w-6 ml-auto text-gray-400 hover:text-slate-900 dark:hover:text-white"
                     data-testid="button-toggle-visibility-mobile"
                   >
                     {hidePositionDetails ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -22990,7 +22990,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
                     mobileBottomTab === "home"
                       ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
-                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white"
                   }`}
                   data-testid="mobile-tab-home"
                 >
@@ -23003,7 +23003,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
                     mobileBottomTab === "insight"
                       ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
-                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white"
                   }`}
                   data-testid="mobile-tab-insight"
                 >
@@ -23041,7 +23041,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
                     mobileBottomTab === "paper-trade"
                       ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
-                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white"
                   }`}
                   data-testid="mobile-tab-paper-trade"
                 >
@@ -23054,7 +23054,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
                     mobileBottomTab === "ranking"
                       ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
-                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white"
                   }`}
                   data-testid="mobile-tab-ranking"
                 >
@@ -23094,7 +23094,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   onClick={() => setHidePositionDetails(!hidePositionDetails)}
                   size="icon"
                   variant="ghost"
-                  className="h-6 w-6 ml-auto text-gray-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white"
+                  className="h-6 w-6 ml-auto text-gray-400 hover:text-slate-900 dark:hover:text-white"
                   data-testid="button-toggle-visibility-mobile"
                 >
                   {hidePositionDetails ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -23419,7 +23419,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       onClick={() => setShowMobileTradeHistory(!showMobileTradeHistory)}
                       size="icon"
                       variant="ghost"
-                      className="h-7 w-7 text-gray-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:text-white"
+                      className="h-7 w-7 text-gray-400 hover:text-slate-900 dark:hover:text-white"
                       data-testid="button-toggle-mobile-position-history"
                     >
                       <ChevronLeft className="h-4 w-4" />
