@@ -3863,7 +3863,7 @@ ${
     } else if (hour >= 12 && hour < 17) {
       return "Hey, Good Afternoon! ☀️";
     } else if (hour >= 17 && hour < 21) {
-      return "Hey, {getTimeBasedGreeting()}! 🌆";
+      return `Hey, ${getTimeBasedGreeting()}! 🌆`;
     } else {
       return "Hey, Good Night! 🌙";
     }
