@@ -17274,8 +17274,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <div className="flex items-center justify-between mb-2">
                               <h3 className="text-sm font-semibold text-gray-800 dark:text-white flex items-center gap-1.5">
                                 TRADING NOTES
-                                <Newspaper className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
                               </h3>
+                                <Newspaper className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400 mr-1" />
                               <div className="flex items-center gap-1">
                                 {/* Daily Life Factors Dropdown */}
                                 <Popover
