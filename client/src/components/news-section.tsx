@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Newspaper, ExternalLink, Loader2 } from "lucide-react";
-import { ScrollArea } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface NewsItem {
   id: string;
