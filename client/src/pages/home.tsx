@@ -17753,7 +17753,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 onChange={(e) =>
                                   setTempNotesContent(e.target.value)
                                 }
-                                placeholder="Write your trading notes, strategies, observations..."
+                                placeholder={isNotesInNewsMode ? "Share the latest news, market updates, or community insights..." : "Write your trading notes, strategies, observations..."}
                                 className="flex-1 w-full p-2 text-xs border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 data-testid="textarea-notes"
                               />
