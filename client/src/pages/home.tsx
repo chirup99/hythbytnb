@@ -9572,6 +9572,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     return [];
   });
   const [isDailyFactorsDropdownOpen, setIsDailyFactorsDropdownOpen] = useState(false);
+  const [isNotesInNewsMode, setIsNotesInNewsMode] = useState(false);
 
   // Daily life factors system - personal factors affecting market performance
   const dailyFactorsSystem = {
@@ -17273,7 +17274,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <CardContent className="p-2 flex-1 flex flex-col h-full overflow-hidden">
                             <div className="flex items-center justify-between mb-2">
                               <h3 className="text-sm font-semibold text-gray-800 dark:text-white flex items-center gap-1.5">
-                                TRADING NOTES
+                                {isNotesInNewsMode ? "NEWS" : "TRADING NOTES"}
                               </h3>
                               <div className="flex items-center gap-1">
                                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => {/* Add functionality or trigger if needed */}} data-testid="button-trading-news">
