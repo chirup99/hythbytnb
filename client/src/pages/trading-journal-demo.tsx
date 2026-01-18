@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Settings, Grid3X3, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { BookOpen, Settings, Grid3X3, Calendar, ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
 
 export default function TradingJournalDemo() {
   return (
@@ -188,7 +188,10 @@ export default function TradingJournalDemo() {
             {/* Trading Notes */}
             <Card className="p-4">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold" data-testid="text-notes-title">TRADING NOTES</h3>
+                <h3 className="font-semibold flex items-center gap-1.5" data-testid="text-notes-title">
+                  TRADING NOTES
+                  <Newspaper className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
+                </h3>
                 <div className="flex items-center gap-2">
                   <Button size="sm" variant="ghost" data-testid="button-tags">Tags (3)</Button>
                   <Button size="sm" variant="ghost" data-testid="button-edit">Edit</Button>
