@@ -9576,23 +9576,57 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [isNewsLoading, setIsNewsLoading] = useState(false);
 
   const [isNotesInNewsMode, setIsNotesInNewsMode] = useState(false);
+  // News fetching logic for Journal tab
   useEffect(() => {
-    if (isNotesInNewsMode && newsData.length === 0) {
-      const fetchGeneralNews = async () => {
-        setIsNewsLoading(true);
-        try {
-          const response = await fetch("/api/stock-news?query=Indian%20Market");
-          const data = await response.json();
-          if (data.success) setNewsData(data.results || []);
-        } catch (error) {
-          console.error("Error fetching news:", error);
-        } finally {
-          setIsNewsLoading(false);
+    const fetchNewsForJournal = async () => {
+      setIsNewsLoading(true);
+      try {
+        let query = "Indian Market";
+        let isSymbolSearch = false;
+        
+        if (selectedJournalSymbol) {
+          query = selectedJournalSymbol.replace("NSE:", "").replace("-INDEX", "").replace("-EQ", "").replace("-BE", "");
+          isSymbolSearch = true;
         }
-      };
-      fetchGeneralNews();
+        
+        console.log(`📰 [JOURNAL NEWS] Fetching news for: ${query} (isSymbol: ${isSymbolSearch})`);
+        
+        const endpoint = isSymbolSearch 
+          ? `/api/stock-news/${query}?refresh=${Date.now()}`
+          : `/api/stock-news?query=${encodeURIComponent(query)}`;
+          
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        
+        // Handle different backend response structures
+        const results = data.results || data.articles || [];
+        
+        if (data.success && results.length > 0) {
+          setNewsData(results);
+        } else if (isSymbolSearch) {
+          // Fallback to general news only if we searched for a symbol and found nothing
+          console.log(`⚠️ [JOURNAL NEWS] No specific news for ${query}, falling back to general news`);
+          const generalResponse = await fetch("/api/stock-news?query=Indian%20Market");
+          const generalData = await generalResponse.json();
+          const generalResults = generalData.results || generalData.articles || [];
+          if (generalData.success) {
+            setNewsData(generalResults);
+          }
+        } else {
+          // If general search failed or no symbol selected and fetch failed
+          setNewsData([]);
+        }
+      } catch (error) {
+        console.error("❌ [JOURNAL NEWS] Error fetching news:", error);
+      } finally {
+        setIsNewsLoading(false);
+      }
+    };
+
+    if (isNotesInNewsMode) {
+      fetchNewsForJournal();
     }
-  }, [isNotesInNewsMode, newsData.length]);
+  }, [isNotesInNewsMode, selectedJournalSymbol]);
 
 
   // Daily life factors system - personal factors affecting market performance
