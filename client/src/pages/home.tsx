@@ -17267,3 +17267,6982 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                             </div>
                           </CardContent>
+                        </div>
+
+                        {/* Bottom 70% - Notes Section */}
+                        <div className="h-[70%] flex flex-col">
+                          <CardContent className="p-2 flex-1 flex flex-col h-full overflow-hidden">
+                            <div className="flex items-center justify-between mb-2">
+                              <h3 className="text-sm font-semibold text-gray-800 dark:text-white flex items-center gap-1.5">
+                                {isNotesInNewsMode ? "NEWS" : "TRADING NOTES"}
+                              </h3>
+                              <div className="flex items-center gap-1">
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => {/* Add functionality or trigger if needed */}} data-testid="button-trading-news">
+                                  <Newspaper className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
+                                </Button>
+                                {/* Daily Life Factors Dropdown */}
+                                <Popover
+                                  open={isDailyFactorsDropdownOpen}
+                                  onOpenChange={setIsDailyFactorsDropdownOpen}
+                                >
+                                  <PopoverTrigger asChild>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="h-8 w-8"
+                                      data-testid="button-daily-factors-dropdown"
+                                    >
+                                      <Activity className="w-4 h-4" />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent className="w-80 p-3">
+                                    <div className="space-y-1">
+                                      <div className="flex items-center justify-between">
+                                        <h4 className="font-medium text-sm">
+                                          Daily Life Factors
+                                        </h4>
+                                        {selectedDailyFactors.length > 0 && (
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={clearAllDailyFactors}
+                                            className="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                                            data-testid="button-clear-daily-factors"
+                                          >
+                                            <Trash2 className="w-3 h-3 mr-1" />
+                                            Clear All
+                                          </Button>
+                                        )}
+                                      </div>
+
+                                      {/* Selected Factors Display */}
+                                      {selectedDailyFactors.length > 0 && (
+                                        <div className="flex flex-wrap gap-1 p-2 bg-gray-50 dark:bg-gray-900 rounded-md">
+                                          {selectedDailyFactors.map((factor) => (
+                                            <span
+                                              key={factor}
+                                              className="inline-flex items-center px-2 py-1 text-xs font-medium bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800 transition-colors"
+                                              onClick={() => toggleDailyFactor(factor)}
+                                              data-testid={`selected-daily-factor-${factor}`}
+                                            >
+                                              {factor}
+                                              <X className="w-3 h-3 ml-1" />
+                                            </span>
+                                          ))}
+                                        </div>
+                                      )}
+
+                                      {/* Available Factors by Category */}
+                                      <div className="space-y-3 max-h-96 overflow-y-auto custom-thin-scrollbar">
+                                        {Object.entries(dailyFactorsSystem).map(
+                                          ([categoryKey, category]) => (
+                                            <div
+                                              key={categoryKey}
+                                              className="space-y-2"
+                                            >
+                                              <div className="flex items-center justify-between">
+                                                <h5
+                                                  className={`text-xs font-semibold text-${category.color}-600 dark:text-${category.color}-400`}
+                                                >
+                                                  {category.name}
+                                                </h5>
+                                                <span className="text-xs text-gray-500">
+                                                  {
+                                                    selectedDailyFactors.filter((f) =>
+                                                      category.tags.includes(f),
+                                                    ).length
+                                                  }
+                                                  /{category.maxSelections}
+                                                </span>
+                                              </div>
+                                              <div className="grid grid-cols-2 gap-1">
+                                                {category.tags.map((factor) => {
+                                                  const isSelected =
+                                                    selectedDailyFactors.includes(factor);
+                                                  const categoryCount =
+                                                    selectedDailyFactors.filter((f) =>
+                                                      category.tags.includes(f),
+                                                    ).length;
+                                                  const isDisabled =
+                                                    !isSelected &&
+                                                    categoryCount >=
+                                                      category.maxSelections;
+
+                                                  return (
+                                                    <button
+                                                      key={factor}
+                                                      onClick={() =>
+                                                        toggleDailyFactor(factor)
+                                                      }
+                                                      disabled={isDisabled}
+                                                      className={`
+                                                  px-2 py-1.5 text-xs rounded-md border transition-all duration-200 text-left
+                                                  ${
+                                                    isSelected
+                                                      ? `bg-${category.color}-500 text-white border-${category.color}-500 hover:bg-${category.color}-600`
+                                                      : isDisabled
+                                                        ? "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 border-gray-200 dark:border-gray-700 cursor-not-allowed"
+                                                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                                  }
+                                                `}
+                                                      data-testid={`daily-factor-option-${factor}`}
+                                                    >
+                                                      {factor}
+                                                    </button>
+                                                  );
+                                                })}
+                                              </div>
+                                            </div>
+                                          ),
+                                        )}
+                                      </div>
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
+
+                                {/* Indicators Dropdown */}
+                                <Popover
+                                  open={isIndicatorDropdownOpen}
+                                  onOpenChange={setIsIndicatorDropdownOpen}
+                                >
+                                  <PopoverTrigger asChild>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="h-8 w-8"
+                                      data-testid="button-indicators-dropdown"
+                                    >
+                                      <BarChart3 className="w-4 h-4" />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent className="w-80 p-3">
+                                    <div className="space-y-1">
+                                      <div className="flex items-center justify-between">
+                                        <h4 className="font-medium text-sm">
+                                          Indicator & Timeframe Tracker
+                                        </h4>
+                                        {selectedIndicators.length > 0 && (
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={clearAllIndicators}
+                                            className="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                                            data-testid="button-clear-indicators"
+                                          >
+                                            <Trash2 className="w-3 h-3 mr-1" />
+                                            Clear All
+                                          </Button>
+                                        )}
+                                      </div>
+
+                                      {/* Timeframe Selector */}
+                                      <div className="space-y-1 bg-white dark:bg-gray-900/50 rounded-lg p-3">
+                                        <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                                          Timeframe
+                                        </label>
+                                        <div className="grid grid-cols-4 gap-1">
+                                          {timeframeOptions.map((tf) => (
+                                            <button
+                                              key={tf.value}
+                                              onClick={() => {
+                                                setIndicatorTimeframe(tf.value);
+                                                if (typeof window !== "undefined") {
+                                                  localStorage.setItem("indicatorTimeframe", tf.value);
+                                                }
+                                              }}
+                                              className={`px-2 py-1.5 text-xs rounded-md border transition-all duration-200 ${
+                                                indicatorTimeframe === tf.value
+                                                  ? "bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600"
+                                                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                              }`}
+                                              data-testid={`timeframe-${tf.value}`}
+                                            >
+                                              {tf.label}
+                                            </button>
+                                          ))}
+                                          {/* Display custom timeframe if selected */}
+                                          {!timeframeOptions.some((tf) => tf.value === indicatorTimeframe) && (
+                                            <button
+                                              onClick={() => {
+                                                // Clicking on custom timeframe shows it's selected
+                                              }}
+                                              className="px-2 py-1.5 text-xs rounded-md border bg-emerald-500 text-white border-emerald-500 transition-all duration-200 relative group"
+                                              data-testid={`timeframe-custom-${indicatorTimeframe}`}
+                                              title={`Custom: ${indicatorTimeframe}`}
+                                            >
+                                              <span className="truncate">{indicatorTimeframe}</span>
+                                              <button
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  setIndicatorTimeframe("5min");
+                                                  localStorage.setItem("indicatorTimeframe", "5min");
+                                                }}
+                                                className="absolute right-0.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                data-testid="button-remove-custom-timeframe"
+                                              >
+                                                <X className="w-2.5 h-2.5" />
+                                              </button>
+                                            </button>
+                                          )}
+                                          <Dialog open={isCustomTimeframeDialogOpen} onOpenChange={setIsCustomTimeframeDialogOpen}>
+                                            <DialogTrigger asChild>
+                                              <button
+                                                className="px-2 py-1.5 text-xs rounded-md border bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
+                                                data-testid="button-add-custom-timeframe"
+                                              >
+                                                <Plus className="w-3 h-3" />
+                                              </button>
+                                            </DialogTrigger>
+                                            <DialogContent className="sm:max-w-[300px]">
+                                              <DialogHeader>
+                                                <DialogTitle>Custom Timeframe</DialogTitle>
+                                              </DialogHeader>
+                                              <div className="space-y-1">
+                                                <input
+                                                  type="text"
+                                                  placeholder="e.g., 2h, 4h, 3d, 1w"
+                                                  value={customTimeframeInput}
+                                                  onChange={(e) => setCustomTimeframeInput(e.target.value)}
+                                                  className="w-full px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-white"
+                                                  data-testid="input-custom-timeframe"
+                                                />
+                                                <div className="flex gap-1.5">
+                                                  <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => {
+                                                      setCustomTimeframeInput("");
+                                                      setIsCustomTimeframeDialogOpen(false);
+                                                    }}
+                                                    className="flex-1 text-xs"
+                                                    data-testid="button-cancel-custom-timeframe"
+                                                  >
+                                                    Cancel
+                                                  </Button>
+                                                  <Button
+                                                    size="sm"
+                                                    onClick={() => {
+                                                      if (customTimeframeInput.trim()) {
+                                                        setIndicatorTimeframe(customTimeframeInput.trim());
+                                                        if (typeof window !== "undefined") {
+                                                          localStorage.setItem("indicatorTimeframe", customTimeframeInput.trim());
+                                                        }
+                                                        setCustomTimeframeInput("");
+                                                        setIsCustomTimeframeDialogOpen(false);
+                                                      }
+                                                    }}
+                                                    className="flex-1 text-xs bg-emerald-600 hover:bg-emerald-700 text-white"
+                                                    data-testid="button-confirm-custom-timeframe"
+                                                  >
+                                                    Apply
+                                                  </Button>
+                                                </div>
+                                              </div>
+                                            </DialogContent>
+                                          </Dialog>
+                                        </div>
+                                      </div>
+
+                                      {/* Selected Indicators Display */}
+                                      {selectedIndicators.length > 0 && (
+                                        <div className="flex flex-wrap gap-1 p-2 bg-gray-50 dark:bg-gray-900 rounded-md">
+                                          {selectedIndicators.map((indicator) => (
+                                            <span
+                                              key={indicator}
+                                              className="inline-flex items-center px-2 py-1 text-xs font-medium bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 rounded-full cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-800 transition-colors"
+                                              onClick={() => toggleIndicator(indicator)}
+                                              data-testid={`selected-indicator-${indicator}`}
+                                            >
+                                              {indicator}
+                                              <X className="w-3 h-3 ml-1" />
+                                            </span>
+                                          ))}
+                                        </div>
+                                      )}
+
+                                      {/* Available Indicators Grid */}
+                                      <div className="grid grid-cols-2 gap-1">
+                                        {indicatorList.map((indicator) => {
+                                          const isSelected = selectedIndicators.includes(indicator);
+                                          return (
+                                            <button
+                                              key={indicator}
+                                              onClick={() => toggleIndicator(indicator)}
+                                              className={`px-2 py-1.5 text-xs rounded-md border transition-all duration-200 text-left ${
+                                                isSelected
+                                                  ? "bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600"
+                                                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                              }`}
+                                              data-testid={`indicator-option-${indicator}`}
+                                            >
+                                              {indicator}
+                                            </button>
+                                          );
+                                        })}
+                                      </div>
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
+
+                                {/* Tag Dropdown */}
+                                <Popover
+                                  open={isTagDropdownOpen}
+                                  onOpenChange={setIsTagDropdownOpen}
+                                >
+                                  <PopoverTrigger asChild>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="h-8 w-8"
+                                      data-testid="button-tags-dropdown"
+                                    >
+                                      <Brain className="w-4 h-4" />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent className="w-80 p-3">
+                                    <div className="space-y-1">
+                                      <div className="flex items-center justify-between">
+                                        <h4 className="font-medium text-sm">
+                                          Trading Psychology & Strategy Tags
+                                        </h4>
+                                        {selectedTags.length > 0 && (
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={clearAllTags}
+                                            className="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                                            data-testid="button-clear-tags"
+                                          >
+                                            <Trash2 className="w-3 h-3 mr-1" />
+                                            Clear All
+                                          </Button>
+                                        )}
+                                      </div>
+
+                                      {/* Selected Tags Display */}
+                                      {getValidTags(selectedTags).length > 0 && (
+                                        <div className="flex flex-wrap gap-1 p-2 bg-gray-50 dark:bg-gray-900 rounded-md">
+                                          {getValidTags(selectedTags).map((tag) => (
+                                            <span
+                                              key={tag}
+                                              className="inline-flex items-center px-2 py-1 text-xs font-medium bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full cursor-pointer hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors"
+                                              onClick={() => toggleTag(tag)}
+                                              data-testid={`selected-tag-${tag}`}
+                                            >
+                                              {tag}
+                                              <X className="w-3 h-3 ml-1" />
+                                            </span>
+                                          ))}
+                                        </div>
+                                      )}
+
+                                      {/* Available Tags by Category */}
+                                      <div className="space-y-4 max-h-96 overflow-y-auto custom-thin-scrollbar">
+                                        {Object.entries(tradingTagSystem).map(
+                                          ([categoryKey, category]) => (
+                                            <div
+                                              key={categoryKey}
+                                              className="space-y-2"
+                                            >
+                                              <div className="flex items-center justify-between">
+                                                <h5
+                                                  className={`text-xs font-semibold text-${category.color}-600 dark:text-${category.color}-400`}
+                                                >
+                                                  {category.name}
+                                                  {(category as any)
+                                                    .required && (
+                                                    <span className="text-red-500 ml-1">
+                                                      *
+                                                    </span>
+                                                  )}
+                                                </h5>
+                                                <span className="text-xs text-gray-500">
+                                                  {
+                                                    selectedTags.filter((tag) =>
+                                                      category.tags.includes(
+                                                        tag,
+                                                      ),
+                                                    ).length
+                                                  }
+                                                  /{category.maxSelections}
+                                                </span>
+                                              </div>
+                                              <div className="grid grid-cols-2 gap-1">
+                                                {category.tags.map((tag) => {
+                                                  const isSelected =
+                                                    selectedTags.includes(tag);
+                                                  const categoryCount =
+                                                    selectedTags.filter((t) =>
+                                                      category.tags.includes(t),
+                                                    ).length;
+                                                  const isDisabled =
+                                                    !isSelected &&
+                                                    categoryCount >=
+                                                      category.maxSelections;
+
+                                                  return (
+                                                    <button
+                                                      key={tag}
+                                                      onClick={() =>
+                                                        toggleTagWithValidation(
+                                                          tag,
+                                                        )
+                                                      }
+                                                      disabled={isDisabled}
+                                                      className={`
+                                                  px-2 py-1.5 text-xs rounded-md border transition-all duration-200 text-left
+                                                  ${
+                                                    isSelected
+                                                      ? `bg-${category.color}-500 text-white border-${category.color}-500 hover:bg-${category.color}-600`
+                                                      : isDisabled
+                                                        ? "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 border-gray-200 dark:border-gray-700 cursor-not-allowed"
+                                                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                                  }
+                                                `}
+                                                      data-testid={`tag-option-${tag}`}
+                                                    >
+                                                      {tag}
+                                                    </button>
+                                                  );
+                                                })}
+                                              </div>
+                                            </div>
+                                          ),
+                                        )}
+                                      </div>
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
+                                {isEditingNotes ? (
+                                  <>
+                                    <Button
+                                      size="icon"
+                                      variant="ghost"
+                                      onClick={handleCancelNotes}
+                                      className="h-7 w-7 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                                      data-testid="button-cancel-notes"
+                                    >
+                                      <X className="w-3 h-3" />
+                                    </Button>
+                                    <Button
+                                      size="icon"
+                                      onClick={handleSaveNotesOnly}
+                                      className="h-7 w-7 bg-green-600 hover:bg-green-700 text-white"
+                                      data-testid="button-save-notes"
+                                    >
+                                      <Check className="w-3 h-3" />
+                                    </Button>
+                                  </>
+                                ) : (
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={handleEditNotes}
+                                    className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-slate-900 dark:hover:text-white"
+                                    data-testid="button-edit-notes"
+                                  >
+                                    <Edit className="w-3 h-3" />
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+
+                            {isEditingNotes ? (
+                              <textarea
+                                value={tempNotesContent}
+                                onChange={(e) =>
+                                  setTempNotesContent(e.target.value)
+                                }
+                                placeholder="Write your trading notes, strategies, observations..."
+                                className="flex-1 w-full p-2 text-xs border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                data-testid="textarea-notes"
+                              />
+                            ) : (
+                              <div className="flex-1 w-full p-2 text-xs border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-white overflow-y-auto custom-thin-scrollbar">
+                                {/* Display daily factors inline when they exist */}
+                                {selectedDailyFactors.length > 0 && (
+                                  <div className="mb-2 pb-2 border-b border-gray-300 dark:border-gray-600">
+                                    <div className="flex flex-wrap gap-1">
+                                      {selectedDailyFactors.map((factor) => (
+                                        <span
+                                          key={factor}
+                                          className="inline-flex items-center px-1.5 py-0.5 text-xs font-medium bg-amber-100 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-700 transition-colors group"
+                                          onClick={() => toggleDailyFactor(factor)}
+                                          title="Click to remove daily factor"
+                                          data-testid={`inline-daily-factor-${factor}`}
+                                        >
+                                          {factor}
+                                          <X className="w-3 h-3 ml-1 opacity-60 group-hover:opacity-100" />
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Display indicators inline when they exist */}
+                                {selectedIndicators.length > 0 && (
+                                  <div className="mb-2 pb-2 border-b border-gray-300 dark:border-gray-600">
+                                    <div className="flex flex-wrap gap-1">
+                                      {selectedIndicators.map((indicator) => (
+                                        <span
+                                          key={indicator}
+                                          className="inline-flex items-center px-1.5 py-0.5 text-xs font-medium bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 rounded-full cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-700 transition-colors group"
+                                          onClick={() => toggleIndicator(indicator)}
+                                          title="Click to remove indicator"
+                                          data-testid={`inline-indicator-${indicator}`}
+                                        >
+                                          {indicator}
+                                          <X className="w-3 h-3 ml-1 opacity-60 group-hover:opacity-100" />
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Display tags inline when they exist */}
+                                {/* Display tags inline when they exist */}
+                                {getValidTags(selectedTags).length > 0 && (
+                                  <div className="mb-2 pb-2 border-b border-gray-300 dark:border-gray-600">
+                                    <div className="flex flex-wrap gap-1">
+                                      {getValidTags(selectedTags).map((tag) => (
+                                        <span
+                                          key={tag}
+                                          className="inline-flex items-center px-1.5 py-0.5 text-xs font-medium bg-indigo-100 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-200 rounded-full cursor-pointer hover:bg-indigo-200 dark:hover:bg-indigo-700 transition-colors group"
+                                          onClick={() => toggleTag(tag)}
+                                          title="Click to remove tag"
+                                          data-testid={`inline-tag-${tag}`}
+                                        >
+                                          {tag}
+                                          <X className="w-3 h-3 ml-1 opacity-60 group-hover:opacity-100" />
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Notes content */}
+                                {notesContent ? (
+                                  <pre className="font-sans text-xs overflow-y-auto flex-1 whitespace-pre">
+                                    {notesContent}
+                                  </pre>
+                                ) : (
+                                  <p className="text-gray-500 dark:text-gray-400 italic">
+                                    No trading notes yet. Click Edit to add your
+                                    first note.
+                                  </p>
+                                )}
+                              </div>
+                            )}
+                          </CardContent>
+                        </div>
+                      </Card>
+                    </div>
+
+                    {/* Mobile Navigation Arrows - Bottom of panels */}
+                    <div className="md:hidden flex items-center justify-between mt-4 gap-4">
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          setMobileJournalPanel((prev) =>
+                            prev === 0 ? 2 : prev - 1,
+                          )
+                        }
+                        className="flex-1 h-12"
+                        data-testid="button-journal-prev"
+                      >
+                        <ChevronLeft className="h-5 w-5 mr-2" />
+                        <span className="text-sm font-medium">
+                          {mobileJournalPanel === 0
+                            ? "Notes"
+                            : mobileJournalPanel === 1
+                              ? "Chart"
+                              : "Upload"}
+                        </span>
+                      </Button>
+                      <div className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-md">
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                          Current
+                        </div>
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          {mobileJournalPanel === 0
+                            ? "Chart"
+                            : mobileJournalPanel === 1
+                              ? "Upload"
+                              : "Notes"}
+                        </div>
+                      </div>
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          setMobileJournalPanel((prev) =>
+                            prev === 2 ? 0 : prev + 1,
+                          )
+                        }
+                        className="flex-1 h-12"
+                        data-testid="button-journal-next"
+                      >
+                        <span className="text-sm font-medium">
+                          {mobileJournalPanel === 0
+                            ? "Upload"
+                            : mobileJournalPanel === 1
+                              ? "Notes"
+                              : "Chart"}
+                        </span>
+                        <ChevronRight className="h-5 w-5 ml-2" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Two Column Layout: TRADE HISTORY SUMMARY (Left) and PROFIT CONSISTENCY (Right) */}
+                  {/* Desktop: 2-column grid | Mobile: Show Trade Book with collapsible Trade History */}
+                  <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 gap-6">
+
+                    {/* Mobile: TRADE HISTORY SUMMARY - DROPDOWN HEADER */}
+                    <div className="md:hidden">
+                      <Button
+                        variant="ghost"
+                        onClick={() => setShowMobileTradeHistory(!showMobileTradeHistory)}
+                        className="w-full flex items-center justify-between h-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-4"
+                        data-testid="button-mobile-trade-history-toggle"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wide">
+                            Trade History Summary
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded text-[10px] font-bold text-blue-600 dark:text-blue-400 flex items-center">
+                            <Timer className="h-3 w-3 mr-1" />
+                            {calculateTotalDuration(tradeHistoryData)}
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 bg-slate-100 dark:bg-white dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-200 dark:border-slate-600 rounded-full"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowJournalInfoModal("manual");
+                            }}
+                            data-testid="button-journal-info-mobile"
+                          >
+                            <Info className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                          </Button>
+                          {showMobileTradeHistory ? (
+                            <ChevronUp className="h-5 w-5 text-slate-500 dark:text-slate-400" />
+                          ) : (
+                            <ChevronDown className="h-5 w-5 text-slate-500 dark:text-slate-400" />
+                          )}
+                        </div>
+                      </Button>
+
+                      {showMobileTradeHistory && (
+                        <Card className="mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-h-[420px] overflow-hidden">
+                          <CardContent className="p-3">
+                            <div className="flex items-center justify-between mb-3 gap-2">
+                              <div className="flex gap-1.5 overflow-x-auto custom-thin-scrollbar pb-1">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setShowConnectDialog(true)}
+                                  className="h-7 px-2 text-xs shrink-0"
+                                  data-testid="button-connect-mobile"
+                                >
+                                  Connect
+                                </Button>
+                                {zerodhaIsConnected && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-7 px-2 text-xs shrink-0"
+                                    onClick={() => setShowOrderModal(true)}
+                                    data-testid="button-broker-orders-zerodha-mobile"
+                                  >
+                                    <img 
+                                      src="https://zerodha.com/static/images/products/kite-logo.svg" 
+                                      alt="Zerodha" 
+                                      className="h-4 w-4"
+                                    />
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="max-h-80 overflow-y-auto overflow-x-auto custom-thin-scrollbar">
+                              <table className="text-xs w-full" style={{minWidth: "600px"}}>
+                                <thead className="sticky top-0 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-200 dark:border-slate-700">
+                                  <tr>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">Time</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[50px]">Order</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[80px]">Symbol</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[45px]">Type</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[40px]">Qty</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">Price</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">P&L</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[45px]">%</th>
+                                    <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[50px]">Duration</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="bg-white dark:bg-slate-900">
+                                  {tradeHistoryData.length === 0 ? (
+                                    <tr>
+                                      <td colSpan={9} className="p-6 text-center text-xs text-slate-500 dark:text-slate-400">
+                                        No data yet
+                                      </td>
+                                    </tr>
+                                  ) : (
+                                    tradeHistoryData.map((trade, index) => (
+                                      <tr key={index} className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                        <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.time}</td>
+                                        <td className="px-2 py-2">
+                                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                                            trade.order === "BUY" ? "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300" : "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300"
+                                          }`}>
+                                            {trade.order}
+                                          </span>
+                                        </td>
+                                        <td className="px-2 py-2 text-slate-700 dark:text-slate-300 font-medium truncate max-w-[100px]">
+                                          {trade.symbol}
+                                        </td>
+                                        <td className="px-2 py-2 text-indigo-600 dark:text-indigo-300 font-semibold">MIS</td>
+                                        <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.qty}</td>
+                                        <td className="px-2 py-2 text-amber-600 dark:text-amber-300 font-medium">₹{typeof trade.price === "number" ? trade.price.toFixed(2) : trade.price}</td>
+                                        <td className={`px-2 py-2 font-bold ${(trade.pnl || "").includes("+") ? "text-emerald-600" : "text-red-600"}`}>
+                                          {trade.pnl}
+                                        </td>
+                                        <td className="px-2 py-2 font-bold text-slate-600 dark:text-slate-400">
+                                          {(() => {
+                                            if (!trade.pnl || trade.pnl === "-") return "-";
+                                            const pnlStr = (trade.pnl || "").replace(/[₹,+\s]/g, "");
+                                            const pnlValue = parseFloat(pnlStr) || 0;
+                                            const openPrice = trade.price;
+                                            const totalInvestment = openPrice * trade.qty || 1;
+                                            const percentage = (pnlValue / totalInvestment) * 100;
+                                            return `${percentage >= 0 ? "+" : ""}${percentage.toFixed(2)}%`;
+                                          })()}
+                                        </td>
+                                        <td className="px-2 py-2 text-violet-600 dark:text-violet-300 font-medium">{normalizeDurationForDisplay(trade.duration)}</td>
+                                      </tr>
+                                    ))
+                                  )}
+                                </tbody>
+                                  </table>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+                    </div>
+                    {/* Desktop: TRADE HISTORY SUMMARY - Left Side - MINIMALIST WITH BRIGHT COLORS */}
+                    <Card className="hidden md:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-[420px]">
+                      <CardContent className="p-3">
+                        <div className="flex items-center justify-between mb-3 gap-2">
+                          <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wide">
+                            Trade History
+                          </h3>
+                          <div className="flex gap-1.5">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setShowConnectDialog(true)}
+                              className="h-7 px-2 text-xs"
+                              data-testid="button-connect"
+                            >
+                              Connect
+                            </Button>
+                            {zerodhaIsConnected && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs"
+                                onClick={() => setShowOrderModal(true)}
+                                data-testid="button-broker-orders-zerodha"
+                                title="View Orders & Positions (Zerodha)"
+                              >
+                                <img 
+                                  src="https://zerodha.com/static/images/products/kite-logo.svg" 
+                                  alt="Zerodha" 
+                                  className="h-4 w-4"
+                                />
+                              </Button>
+                            )}
+                            {upstoxIsConnected && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs"
+                                onClick={() => setShowOrderModal(true)}
+                                data-testid="button-broker-orders-upstox"
+                                title="View Orders & Positions (Upstox)"
+                              >
+                                <img 
+                                  src="https://assets.upstox.com/content/assets/images/cms/202494/MediumWordmark_UP(WhiteOnPurple).png" 
+                                  alt="Upstox" 
+                                  className="h-4 w-4"
+                                />
+                              </Button>
+                            )}
+                            {angelOneIsConnected && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs"
+                                onClick={() => setShowOrderModal(true)}
+                                data-testid="button-broker-orders-angelone"
+                                title="View Orders & Positions (Angel One)"
+                              >
+                                <img 
+                                  src="https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701" 
+                                  alt="Angel One" 
+                                  className="h-4 w-4"
+                                />
+                              </Button>
+                            )}
+                            {dhanIsConnected && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs"
+                                onClick={() => setShowOrderModal(true)}
+                                data-testid="button-broker-orders-dhan"
+                                title="View Orders & Positions (Dhan)"
+                              >
+                                <img 
+                                  src="https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701" 
+                                  alt="Dhan" 
+                                  className="h-4 w-4"
+                                />
+                              </Button>
+                            )}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setShowImportModal(true)}
+                              className="h-7 px-2 text-xs"
+                              data-testid="button-import-pnl"
+                            >
+                              Import
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setShowPaperTradingModal(true)}
+                              className="h-7 px-2 text-xs hidden md:flex items-center gap-1"
+                              data-testid="button-paper-trade"
+                            >
+                              <TrendingUp className="h-4 w-4 mr-1" />
+                              Paper Trade
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => setShowTradingChallengeModal(true)}
+                              className="h-7 w-7"
+                              data-testid="button-trading-challenge"
+                              title="Trading Challenge"
+                            >
+                              <Trophy className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => setShowJournalInfoModal("manual")}
+                              className="h-7 w-7 bg-slate-100 dark:bg-white dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-200 dark:border-slate-600 rounded-full"
+                              data-testid="button-journal-info"
+                              title="Journal Information"
+                            >
+                              <Info className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                            </Button>
+                            <div className="h-7 px-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700 rounded-md flex items-center justify-center text-xs font-semibold text-blue-600 dark:text-blue-300">
+                              <Timer className="h-4 w-4 mr-1.5" />
+                              {calculateTotalDuration(tradeHistoryData)}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="max-h-80 overflow-y-auto overflow-x-auto custom-thin-scrollbar">
+                          <table className="text-xs" style={{minWidth: "100%"}}>
+                            <thead className="sticky top-0 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-200 dark:border-slate-700">
+                              <tr>
+                                <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">Time</th>
+                                <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[50px]">Order</th>
+                                <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[80px]">Symbol</th>
+                                <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[45px]">Type</th>
+                                <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[40px]">Qty</th>
+                                <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">Price</th>
+                                <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[60px]">P&L</th>
+                                <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[45px]">%</th>
+                                <th className="px-2 py-2 text-left text-slate-600 dark:text-slate-400 font-medium min-w-[50px]">Duration</th>
+                              </tr>
+                            </thead>
+                            <tbody className="bg-white dark:bg-slate-900">
+                              {isLoadingHeatmapData && tradeHistoryData.length === 0 ? (
+                                <tr>
+                                  <td colSpan={9} className="p-6 text-center">
+                                    <div className="flex flex-col items-center gap-2">
+                                      <div className="w-5 h-5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
+                                      <span className="text-xs text-slate-500 dark:text-slate-400">Loading...</span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ) : tradeHistoryData.length === 0 ? (
+                                <tr>
+                                  <td colSpan={9} className="p-6 text-center text-xs text-slate-500 dark:text-slate-400">
+                                    {!isDemoMode 
+                                      ? "No data yet" 
+                                      : selectedDate 
+                                        ? "No trades for this date" 
+                                        : "Select a date to view trades"}
+                                  </td>
+                                </tr>
+                              ) : (
+                                tradeHistoryData.map((trade, index) => (
+                                  <tr
+                                    key={index}
+                                    className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                                  >
+                                    <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.time}</td>
+                                    <td className="px-2 py-2">
+                                      <span
+                                        className={`text-xs font-bold px-1.5 py-0.5 rounded ${
+                                          trade.order === "BUY"
+                                            ? "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300"
+                                            : "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300"
+                                        }`}
+                                      >
+                                        {trade.order}
+                                      </span>
+                                    </td>
+                                    <td className="px-2 py-2 text-slate-700 dark:text-slate-300 font-medium">
+                                      {(() => {
+                                        if (!selectedDate) return trade.symbol;
+                                        const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                  {/* Desktop: TRADE HISTORY SUMMARY - Left Side - MINIMALIST WITH BRIGHT COLORS */}
+                                        const selectedMonth = monthNames[selectedDate.getMonth()];
+                                        const symbolWithoutMonth = trade.symbol.replace(/\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\b/, selectedMonth);
+                                        return symbolWithoutMonth;
+                                      })()}
+                                    </td>
+                                    <td className="px-2 py-2 text-indigo-600 dark:text-indigo-300 font-semibold">MIS</td>
+                                    <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.qty}</td>
+                                    <td className="px-2 py-2 text-amber-600 dark:text-amber-300 font-medium">₹{typeof trade.price === "number" ? trade.price.toFixed(2) : trade.price}</td>
+                                    <td
+                                      className={`px-2 py-2 font-bold ${
+                                        (trade.pnl || "").includes("+")
+                                          ? "text-emerald-600 dark:text-emerald-400"
+                                          : (trade.pnl || "").includes("-")
+                                            ? "text-red-600 dark:text-red-400"
+                                            : "text-slate-600 dark:text-slate-400"
+                                      }`}
+                                    >
+                                      {trade.pnl}
+                                    </td>
+                                    <td
+                                      className={`px-2 py-2 font-bold ${(() => {
+                                        if (!trade.pnl || trade.pnl === "-")
+                                          return "text-slate-500 dark:text-slate-400";
+                                        const pnlStr = (trade.pnl || "").replace(
+                                          /[₹,+\s]/g,
+                                          "",
+                                        );
+                                        const pnlValue = parseFloat(pnlStr) || 0;
+                                        const openPrice = trade.price;
+                                        const totalInvestment =
+                                          openPrice * trade.qty || 1;
+                                        const percentage =
+                                          (pnlValue / totalInvestment) * 100;
+                                        return percentage > 0
+                                          ? "text-emerald-600 dark:text-emerald-400"
+                                          : percentage < 0
+                                            ? "text-red-600 dark:text-red-400"
+                                            : "text-slate-600";
+                                      })()}`}
+                                    >
+                                      {(() => {
+                                        if (!trade.pnl || trade.pnl === "-")
+                                          return "-";
+                                        const pnlStr = (trade.pnl || "").replace(
+                                          /[₹,+\s]/g,
+                                          "",
+                                        );
+                                        const pnlValue = parseFloat(pnlStr) || 0;
+                                        const openPrice = trade.price;
+                                        const totalInvestment =
+                                          openPrice * trade.qty || 1;
+                                        const percentage =
+                                          (pnlValue / totalInvestment) * 100;
+                                        return `${
+                                          percentage >= 0 ? "+" : ""
+                                        }${percentage.toFixed(2)}%`;
+                                      })()}
+                                    </td>
+                                    <td className="px-2 py-2 text-violet-600 dark:text-violet-300 font-medium">{normalizeDurationForDisplay(trade.duration)}</td>
+                                  </tr>
+                                ))
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </CardContent>
+
+                    </Card>
+                    {/* Connect Dialog - Shows Zerodha and Upstox broker options */}
+                    <Dialog open={showConnectDialog} onOpenChange={setShowConnectDialog}>
+                      <DialogContent className="max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>Connect Your Broker</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-3">
+                          {zerodhaIsConnected ? (
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                className="flex-1 h-10 bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700 cursor-default"
+                                data-testid="button-zerodha-connected-display"
+                              >
+                                <img 
+                                  src="https://zerodha.com/static/images/products/kite-logo.svg" 
+                                  alt="Zerodha" 
+                                  className="w-4 h-4 mr-2"
+                                />
+                                Zerodha
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
+                                onClick={() => {
+                                  localStorage.removeItem("zerodha_token"); document.cookie = "zerodha_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                                  setZerodhaAccessToken(null);
+                                  setZerodhaIsConnected(false);
+                                }}
+                                title="Disconnect Zerodha"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button
+                              onClick={handleZerodhaConnect}
+                              variant="outline"
+                              className={`w-full h-10 ${
+                                (upstoxIsConnected || angelOneIsConnected || dhanIsConnected)
+                                  ? 'bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 dark:text-slate-600 border-slate-300 dark:border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
+                                  : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
+                              }`}
+                              data-testid="button-zerodha-dialog"
+                              disabled={upstoxIsConnected || angelOneIsConnected || dhanIsConnected}
+                            >
+                              <img 
+                                src="https://zerodha.com/static/images/products/kite-logo.svg" 
+                                alt="Zerodha" 
+                                className="w-4 h-4 mr-2"
+                              />
+                              Zerodha
+                            </Button>
+                          )}
+                          {upstoxIsConnected ? (
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                className="flex-1 h-10 bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700 cursor-default"
+                                data-testid="button-upstox-connected-display"
+                              >
+                                <img src="https://assets.upstox.com/content/assets/images/cms/202494/MediumWordmark_UP(WhiteOnPurple).png" alt="Upstox" className="h-4 mr-2" />
+                                Upstox
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
+                                onClick={handleUpstoxDisconnect}
+                                title="Disconnect Upstox"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              className={`w-full h-10 ${
+                                (zerodhaIsConnected || angelOneIsConnected || dhanIsConnected)
+                                  ? 'bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 dark:text-slate-600 border-slate-300 dark:border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
+                                  : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
+                              }`}
+                              data-testid="button-upstox-dialog"
+                              onClick={handleUpstoxConnect}
+                              disabled={zerodhaIsConnected || angelOneIsConnected || dhanIsConnected}
+                            >
+                              <img src="https://assets.upstox.com/content/assets/images/cms/202494/MediumWordmark_UP(WhiteOnPurple).png" alt="Upstox" className="h-4 mr-2" />
+                              Upstox
+                            </Button>
+                          )}
+                          {angelOneIsConnected ? (
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                className="flex-1 h-10 bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700 cursor-default"
+                                data-testid="button-angelone-connected-display"
+                              >
+                                <img src="https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701" alt="Angel One" className="h-4 mr-2" />
+                                Angel One
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
+                                onClick={() => {
+                                  localStorage.removeItem("angel_one_token");
+                                  setAngelOneAccessToken(null);
+                                  setAngelOneIsConnected(false);
+                                }}
+                                title="Disconnect Angel One"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              className={`w-full h-10 ${
+                                (zerodhaIsConnected || upstoxIsConnected || dhanIsConnected)
+                                  ? 'bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 dark:text-slate-600 border-slate-300 dark:border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
+                                  : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
+                              }`}
+                              data-testid="button-angelone-dialog"
+                              onClick={handleAngelOneConnect}
+                              disabled={zerodhaIsConnected || upstoxIsConnected || dhanIsConnected}
+                            >
+                              <img src="https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701" alt="Angel One" className="h-4 mr-2" />
+                              Angel One
+                            </Button>
+                          )}
+                          {dhanIsConnected ? (
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                className="flex-1 h-10 bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700 cursor-default"
+                                data-testid="button-dhan-connected-display"
+                              >
+                                <img src="https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701" alt="Dhan" className="h-4 mr-2" />
+                                Dhan
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
+                                onClick={() => {
+                                  localStorage.removeItem("dhan_token");
+                                  setDhanAccessToken(null);
+                                  setDhanIsConnected(false);
+                                }}
+                                title="Disconnect Dhan"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button
+                              onClick={handleDhanConnect}
+                              variant="outline"
+                              className={`w-full h-10 ${
+                                (zerodhaIsConnected || upstoxIsConnected || angelOneIsConnected)
+                                  ? 'bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 dark:text-slate-600 border-slate-300 dark:border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
+                                  : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
+                              }`}
+                              data-testid="button-dhan-dialog"
+                              disabled={zerodhaIsConnected || upstoxIsConnected || angelOneIsConnected}
+                            >
+                              <img src="https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701" alt="Dhan" className="h-4 mr-2" />
+                              Dhan
+                            </Button>
+                          )}
+
+                          <p className="text-xs text-center text-muted-foreground mt-4">
+                            Connect your broker account to auto-import trades
+                          </p>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    {/* Trade Book - Right Side (Functional Calendar) */}
+                    <div className="relative">
+                    <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                      <CardContent className="p-6 px-0.5 md:px-4 md:py-4 pt-[10px] pb-[10px]">
+                        <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-1">
+                            <div>Trade Book</div>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button size="icon" variant="ghost" className="h-4 w-4" data-testid="button-tradebook-help">
+                                  <Headset className="h-3 w-3" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-[700px] p-0 overflow-hidden bg-white dark:bg-slate-900 border-none rounded-xl shadow-2xl">
+                                <div className="flex flex-col md:flex-row h-full min-h-[350px]">
+                                  {/* Left Side: Card Display */}
+                                  <div className="w-full md:w-1/2 p-8 bg-slate-100 dark:bg-white dark:bg-slate-800 flex items-center justify-center relative overflow-hidden border-r border-slate-200 dark:border-slate-200 dark:border-slate-700">
+                                    <div className="absolute inset-0 opacity-10">
+                                      <div className="absolute top-[-20%] left-[-20%] w-[140%] h-[140%] rounded-full bg-gradient-to-br from-violet-500 via-transparent to-transparent"></div>
+                                    </div>
+                                    <motion.div key={selectedAudioTrack?.id || "none"} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className={`relative w-full aspect-[1.6/1] rounded-2xl shadow-2xl flex flex-col justify-between border border-white/10 overflow-hidden`}>
+                                      {selectedAudioTrack?.youtubeId && (
+                                        <div className="absolute inset-0 z-0">
+                                          <img 
+                                            src={`https://img.youtube.com/vi/${selectedAudioTrack.youtubeId}/maxresdefault.jpg`} 
+                                            className="w-full h-full object-cover"
+                                            alt=""
+                                          />
+                                        </div>
+                                      )}
+                                      <div className="flex justify-between items-start">
+                                        <div className="text-[10px] font-medium tracking-widest text-black uppercase"></div>
+                                        <div className="text-[10px] font-bold text-green-400 uppercase tracking-wider"></div>
+                                      </div>
+                                      <div className="space-y-4">
+                                        <div className="flex items-center gap-2">
+                                          <div className="text-sm font-bold text-white tracking-[0.2em]"></div>
+                                          <button onClick={() => selectedAudioTrack?.youtubeId && window.open(`https://www.youtube.com/watch?v=${selectedAudioTrack.youtubeId}`, "_blank")} className="absolute bottom-4 right-4 z-10 hover:scale-110 transition-transform active:scale-95"><Info className="w-4 h-4 text-black" /></button>
+                                        </div>
+                                        <div className="flex justify-between items-end">
+                                          <div className="text-xs font-medium text-white/80 uppercase tracking-widest"></div>
+                                          <div className="text-[10px] font-mono text-black"></div>
+                                        </div>
+                                      </div>
+                                    </motion.div>
+                                  </div>
+                                  <div className="w-full md:w-1/2 flex flex-col bg-white dark:bg-slate-900">
+                                    <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-center relative">
+                                      <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] opacity-50">Mini Play</div>
+                                    </div>
+                                    
+                                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                                      {/* Meditation Section */}
+                                      <div>
+                                        <h4 className="text-[10px] font-bold text-violet-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                          <span className="w-1 h-1 rounded-full bg-violet-500"></span>
+                                          Meditation
+                                        </h4>
+                                        <div className="space-y-1">
+                                          {[
+                                            { title: "Deep Relaxation Meditation", duration: "10:05", id: "m1", youtubeId: "B7nkVhC10Gw" }
+                                          ].map((track) => (
+                                            <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
+                                              <div className="flex items-center gap-3">
+                                                <div className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center group-hover:bg-violet-500 transition-colors">
+                                                  <Play className="w-3 h-3 text-violet-500 group-hover:text-slate-900 dark:hover:text-white" />
+                                                </div>
+                                                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{track.title}</span>
+                                              </div>
+                                              <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">{track.duration}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+
+                                      {/* Psychology Section */}
+                                      <div>
+                                        <h4 className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                          <span className="w-1 h-1 rounded-full bg-blue-500"></span>
+                                          Psychology
+                                        </h4>
+                                        <div className="space-y-1">
+                                          {[
+                                            { title: 'Bruce Lee: "Your Greatest Enemy Is Within"', duration: "22:30", id: "p1", youtubeId: "KnppzfiZcgM" }
+                                          ].map((track) => (
+                                            <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
+                                              <div className="flex items-center gap-3">
+                                                <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
+                                                  <Play className="w-3 h-3 text-blue-500 group-hover:text-slate-900 dark:hover:text-white" />
+                                                </div>
+                                                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{track.title}</span>
+                                              </div>
+                                              <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">{track.duration}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                                                        {/* Footer / Now Playing Stub */}
+                                    <div className="p-4 bg-slate-50 dark:bg-slate-800 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                                      <div className="flex items-center justify-between gap-3">
+                                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                                          <div className={`w-8 h-8 rounded bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg ${selectedAudioTrack ? "animate-none" : "animate-pulse"}`}>
+                                            <Music2 className="w-4 h-4 text-white" />
+                                          </div>
+                                          <div className="flex-1 min-w-0">
+                                            <div className="text-[10px] font-bold text-slate-900 dark:text-slate-100 truncate">
+                                              {selectedAudioTrack ? selectedAudioTrack.title : "Select a session"}
+                                            </div>
+                                            <div className="text-[9px] text-slate-500 uppercase tracking-tighter">
+                                              {selectedAudioTrack ? `Playing • ${selectedAudioTrack.duration}` : "Ready to play"}
+                                            <div id="youtube-audio-player" className="hidden"></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        
+                                        {/* Audio Controls */}
+                                        <div className="flex items-center gap-1">
+                                          <Button size="icon" variant="ghost" className="h-6 w-6 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
+                                            <SkipBack className="h-3 w-3" />
+                                          </Button>
+                                          <Button 
+                                            size="icon" 
+                                            variant="ghost" 
+                                            className="h-8 w-8 text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
+                                            onClick={() => setIsAudioPlaying(!isAudioPlaying)}
+                                          >
+                                            {isAudioPlaying ? <Pause className="h-4 w-4 fill-current" /> : <Play className="h-4 w-4 fill-current" />}
+                                          </Button>
+                                          <Button size="icon" variant="ghost" className="h-6 w-6 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
+                                            <SkipForward className="h-3 w-3" />
+                                          </Button>
+                                        </div>
+                                      </div>
+                                      
+                                      {/* Audio Progress Slider */}
+                                      <div className="px-1">
+                                        <div className="relative w-full h-1 bg-slate-200 dark:bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden cursor-pointer" onClick={(e) => { if (selectedAudioTrack && youtubePlayerRef.current && duration > 0) { const rect = e.currentTarget.getBoundingClientRect(); const x = e.clientX - rect.left; const clickedProgress = x / rect.width; const newTime = clickedProgress * duration; youtubePlayerRef.current.seekTo(newTime, true); setCurrentTime(newTime); setAudioProgress(clickedProgress * 100); } } }>
+                                          <div 
+                                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-violet-500 to-purple-600 transition-all duration-300"
+                                            style={{ width: `${selectedAudioTrack ? audioProgress : 0}%` }}
+                                          ></div>
+                                        </div>
+                                        <div className="flex justify-between mt-1">
+                                          <span className="text-[8px] font-mono text-slate-500 dark:text-slate-400">
+                                            {selectedAudioTrack ? new Date(currentTime * 1000).toISOString().substr(14, 5) : "0:00"}
+                                          </span>
+                                          <span className="text-[8px] font-mono text-slate-500 dark:text-slate-400">
+                                            {selectedAudioTrack ? (duration > 0 ? new Date(duration * 1000).toISOString().substr(14, 5) : selectedAudioTrack.duration) : "0:00"}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span className="text-[10px] text-gray-600 dark:text-gray-400">
+                              {isDemoMode ? "Demo" : "Personal"}
+                            </span>
+                            <Switch
+                              checked={isDemoMode}
+                              onCheckedChange={(checked) => {
+                                console.log(`🔄 Demo mode toggle: ${checked ? 'ON (Demo)' : 'OFF (Personal)'}`);
+                                setHasManuallyToggledMode(true);
+                                localStorage.setItem("hasManuallyToggledMode", "true");
+                                setIsDemoMode(checked);
+                                setSelectedDailyFactors([]);
+                                setSelectedIndicators([]);
+                                setTradeHistoryData([]);
+                                setTradingImages([]);
+                                setTradingDataByDate({});
+                                setPersonalHeatmapRevision(prev => prev + 1);
+                                console.log(`✅ Switched to ${checked ? 'Demo' : 'Personal'} mode - CLEARED cache, heatmap fetching fresh AWS data...`);
+                              }}
+                              data-testid="switch-demo-mode"
+                              className="scale-75"
+                            />
+                            <Button
+                              onClick={saveAllTradingData}
+                              size="sm"
+                              variant="outline"
+                              disabled={isDemoMode && localStorage.getItem('currentUserId') !== 'c06ce90c-20a1-7033-d457-efac5a682529'}
+                              className={`h-5 px-2 text-[10px] border-gray-300 dark:border-gray-700 ${
+                                (isDemoMode && localStorage.getItem('currentUserId') !== 'c06ce90c-20a1-7033-d457-efac5a682529')
+                                  ? 'text-gray-400 dark:text-gray-500 opacity-50 cursor-not-allowed' 
+                                  : 'text-gray-600 dark:text-gray-400'
+                              }`}
+                              data-testid="button-save-trade-book"
+                            >
+                              Save
+                            </Button>
+                          </div>
+                        </div>
+                        {/* ✅ NEW CLEAN HEATMAP IMPLEMENTATION - Separate components for Demo & Personal */}
+                        <div className="relative">
+                         <div ref={heatmapContainerRef} className="pt-0.5">
+                          {isDemoMode ? (
+                            <DemoHeatmap 
+                              onDateSelect={handleDateSelect}
+                              selectedDate={selectedDate}
+                              tradingDataByDate={tradingDataByDate}
+                              onDataUpdate={(data) => {
+                                handleHeatmapDataUpdate(data);
+                                // Scroll to latest data for demo mode
+                                setTimeout(() => {
+                                  if (heatmapContainerRef.current) {
+                                    const scrollContainer = heatmapContainerRef.current.querySelector('[style*="overflow"]') as HTMLElement;
+                                    if (scrollContainer) {
+                                      scrollContainer.scrollLeft = scrollContainer.scrollWidth;
+                                      console.log("🎯 Demo heatmap: Scrolled to latest data view");
+                                    }
+                                  }
+                                }, 300);
+                              }}
+                              onRangeChange={handleDateRangeChange}
+                              highlightedDates={activeTagHighlight}
+                              refreshTrigger={personalHeatmapRevision}
+                              onSelectDateForHeatmap={(symbol, date) => {
+                                console.log(`📊 [HOME] Switching to heatmap mode - Symbol: ${symbol}, Date: ${date}`);
+                                setJournalChartMode('heatmap');
+                                fetchHeatmapChartData(symbol, date);
+                              }}
+                            />
+                          ) : (
+                            <PersonalHeatmap
+                              userId={getUserId()}
+                              onDateSelect={handleDateSelect}
+                              selectedDate={selectedDate}
+                              onDataUpdate={handleHeatmapDataUpdate}
+                              onRangeChange={handleDateRangeChange}
+                              highlightedDates={activeTagHighlight}
+                              refreshTrigger={personalHeatmapRevision}
+                            />
+                          )}
+                        </div>
+
+                        {/* Curved Lines Overlay - connects FOMO tag block to highlighted dates */}
+                        {(activeTagHighlight?.tag === 'fomo' || activeTagHighlight?.tag === 'overtrading' || activeTagHighlight?.tag === 'planned') && activeTagHighlight.dates.length > 0 && (() => {
+                          // Force recalculation on scroll (dependency: scrollTrigger)
+                          void scrollTrigger;
+
+                          // Calculate curved paths from FOMO button to each highlighted date cell
+                          const paths: JSX.Element[] = [];
+
+                          const buttonRef = activeTagHighlight?.tag === 'fomo' ? fomoButtonRef : activeTagHighlight?.tag === 'overtrading' ? overtradingButtonRef : plannedButtonRef;
+                          if (!buttonRef.current || !heatmapContainerRef.current) {
+                            return null;
+                          }
+
+                          // Get scrollable dimensions (like DemoHeatmap does)
+                          const scrollWidth = heatmapContainerRef.current.scrollWidth || 0;
+                          const scrollHeight = heatmapContainerRef.current.scrollHeight || 0;
+                          const scrollLeft = heatmapContainerRef.current.scrollLeft || 0;
+                          const scrollTop = heatmapContainerRef.current.scrollTop || 0;
+
+                          // Get positions relative to the heatmap's scrollable content
+                          const containerRect = heatmapContainerRef.current.getBoundingClientRect();
+                          const buttonRect = buttonRef.current!.getBoundingClientRect();
+
+                          // Calculate button position relative to scrollable content
+                          const buttonCenterX = buttonRect.left - containerRect.left + scrollLeft + buttonRect.width / 2;
+                          const buttonCenterY = buttonRect.top - containerRect.top + scrollTop + buttonRect.height / 2;
+
+                          // Find all highlighted date cells and draw curved lines to them
+                          activeTagHighlight.dates.forEach((date, index) => {
+                            // Find the heatmap cell for this date
+                            const cellElement = heatmapContainerRef.current?.querySelector(
+                              `[data-date="${date}"]`
+                            );
+
+                            if (cellElement) {
+                              const cellRect = cellElement.getBoundingClientRect();
+
+                              // Calculate cell position relative to scrollable content
+                              const cellCenterX = cellRect.left - containerRect.left + scrollLeft + cellRect.width / 2;
+                              const cellCenterY = cellRect.top - containerRect.top + scrollTop + cellRect.height / 2;
+
+                              // Create quadratic Bezier curve (Q command)
+                              // Control point is positioned to create a nice arc
+                              const controlX = (buttonCenterX + cellCenterX) / 2;
+                              const controlY = Math.min(buttonCenterY, cellCenterY) - 50; // Arc upward
+
+                              const pathD = `M ${buttonCenterX} ${buttonCenterY} Q ${controlX} ${controlY}, ${cellCenterX} ${cellCenterY}`;
+
+                              paths.push(
+                                <g key={`connection-${date}-${index}`}>
+                                  {/* Bright colored line with dashed pattern */}
+                                  <path
+                                    d={pathD}
+                                    fill="none"
+                                    stroke={activeTagHighlight?.tag === 'fomo' ? "url(#curvedLineGradient)" : activeTagHighlight?.tag === 'overtrading' ? "url(#overtradingLineGradient)" : "url(#plannedLineGradient)"}
+                                    strokeWidth="2.5"
+                                    strokeDasharray="6,4"
+                                    opacity="0.95"
+                                  />
+                                  {/* Glowing dot at the end of each line */}
+                                  <circle
+                                    cx={cellCenterX}
+                                    cy={cellCenterY}
+                                    r="4"
+                                    fill={activeTagHighlight?.tag === 'fomo' ? "#fcd34d" : activeTagHighlight?.tag === 'overtrading' ? "#fb923c" : "#4ade80"}
+                                    opacity="0.9"
+                                  />
+                                  <circle
+                                    cx={cellCenterX}
+                                    cy={cellCenterY}
+                                    r="3"
+                                    fill={activeTagHighlight?.tag === 'fomo' ? "#fbbf24" : activeTagHighlight?.tag === 'overtrading' ? "#f97316" : "#22c55e"}
+                                    className="animate-pulse"
+                                  />
+                                </g>
+                              );
+                            }
+                          });
+
+                          return (
+                            <svg
+                              style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: `${scrollWidth}px`,
+                                height: `${scrollHeight}px`,
+                                pointerEvents: 'none',
+                                zIndex: 10,
+                              }}
+                            >
+                              {/* Define bright gradient for the curved lines */}
+                              <defs>
+                                <linearGradient id="curvedLineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                  <stop offset="0%" stopColor="#c084fc" stopOpacity="1" />
+                                  <stop offset="50%" stopColor="#f472b6" stopOpacity="1" />
+                                  <stop offset="100%" stopColor="#fbbf24" stopOpacity="1" />
+                                </linearGradient>
+                                <linearGradient id="overtradingLineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                  <stop offset="0%" stopColor="#fb923c" stopOpacity="1" />
+                                  <stop offset="50%" stopColor="#f97316" stopOpacity="1" />
+                                  <stop offset="100%" stopColor="#ea580c" stopOpacity="1" />
+                                </linearGradient>
+                                <linearGradient id="plannedLineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                  <stop offset="0%" stopColor="#4ade80" stopOpacity="1" />
+                                  <stop offset="50%" stopColor="#22c55e" stopOpacity="1" />
+                                  <stop offset="100%" stopColor="#16a34a" stopOpacity="1" />
+                                </linearGradient>
+                              </defs>
+                              {paths}
+                            </svg>
+                          );
+                        })()}
+                        </div>
+
+                        {/* Quick Stats Banner */}
+                        <div className="mt-2 mb-20 md:mb-2 bg-gradient-to-r from-violet-500 to-purple-600 rounded-md px-2 py-1.5 relative" data-testid="banner-quick-stats">
+                          {(() => {
+                            // Calculate metrics from heatmap data and build tag-to-dates mapping
+                            const filteredData = getFilteredHeatmapData();
+                            const dates = Object.keys(filteredData);
+                            let totalPnL = 0;
+                            let totalTrades = 0;
+                            let winningTrades = 0;
+                            let fomoTrades = 0;
+                            let consecutiveWins = 0;
+                            let maxWinStreak = 0;
+                            const trendData: number[] = [];
+                            const fomoDates: string[] = [];
+                            const overTradingDates: string[] = [];
+                            const plannedDates: string[] = [];
+                            let plannedCount = 0;
+                            const tagStats: Record<string, any> = {};
+                            const tagDates: Record<string, string[]> = {};
+                            let overTradingCount = 0;
+
+                            dates.sort().forEach(dateKey => {
+                              const dayData = filteredData[dateKey];
+                              const metrics = dayData?.tradingData?.performanceMetrics || dayData?.performanceMetrics;
+                              const tags = dayData?.tradingData?.tradingTags || dayData?.tradingTags || [];
+
+                              if (metrics) {
+                                const netPnL = metrics.netPnL || 0;
+                                totalPnL += netPnL;
+                                totalTrades += metrics.totalTrades || 0;
+                                winningTrades += metrics.winningTrades || 0;
+                                trendData.push(netPnL);
+
+                                // Track overtrading - check for tag or high trade count
+                                if ((metrics.totalTrades || 0) > 10) {
+                                  overTradingCount++;
+                                  overTradingDates.push(dateKey);
+                                }
+
+                                // Also track if overtrading tag exists
+                                if (Array.isArray(tags) && tags.length > 0) {
+                                  const normalizedTags = tags.map((t: string) => t.trim().toLowerCase());
+                                  if (normalizedTags.includes('overtrading')) {
+                                    if (!overTradingDates.includes(dateKey)) {
+                                      overTradingCount++;
+                                      overTradingDates.push(dateKey);
+                                    }
+                                  }
+                                }
+
+                                if (Array.isArray(tags) && tags.length > 0) {
+                                  const normalizedTags = tags.map((t: string) => t.trim().toLowerCase());
+                                  if (normalizedTags.includes('fomo')) {
+                                    fomoTrades++;
+                                    fomoDates.push(dateKey);
+}
+                                  if (normalizedTags.includes('planned')) {
+                                    plannedCount++;
+                                    plannedDates.push(dateKey);
+                                  }
+                                  // Track all tags with their dates
+                                  normalizedTags.forEach(tag => {
+                                    tagStats[tag] = (tagStats[tag] || 0) + 1;
+                                    if (!tagDates[tag]) tagDates[tag] = [];
+                                    tagDates[tag].push(dateKey);
+                                  });
+                                }
+
+                                if (netPnL > 0) {
+                                  consecutiveWins++;
+                                  maxWinStreak = Math.max(maxWinStreak, consecutiveWins);
+                                } else if (netPnL < 0) {
+                                  consecutiveWins = 0;
+                                }
+                              }
+                            });
+
+                            const winRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
+                            const isProfitable = totalPnL >= 0;
+                            const topTags = Object.entries(tagStats)
+                              .sort(([,a], [,b]) => b - a)
+                              .slice(0, 3)
+                              .map(([tag, count]) => ({ tag, count }));
+
+                            const createSparkline = (data: number[]) => {
+                              if (data.length === 0) return '';
+                              const max = Math.max(...data);
+                              const min = Math.min(...data);
+                              const range = max - min || 1;
+                              const width = 40;
+                              const height = 16;
+                              const points = data.map((val, i) => {
+                                const x = (i / (data.length - 1 || 1)) * width;
+                                const y = height - ((val - min) / range) * height;
+                                return `${x},${y}`;
+                              }).join(' ');
+                              return `M ${points.split(' ').join(' L ')}`;
+                            };
+
+                            return (
+                              <div className="space-y-2">
+                                {/* Header row with stats and menu */}
+                                <div className="flex justify-between items-center gap-2">
+                                  <div className={`text-white flex-1 flex ${Object.values(visibleStats).filter(v => v).length === 1 ? 'justify-center' : 'justify-around'} items-stretch gap-2`}>
+                                    {visibleStats.pnl && (
+                                      <div className="flex flex-col items-center justify-center" data-testid="stat-total-pnl">
+                                        <div className="text-[10px] opacity-80">P&L</div>
+                                        <div className={`text-xs font-bold ${isProfitable ? 'text-green-200' : 'text-red-200'}`}>
+                                          {totalPnL >= 0 ? '+' : ''}₹{(totalPnL / 1000).toFixed(1)}K
+                                        </div>
+                                      </div>
+                                    )}
+                                    {visibleStats.trend && (
+                                      <div className="flex flex-col items-center justify-center" data-testid="stat-trend">
+                                        <div className="text-[10px] opacity-80">Trend</div>
+                                        <svg width="40" height="16" className="mt-0.5">
+                                          <path d={createSparkline(trendData)} fill="none" stroke="white" strokeWidth="1.5" opacity="0.9" />
+                                        </svg>
+                                      </div>
+                                    )}
+                                    {visibleStats.fomo && (
+                                      <button 
+                                        ref={fomoButtonRef}
+                                        className={`flex flex-col items-center justify-center hover-elevate active-elevate-2 rounded px-1 transition-all ${
+                                          activeTagHighlight?.tag === 'fomo' ? 'bg-white/30 ring-2 ring-white/50' : ''
+                                        }`} 
+                                        onClick={() => setActiveTagHighlight(activeTagHighlight?.tag === 'fomo' ? null : { tag: 'fomo', dates: fomoDates })} 
+                                        data-testid="stat-fomo"
+                                        title={`Click to ${activeTagHighlight?.tag === 'fomo' ? 'hide' : 'show'} FOMO dates on heatmap`}
+                                      >
+                                        <div className="text-[10px] opacity-80">FOMO</div>
+                                        <div className="text-xs font-bold">{fomoTrades}</div>
+                                      </button>
+                                    )}
+                                    {visibleStats.winRate && (
+                                      <div className="flex flex-col items-center justify-center" data-testid="stat-success-rate">
+                                        <div className="text-[10px] opacity-80">Win%</div>
+                                        <div className="text-xs font-bold">{winRate.toFixed(0)}%</div>
+                                      </div>
+                                    )}
+                                    {visibleStats.streak && (
+                                      <div className="flex flex-col items-center justify-center" data-testid="stat-win-streak">
+                                        <div className="text-[10px] opacity-80">Streak</div>
+                                        <div className="text-xs font-bold">{maxWinStreak}</div>
+                                      </div>
+                                    )}
+                                    {visibleStats.overtrading && (
+                                      <button 
+                                        ref={overtradingButtonRef}
+                                        className={`flex flex-col items-center justify-center hover-elevate active-elevate-2 rounded px-1 transition-all ${
+                                          activeTagHighlight?.tag === 'overtrading' ? 'bg-white/30 ring-2 ring-white/50' : ''
+                                        }`} 
+                                        onClick={() => setActiveTagHighlight(activeTagHighlight?.tag === 'overtrading' ? null : { tag: 'overtrading', dates: overTradingDates })} 
+                                        data-testid="stat-overtrading"
+                                        title={`Click to ${activeTagHighlight?.tag === 'overtrading' ? 'hide' : 'show'} overtrading dates on heatmap`}
+                                      >
+                                        <div className="text-[10px] opacity-80">OvrTrade</div>
+                                        <div className="text-xs font-bold text-orange-200">{overTradingCount}</div>
+                                      </button>
+                                    )}
+                                    {visibleStats.planned && (
+                                      <button 
+                                        ref={plannedButtonRef}
+                                        className={`flex flex-col items-center justify-center hover-elevate active-elevate-2 rounded px-1 transition-all ${activeTagHighlight?.tag === 'planned' ? 'bg-white/30 ring-2 ring-white/50' : ''}`} 
+                                        onClick={() => setActiveTagHighlight(activeTagHighlight?.tag === 'planned' ? null : { tag: 'planned', dates: plannedDates })} 
+                                        data-testid="stat-planned"
+                                        title={`Click to ${activeTagHighlight?.tag === 'planned' ? 'hide' : 'show'} planned trade dates on heatmap`}
+                                      >
+                                        <div className="text-[10px] opacity-80">Planned</div>
+                                        <div className="text-xs font-bold text-green-200">{plannedCount}</div>
+                                      </button>
+                                    )}
+
+                                  </div>
+
+                                  {/* Share Icon */}
+                                  <button
+                                    className="flex items-center justify-center w-6 h-6 bg-white/20 rounded hover:bg-white/30 transition-colors"
+                                    onClick={() => setShowShareDialog(true)}
+                                    data-testid="button-share-tradebook"
+                                    title="Share tradebook"
+                                  >
+                                    <Share2 className="w-4 h-4 text-white" />
+                                  </button>
+
+                                  {/* 3-Dot Menu Button */}
+                                  <Popover>
+                                    <PopoverTrigger asChild>
+                                      <button className="flex items-center justify-center w-6 h-6 bg-white/20 rounded hover:bg-white/30 transition-colors text-white" data-testid="button-stats-menu">
+                                        <MoreVertical className="w-4 h-4" />
+                                      </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-56 p-3 bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100">
+                                      <div className="space-y-2">
+                                        <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 flex items-center justify-between">
+                                          <span>Customize Magic Bar</span>
+                                          <span className="text-xs opacity-70">{Object.values(visibleStats).filter(v => v).length}/6</span>
+                                        </div>
+                                        {(() => {
+                                          const selectedCount = Object.values(visibleStats).filter(v => v).length;
+                                          const isAtLimit = selectedCount >= 6;
+                                          const handleCheckChange = (field: string, checked: boolean) => {
+                                            if (checked && isAtLimit) return;
+                                            const updated = {...visibleStats, [field]: checked}; setVisibleStats(updated); localStorage.setItem("magicBarPrefs", JSON.stringify(updated));
+                                          };
+                                          return (
+                                            <div className="flex flex-col gap-2">
+                                              <label className={`flex items-center gap-2 text-sm p-1.5 rounded ${!visibleStats.pnl && isAtLimit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white dark:bg-slate-800/50'}`}>
+                                                <input type="checkbox" checked={visibleStats.pnl} onChange={(e) => handleCheckChange('pnl', e.target.checked)} disabled={!visibleStats.pnl && isAtLimit} className="rounded" />
+                                                P&L
+                                              </label>
+                                              <label className={`flex items-center gap-2 text-sm p-1.5 rounded ${!visibleStats.trend && isAtLimit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white dark:bg-slate-800/50'}`}>
+                                                <input type="checkbox" checked={visibleStats.trend} onChange={(e) => handleCheckChange('trend', e.target.checked)} disabled={!visibleStats.trend && isAtLimit} className="rounded" />
+                                                Trend
+                                              </label>
+                                              <label className={`flex items-center gap-2 text-sm p-1.5 rounded ${!visibleStats.fomo && isAtLimit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white dark:bg-slate-800/50'}`}>
+                                                <input type="checkbox" checked={visibleStats.fomo} onChange={(e) => handleCheckChange('fomo', e.target.checked)} disabled={!visibleStats.fomo && isAtLimit} className="rounded" />
+                                                FOMO
+                                              </label>
+                                              <label className={`flex items-center gap-2 text-sm p-1.5 rounded ${!visibleStats.winRate && isAtLimit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white dark:bg-slate-800/50'}`}>
+                                                <input type="checkbox" checked={visibleStats.winRate} onChange={(e) => handleCheckChange('winRate', e.target.checked)} disabled={!visibleStats.winRate && isAtLimit} className="rounded" />
+                                                Win Rate
+                                              </label>
+                                              <label className={`flex items-center gap-2 text-sm p-1.5 rounded ${!visibleStats.streak && isAtLimit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white dark:bg-slate-800/50'}`}>
+                                                <input type="checkbox" checked={visibleStats.streak} onChange={(e) => handleCheckChange('streak', e.target.checked)} disabled={!visibleStats.streak && isAtLimit} className="rounded" />
+                                                Streak
+                                              </label>
+                                              <div className="border-t border-slate-200 dark:border-slate-700 my-1"></div>
+                                              <label className={`flex items-center gap-2 text-sm p-1.5 rounded ${!visibleStats.overtrading && isAtLimit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white dark:bg-slate-800/50'}`}>
+                                                <input type="checkbox" checked={visibleStats.overtrading} onChange={(e) => handleCheckChange('overtrading', e.target.checked)} disabled={!visibleStats.overtrading && isAtLimit} className="rounded" />
+                                                Overtrading
+                                              </label>
+                                              <label className={`flex items-center gap-2 text-sm p-1.5 rounded ${!visibleStats.planned && isAtLimit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white dark:bg-slate-800/50'}`}>
+                                                <input type="checkbox" checked={visibleStats.planned} onChange={(e) => handleCheckChange('planned', e.target.checked)} disabled={!visibleStats.planned && isAtLimit} className="rounded" />
+                                                Planned
+                                              </label>
+                                              <label className={`flex items-center gap-2 text-sm p-1.5 rounded ${!visibleStats.topTags && isAtLimit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white dark:bg-slate-800/50'}`}>
+                                                <input type="checkbox" checked={visibleStats.topTags} onChange={(e) => handleCheckChange('topTags', e.target.checked)} disabled={!visibleStats.topTags && isAtLimit} className="rounded" />
+                                                Top Tags
+                                              </label>
+                                              <label className={`flex items-center gap-2 text-sm p-1.5 rounded ${!visibleStats.aiAnalysis && isAtLimit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white dark:bg-slate-800/50'}`}>
+                                                <input type="checkbox" checked={visibleStats.aiAnalysis} onChange={(e) => handleCheckChange('aiAnalysis', e.target.checked)} disabled={!visibleStats.aiAnalysis && isAtLimit} className="rounded" />
+                                                AI Analysis
+                                              </label>
+                                            </div>
+                                          );
+                                        })()}
+                                      </div>
+                                    </PopoverContent>
+                                  </Popover>
+                                </div>
+
+
+                                {/* Top Tags Block with Curved Lines */}
+                                {visibleStats.topTags && topTags.length > 0 && (
+                                  <div className="bg-white/10 rounded px-2 py-1 text-xs text-white">
+                                    <div className="opacity-80 mb-1">Top Tags:</div>
+                                    <div className="flex flex-wrap gap-1">
+                                      {topTags.map(({tag, count}) => (
+                                        <button 
+                                          key={tag}
+                                          className={`hover-elevate active-elevate-2 rounded px-2 py-0.5 text-xs transition-all ${
+                                            activeTagHighlight?.tag === tag ? 'bg-white/50 ring-2 ring-white/50' : 'bg-white/20'
+                                          }`}
+                                          onClick={() => setActiveTagHighlight(activeTagHighlight?.tag === tag ? null : { tag, dates: tagDates[tag] || [] })}
+                                          data-testid={`stat-toptag-${tag}`}
+                                        >
+                                          {tag} <span className="text-black">({count})</span>
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* AI Analysis Block - Static Text Only */}
+                                {visibleStats.aiAnalysis && (
+                                  <div className="bg-white/10 rounded px-2 py-1 text-xs text-white">
+                                    <span className="opacity-80">AI Insight: </span>
+                                    <span className="italic text-blue-200">
+                                      {totalTrades > 0 ? (winRate > 60 ? "Strong performance detected" : winRate > 50 ? "Balanced trading pattern" : "Risk management recommended") : "No data yet"}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      </CardContent>
+                    </Card>
+                    </div>
+                  </div>
+                </div>
+                {/* End of Main Journal Content */}
+                {/* Ranking Tab Content - Mobile only - Empty placeholder */}
+                {mobileBottomTab === "ranking" && (
+                  <div className="md:hidden p-4">
+                    <div className="flex flex-col items-center justify-center py-16 text-center">
+                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-4">
+                        <Trophy className="h-10 w-10 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">Trading Challenge</h3>
+                      <p className="text-slate-500 dark:text-slate-400 mb-4">Coming Soon</p>
+                      <div className="space-y-3 w-full max-w-xs">
+                        <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-left">
+                          <Users className="h-5 w-5 text-blue-500" />
+                          <div>
+                            <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Compete with Traders</p>
+                            <p className="text-xs text-gray-500">Join 7-day trading challenges</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-left">
+                          <BarChart3 className="h-5 w-5 text-green-500" />
+                          <div>
+                            <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Live P&L Tracking</p>
+                            <p className="text-xs text-gray-500">Real-time ranking based on your trades</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-left">
+                          <Trophy className="h-5 w-5 text-amber-500" />
+                          <div>
+                            <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Leaderboard Rankings</p>
+                            <p className="text-xs text-gray-500">See your position among all participants</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ============== MODERN TRADING ANALYTICS DASHBOARD ============== */}
+                {/* Mobile: Show only in "insight" tab | Desktop: Always visible */}
+                <div
+                  className={`mt-8 space-y-6 ${mobileBottomTab !== "insight" ? "hidden md:block" : "block"}`}
+                >
+                  {(() => {
+                    // Calculate comprehensive insights from all trading data
+                    const calculateTradingInsights = () => {
+                      const allData = Object.values(tradingDataByDate).filter(
+                        (data: any) =>
+                          data &&
+                          data.tradeHistory &&
+                          Array.isArray(data.tradeHistory) &&
+                          data.tradeHistory.length > 0,
+                      );
+
+                      if (allData.length === 0) {
+                        return {
+                          tagAnalysis: [],
+                          overallStats: {
+                            totalTrades: 0,
+                            winRate: 0,
+                            totalPnL: 0,
+                          },
+                          topPerformers: [],
+                          worstPerformers: [],
+                          tradingDayAnalysis: [],
+                        };
+                      }
+
+                      // Tag-based performance analysis
+                      const tagStats: any = {};
+                      const dailyStats: any[] = [];
+
+                      allData.forEach((dayData: any, index: number) => {
+                        const trades = dayData.tradeHistory || [];
+                        const tags = dayData.tradingTags || [];
+                        const metrics = dayData.performanceMetrics;
+
+                        // Calculate day statistics
+                        if (metrics) {
+                          dailyStats.push({
+                            day: index + 1,
+                            trades: metrics.totalTrades || trades.length,
+                            winRate: parseFloat(metrics.winRate) || 0,
+                            netPnL: metrics.netPnL || 0,
+                            tags: tags,
+                          });
+                        }
+
+                        // Analyze each tag's performance
+                        tags.forEach((tag: string) => {
+                          if (!tagStats[tag]) {
+                            tagStats[tag] = {
+                              tag,
+                              tradingDays: 0,
+                              totalTrades: 0,
+                              wins: 0,
+                              losses: 0,
+                              totalPnL: 0,
+                              winRate: 0,
+                              avgPnL: 0,
+                              bestDay: 0,
+                              worstDay: 0,
+                            };
+                          }
+
+                          const stats = tagStats[tag];
+                          stats.tradingDays++;
+
+                          if (metrics) {
+                            stats.totalTrades += metrics.totalTrades || 0;
+                            stats.wins += metrics.winningTrades || 0;
+                            stats.losses += metrics.losingTrades || 0;
+                            stats.totalPnL += metrics.netPnL || 0;
+                            stats.bestDay = Math.max(
+                              stats.bestDay,
+                              metrics.netPnL || 0,
+                            );
+                            stats.worstDay = Math.min(
+                              stats.worstDay,
+                              metrics.netPnL || 0,
+                            );
+                          }
+                        });
+                      });
+
+                      // Calculate final stats for each tag
+                      Object.values(tagStats).forEach((stats: any) => {
+                        stats.winRate =
+                          stats.totalTrades > 0
+                            ? (stats.wins / stats.totalTrades) * 100
+                            : 0;
+                        stats.avgPnL =
+                          stats.tradingDays > 0
+                            ? stats.totalPnL / stats.tradingDays
+                            : 0;
+                      });
+
+                      const tagAnalysis = Object.values(tagStats).sort(
+                        (a: any, b: any) => b.totalPnL - a.totalPnL,
+                      );
+
+                      // Overall statistics
+                      const totalTrades = tagAnalysis.reduce(
+                        (sum: number, tag: any) => sum + tag.totalTrades,
+                        0,
+                      );
+                      const totalPnL = tagAnalysis.reduce(
+                        (sum: number, tag: any) => sum + tag.totalPnL,
+                        0,
+                      );
+                      const totalWins = tagAnalysis.reduce(
+                        (sum: number, tag: any) => sum + tag.wins,
+                        0,
+                      );
+                      const overallWinRate =
+                        totalTrades > 0 ? (totalWins / totalTrades) * 100 : 0;
+
+                      const overallStats = {
+                        totalTrades,
+                        winRate: overallWinRate,
+                        totalPnL,
+                      };
+                      const topPerformers = tagAnalysis.slice(0, 5);
+                      const worstPerformers = tagAnalysis.slice(-3).reverse();
+
+                      return {
+                        tagAnalysis,
+                        overallStats,
+                        topPerformers,
+                        worstPerformers,
+                        tradingDayAnalysis: dailyStats,
+                      };
+                    };
+
+                    // ✅ NEW: Use filtered heatmap data directly instead of complex insights
+                    const filteredHeatmapData = getFilteredHeatmapData();
+                    const insights = calculateTradingInsights(); // Keep for other sections that still need it
+
+                    // Calculate metrics from filtered heatmap data - only include dates with actual trading (non-zero P&L)
+                    const calculateHeatmapMetrics = () => {
+                      const dates = Object.keys(filteredHeatmapData);
+                      let totalPnL = 0;
+                      let totalTrades = 0;
+                      let winningTrades = 0;
+                      let datesWithTrading = 0;
+
+                      dates.forEach(dateKey => {
+                        const dayData = filteredHeatmapData[dateKey];
+
+                        // Handle both wrapped (AWS) and unwrapped formats
+                        const metrics = dayData?.tradingData?.performanceMetrics || dayData?.performanceMetrics;
+
+                        if (metrics) {
+                          const netPnL = metrics.netPnL || 0;
+
+                          // Only include dates with actual trading activity (non-zero P&L)
+                          if (netPnL !== 0) {
+                            totalPnL += netPnL;
+                            totalTrades += metrics.totalTrades || 0;
+                            winningTrades += metrics.winningTrades || 0;
+                            datesWithTrading++;
+                          }
+                        }
+                      });
+
+                      const winRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
+
+                      return { totalPnL, totalTrades, winRate, datesCount: datesWithTrading };
+                    };
+
+                    const heatmapMetrics = calculateHeatmapMetrics();
+                    const totalPnL = heatmapMetrics.totalPnL;
+                    const isProfitable = totalPnL >= 0;
+
+                    console.log(`📊 Performance Trend using ${selectedDateRange ? 'FILTERED' : 'ALL'} heatmap data: ${heatmapMetrics.datesCount} dates, Total P&L: ₹${totalPnL.toFixed(2)}`);
+
+                    return (
+                      <div className="space-y-6">
+                        {/* Desktop: Single Row with Total P&L, Performance Trend, Top Tags */}
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                          {/* Total Performance Card - Desktop: Left side */}
+                          <div
+                            className={`md:col-span-3 rounded-3xl p-6 md:p-8 text-white shadow-2xl ${isProfitable ? "bg-gradient-to-br from-emerald-500 to-teal-600" : "bg-gradient-to-br from-red-500 to-rose-600"}`}
+                          >
+                            <div className="flex items-center justify-between mb-6">
+                              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                                <Target className="w-6 h-6" />
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm opacity-80">
+                                  {selectedDateRange ? 'Range' : 'Total'} P&L
+                                </div>
+                                <div className="text-2xl md:text-3xl font-bold">
+                                  {totalPnL >= 0 ? "" : "-"}₹
+                                  {Math.abs(totalPnL).toLocaleString("en-IN")}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="space-y-4">
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm opacity-80">
+                                  Total Trades
+                                </span>
+                                <span className="font-semibold">
+                                  {heatmapMetrics.totalTrades}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm opacity-80">
+                                  Success Rate
+                                </span>
+                                <span className="font-semibold">
+                                  {heatmapMetrics.winRate.toFixed(1)}%
+                                </span>
+                              </div>
+                              <div className="w-full bg-white/20 rounded-full h-2">
+                                <div
+                                  className="bg-white rounded-full h-2 transition-all duration-1000"
+                                  style={{
+                                    width: `${Math.min(
+                                      heatmapMetrics.winRate,
+                                      100,
+                                    )}%`,
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Performance Trend Chart - Desktop: Middle */}
+                          <div className="md:col-span-6 bg-white dark:bg-slate-900 rounded-3xl p-4 md:p-8 shadow-lg border border-slate-200 dark:border-slate-800">
+                          <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
+                              Performance Trend
+                            </h3>
+                            {(() => {
+                              return (
+                                <div className="flex items-center gap-2">
+                                  <div
+                                    className={`w-3 h-3 ${
+                                      isProfitable
+                                        ? "bg-emerald-400"
+                                        : "bg-red-400"
+                                    } rounded-full`}
+                                  ></div>
+                                  <span className="text-sm text-slate-600 dark:text-slate-400">
+                                    {isProfitable
+                                      ? "Profitable"
+                                      : "Not Profitable"}
+                                  </span>
+                                </div>
+                              );
+                            })()}
+                          </div>
+
+                          {Object.keys(filteredHeatmapData).length > 0 ? (
+                            <div className="h-64 w-full">
+                              {(() => {
+                                // ✅ NEW: Get filtered heatmap data and prepare daily chart data
+                                const allDates = Object.keys(filteredHeatmapData).sort();
+
+                                // ✅ NEW: Convert filtered heatmap data to daily chart data format
+                                const chartData = allDates.map(
+
+                                  (dateStr, idx) => {
+                                    const date = new Date(dateStr);
+                                    const dayData = filteredHeatmapData[dateStr];
+
+                                    // Handle both wrapped (AWS) and unwrapped formats
+                                    const metrics = dayData?.tradingData?.performanceMetrics || dayData?.performanceMetrics;
+
+                                    const netPnL = metrics?.netPnL || 0;
+                                    const totalTrades = metrics?.totalTrades || 0;
+
+                                    return {
+                                      day: `${date.getDate()}/${
+                                        date.getMonth() + 1
+                                      }`,
+                                      value: netPnL,
+                                      pnl: netPnL,
+                                      date: dateStr,
+                                      trades: totalTrades,
+                                      formattedDate: date.toLocaleDateString(
+                                        "en-IN",
+                                        {
+                                          day: "numeric",
+                                          month: "short",
+                                        },
+                                      ),
+                                    };
+                                  },
+                                ).filter((item) => item.trades > 0);
+
+                                // Find peak value for indicator
+                                const peakData = chartData.reduce(
+                                  (max, current) =>
+                                    current.value > max.value ? current : max,
+                                  chartData[0] || { value: 0, day: "", pnl: 0 },
+                                );
+
+                                return (
+                                  <div className="relative h-full">
+                                    <ResponsiveContainer
+                                      width="100%"
+                                      height="100%"
+                                    >
+                                      {(() => {
+                                        const chartStrokeColor = theme === 'dark' ? '#ffffff' : '#000000';
+                                        const tooltipBg = theme === 'dark' ? '#1e293b' : '#ffffff';
+                                        const tooltipText = theme === 'dark' ? '#e2e8f0' : '#1e293b';
+                                        return (
+                                        <AreaChart
+                                        data={chartData}
+                                        margin={{
+                                          top: 40,
+                                          right: 30,
+                                          left: 0,
+                                          bottom: 5,
+                                        }}
+                                      >
+                                        <defs>
+                                          <linearGradient
+                                            id="areaGradientPositive"
+                                            x1="0"
+                                            y1="0"
+                                            x2="0"
+                                            y2="1"
+                                          >
+                                            <stop
+                                              offset="0%"
+                                              stopColor="rgb(107, 114, 128)"
+                                              stopOpacity={0.6}
+                                            />
+                                            <stop
+                                              offset="100%"
+                                              stopColor="rgb(107, 114, 128)"
+                                              stopOpacity={0.1}
+                                            />
+                                          </linearGradient>
+                                        </defs>
+                                        <XAxis
+                                          dataKey="day"
+                                          axisLine={false}
+                                          tickLine={false}
+                                          tick={false}
+                                          className="text-slate-500 dark:text-slate-400"
+                                        />
+                                        <YAxis
+                                          axisLine={false}
+                                          tickLine={false}
+                                          tick={{
+                                            fontSize: 12,
+                                            fill: theme === 'dark' ? '#cbd5e1' : '#64748b',
+                                          }}
+                                          tickFormatter={(value) =>
+                                            `${value >= 0 ? "" : "-"}${(
+                                              Math.abs(value) / 1000
+                                            ).toFixed(0)}K`
+                                          }
+                                          domain={[
+                                            "dataMin - 1000",
+                                            "dataMax + 1000",
+                                          ]}
+                                          className="text-slate-500 dark:text-slate-400"
+                                        />
+                                        <Tooltip
+                                          contentStyle={{
+                                            background: tooltipBg,
+                                            border: `1px solid ${theme === 'dark' ? '#334155' : '#e2e8f0'}`,
+                                            borderRadius: "12px",
+                                            color: tooltipText,
+                                            fontSize: "12px",
+                                            padding: "8px 12px",
+                                          }}
+                                          formatter={(
+                                            value: any,
+                                            name: any,
+                                            props: any,
+                                          ) => [
+                                            `${
+                                              value >= 0 ? "₹" : "-₹"
+                                            }${Math.abs(
+                                              value,
+                                            ).toLocaleString()}`,
+                                            "Daily P&L",
+                                          ]}
+                                          labelFormatter={(label, payload) => {
+                                            if (
+                                              payload &&
+                                              payload[0] &&
+                                              payload[0].payload
+                                            ) {
+                                              const data = payload[0].payload;
+                                              return `${data.formattedDate} • ${data.trades} trades`;
+                                            }
+                                            return label;
+                                          }}
+                                        />
+                                        <Area
+                                          type="natural"
+                                          dataKey="value"
+                                          stroke={chartStrokeColor}
+                                          strokeWidth={3}
+                                          fill="url(#areaGradientPositive)"
+                                          dot={false}
+                                          activeDot={{
+                                            r: 6,
+                                            fill: chartStrokeColor,
+                                            stroke: "white",
+                                            strokeWidth: 2,
+                                          }}
+                                          isAnimationActive={true}
+                                          animationDuration={600}
+                                          animationEasing="ease-in-out"
+                                        />
+                                      </AreaChart>
+                                        );
+                                      })()}
+                                    </ResponsiveContainer>
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-center h-48 text-slate-500 dark:text-slate-400">
+                              <div className="text-center">
+                                <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                                <p>No trend data available</p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                          {/* Top Tags - Desktop: Right side */}
+                          <div className="md:col-span-3 bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-lg border border-slate-200 dark:border-slate-800">
+                            <div className="flex items-center gap-3 mb-6">
+                              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                                <Tag className="w-5 h-5 text-white" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold text-slate-800 dark:text-white">
+                                  Top Tags
+                                </h3>
+                                <p className="text-xs text-slate-500">
+                                  Strategy Performance
+                                </p>
+                              </div>
+                            </div>
+
+                            {insights.topPerformers.length > 0 ? (
+                              <div className="space-y-4">
+                                {insights.topPerformers
+                                  .slice(0, 4)
+                                  .map((tag: any, idx: number) => (
+                                    <div key={tag.tag} className="relative">
+                                      <div className="flex items-center justify-between mb-2">
+                                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                          {tag.tag}
+                                        </span>
+                                        <span
+                                          className={`text-sm font-semibold ${
+                                            tag.totalPnL >= 0
+                                              ? "text-emerald-600"
+                                              : "text-red-500"
+                                          }`}
+                                        >
+                                          {tag.totalPnL >= 0 ? "+" : ""}₹
+                                          {Math.abs(
+                                            tag.totalPnL,
+                                          ).toLocaleString()}
+                                        </span>
+                                      </div>
+                                      <div className="w-full h-2 bg-slate-100 dark:bg-slate-100 dark:bg-slate-700 rounded-full">
+                                        <div
+                                          className={`h-2 rounded-full transition-all duration-1000 ${
+                                            tag.totalPnL >= 0
+                                              ? "bg-gradient-to-r from-emerald-400 to-green-500"
+                                              : "bg-gradient-to-r from-red-400 to-rose-500"
+                                          }`}
+                                          style={{
+                                            width: `${Math.min(
+                                              tag.winRate,
+                                              100,
+                                            )}%`,
+                                          }}
+                                        ></div>
+                                      </div>
+                                      <div className="text-xs text-slate-500 mt-1">
+                                        {tag.winRate.toFixed(1)}% success rate
+                                      </div>
+                                    </div>
+                                  ))}
+                              </div>
+                            ) : (
+                              <div className="flex items-center justify-center h-32 text-slate-500 dark:text-slate-400">
+                                <div className="text-center">
+                                  <Tag className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                                  <p className="text-sm">No tag data</p>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Strategy Summary Cards */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {(() => {
+                            // Filter to only include dates with actual trading activity (non-zero P&L)
+                            const allData = Object.values(
+                              tradingDataByDate,
+                            ).filter(
+                              (data: any) => data && data.performanceMetrics && data.performanceMetrics.netPnL !== 0,
+                            );
+
+                            if (allData.length === 0) return null;
+
+                            const totalDays = allData.length;
+                            const profitableDays = allData.filter(
+                              (d: any) => d.performanceMetrics.netPnL > 0,
+                            ).length;
+                            const avgDailyPnL =
+                              allData.reduce(
+                                (sum: number, d: any) =>
+                                  sum + d.performanceMetrics.netPnL,
+                                0,
+                              ) / totalDays;
+                            const maxProfit = Math.max(
+                              ...allData.map(
+                                (d: any) => d.performanceMetrics.netPnL,
+                              ),
+                            );
+
+                            const metrics = [
+                              {
+                                label: "Trading Days",
+                                value: totalDays,
+                                icon: Calendar,
+                                color: "from-blue-500 to-indigo-600",
+                                textColor: "text-blue-600",
+                              },
+                              {
+                                label: "Best Day",
+                                value: `₹${maxProfit.toLocaleString()}`,
+                                icon: TrendingUp,
+                                color: "from-emerald-500 to-green-600",
+                                textColor: "text-emerald-600",
+                              },
+                              {
+                                label: "Profitable Days",
+                                value: profitableDays,
+                                icon: Target,
+                                color: "from-violet-500 to-purple-600",
+                                textColor: "text-violet-600",
+                              },
+                              {
+                                label: "Avg Daily P&L",
+                                value: `₹${Math.abs(
+                                  avgDailyPnL,
+                                ).toLocaleString()}`,
+                                icon: BarChart3,
+                                color:
+                                  avgDailyPnL >= 0
+                                    ? "from-emerald-500 to-green-600"
+                                    : "from-red-500 to-rose-600",
+                                textColor:
+                                  avgDailyPnL >= 0
+                                    ? "text-emerald-600"
+                                    : "text-red-600",
+                              },
+                            ];
+
+                            return metrics.map((metric) => (
+                              <div
+                                key={metric.label}
+                                className="bg-white dark:bg-white dark:bg-slate-800 rounded-2xl p-3 md:p-6 shadow-lg border border-slate-200 dark:border-slate-200 dark:border-slate-700 hover:shadow-xl transition-all duration-300"
+                              >
+                                <div className="flex md:flex-col items-center md:items-start gap-3 md:gap-0">
+                                  <div
+                                    className={`w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br ${metric.color} rounded-xl flex items-center justify-center md:mb-4 shadow-lg flex-shrink-0`}
+                                  >
+                                    <metric.icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                                  </div>
+                                  <div className="flex-1 md:space-y-1">
+                                    <div
+                                      className={`text-xl md:text-2xl font-bold ${metric.textColor}`}
+                                    >
+                                      {metric.value}
+                                    </div>
+                                    <div className="text-xs md:text-sm text-slate-600 dark:text-slate-400">
+                                      {metric.label}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ));
+                          })()}
+                        </div>
+
+                        {/* Full Width Loss Making Analysis - Extended Like Discipline Window */}
+                        <div className="col-span-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-3xl p-8 text-white shadow-2xl mt-6">
+                          <div className="flex items-center gap-4 mb-6">
+                            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                              <TrendingDown className="w-6 h-6" />
+                            </div>
+                            <div>
+                              <h3 className="text-xl font-bold">
+                                Loss Making Analysis
+                              </h3>
+                              <p className="opacity-80">
+                                Identify and fix problematic patterns
+                              </p>
+                            </div>
+                          </div>
+
+                          {(() => {
+                            const allData = Object.values(
+                              tradingDataByDate
+                            ).filter(
+                              (data: any) =>
+                                data &&
+                                data.tradingTags &&
+                                Array.isArray(data.tradingTags) &&
+                                data.performanceMetrics
+                            );
+
+                            if (allData.length === 0) {
+                              return (
+                                <div className="bg-white/10 rounded-2xl p-6 text-center">
+                                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <AlertTriangle className="w-8 h-8" />
+                                  </div>
+                                  <p className="text-lg font-medium mb-2">
+                                    No Data Available
+                                  </p>
+                                  <p className="opacity-80">
+                                    Start trading and tagging to identify loss
+                                    patterns!
+                                  </p>
+                                </div>
+                              );
+                            }
+
+                            // Analyze loss-making patterns
+                            const tagLossAnalysis: any = {};
+                            const riskMetrics: any = {
+                              consecutiveLosses: 0,
+                              maxConsecutiveLosses: 0,
+                              emotionalTradingDays: 0,
+                              impulsiveTrades: 0,
+                              totalLossingDays: 0,
+                            };
+
+                            allData.forEach((data: any) => {
+                              const rawTags = data.tradingTags || [];
+                              const pnl = data.performanceMetrics.netPnL;
+                              const trades =
+                                data.performanceMetrics.totalTrades;
+
+                              if (pnl < 0) {
+                                riskMetrics.totalLossingDays++;
+
+                                // ✅ Improved: Check for emotional trading patterns with array validation
+                                if (Array.isArray(rawTags) && rawTags.length > 0) {
+                                  const emotionalTags = [
+                                    "fomo",
+                                    "fear",
+                                    "greedy",
+                                    "revenge",
+                                    "impatient",
+                                  ];
+                                  const hasEmotionalTag = rawTags.some((tag: string) =>
+                                    emotionalTags.includes(tag.toLowerCase().trim())
+                                  );
+
+                                  if (hasEmotionalTag) {
+                                    riskMetrics.emotionalTradingDays++;
+                                    console.log(`🚨 Loss Analysis: Emotional trading detected with tags: [${rawTags.join(', ')}] | P&L: ₹${pnl.toFixed(2)}`);
+                                  }
+                                }
+
+                                // Check for impulsive trading (high number of trades with losses)
+                                if (trades > 5 && pnl < 0) {
+                                  riskMetrics.impulsiveTrades += trades;
+                                }
+                              }
+
+                              // ✅ Improved: Normalize tags to lowercase for consistent counting
+                              if (Array.isArray(rawTags) && rawTags.length > 0) {
+                                rawTags.forEach((rawTag: string) => {
+                                  // Normalize tag: trim and lowercase for dictionary key
+                                  const normalizedTag = rawTag.trim().toLowerCase();
+
+                                  if (!tagLossAnalysis[normalizedTag]) {
+                                    tagLossAnalysis[normalizedTag] = {
+                                      tag: normalizedTag,
+                                      displayTag: rawTag, // Keep original for display
+                                      totalPnL: 0,
+                                      lossDays: 0,
+                                      totalDays: 0,
+                                      avgLoss: 0,
+                                      lossFrequency: 0,
+                                    };
+                                  }
+
+                                  const analysis = tagLossAnalysis[normalizedTag];
+                                  analysis.totalPnL += pnl;
+                                  analysis.totalDays++;
+
+                                  if (pnl < 0) {
+                                    analysis.lossDays++;
+                                    console.log(`📊 Tag '${normalizedTag}': Loss day detected | P&L: ₹${pnl.toFixed(2)} | Total losses: ${analysis.lossDays}/${analysis.totalDays} days`);
+                                  }
+                                });
+                              }
+                            });
+
+                            // Calculate loss metrics
+                            Object.values(tagLossAnalysis).forEach(
+                              (analysis: any) => {
+                                analysis.lossFrequency =
+                                  (analysis.lossDays / analysis.totalDays) *
+                                  100;
+                                analysis.avgLoss =
+                                  analysis.totalPnL / analysis.totalDays;
+                              }
+                            );
+
+                            // Get worst performing tags
+                            const worstTags = Object.values(tagLossAnalysis)
+                              .filter((tag: any) => tag.totalPnL < 0)
+                              .sort((a: any, b: any) => a.totalPnL - b.totalPnL)
+                              .slice(0, 4);
+
+                            return (
+                              <div className="space-y-6">
+                                {/* Risk Metrics Summary */}
+                                <div className="grid md:grid-cols-4 gap-4">
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                                    <div className="text-2xl font-bold">
+                                      {riskMetrics.totalLossingDays}
+                                    </div>
+                                    <div className="text-sm opacity-80">
+                                      Losing Days
+                                    </div>
+                                  </div>
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                                    <div className="text-2xl font-bold">
+                                      {riskMetrics.emotionalTradingDays}
+                                    </div>
+                                    <div className="text-sm opacity-80">
+                                      Emotional Trading Days
+                                    </div>
+                                  </div>
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                                    <div className="text-2xl font-bold">
+                                      {riskMetrics.impulsiveTrades}
+                                    </div>
+                                    <div className="text-sm opacity-80">
+                                      Impulsive Trades
+                                    </div>
+                                  </div>
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                                    <div className="text-2xl font-bold">
+                                      {allData.length > 0
+                                        ? (
+                                            (riskMetrics.totalLossingDays /
+                                              allData.length) *
+                                            100
+                                          ).toFixed(0)
+                                        : 0}
+                                      %
+                                    </div>
+                                    <div className="text-sm opacity-80">
+                                      Loss Rate
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Worst Performing Tags */}
+                                <div>
+                                  <h4 className="text-lg font-semibold mb-4">
+                                    🚨 Most Problematic Tags
+                                  </h4>
+                                  <div className="grid md:grid-cols-2 gap-4">
+                                    {worstTags.length > 0 ? (
+                                      worstTags.map((tag: any, idx: number) => (
+                                        <div
+                                          key={idx}
+                                          className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20"
+                                        >
+                                          <div className="flex items-start gap-3">
+                                            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                                              <AlertTriangle className="w-5 h-5" />
+                                            </div>
+                                            <div className="flex-1">
+                                              <div className="font-semibold text-lg">
+                                                {(tag.displayTag || tag.tag).toUpperCase()}
+                                              </div>
+                                              <div className="text-sm opacity-90 mb-2">
+                                                Avg Loss: ₹
+                                                {Math.abs(tag.avgLoss).toFixed(
+                                                  0
+                                                )}{" "}
+                                                • {tag.lossFrequency.toFixed(0)}
+                                                % loss rate
+                                              </div>
+                                              <div className="text-xs bg-red-500/30 rounded-lg p-2">
+                                                Total Loss: ₹
+                                                {Math.abs(
+                                                  tag.totalPnL
+                                                ).toLocaleString("en-IN")}{" "}
+                                                across {tag.totalDays} days
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))
+                                    ) : (
+                                      <div className="col-span-2 text-center py-8">
+                                        <div className="text-4xl mb-2">🎉</div>
+                                        <p className="font-medium">
+                                          No consistent loss-making patterns
+                                          detected!
+                                        </p>
+                                        <p className="text-sm opacity-80">
+                                          Your trading discipline is on track.
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+
+                        {/* Disciplined Trading Insights */}
+                        <div className="col-span-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white shadow-2xl mt-6">
+                          <div className="flex items-center gap-4 mb-6">
+                            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                              <Shield className="w-6 h-6" />
+                            </div>
+                            <div>
+                              <h3 className="text-xl font-bold">
+                                Discipline & Risk Management
+                              </h3>
+                              <p className="opacity-80">
+                                Build consistent, profitable trading habits
+                              </p>
+                            </div>
+                          </div>
+
+                          {(() => {
+                            const allData = Object.values(
+                              tradingDataByDate,
+                            ).filter(
+                              (data: any) =>
+                                data &&
+                                data.tradingTags &&
+                                Array.isArray(data.tradingTags) &&
+                                data.performanceMetrics,
+                            );
+
+                            if (allData.length === 0) {
+                              return (
+                                <div className="bg-white/10 rounded-2xl p-6 text-center">
+                                  <div className="text-4xl mb-3">📊</div>
+                                  <p className="font-medium">
+                                    Ready for Discipline Analysis
+                                  </p>
+                                  <p className="opacity-80 text-sm">
+                                    Start building your trading history!
+                                  </p>
+                                </div>
+                              );
+                            }
+
+                            // Calculate discipline metrics
+                            const disciplineMetrics = {
+                              plannedTrades: 0,
+                              emotionalTrades: 0,
+                              consistentDays: 0,
+                              riskManagedTrades: 0,
+                              totalDays: allData.length,
+                              avgTradesPerDay: 0,
+                              winStreaks: 0,
+                              lossStreaks: 0,
+                            };
+
+                            const disciplineInsights: any[] = [];
+                            let totalTrades = 0;
+                            let consecutiveWins = 0;
+                            let consecutiveLosses = 0;
+                            let maxWinStreak = 0;
+                            let maxLossStreak = 0;
+
+                            allData.forEach((data: any, idx: number) => {
+                              const tags = data.tradingTags;
+                              const pnl = data.performanceMetrics.netPnL;
+                              const trades =
+                                data.performanceMetrics.totalTrades;
+                              totalTrades += trades;
+
+                              // Check for planned trading
+                              if (
+                                tags.includes("planned") ||
+                                tags.includes("setup") ||
+                                tags.includes("strategy")
+                              ) {
+                                disciplineMetrics.plannedTrades++;
+                              }
+
+                              // Check for emotional trading
+                              const emotionalTags = [
+                                "fomo",
+                                "fear",
+                                "greedy",
+                                "revenge",
+                                "impatient",
+                                "unplanned",
+                              ];
+                              if (
+                                tags.some((tag: string) =>
+                                  emotionalTags.includes(tag.toLowerCase()),
+                                )
+                              ) {
+                                disciplineMetrics.emotionalTrades++;
+                              }
+
+                              // Track win/loss streaks
+                              if (pnl > 0) {
+                                consecutiveWins++;
+                                consecutiveLosses = 0;
+                                maxWinStreak = Math.max(
+                                  maxWinStreak,
+                                  consecutiveWins,
+                                );
+                              } else if (pnl < 0) {
+                                consecutiveLosses++;
+                                consecutiveWins = 0;
+                                maxLossStreak = Math.max(
+                                  maxLossStreak,
+                                  consecutiveLosses,
+                                );
+                              }
+
+                              // Check for consistent trade size (discipline indicator)
+                              if (trades <= 5) {
+                                // Not overtrading
+                                disciplineMetrics.consistentDays++;
+                              }
+                            });
+
+                            disciplineMetrics.avgTradesPerDay =
+                              totalTrades / disciplineMetrics.totalDays;
+                            disciplineMetrics.winStreaks = maxWinStreak;
+                            disciplineMetrics.lossStreaks = maxLossStreak;
+
+                            // Generate discipline insights
+                            const plannedRatio =
+                              (disciplineMetrics.plannedTrades /
+                                disciplineMetrics.totalDays) *
+                              100;
+                            const emotionalRatio =
+                              (disciplineMetrics.emotionalTrades /
+                                disciplineMetrics.totalDays) *
+                              100;
+                            const consistencyRatio =
+                              (disciplineMetrics.consistentDays /
+                                disciplineMetrics.totalDays) *
+                              100;
+
+                            if (plannedRatio > 70) {
+                              disciplineInsights.push({
+                                type: "success",
+                                icon: "🎯",
+                                title: "Excellent Planning",
+                                message: `${plannedRatio.toFixed(
+                                  0,
+                                )}% of your trades are well-planned. Keep this discipline!`,
+                              });
+                            } else if (plannedRatio < 30) {
+                              disciplineInsights.push({
+                                type: "warning",
+                                icon: "⚠️",
+                                title: "Planning Needed",
+                                message: `Only ${plannedRatio.toFixed(
+                                  0,
+                                )}% planned trades. Create setups before trading.`,
+                              });
+                            }
+
+                            if (emotionalRatio > 40) {
+                              disciplineInsights.push({
+                                type: "danger",
+                                icon: "🚨",
+                                title: "Emotional Trading Alert",
+                                message: `${emotionalRatio.toFixed(
+                                  0,
+                                )}% emotional trades detected. Practice mindfulness.`,
+                              });
+                            }
+
+                            if (disciplineMetrics.avgTradesPerDay > 8) {
+                              disciplineInsights.push({
+                                type: "warning",
+                                icon: "⚡",
+                                title: "Overtrading Risk",
+                                message: `Avg ${disciplineMetrics.avgTradesPerDay.toFixed(
+                                  1,
+                                )} trades/day. Consider quality over quantity.`,
+                              });
+                            }
+
+                            if (maxLossStreak > 3) {
+                              disciplineInsights.push({
+                                type: "danger",
+                                icon: "🛑",
+                                title: "Loss Streak Warning",
+                                message: `Max loss streak: ${maxLossStreak} days. Implement strict stop-loss rules.`,
+                              });
+                            }
+
+                            if (consistencyRatio > 80) {
+                              disciplineInsights.push({
+                                type: "success",
+                                icon: "⭐",
+                                title: "Great Consistency",
+                                message: `${consistencyRatio.toFixed(
+                                  0,
+                                )}% consistent trading days. Excellent discipline!`,
+                              });
+                            }
+
+                            // Add professional recommendations
+                            const recommendations = [
+                              {
+                                icon: "📝",
+                                title: "Pre-Market Planning",
+                                tip: "Plan 3 trades max before market open with clear entry/exit rules",
+                              },
+                              {
+                                icon: "💰",
+                                title: "Risk Management",
+                                tip: "Never risk more than 2% of capital per trade",
+                              },
+                              {
+                                icon: "⏰",
+                                title: "Trading Hours",
+                                tip: "Trade only during high-volume hours (9:30-11:30 AM, 2:00-3:15 PM)",
+                              },
+                              {
+                                icon: "📊",
+                                title: "Position Sizing",
+                                tip: "Use consistent position sizes based on account balance",
+                              },
+                            ];
+
+                            return (
+                              <div className="space-y-4 md:space-y-6">
+                                {/* Discipline Metrics */}
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center">
+                                    <div className="text-lg md:text-2xl font-bold">
+                                      {plannedRatio.toFixed(0)}%
+                                    </div>
+                                    <div className="text-xs md:text-sm opacity-80">
+                                      Planned Trades
+                                    </div>
+                                  </div>
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center">
+                                    <div className="text-lg md:text-2xl font-bold">
+                                      {disciplineMetrics.avgTradesPerDay.toFixed(
+                                        1,
+                                      )}
+                                    </div>
+                                    <div className="text-xs md:text-sm opacity-80">
+                                      Avg Trades/Day
+                                    </div>
+                                  </div>
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center">
+                                    <div className="text-lg md:text-2xl font-bold">
+                                      {maxWinStreak}
+                                    </div>
+                                    <div className="text-xs md:text-sm opacity-80">
+                                      Max Win Streak
+                                    </div>
+                                  </div>
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center">
+                                    <div className="text-lg md:text-2xl font-bold">
+                                      {consistencyRatio.toFixed(0)}%
+                                    </div>
+                                    <div className="text-xs md:text-sm opacity-80">
+                                      Consistent Days
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Discipline Insights */}
+                                <div className="grid md:grid-cols-2 gap-6">
+                                  <div>
+                                    <h4 className="text-lg font-semibold mb-4">
+                                      📈 Performance Insights
+                                    </h4>
+                                    <div className="space-y-1">
+                                      {disciplineInsights.length > 0 ? (
+                                        disciplineInsights
+                                          .slice(0, 4)
+                                          .map((insight, idx) => (
+                                            <div
+                                              key={idx}
+                                              className={`p-4 rounded-xl border ${
+                                                insight.type === "success"
+                                                  ? "bg-emerald-500/20 border-emerald-400/30"
+                                                  : insight.type === "warning"
+                                                    ? "bg-amber-500/20 border-amber-400/30"
+                                                    : "bg-red-500/20 border-red-400/30"
+                                              }`}
+                                            >
+                                              <div className="flex items-start gap-3">
+                                                <div className="text-xl">
+                                                  {insight.icon}
+                                                </div>
+                                                <div>
+                                                  <div className="font-medium">
+                                                    {insight.title}
+                                                  </div>
+                                                  <div className="text-sm opacity-90">
+                                                    {insight.message}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          ))
+                                      ) : (
+                                        <div className="text-center py-6">
+                                          <div className="text-3xl mb-2">
+                                            📊
+                                          </div>
+                                          <p className="opacity-80">
+                                            Insights will appear as you build
+                                            trading history
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  <div>
+                                    <h4 className="text-lg font-semibold mb-4">
+                                      🎯 Professional Tips
+                                    </h4>
+                                    <div className="space-y-1">
+                                      {recommendations.map((rec, idx) => (
+                                        <div
+                                          key={idx}
+                                          className="bg-white/10 backdrop-blur-sm rounded-xl p-4"
+                                        >
+                                          <div className="flex items-start gap-3">
+                                            <div className="text-xl">
+                                              {rec.icon}
+                                            </div>
+                                            <div>
+                                              <div className="font-medium text-sm">
+                                                {rec.title}
+                                              </div>
+                                              <div className="text-xs opacity-90 mt-1">
+                                                {rec.tip}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+            )}
+
+          </div>
+        </main>
+
+        <BrokerData 
+          showOrderModal={showOrderModal} 
+          setShowOrderModal={setShowOrderModal} 
+          orderTab={orderTab} 
+          setOrderTab={setOrderTab} 
+          showUserId={showUserId} 
+          setShowUserId={setShowUserId} 
+          zerodhaClientId={zerodhaClientId} 
+          zerodhaUserName={zerodhaUserName} 
+          brokerOrders={brokerOrders} 
+          fetchingBrokerOrders={fetchingBrokerOrders} 
+          zerodhaAccessToken={zerodhaAccessToken} 
+          recordAllBrokerOrders={recordAllBrokerOrders} 
+          upstoxAccessToken={upstoxAccessToken}
+          upstoxUserId={upstoxUserId}
+          upstoxUserName={upstoxUserName}
+          brokerPositions={brokerPositions} 
+          fetchingBrokerPositions={fetchingBrokerPositions} 
+          showBrokerImportModal={showBrokerImportModal} 
+          setShowBrokerImportModal={setShowBrokerImportModal} 
+          handleBrokerImport={handleBrokerImport} 
+          showImportModal={showImportModal} 
+          setShowImportModal={setShowImportModal} 
+          handleFileUpload={handleFileUpload} 
+          activeFormat={activeFormat} 
+          detectedFormatLabel={detectedFormatLabel} 
+          isBuildMode={isBuildMode} 
+          setIsBuildMode={setIsBuildMode} 
+          brokerSearchInput={brokerSearchInput} 
+          setBrokerSearchInput={setBrokerSearchInput} 
+          showBrokerSuggestions={showBrokerSuggestions} 
+          setShowBrokerSuggestions={setShowBrokerSuggestions} 
+          filteredBrokers={filteredBrokers} 
+          buildModeData={buildModeData} 
+          setBuildModeData={setBuildModeData} 
+          allColumnsFilledForSave={allColumnsFilledForSave} 
+          missingColumns={missingColumns} 
+          saveFormatToUniversalLibrary={saveFormatToUniversalLibrary} 
+          currentUser={currentUser} 
+          getCognitoToken={getCognitoToken} 
+          setSavedFormats={setSavedFormats} 
+          importDataTextareaRef={importDataTextareaRef} brokerFunds={brokerFunds} 
+        />
+        {/* Broker Import Dialog */}
+        <BrokerImportDialog
+          open={showBrokerImportModal}
+          onOpenChange={setShowBrokerImportModal}
+          onSuccess={handleBrokerImport}
+        />
+
+        {/* Import Modal - Minimalist Design */}
+        <Dialog open={showImportModal} onOpenChange={setShowImportModal}>
+          <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto custom-thin-scrollbar p-0">
+            {/* Compact Header */}
+            <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3">
+              <span className="text-sm font-semibold text-slate-800 dark:text-slate-100">Import P&L Data</span>
+            </div>
+
+            <div className="p-4 space-y-4">
+              <div>
+                <Label htmlFor="csv-upload" className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                  Upload CSV
+                </Label>
+                <Input
+                  id="csv-upload"
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFileUpload}
+                  className="mt-1.5 h-8 text-xs"
+                  data-testid="input-csv-upload"
+                />
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Expected: date, symbol, action, qty, entry, exit, pnl, duration
+                </p>
+              </div>
+
+              <div>
+                <Label className="text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5 block">
+                  Or Paste Data
+                </Label>
+                <div className="flex items-center gap-2 mb-2">
+                  {activeFormat && detectedFormatLabel && (
+                    <span className="text-xs px-2 py-0.5 bg-slate-100 dark:bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded font-medium">
+                      Format: {detectedFormatLabel}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+                  {activeFormat 
+                    ? `Using "${detectedFormatLabel}" format`
+                    : "Paste your trade data. Format will be auto-detected if saved."
+                  }
+                </p>
+
+                <div className="border border-slate-200 dark:border-slate-200 dark:border-slate-700 rounded-md bg-slate-50 dark:bg-slate-900/30 p-3 mb-3">
+                  {isBuildMode ? (
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                          Build Mode - Select text, click +, X to delete
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="relative">
+                            <Input
+                              placeholder="Type broker name or custom name (e.g., Zerodha, Coinbase, MyBroker...)"
+                              value={brokerSearchInput}
+                              onChange={(e) => {
+                                setBrokerSearchInput(e.target.value);
+                                setShowBrokerSuggestions(true);
+                              }}
+                              onFocus={() => setShowBrokerSuggestions(true)}
+                              onBlur={() => setTimeout(() => setShowBrokerSuggestions(false), 200)}
+                              className="h-8 w-56 text-xs"
+                              data-testid="input-broker-search"
+                            />
+                            {showBrokerSuggestions && filteredBrokers.length > 0 && (
+                              <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded shadow-md z-50 max-h-64 overflow-y-auto">
+                                {filteredBrokers.map((broker) => (
+                                  <div
+                                    key={broker}
+                                    onMouseDown={(e) => {
+                                      e.preventDefault();
+                                      setBrokerSearchInput(broker);
+                                      setShowBrokerSuggestions(false);
+                                    }}
+                                    className="px-3 py-1.5 text-xs cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                                    data-testid={`broker-suggestion-${broker}`}
+                                  >
+                                    {broker}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            disabled={!currentUser?.userId || !brokerSearchInput.trim() || !allColumnsFilledForSave}
+                            title={
+                              !currentUser?.userId ? "Log in to save formats" : 
+                              !brokerSearchInput.trim() ? "Enter broker or custom name" :
+                              !allColumnsFilledForSave ? `Fill all columns: ${missingColumns.join(", ")}` :
+                              ""
+                            }
+                            onClick={async () => {
+                              if (!brokerSearchInput.trim()) {
+                                alert("Please enter a broker name");
+                                return;
+                              }
+                              if (!allColumnsFilledForSave) {
+                                alert(`Please fill all columns: ${missingColumns.join(", ")}`);
+                                return;
+                              }
+                              const brokerName = brokerSearchInput.trim();
+                              const formatLabel = `${brokerName} Format`;
+                              // Save to universal library
+                              const saved = await saveFormatToUniversalLibrary(formatLabel, buildModeData, brokerName);
+                              if (saved) {
+                                setActiveFormat(buildModeData);
+                                setBrokerSearchInput("");
+                                console.log("✅ Format saved to library for:", brokerName, buildModeData.positions);
+
+                                // Reload saved formats immediately to trigger auto-apply
+                                if (currentUser?.userId) {
+                                  try {
+                                    const idToken = await getCognitoToken();
+                                    if (idToken) {
+                                      const response = await fetch(`/api/user-formats/${currentUser.userId}`, {
+                                        headers: { 'Authorization': `Bearer ${idToken}` }
+                                      });
+                                      if (response.ok) {
+                                        const updatedFormats = await response.json();
+                                        setSavedFormats(updatedFormats);
+
+                                        // IMMEDIATELY apply first saved format to live preview
+                                        if (Object.keys(updatedFormats).length > 0) {
+                                          const firstLabel = Object.keys(updatedFormats)[0];
+                                          const firstFormat = updatedFormats[firstLabel];
+                                          setActiveFormat(firstFormat);
+                                          console.log("✨ Live preview auto-applying first format:", firstLabel);
+                                        }
+                                        console.log("🔄 Saved formats reloaded - live preview updated:", Object.keys(updatedFormats).length);
+                                      }
+                                    }
+                                  } catch (err) {
+                                    console.error("❌ Failed to reload formats after save:", err);
+                                  }
+                                }
+                              }
+                            }}
+                            data-testid="button-save-format"
+                            className="h-8 text-xs px-2"
+                          >
+                            <Save className="w-3 h-3 mr-1" />
+                            Save
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setIsBuildMode(false)}
+                            data-testid="button-close-build-mode"
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="bg-background rounded border overflow-hidden">
+                        <table className="w-full font-mono text-xs">
+                          <thead>
+                            <tr className="bg-blue-50 dark:bg-blue-950 border-b border-blue-200 dark:border-blue-800">
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Time</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Order</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Symbol</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Type</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Qty</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Price</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b">
+                              {/* Time Column */}
+                              <td 
+                                className="px-2 py-2"
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  const sourceField = e.dataTransfer.getData("sourceField") as keyof typeof buildModeData.positions;
+                                  if (sourceField && sourceField !== "time") {
+                                    // Swap: exchange data between source and destination
+                                    setBuildModeData(prev => ({
+                                      ...prev,
+                                      positions: {
+                                        ...prev.positions,
+                                        time: prev.positions[sourceField],
+                                        [sourceField]: prev.positions.time
+                                      },
+                                      displayValues: {
+                                        ...prev.displayValues!,
+                                        time: prev.displayValues[sourceField],
+                                        [sourceField]: prev.displayValues.time
+                                      }
+                                    }));
+                                  }
+                                }}
+                              >
+                                {buildModeData.positions.time.length > 0 ? (
+                                  <div 
+                                    draggable
+                                    onDragStart={(e) => {
+                                      e.dataTransfer.setData("sourceField", "time");
+                                      e.dataTransfer.setData("sourceValue", buildModeData.displayValues.time);
+                                    }}
+                                    className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
+                                  >
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-xs text-blue-500 dark:text-blue-400 font-mono">[Pos {buildModeData.positions.time.join(", ")}]</span>
+                                      <button
+                                        onClick={() => setBuildModeData(prev => ({ 
+                                          ...prev, 
+                                          positions: { ...prev.positions, time: [] },
+                                          displayValues: { ...prev.displayValues!, time: "" }
+                                        }))}
+                                        className="hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded p-0.5"
+                                        data-testid="delete-time"
+                                        title="Delete all"
+                                      >
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                    <span className="font-medium text-xs">{buildModeData.displayValues.time}</span>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      const textarea = importDataTextareaRef.current;
+                                      if (textarea) {
+                                        const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd).trim();
+                                        const firstLine = textarea.value.trim().split('\n')[0] || "";
+                                        if (selectedText && firstLine) {
+                                          const selectedWords = selectedText.split(/\s+/);
+                                          const words = firstLine.split(/\t+/).flatMap(part => part.split(/\s+/)).filter(w => w.trim());
+                                          const newPositions = selectedWords.map(word => words.findIndex(w => w === word || w.includes(word) || word.includes(w))).filter(p => p >= 0);
+                                          if (newPositions.length > 0) {
+                                            setBuildModeData(prev => ({ 
+                                              ...prev,
+                                              sampleLine: firstLine,
+                                              positions: { ...prev.positions, time: [...prev.positions.time, ...newPositions] },
+                                              displayValues: { ...prev.displayValues!, time: prev.displayValues.time ? `${prev.displayValues.time} ${selectedText}` : selectedText }
+                                            }));
+                                          } else {
+                                            alert("Could not find selected text in first line!");
+                                          }
+                                        }
+                                      }
+                                    }}
+                                    className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    data-testid="add-time"
+                                    title="Select text and click +"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </td>
+
+                              {/* Order Column */}
+                              <td 
+                                className="px-2 py-2"
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  const sourceField = e.dataTransfer.getData("sourceField") as keyof typeof buildModeData.positions;
+                                  if (sourceField && sourceField !== "order") {
+                                    // Swap: exchange data between source and destination
+                                    setBuildModeData(prev => ({
+                                      ...prev,
+                                      positions: {
+                                        ...prev.positions,
+                                        order: prev.positions[sourceField],
+                                        [sourceField]: prev.positions.order
+                                      },
+                                      displayValues: {
+                                        ...prev.displayValues!,
+                                        order: prev.displayValues[sourceField],
+                                        [sourceField]: prev.displayValues.order
+                                      }
+                                    }));
+                                  }
+                                }}
+                              >
+                                {buildModeData.positions.order.length > 0 ? (
+                                  <div 
+                                    draggable
+                                    onDragStart={(e) => {
+                                      e.dataTransfer.setData("sourceField", "order");
+                                      e.dataTransfer.setData("sourceValue", buildModeData.displayValues.order);
+                                    }}
+                                    className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
+                                  >
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-xs text-blue-500 dark:text-blue-400 font-mono">[Pos {buildModeData.positions.order.join(", ")}]</span>
+                                      <button
+                                        onClick={() => setBuildModeData(prev => ({ 
+                                          ...prev, 
+                                          positions: { ...prev.positions, order: [] },
+                                          displayValues: { ...prev.displayValues!, order: "" }
+                                        }))}
+                                        className="hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded p-0.5"
+                                        data-testid="delete-order"
+                                        title="Delete all"
+                                      >
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                    <span className="font-medium text-xs">{buildModeData.displayValues.order}</span>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      const textarea = importDataTextareaRef.current;
+                                      if (textarea) {
+                                        const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd).trim();
+                                        const firstLine = textarea.value.trim().split('\n')[0] || "";
+                                        if (selectedText && firstLine) {
+                                          const selectedWords = selectedText.split(/\s+/);
+                                          const words = firstLine.split(/\t+/).flatMap(part => part.split(/\s+/)).filter(w => w.trim());
+                                          const newPositions = selectedWords.map(word => words.findIndex(w => w === word || w.includes(word) || word.includes(w))).filter(p => p >= 0);
+                                          if (newPositions.length > 0) {
+                                            setBuildModeData(prev => ({ 
+                                              ...prev,
+                                              sampleLine: firstLine,
+                                              positions: { ...prev.positions, order: [...prev.positions.order, ...newPositions] },
+                                              displayValues: { ...prev.displayValues!, order: prev.displayValues.order ? `${prev.displayValues.order} ${selectedText}` : selectedText }
+                                            }));
+                                          } else {
+                                            alert("Could not find selected text in first line!");
+                                          }
+                                        }
+                                      }
+                                    }}
+                                    className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    data-testid="add-order"
+                                    title="Select text and click +"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </td>
+
+                              {/* Symbol Column */}
+                              <td 
+                                className="px-2 py-2"
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  const sourceField = e.dataTransfer.getData("sourceField") as keyof typeof buildModeData.positions;
+                                  if (sourceField && sourceField !== "symbol") {
+                                    // Swap: exchange data between source and destination
+                                    setBuildModeData(prev => ({
+                                      ...prev,
+                                      positions: {
+                                        ...prev.positions,
+                                        symbol: prev.positions[sourceField],
+                                        [sourceField]: prev.positions.symbol
+                                      },
+                                      displayValues: {
+                                        ...prev.displayValues!,
+                                        symbol: prev.displayValues[sourceField],
+                                        [sourceField]: prev.displayValues.symbol
+                                      }
+                                    }));
+                                  }
+                                }}
+                              >
+                                {buildModeData.positions.symbol.length > 0 ? (
+                                  <div 
+                                    draggable
+                                    onDragStart={(e) => {
+                                      e.dataTransfer.setData("sourceField", "symbol");
+                                      e.dataTransfer.setData("sourceValue", buildModeData.displayValues.symbol);
+                                    }}
+                                    className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
+                                  >
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-xs text-blue-500 dark:text-blue-400 font-mono">[Pos {buildModeData.positions.symbol.join(", ")}]</span>
+                                      <button
+                                        onClick={() => setBuildModeData(prev => ({ 
+                                          ...prev, 
+                                          positions: { ...prev.positions, symbol: [] },
+                                          displayValues: { ...prev.displayValues!, symbol: "" }
+                                        }))}
+                                        className="hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded p-0.5"
+                                        data-testid="delete-symbol"
+                                        title="Delete all"
+                                      >
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                    <span className="font-medium text-xs">{buildModeData.displayValues.symbol}</span>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      const textarea = importDataTextareaRef.current;
+                                      if (textarea) {
+                                        const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd).trim();
+                                        const firstLine = textarea.value.trim().split('\n')[0] || "";
+                                        if (selectedText && firstLine) {
+                                          const selectedWords = selectedText.split(/\s+/);
+                                          const words = firstLine.split(/\t+/).flatMap(part => part.split(/\s+/)).filter(w => w.trim());
+                                          const newPositions = selectedWords.map(word => words.findIndex(w => w === word || w.includes(word) || word.includes(w))).filter(p => p >= 0);
+                                          if (newPositions.length > 0) {
+                                            setBuildModeData(prev => ({ 
+                                              ...prev,
+                                              sampleLine: firstLine,
+                                              positions: { ...prev.positions, symbol: [...prev.positions.symbol, ...newPositions] },
+                                              displayValues: { ...prev.displayValues!, symbol: prev.displayValues.symbol ? `${prev.displayValues.symbol} ${selectedText}` : selectedText }
+                                            }));
+                                          } else {
+                                            alert("Could not find selected text in first line!");
+                                          }
+                                        }
+                                      }
+                                    }}
+                                    className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    data-testid="add-symbol"
+                                    title="Select text and click +"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </td>
+
+                              {/* Type Column */}
+                              <td 
+                                className="px-2 py-2"
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  const sourceField = e.dataTransfer.getData("sourceField") as keyof typeof buildModeData.positions;
+                                  if (sourceField && sourceField !== "type") {
+                                    // Swap: exchange data between source and destination
+                                    setBuildModeData(prev => ({
+                                      ...prev,
+                                      positions: {
+                                        ...prev.positions,
+                                        type: prev.positions[sourceField],
+                                        [sourceField]: prev.positions.type
+                                      },
+                                      displayValues: {
+                                        ...prev.displayValues!,
+                                        type: prev.displayValues[sourceField],
+                                        [sourceField]: prev.displayValues.type
+                                      }
+                                    }));
+                                  }
+                                }}
+                              >
+                                {buildModeData.positions.type.length > 0 ? (
+                                  <div 
+                                    draggable
+                                    onDragStart={(e) => {
+                                      e.dataTransfer.setData("sourceField", "type");
+                                      e.dataTransfer.setData("sourceValue", buildModeData.displayValues.type);
+                                    }}
+                                    className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
+                                  >
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-xs text-blue-500 dark:text-blue-400 font-mono">[Pos {buildModeData.positions.type.join(", ")}]</span>
+                                      <button
+                                        onClick={() => setBuildModeData(prev => ({ 
+                                          ...prev, 
+                                          positions: { ...prev.positions, type: [] },
+                                          displayValues: { ...prev.displayValues!, type: "" }
+                                        }))}
+                                        className="hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded p-0.5"
+                                        data-testid="delete-type"
+                                        title="Delete all"
+                                      >
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                    <span className="font-medium text-xs">{buildModeData.displayValues.type}</span>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      const textarea = importDataTextareaRef.current;
+                                      if (textarea) {
+                                        const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd).trim();
+                                        const firstLine = textarea.value.trim().split('\n')[0] || "";
+                                        if (selectedText && firstLine) {
+                                          const selectedWords = selectedText.split(/\s+/);
+                                          const words = firstLine.split(/\t+/).flatMap(part => part.split(/\s+/)).filter(w => w.trim());
+                                          const newPositions = selectedWords.map(word => words.findIndex(w => w === word || w.includes(word) || word.includes(w))).filter(p => p >= 0);
+                                          if (newPositions.length > 0) {
+                                            setBuildModeData(prev => ({ 
+                                              ...prev,
+                                              sampleLine: firstLine,
+                                              positions: { ...prev.positions, type: [...prev.positions.type, ...newPositions] },
+                                              displayValues: { ...prev.displayValues!, type: prev.displayValues.type ? `${prev.displayValues.type} ${selectedText}` : selectedText }
+                                            }));
+                                          } else {
+                                            alert("Could not find selected text in first line!");
+                                          }
+                                        }
+                                      }
+                                    }}
+                                    className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    data-testid="add-type"
+                                    title="Select text and click +"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </td>
+
+                              {/* Qty Column */}
+                              <td 
+                                className="px-2 py-2"
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  const sourceField = e.dataTransfer.getData("sourceField") as keyof typeof buildModeData.positions;
+                                  if (sourceField && sourceField !== "qty") {
+                                    // Swap: exchange data between source and destination
+                                    setBuildModeData(prev => ({
+                                      ...prev,
+                                      positions: {
+                                        ...prev.positions,
+                                        qty: prev.positions[sourceField],
+                                        [sourceField]: prev.positions.qty
+                                      },
+                                      displayValues: {
+                                        ...prev.displayValues!,
+                                        qty: prev.displayValues[sourceField],
+                                        [sourceField]: prev.displayValues.qty
+                                      }
+                                    }));
+                                  }
+                                }}
+                              >
+                                {buildModeData.positions.qty.length > 0 ? (
+                                  <div 
+                                    draggable
+                                    onDragStart={(e) => {
+                                      e.dataTransfer.setData("sourceField", "qty");
+                                      e.dataTransfer.setData("sourceValue", buildModeData.displayValues.qty);
+                                    }}
+                                    className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
+                                  >
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-xs text-blue-500 dark:text-blue-400 font-mono">[Pos {buildModeData.positions.qty.join(", ")}]</span>
+                                      <button
+                                        onClick={() => setBuildModeData(prev => ({ 
+                                          ...prev, 
+                                          positions: { ...prev.positions, qty: [] },
+                                          displayValues: { ...prev.displayValues!, qty: "" }
+                                        }))}
+                                        className="hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded p-0.5"
+                                        data-testid="delete-qty"
+                                        title="Delete all"
+                                      >
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                    <span className="font-medium text-xs">{buildModeData.displayValues.qty}</span>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      const textarea = importDataTextareaRef.current;
+                                      if (textarea) {
+                                        const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd).trim();
+                                        const firstLine = textarea.value.trim().split('\n')[0] || "";
+                                        if (selectedText && firstLine) {
+                                          const selectedWords = selectedText.split(/\s+/);
+                                          const words = firstLine.split(/\t+/).flatMap(part => part.split(/\s+/)).filter(w => w.trim());
+                                          const newPositions = selectedWords.map(word => words.findIndex(w => w === word || w.includes(word) || word.includes(w))).filter(p => p >= 0);
+                                          if (newPositions.length > 0) {
+                                            setBuildModeData(prev => ({ 
+                                              ...prev,
+                                              sampleLine: firstLine,
+                                              positions: { ...prev.positions, qty: [...prev.positions.qty, ...newPositions] },
+                                              displayValues: { ...prev.displayValues!, qty: prev.displayValues.qty ? `${prev.displayValues.qty} ${selectedText}` : selectedText }
+                                            }));
+                                          } else {
+                                            alert("Could not find selected text in first line!");
+                                          }
+                                        }
+                                      }
+                                    }}
+                                    className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    data-testid="add-qty"
+                                    title="Select text and click +"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </td>
+
+                              {/* Price Column */}
+                              <td 
+                                className="px-2 py-2"
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  const sourceField = e.dataTransfer.getData("sourceField") as keyof typeof buildModeData.positions;
+                                  if (sourceField && sourceField !== "price") {
+                                    // Swap: exchange data between source and destination
+                                    setBuildModeData(prev => ({
+                                      ...prev,
+                                      positions: {
+                                        ...prev.positions,
+                                        price: prev.positions[sourceField],
+                                        [sourceField]: prev.positions.price
+                                      },
+                                      displayValues: {
+                                        ...prev.displayValues!,
+                                        price: prev.displayValues[sourceField],
+                                        [sourceField]: prev.displayValues.price
+                                      }
+                                    }));
+                                  }
+                                }}
+                              >
+                                {buildModeData.positions.price.length > 0 ? (
+                                  <div 
+                                    draggable
+                                    onDragStart={(e) => {
+                                      e.dataTransfer.setData("sourceField", "price");
+                                      e.dataTransfer.setData("sourceValue", buildModeData.displayValues.price);
+                                    }}
+                                    className="inline-flex flex-col gap-0.5 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs cursor-move"
+                                  >
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-xs text-blue-500 dark:text-blue-400 font-mono">[Pos {buildModeData.positions.price.join(", ")}]</span>
+                                      <button
+                                        onClick={() => setBuildModeData(prev => ({ 
+                                          ...prev, 
+                                          positions: { ...prev.positions, price: [] },
+                                          displayValues: { ...prev.displayValues!, price: "" }
+                                        }))}
+                                        className="hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded p-0.5"
+                                        data-testid="delete-price"
+                                        title="Delete all"
+                                      >
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                    <span className="font-medium text-xs">{buildModeData.displayValues.price}</span>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      const textarea = importDataTextareaRef.current;
+                                      if (textarea) {
+                                        const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd).trim();
+                                        const firstLine = textarea.value.trim().split('\n')[0] || "";
+                                        if (selectedText && firstLine) {
+                                          const selectedWords = selectedText.split(/\s+/);
+                                          const words = firstLine.split(/\t+/).flatMap(part => part.split(/\s+/)).filter(w => w.trim());
+                                          const newPositions = selectedWords.map(word => words.findIndex(w => w === word || w.includes(word) || word.includes(w))).filter(p => p >= 0);
+                                          if (newPositions.length > 0) {
+                                            setBuildModeData(prev => ({ 
+                                              ...prev,
+                                              sampleLine: firstLine,
+                                              positions: { ...prev.positions, price: [...prev.positions.price, ...newPositions] },
+                                              displayValues: { ...prev.displayValues!, price: prev.displayValues.price ? `${prev.displayValues.price} ${selectedText}` : selectedText }
+                                            }));
+                                          } else {
+                                            alert("Could not find selected text in first line!");
+                                          }
+                                        }
+                                      }
+                                    }}
+                                    className="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    data-testid="add-price"
+                                    title="Select text and click +"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Saved Formats Table - Shows all saved formats with their original trade lines */}
+                      {Object.keys(savedFormats).length > 0 && (
+                        <div className="mt-4 space-y-2">
+                          <button
+                            onClick={() => setShowSavedFormatsDropdown(!showSavedFormatsDropdown)}
+                            className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors w-full"
+                            data-testid="button-toggle-saved-formats"
+                          >
+                            <ChevronDown 
+                              className={`w-3 h-3 transition-transform ${showSavedFormatsDropdown ? "rotate-180" : ""}`}
+                            />
+                            📚 Saved Formats ({Object.keys(savedFormats).length})
+                          </button>
+                          {showSavedFormatsDropdown && (
+                          <div className="bg-background rounded border overflow-hidden">
+                            <table className="w-full text-xs">
+                              <thead>
+                                <tr className="bg-muted/50 border-b">
+                                  <th className="px-3 py-2 text-left font-semibold">Format Label</th>
+                                  <th className="px-3 py-2 text-left font-semibold">Original Trade Line</th>
+                                  <th className="px-3 py-2 text-left font-semibold">Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {Object.entries(savedFormats).map(([formatId, format]) => {
+                                  const displayLabel = format.label || formatId;
+                                  return (
+                                  <tr key={formatId} className="border-b last:border-b-0 hover-elevate">
+                                    <td className="px-3 py-2 font-medium">{displayLabel}</td>
+                                    <td className="px-3 py-2 font-mono text-muted-foreground truncate max-w-md">
+                                      {format.sampleLine || "No sample line saved"}
+                                    </td>
+                                    <td className="px-3 py-2">
+                                      <div className="flex items-center gap-2">
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          className="h-7 text-xs"
+                                          onClick={() => {
+                                            // Set user's manual selection
+                                            setUserSelectedFormatId(formatId);
+                                            setBuildModeData(format);
+                                            setActiveFormat(format);
+                                            setDetectedFormatLabel(displayLabel);
+                                            console.log("✅ Format loaded from table:", displayLabel, format);
+                                          }}
+                                          data-testid={`button-use-format-${displayLabel}`}
+                                        >
+                                          Use
+                                        </Button>
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          className="h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                                          disabled={!currentUser?.userId}
+                                          title={!currentUser?.userId ? "Log in to delete formats" : ""}
+                                          onClick={async () => {if (confirm(`Delete format "${displayLabel}"?`)) {
+                                              const newFormats = { ...savedFormats };
+                                              delete newFormats[formatId];
+                                              setSavedFormats(newFormats);
+                                              await saveFormatsToAWS(newFormats);
+                                              if (activeFormat === format) {
+                                                setActiveFormat(null);
+                                              }
+                                              // Clear user selection if deleted format was selected
+                                              if (userSelectedFormatId === formatId) {
+                                                setUserSelectedFormatId(null);
+                                              }
+                                              console.log("🗑️ Format deleted:", displayLabel);
+                                            }
+                                          }}
+                                          data-testid={`button-delete-format-${displayLabel}`}
+                                        >
+                                          <X className="w-3 h-3" />
+                                        </Button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <>
+                      <div className="text-xs font-medium text-muted-foreground mb-2">
+                        Live Demo - How Your First Trade Will Import:
+                      </div>
+                      <div className="bg-background rounded border overflow-hidden">
+                        <table className="w-full font-mono text-xs">
+                          <thead>
+                            <tr className="bg-blue-50 dark:bg-blue-950 border-b border-blue-200 dark:border-blue-800">
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Time</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Order</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Symbol</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Type</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Qty</th>
+                              <th className="px-2 py-2 text-left text-blue-600 dark:text-blue-400 font-semibold">Price</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {(() => {
+                              // Parse first trade from pasted data
+                              if (!importData.trim()) {
+                                return (
+                                  <tr className="border-b last:border-b-0">
+                                    <td colSpan={6} className="px-2 py-3 text-center text-muted-foreground italic">
+                                      Paste trade data below to see live preview...
+                                    </td>
+                                  </tr>
+                                );
+                              }
+
+                              // Use format-based parser if active format is set, otherwise use default parser
+                              const { trades, errors } = activeFormat 
+                                ? parseTradesWithFormat(importData, activeFormat)
+                                : parseBrokerTrades(importData);
+
+                              if (trades.length === 0) {
+                                return (
+                                  <tr className="border-b last:border-b-0">
+                                    <td colSpan={6} className="px-2 py-3 text-center text-orange-600 dark:text-orange-400">
+                                      ⚠️ Unable to parse - check format
+                                    </td>
+                                  </tr>
+                                );
+                              }
+
+                              const firstTrade = trades[0];
+                              return (
+                                <tr className="border-b last:border-b-0 bg-green-50/50 dark:bg-green-950/20">
+                                  <td className="px-2 py-2 text-foreground">{firstTrade.time}</td>
+                                  <td className="px-2 py-2 text-foreground">{firstTrade.order}</td>
+                                  <td className="px-2 py-2 text-foreground">{firstTrade.symbol}</td>
+                                  <td className="px-2 py-2 text-foreground">{firstTrade.type}</td>
+                                  <td className="px-2 py-2 text-foreground">{firstTrade.qty}</td>
+                                  <td className="px-2 py-2 text-foreground">{firstTrade.price}</td>
+                                </tr>
+                              );
+                            })()}
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="text-xs text-muted-foreground">
+                          ✨ This preview updates automatically as you paste - check your format before importing
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <select
+                            className="h-9 px-3 text-sm border rounded-md bg-background disabled:opacity-50"
+                            onChange={(e) => {
+                              if (e.target.value) {
+                                const formatId = e.target.value;
+                                const loadedFormat = savedFormats[formatId];
+
+                                // Set user's manual selection to prevent auto-override
+                                setUserSelectedFormatId(formatId);
+
+                                // Recalculate positions based on current textarea's first line
+                                const textarea = importDataTextareaRef.current;
+                                if (textarea && loadedFormat) {
+                                  const currentFirstLine = textarea.value.trim().split('\n')[0] || "";
+                                  if (currentFirstLine) {
+                                    const recalculatedFormat = recalculateFormatPositions(loadedFormat, currentFirstLine);
+                                    setBuildModeData(recalculatedFormat);
+                                    setActiveFormat(recalculatedFormat);
+                                    setDetectedFormatLabel(loadedFormat.label || formatId);
+                                  } else {
+                                    setBuildModeData(loadedFormat);
+                                    setActiveFormat(loadedFormat);
+                                    setDetectedFormatLabel(loadedFormat.label || formatId);
+                                  }
+                                } else {
+                                  setBuildModeData(loadedFormat);
+                                  setActiveFormat(loadedFormat);
+                                  setDetectedFormatLabel(loadedFormat.label || formatId);
+                                }
+                                setIsBuildMode(true);
+                                console.log("✅ Format manually selected:", loadedFormat.label || formatId, loadedFormat);
+                              }
+                            }}
+                            defaultValue=""
+                            data-testid="select-load-format"
+                            disabled={formatsLoading}
+                          >
+                            <option value="">
+                              {formatsLoading 
+                                ? "Loading formats..." 
+                                : `Load Saved Format${Object.keys(savedFormats).length > 0 ? ` (${Object.keys(savedFormats).length})` : ""}`}
+                            </option>
+                            {Object.entries(savedFormats).map(([formatId, format]) => (
+                              <option key={formatId} value={formatId}>
+                                {format.label || formatId}
+                              </option>
+                            ))}
+                          </select>
+                          {currentUser?.userId && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-9 px-2"
+                              onClick={async () => {
+                                console.log("🔃 Manually refreshing formats...");
+                                setFormatsLoading(true);
+                                try {
+                                  const idToken = await getCognitoToken();
+                                  if (idToken) {
+                                    const response = await fetch(`/api/user-formats/${currentUser.userId}`, {
+                                      headers: { 'Authorization': `Bearer ${idToken}` }
+                                    });
+                                    if (response.ok) {
+                                      const formats = await response.json();
+                                      console.log("✅ Formats refreshed:", Object.keys(formats).length);
+                                      setSavedFormats(formats);
+                                      toast({
+                                        title: "Refreshed",
+                                        description: `Loaded ${Object.keys(formats).length} format(s)`
+                                      });
+                                    }
+                                  }
+                                } catch (err) {
+                                  console.error("❌ Refresh failed:", err);
+                                  toast({
+                                    title: "Refresh Failed",
+                                    description: "Could not load formats",
+                                    variant: "destructive"
+                                  });
+                                } finally {
+                                  setFormatsLoading(false);
+                                }
+                              }}
+                              data-testid="button-refresh-formats"
+                              title="Refresh saved formats"
+                            >
+                              <RotateCw className="w-3.5 h-3.5" />
+                            </Button>
+                          )}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-1.5"
+                            onClick={() => {
+                              // Auto-extract from first line - using WORD POSITIONS not character positions
+                              const firstLine = importData.trim().split('\n')[0] || "";
+                              const parts = firstLine.split(/\s+/);
+
+                              // Find positions by matching patterns (track found state to avoid reusing parts)
+                              let timePos = -1, orderPos = -1, symbolPos = -1, typePos = -1, qtyPos = -1, pricePos = -1;
+                              let timeVal = "", orderVal = "", symbolVal = "", typeVal = "", qtyVal = "", priceVal = "";
+                              let foundTime = false, foundOrder = false, foundSymbol = false;
+
+                              // Identify price and qty first (they're at the end) - use array INDEX, not character position!
+                              const lastIdx = parts.length - 1;
+                              if (lastIdx >= 0 && /^\d+(\.\d+)?$/.test(parts[lastIdx])) {
+                                qtyPos = lastIdx;
+                                qtyVal = parts[lastIdx];
+                              }
+                              if (lastIdx >= 1 && /^\d+(\.\d+)?$/.test(parts[lastIdx - 1])) {
+                                pricePos = lastIdx - 1;
+                                priceVal = parts[lastIdx - 1];
+                              }
+
+                              // Now scan left to right for time, order, symbol, type
+                              for (let i = 0; i < parts.length; i++) {
+                                const part = parts[i];
+
+                                // Time pattern: HH:MM:SS - use index i, not indexOf!
+                                if (!foundTime && /^\d{1,2}:\d{2}:\d{2}$/.test(part)) {
+                                  timePos = i;
+                                  timeVal = part;
+                                  foundTime = true;
+                                  continue;
+                                }
+
+                                // Order: BUY/SELL - use index i, not indexOf!
+                                if (!foundOrder && /^(BUY|SELL)$/i.test(part)) {
+                                  orderPos = i;
+                                  orderVal = part.toUpperCase();
+                                  foundOrder = true;
+                                  continue;
+                                }
+
+                                // Symbol: all caps, comes after order - use index i, not indexOf!
+                                if (!foundSymbol && foundOrder && /^[A-Z]+$/.test(part) && !/^(CE|PE|FUT|MIS|NRML|IOC)$/i.test(part)) {
+                                  symbolPos = i;
+                                  symbolVal = part;
+                                  foundSymbol = true;
+                                  continue;
+                                }
+
+                                // Type: (CE, PE, FUT, MIS, NRML, etc) or numbers (strike price, expiry codes) - use index i, not indexOf!
+                                if (foundSymbol && !typeVal && (/(CE|PE|FUT|NRML|MIS|IOC|CALL|PUT)$/i.test(part) || /^\d+$/.test(part))) {
+                                  typePos = i;
+                                  typeVal = part;
+                                }
+                              }
+
+                              setBuildModeData({
+                                sampleLine: firstLine,
+                                positions: {
+                                  time: timePos >= 0 ? [timePos] : [],
+                                  order: orderPos >= 0 ? [orderPos] : [],
+                                  symbol: symbolPos >= 0 ? [symbolPos] : [],
+                                  type: typePos >= 0 ? [typePos] : [],
+                                  qty: qtyPos >= 0 ? [qtyPos] : [],
+                                  price: pricePos >= 0 ? [pricePos] : []
+                                },
+                                displayValues: {
+                                  time: timeVal,
+                                  order: orderVal,
+                                  symbol: symbolVal,
+                                  type: typeVal,
+                                  qty: qtyVal,
+                                  price: priceVal
+                                }
+                              });
+                              setIsBuildMode(true);
+                              console.log("🔨 Build mode - auto-extracted from first line with CORRECT word positions", { positions: { timePos, orderPos, symbolPos, typePos, qtyPos, pricePos }, displayValues: { timeVal, orderVal, symbolVal, typeVal, qtyVal, priceVal } });
+                            }}
+                            data-testid="button-build"
+                          >
+                            <Hammer className="w-3.5 h-3.5" />
+                            Build
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <Textarea
+                  ref={importDataTextareaRef}
+                  id="paste-data"
+                  placeholder="Paste your trade data..."
+                  value={importData}
+                  onChange={(e) => setImportData(e.target.value)}
+                  className="min-h-32 text-xs"
+                  data-testid="textarea-paste-data"
+                />
+              </div>
+
+              {importError && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-3">
+                  <p className="text-xs text-red-600 dark:text-red-400">{importError}</p>
+                </div>
+              )}
+
+              {parseErrors.length > 0 && (
+                <div className="bg-slate-50 dark:bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-200 dark:border-slate-700 rounded-md p-3 max-h-40 overflow-y-auto custom-thin-scrollbar">
+                  <p className="text-xs font-medium text-slate-700 dark:text-slate-300 mb-2">
+                    {parseErrors.length} line(s) could not be parsed
+                  </p>
+                  <div className="space-y-2">
+                    {parseErrors.map((error, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded p-2 text-xs border border-yellow-100"
+                      >
+                        <div className="flex justify-between items-start gap-2">
+                          <span className="font-mono text-yellow-700">
+                            Line {error.line}:
+                          </span>
+                          <span className="text-red-600 font-medium">
+                            {error.reason}
+                          </span>
+                        </div>
+                        <div className="mt-1 text-gray-600 font-mono truncate">
+                          {error.content}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-200 dark:border-slate-700">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setShowImportModal(false);
+                    setImportData("");
+                    setImportError("");
+                    setParseErrors([]);
+                    // Reset user format selection for fresh start next time
+                    setUserSelectedFormatId(null);
+                  }}
+                  className="h-8 text-xs"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  size="sm"
+                  onClick={handleImportData}
+                  className="h-8 text-xs"
+                >
+                  Import
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Trading Challenge Coming Soon Modal */}
+        <Dialog open={showTradingChallengeModal} onOpenChange={setShowTradingChallengeModal}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader className="text-center">
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+                  <Trophy className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              <DialogTitle className="text-xl font-bold text-center">Trading Challenge</DialogTitle>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
+                Coming Soon
+              </p>
+            </DialogHeader>
+            <div className="py-4 space-y-3">
+              <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                <Users className="h-5 w-5 text-blue-500" />
+                <div>
+                  <p className="text-sm font-medium">Compete with Traders</p>
+                  <p className="text-xs text-gray-500">Join 7-day trading challenges</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                <BarChart3 className="h-5 w-5 text-green-500" />
+                <div>
+                  <p className="text-sm font-medium">Live P&L Tracking</p>
+                  <p className="text-xs text-gray-500">Real-time ranking based on your trades</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                <Trophy className="h-5 w-5 text-amber-500" />
+                <div>
+                  <p className="text-sm font-medium">Leaderboard Rankings</p>
+                  <p className="text-xs text-gray-500">See your position among all participants</p>
+                </div>
+              </div>
+            </div>
+            <Button 
+              onClick={() => setShowTradingChallengeModal(false)}
+              className="w-full"
+              data-testid="button-close-challenge-modal"
+            >
+              Got It
+            </Button>
+          </DialogContent>
+        </Dialog>
+
+        <TradingJournalModal open={!!showJournalInfoModal} onOpenChange={setShowJournalInfoModal} isAutoPopup={showJournalInfoModal === "auto"} />
+
+
+        {/* Paper Trading (Demo Trading) Modal - Minimalist Design */}
+        <Dialog open={showPaperTradingModal} onOpenChange={setShowPaperTradingModal}>
+          <DialogContent className="w-full h-auto sm:max-w-2xl sm:max-h-[85vh] rounded-none sm:rounded-lg overflow-hidden p-0 bg-white sm:dark:bg-gray-900 hidden sm:flex flex-col">
+            {/* Mobile Wallet-Style View */}
+            <div className="flex flex-col h-full sm:hidden">
+              {/* Hero Balance Section - Dark gradient background */}
+              <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-5 pt-8 pb-6 relative">
+
+              <div className="text-gray-400 text-xs mb-1">P&L</div>
+              <div className={`text-3xl font-bold mb-2 ${paperTradingTotalPnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`} data-testid="paper-trading-pnl-mobile">
+                {hidePositionDetails ? '***' : `₹${paperTradingTotalPnl.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
+              </div>
+              <div className="text-sm flex items-center gap-1 text-gray-400">
+                <span>{hidePositionDetails ? '***' : `₹${paperTradingCapital.toLocaleString('en-IN')}`}</span>
+                <span className="text-gray-500 text-xs">Total Capital</span>
+              </div>
+
+                {/* Quick Stats */}
+                <div className="flex items-center gap-4 mt-4 text-xs">
+                  <div className="flex items-center gap-1.5 text-gray-400">
+                    <span>Positions:</span>
+                    <span className="text-white font-medium">{paperPositions.filter(p => p.isOpen).length}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-gray-400">
+                    <span>Trades:</span>
+                    <span className="text-white font-medium">{paperTradeHistory.length}</span>
+                  </div>
+                  <Button
+                    onClick={() => setHidePositionDetails(!hidePositionDetails)}
+                    size="icon"
+                    variant="ghost"
+                    className="h-6 w-6 ml-auto text-gray-400 hover:text-slate-900 dark:hover:text-white"
+                    data-testid="button-toggle-visibility-mobile"
+                  >
+                    {hidePositionDetails ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </Button>
+                </div>
+              </div>
+
+              {/* Content Area - Scrollable */}
+              <div className="flex-1 overflow-y-auto bg-white dark:bg-gray-950 custom-thin-scrollbar">
+                {/* Trade Entry Card */}
+                <div className="p-4">
+                  <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-100 dark:border-gray-800">
+                    <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">New Trade</div>
+
+                    {/* Instrument Search */}
+                    <div className="relative mb-3">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Input
+                        type="text"
+                        placeholder="Search instrument..."
+                        value={paperTradeSymbolSearch}
+                        onChange={(e) => {
+                          const query = e.target.value;
+                          if (!query && paperTradeSymbol && paperTradingEventSourcesRef.current.has(paperTradeSymbol)) {
+                            const stream = paperTradingEventSourcesRef.current.get(paperTradeSymbol);
+                            if (stream) stream.close();
+                            paperTradingEventSourcesRef.current.delete(paperTradeSymbol);
+                            setPaperTradingWsStatus('disconnected');
+                          }
+                          setPaperTradeSymbolSearch(query);
+                          setPaperTradeSymbol("");
+                          setPaperTradeCurrentPrice(null);
+                          if (query.length > 0) {
+                            searchPaperTradingInstruments(query);
+                          } else {
+                            setPaperTradeSearchResults([]);
+                          }
+                        }}
+                        className="h-10 pl-10 text-sm rounded-lg bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                        data-testid="input-paper-trade-search-mobile"
+                      />
+                      {/* Search Dropdown */}
+                      {paperTradeSymbolSearch && !paperTradeSymbol && (
+                        <div className="absolute z-[100] left-0 right-0 mt-1 max-h-48 overflow-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
+                          {paperTradeSearchLoading ? (
+                            <div className="px-4 py-3 text-sm text-gray-500 flex items-center gap-2">
+                              <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                              Searching...
+                            </div>
+                          ) : paperTradeSearchResults.length === 0 ? (
+                            <div className="px-4 py-3 text-sm text-gray-500">No results found</div>
+                          ) : (
+                            paperTradeSearchResults.slice(0, 6).map((stock, idx) => (
+                              <button
+                                key={`${stock.symbol}-${stock.exchange}-${idx}`}
+                                onClick={() => {
+                                  setSelectedPaperTradingInstrument(stock);
+                                  setPaperTradeSymbol(stock.symbol);
+                                  setPaperTradeSymbolSearch(stock.symbol);
+                                  if (paperTradeType === 'STOCK') {
+                                    setPaperTradeQuantity("");
+                                  } else {
+                                    setPaperTradeLotInput("1");
+                                  }
+                                  fetchPaperTradePrice(stock);
+                                }}
+                                className="w-full text-left px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center justify-between text-sm border-b border-gray-100 dark:border-gray-800 last:border-0"
+                                data-testid={`select-stock-mobile-${stock.symbol}`}
+                              >
+                                <span className="font-medium">{stock.symbol}</span>
+                                <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">{stock.exchange}</span>
+                              </button>
+                            ))
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Type and Option Chain Row */}
+                    <div className="flex gap-2 mb-3">
+                      <Select 
+                        value={paperTradeType} 
+                        onValueChange={(v) => {
+                          const newType = v as 'STOCK' | 'FUTURES' | 'OPTIONS' | 'MCX';
+                          if (paperTradeSymbol && paperTradingEventSourcesRef.current.has(paperTradeSymbol)) {
+                            const stream = paperTradingEventSourcesRef.current.get(paperTradeSymbol);
+                            if (stream) stream.close();
+                            paperTradingEventSourcesRef.current.delete(paperTradeSymbol);
+                          }
+                          setPaperTradeType(newType);
+                          setPaperTradeSymbol("");
+                          setPaperTradeSymbolSearch("");
+                          setPaperTradeSearchResults([]);
+                          setPaperTradeCurrentPrice(null);
+                          setSelectedPaperTradingInstrument(null);
+                          setPaperTradeQuantity("");
+                          setPaperTradeLotInput("");
+                          setPaperTradingWsStatus('disconnected');
+                        }}
+                      >
+                        <SelectTrigger className="flex-1 h-10 text-sm rounded-lg" data-testid="select-paper-trade-type-mobile">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="STOCK">Stock</SelectItem>
+                          <SelectItem value="FUTURES">Futures</SelectItem>
+                          <SelectItem value="OPTIONS">Options</SelectItem>
+                          <SelectItem value="MCX">MCX</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        onClick={() => {
+                          fetchOptionChainData();
+                          setShowOptionChain(true);
+                        }}
+                        size="icon"
+                        variant="outline"
+                        className="h-10 w-10 rounded-lg"
+                        data-testid="button-option-chain-mobile"
+                      >
+                        <Grid3X3 className="h-4 w-4" />
+                      </Button>
+                    </div>
+
+                    {/* Quantity and Price Row */}
+                    <div className="flex gap-2 mb-4">
+                      {paperTradeType === 'STOCK' ? (
+                        <Input
+                          type="number"
+                          placeholder="Quantity"
+                          value={paperTradeQuantity}
+                          onChange={(e) => setPaperTradeQuantity(e.target.value)}
+                          className="flex-1 h-10 text-sm text-center rounded-lg"
+                          min="1"
+                          data-testid="input-paper-trade-qty-mobile"
+                        />
+                      ) : (
+                        <Input
+                          type="number"
+                          placeholder="Lots"
+                          value={paperTradeLotInput}
+                          onChange={(e) => setPaperTradeLotInput(e.target.value)}
+                          className="flex-1 h-10 text-sm text-center rounded-lg"
+                          min="1"
+                          data-testid="input-paper-trade-lots-mobile"
+                        />
+                      )}
+                      <div className="flex-1 h-10 flex items-center justify-center text-sm font-medium border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        {paperTradePriceLoading ? (
+                          <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                        ) : paperTradeCurrentPrice ? (
+                          <span>₹{paperTradeCurrentPrice.toFixed(2)}</span>
+                        ) : (
+                          <span className="text-gray-500 dark:text-gray-400">Price</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Trade Value Display */}
+                    {paperTradeSymbol && paperTradeCurrentPrice && (() => {
+                      const inputValue = paperTradeType === 'STOCK' ? paperTradeQuantity : paperTradeLotInput;
+                      if (!inputValue) return null;
+                      let quantity = parseInt(inputValue);
+                      if (paperTradeType !== 'STOCK') {
+                        const lotSize = getLotSizeForInstrument(paperTradeSymbol, paperTradeType);
+                        quantity = quantity * lotSize;
+                      }
+                      return (
+                        <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-3">
+                          Trade Value: ₹{(quantity * paperTradeCurrentPrice).toLocaleString('en-IN')}
+                        </div>
+                      );
+                    })()}
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3">
+                      {(() => {
+                        const inputValue = paperTradeType === 'STOCK' ? paperTradeQuantity : paperTradeLotInput;
+                        return (
+                          <>
+                            <Button
+                              onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }}
+                              disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
+                              className="flex-1 h-12 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-base"
+                              data-testid="button-paper-buy-mobile"
+                            >
+                              BUY
+                            </Button>
+                            <Button
+                              onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }}
+                              disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
+                              className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-base"
+                              data-testid="button-paper-sell-mobile"
+                            >
+                              SELL
+                            </Button>
+
+                            {/* Mobile SL Button with Dropdown */}
+                            <div className="relative">
+                              <Button
+                                onClick={() => setShowMobilePaperTradeSLDropdown(!showMobilePaperTradeSLDropdown)}
+                                disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
+                                variant={paperTradeSLEnabled ? "default" : "outline"}
+                                className={`h-12 w-12 rounded-xl ${paperTradeSLEnabled ? 'bg-orange-500 hover:bg-orange-600 text-white' : ''}`}
+                                data-testid="button-paper-sl-mobile"
+                              >
+                                {paperTradeSLEnabled ? <ShieldCheck className="h-5 w-5" /> : <Shield className="h-5 w-5" />}
+                              </Button>
+                              {showMobilePaperTradeSLDropdown && (
+                                <div className="absolute z-50 bottom-14 right-0 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg">
+                                  <div className="p-4 space-y-3 min-w-[240px]">
+                                    <div className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Stop Loss Configuration</div>
+                                    <div>
+                                      <label className="text-[10px] text-gray-500 uppercase">Type</label>
+                                      <Select value={paperTradeSLType} onValueChange={(v: any) => setPaperTradeSLType(v)}>
+                                        <SelectTrigger className="h-9 text-sm mt-1">
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="price">Price SL</SelectItem>
+                                          <SelectItem value="percent">% SL</SelectItem>
+                                          <SelectItem value="duration">Duration</SelectItem>
+                                          <SelectItem value="high">Candle High</SelectItem>
+                                          <SelectItem value="low">Candle Low</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+
+                                    {(paperTradeSLType === 'high' || paperTradeSLType === 'low') && (
+                                      <div>
+                                        <label className="text-[10px] text-gray-500 uppercase">Timeframe</label>
+                                        <Select value={paperTradeSLTimeframe} onValueChange={(v) => setPaperTradeSLTimeframe(v)}>
+                                          <SelectTrigger className="h-9 text-sm mt-1">
+                                            <SelectValue />
+                                          </SelectTrigger>
+                                          <SelectContent>
+                                            <SelectItem value="1m">1 Minute</SelectItem>
+                                            <SelectItem value="5m">5 Minutes</SelectItem>
+                                            <SelectItem value="15m">15 Minutes</SelectItem>
+                                            <SelectItem value="30m">30 Minutes</SelectItem>
+                                            <SelectItem value="1h">1 Hour</SelectItem>
+                                            <SelectItem value="4h">4 Hours</SelectItem>
+                                            <SelectItem value="1d">1 Day</SelectItem>
+                                          </SelectContent>
+                                        </Select>
+                                      </div>
+                                    )}
+
+                                    {paperTradeSLType === 'duration' && (
+                                      <div className="flex gap-1.5">
+                                        <Input
+                                          type="number"
+                                          placeholder="Duration"
+                                          value={paperTradeSLValue}
+                                          onChange={(e) => setPaperTradeSLValue(e.target.value)}
+                                          className="h-9 text-sm flex-1"
+                                          data-testid="input-paper-sl-duration-mobile"
+                                        />
+                                        <Select value={paperTradeSLDurationUnit} onValueChange={(v) => setPaperTradeSLDurationUnit(v)}>
+                                          <SelectTrigger className="h-9 text-sm w-20">
+                                            <SelectValue />
+                                          </SelectTrigger>
+                                          <SelectContent>
+                                            <SelectItem value="min">Min</SelectItem>
+                                            <SelectItem value="hr">Hr</SelectItem>
+                                          </SelectContent>
+                                        </Select>
+                                      </div>
+                                    )}
+
+                                    {paperTradeSLType !== 'high' && paperTradeSLType !== 'low' && paperTradeSLType !== 'duration' && (
+                                      <Input
+                                        type="number"
+                                        placeholder={paperTradeSLType === 'price' ? 'Price' : '%'}
+                                        value={paperTradeSLValue}
+                                        onChange={(e) => setPaperTradeSLValue(e.target.value)}
+                                        className="h-9 text-sm"
+                                        data-testid="input-paper-sl-value-mobile"
+                                      />
+                                    )}
+
+                                    <div className="flex gap-2 pt-1">
+                                      <Button
+                                        onClick={() => {
+                                          setPaperTradeSLEnabled(false);
+                                          setPaperTradeSLValue("");
+                                          setShowMobilePaperTradeSLDropdown(false);
+                                        }}
+                                        size="sm"
+                                        variant="outline"
+                                        className="flex-1 h-9"
+                                        data-testid="button-clear-paper-sl-mobile"
+                                      >
+                                        Clear
+                                      </Button>
+                                      <Button
+                                        onClick={() => {
+                                          if (paperTradeSLValue || paperTradeSLType === 'high' || paperTradeSLType === 'low') {
+                                            setPaperTradeSLEnabled(true);
+                                            toast({
+                                              title: "Stop Loss Set",
+                                              description: paperTradeSLType === 'price' 
+                                                ? `SL at ₹${paperTradeSLValue}` 
+                                                : paperTradeSLType === 'percent'
+                                                ? `SL at ${paperTradeSLValue}% loss`
+                                                : paperTradeSLType === 'duration'
+                                                ? `SL after ${paperTradeSLValue} ${paperTradeSLDurationUnit}`
+                                                : `SL at ${paperTradeSLTimeframe} candle ${paperTradeSLType}`
+                                            });
+                                          }
+                                          setShowMobilePaperTradeSLDropdown(false);
+                                        }}
+                                        size="sm"
+                                        className="flex-1 h-9 bg-orange-500 hover:bg-orange-600 text-white"
+                                        data-testid="button-set-paper-sl-mobile"
+                                      >
+                                        Set SL
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Open Positions Section */}
+                {paperPositions.filter(p => p.isOpen).length > 0 && (
+                  <div className="">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                        Open Positions
+                        {paperTradingWsStatus === 'connected' && <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />}
+                      </div>
+                      <Button
+                        onClick={exitAllPaperPositions}
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 px-2 text-xs text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        data-testid="button-exit-all-mobile"
+                      >
+                        Exit All
+                      </Button>
+                    </div>
+                    <div className="space-y-2">
+                      {paperPositions.filter(p => p.isOpen).map(position => {
+                        const entryTimeParts = position.entryTime.match(/(\d+):(\d+):(\d+)\s*(AM|PM)?/i);
+                        let durationStr = '-';
+                        if (entryTimeParts) {
+                          const now = new Date();
+                          const entryDate = new Date();
+                          let hours = parseInt(entryTimeParts[1]);
+                          const minutes = parseInt(entryTimeParts[2]);
+                          const seconds = parseInt(entryTimeParts[3]);
+                          const ampm = entryTimeParts[4];
+                          if (ampm) {
+                            if (ampm.toUpperCase() === 'PM' && hours !== 12) hours += 12;
+                            if (ampm.toUpperCase() === 'AM' && hours === 12) hours = 0;
+                          }
+                          entryDate.setHours(hours, minutes, seconds, 0);
+                          const diffMs = now.getTime() - entryDate.getTime();
+                          if (diffMs > 0) {
+                            const diffMins = Math.floor(diffMs / 60000);
+                            const diffHrs = Math.floor(diffMins / 60);
+                            const remainMins = diffMins % 60;
+                            durationStr = diffHrs > 0 ? `${diffHrs}h ${remainMins}m` : `${remainMins}m`;
+                          } else {
+                            durationStr = '0m';
+                          }
+                        }
+                        return (
+                          <div 
+                            key={position.id}
+                            className="bg-gray-50 dark:bg-gray-900 rounded-xl p-3 border border-gray-100 dark:border-gray-800"
+                            data-testid={`position-card-${position.symbol}`}
+                          >
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium text-sm">{position.symbol}</span>
+                                <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                                  position.action === 'BUY' 
+                                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+                                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                                }`}>
+                                  {position.action}
+                                </span>
+                              </div>
+                              <span className="text-xs text-gray-400">{durationStr}</span>
+                            </div>
+                            <div className="flex items-center justify-between text-xs">
+                              <div className="text-gray-600 dark:text-gray-400">
+                                Qty: {position.quantity} | Avg: {hidePositionDetails ? '***' : `₹${position.entryPrice.toFixed(2)}`}
+                              </div>
+                              <div className={`font-semibold ${position.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {hidePositionDetails ? '***' : `₹${position.pnl.toFixed(0)}`}
+                                <span className="text-[10px] ml-1">({position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(1)}%)</span>
+                              </div>
+                            </div>
+                            <div className="text-[10px] text-gray-400 mt-1">
+                              LTP: ₹{position.currentPrice.toFixed(2)}
+                              {(position as any).slTriggerPrice && (
+                                <span className="text-orange-500 ml-2">SL: ₹{(position as any).slTriggerPrice.toFixed(2)}</span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Trade History Section */}
+                {paperTradeHistory.length > 0 && (
+                  <div className="">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Trade History
+                      </div>
+                      <Button
+                        onClick={recordAllPaperTrades}
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                        data-testid="button-record-all-mobile"
+                      >
+                        Record
+                      </Button>
+                    </div>
+                    <div className="space-y-1 bg-white dark:bg-gray-900/50 rounded-lg p-3">
+                      {[...paperTradeHistory].reverse().slice(0, 10).map(trade => (
+                        <div 
+                          key={trade.id}
+                          className="flex items-center justify-between py-2.5 border-b border-gray-100 dark:border-gray-800 last:border-0"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
+                              trade.action === 'BUY' 
+                                ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+                                : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                            }`}>
+                              {trade.action === 'BUY' ? 'B' : 'S'}
+                            </div>
+                            <div>
+                              <div className="text-sm font-medium">{trade.symbol}</div>
+                              <div className="text-[10px] text-gray-400">{trade.time} | Qty: {trade.quantity}</div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm font-medium">₹{trade.price.toFixed(2)}</div>
+                            <div className={`text-xs ${
+                              !trade.pnl ? 'text-gray-600 dark:text-gray-400' : trade.pnl.includes('+') ? 'text-green-600' : 'text-red-600'
+                            }`}>
+                              {trade.pnl || '-'}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Footer */}
+                <div className="px-4 pb-6">
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">
+                    <button
+                      onClick={resetPaperTradingAccount}
+                      className="text-xs text-gray-400 hover:text-red-500 transition-colors"
+                      data-testid="button-reset-mobile"
+                    >
+                      Reset Account
+                    </button>
+                    <span className="text-xs text-gray-400">Demo mode</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop View - Original Design */}
+            <div className="hidden sm:block">
+              {/* Compact Header */}
+              <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">Paper Trading</span>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                      paperTradingWsStatus === 'connected' 
+                        ? 'bg-green-500/10 text-green-600 dark:text-green-400' 
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-500'
+                    }`} data-testid="paper-trading-ws-status">
+                      <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1 ${
+                        paperTradingWsStatus === 'connected' ? 'bg-green-500' : 'bg-gray-400'
+                      }`} />
+                      {paperTradingWsStatus === 'connected' ? 'Live' : 'Offline'}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                    <span>Capital: <span className="font-medium text-gray-900 dark:text-gray-100">₹{paperTradingCapital.toLocaleString('en-IN')}</span></span>
+                    <span className="text-gray-300 dark:text-gray-600">|</span>
+                    <span className={paperTradingTotalPnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}>
+                      P&L: <span className="font-medium" data-testid="paper-trading-total-pnl">{hidePositionDetails ? '***' : (paperTradingTotalPnl >= 0 ? '+' : '') + '₹' + paperTradingTotalPnl.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 space-y-4">
+                {/* Compact Stats Row */}
+                <div className="flex items-center gap-4 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-gray-500 dark:text-gray-400">Positions:</span>
+                    <span className="font-medium">{paperPositions.filter(p => p.isOpen).length}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-gray-500 dark:text-gray-400">Trades:</span>
+                    <span className="font-medium">{paperTradeHistory.length}</span>
+                  </div>
+                </div>
+
+                {/* Trade Entry - Compact Inline Form */}
+                <div className="border border-gray-200 dark:border-gray-800 rounded-md p-3">
+                  <div className="flex flex-wrap items-end gap-2 justify-end">
+                    {/* Symbol Search */}
+                    <div className="flex-1 min-w-[180px] relative">
+                      <div className="relative">
+                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+                        <Input
+                          type="text"
+                          placeholder="Search instrument..."
+                          value={paperTradeSymbolSearch}
+                          onChange={(e) => {
+                            const query = e.target.value;
+                            if (!query && paperTradeSymbol && paperTradingEventSourcesRef.current.has(paperTradeSymbol)) {
+                              const stream = paperTradingEventSourcesRef.current.get(paperTradeSymbol);
+                              if (stream) stream.close();
+                              paperTradingEventSourcesRef.current.delete(paperTradeSymbol);
+                              setPaperTradingWsStatus('disconnected');
+                            }
+                            setPaperTradeSymbolSearch(query);
+                            setPaperTradeSymbol("");
+                            setPaperTradeCurrentPrice(null);
+                            if (query.length > 0) {
+                              searchPaperTradingInstruments(query);
+                            } else {
+                              setPaperTradeSearchResults([]);
+                            }
+                          }}
+                          className="h-8 pl-8 text-xs"
+                          data-testid="input-paper-trade-search"
+                        />
+                      </div>
+                      {/* Dropdown */}
+                      {paperTradeSymbolSearch && !paperTradeSymbol && (
+                        <div className="absolute z-[100] left-0 right-0 mt-1 max-h-40 overflow-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg">
+                          {paperTradeSearchLoading ? (
+                            <div className="px-3 py-2 text-xs text-gray-500 flex items-center gap-2">
+                              <div className="w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                              Searching...
+                            </div>
+                          ) : paperTradeSearchResults.length === 0 ? (
+                            <div className="px-3 py-2 text-xs text-gray-500">No results</div>
+                          ) : (
+                            paperTradeSearchResults.slice(0, 6).map((stock, idx) => (
+                              <button
+                                key={`${stock.symbol}-${stock.exchange}-${idx}`}
+                                onClick={() => {
+                                  setSelectedPaperTradingInstrument(stock);
+                                  setPaperTradeSymbol(stock.symbol);
+                                  setPaperTradeSymbolSearch(stock.symbol);
+                                  if (paperTradeType === 'STOCK') {
+                                    setPaperTradeQuantity("");
+                                  } else {
+                                    setPaperTradeLotInput("1");
+                                  }
+                                  fetchPaperTradePrice(stock);
+                                }}
+                                className="w-full text-left px-3 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center justify-between text-xs"
+                                data-testid={`select-stock-${stock.symbol}`}
+                              >
+                                <span className="font-medium truncate">{stock.symbol}</span>
+                                <span className="text-[10px] text-gray-400 ml-2">{stock.exchange}</span>
+                              </button>
+                            ))
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    {/* Option Chain Button */}
+                    <Button
+                      onClick={() => {
+                        fetchOptionChainData();
+                        setShowOptionChain(true);
+                      }}
+                      size="icon"
+                      variant="outline"
+                      className="h-8 w-8"
+                      data-testid="button-option-chain"
+                    >
+                      <Grid3X3 className="h-4 w-4" />
+                    </Button>
+
+                    {/* Type */}
+                    <Select 
+                      value={paperTradeType} 
+                      onValueChange={(v) => {
+                        const newType = v as 'STOCK' | 'FUTURES' | 'OPTIONS' | 'MCX';
+                        if (paperTradeSymbol && paperTradingEventSourcesRef.current.has(paperTradeSymbol)) {
+                          const stream = paperTradingEventSourcesRef.current.get(paperTradeSymbol);
+                          if (stream) stream.close();
+                          paperTradingEventSourcesRef.current.delete(paperTradeSymbol);
+                        }
+                        setPaperTradeType(newType);
+                        setPaperTradeSymbol("");
+                        setPaperTradeSymbolSearch("");
+                        setPaperTradeSearchResults([]);
+                        setPaperTradeCurrentPrice(null);
+                        setSelectedPaperTradingInstrument(null);
+                        setPaperTradeQuantity("");
+                        setPaperTradeLotInput("");
+                        setPaperTradeSLPrice("");
+                        setPaperTradingWsStatus('disconnected');
+                      }}
+                    >
+                      <SelectTrigger className="w-24 h-8 text-xs" data-testid="select-paper-trade-type">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="STOCK">Stock</SelectItem>
+                        <SelectItem value="FUTURES">Futures</SelectItem>
+                        <SelectItem value="OPTIONS">Options</SelectItem>
+                        <SelectItem value="MCX">MCX</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    {/* Quantity or Lots Input */}
+                    {paperTradeType === 'STOCK' ? (
+                      <Input
+                        type="number"
+                        placeholder="Qty"
+                        value={paperTradeQuantity}
+                        onChange={(e) => setPaperTradeQuantity(e.target.value)}
+                        className="w-20 h-8 text-xs text-center"
+                        min="1"
+                        data-testid="input-paper-trade-qty"
+                      />
+                    ) : (
+                      <Input
+                        type="number"
+                        placeholder="Lots"
+                        value={paperTradeLotInput}
+                        onChange={(e) => setPaperTradeLotInput(e.target.value)}
+                        className="w-20 h-8 text-xs text-center"
+                        min="1"
+                        data-testid="input-paper-trade-lots"
+                      />
+                    )}
+
+                    {/* Price Display */}
+                    <div className="w-32 h-8 flex items-center justify-center text-xs font-medium border border-gray-200 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50">
+                      {paperTradePriceLoading ? (
+                        <div className="w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                      ) : paperTradeCurrentPrice ? (
+                        <span>₹{paperTradeCurrentPrice.toFixed(2)}</span>
+                      ) : (
+                        <span className="text-gray-500 dark:text-gray-400">--</span>
+                      )}
+                    </div>
+
+                    {/* Buy/Sell and SL Buttons */}
+                    {(() => {
+                      const inputValue = paperTradeType === 'STOCK' ? paperTradeQuantity : paperTradeLotInput;
+                      return (
+                        <div className="flex gap-2 items-center justify-end">
+                          <Button
+                            onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }}
+                            disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
+                            size="sm"
+                            className="h-8 px-4 bg-green-600 hover:bg-green-700 text-white text-xs"
+                            data-testid="button-paper-buy"
+                          >
+                            BUY
+                          </Button>
+                          <Button
+                            onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }}
+                            disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
+                            size="sm"
+                            className="h-8 px-4 bg-red-600 hover:bg-red-700 text-white text-xs"
+                            data-testid="button-paper-sell"
+                          >
+                            SELL
+                          </Button>
+
+                          {/* SL Button with Dropdown */}
+                          <div className="relative">
+                            <Button
+                              onClick={() => setShowPaperTradeSLDropdown(!showPaperTradeSLDropdown)}
+                              disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
+                              size="sm"
+                              variant={paperTradeSLEnabled ? "default" : "outline"}
+                              className={`h-8 px-3 text-xs ${paperTradeSLEnabled ? 'bg-orange-500 hover:bg-orange-600 text-white' : ''}`}
+                              data-testid="button-paper-sl"
+                            >
+                              SL {paperTradeSLEnabled && '✓'}
+                            </Button>
+                            {showPaperTradeSLDropdown && (
+                              <div className="fixed z-[9999] top-10 -right-2 mt-1 w-64 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg">
+                                <div className="p-2.5 space-y-1.5">
+                                  <div>
+                                    <label className="text-[10px] text-gray-500 uppercase">Type</label>
+                                    <Select value={paperTradeSLType} onValueChange={(v: any) => setPaperTradeSLType(v)}>
+                                      <SelectTrigger className="h-7 text-xs mt-1">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="price">Price SL</SelectItem>
+                                        <SelectItem value="percent">% SL</SelectItem>
+                                        <SelectItem value="duration">Duration</SelectItem>
+                                        <SelectItem value="high">Candle High</SelectItem>
+                                        <SelectItem value="low">Candle Low</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+
+                                  {(paperTradeSLType === 'high' || paperTradeSLType === 'low') && (
+                                    <div>
+                                      <label className="text-[10px] text-gray-500 uppercase">Timeframe</label>
+                                      <Select value={paperTradeSLTimeframe} onValueChange={(v) => setPaperTradeSLTimeframe(v)}>
+                                        <SelectTrigger className="h-6 text-xs mt-0">
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="1m">1 Minute</SelectItem>
+                                          <SelectItem value="5m">5 Minutes</SelectItem>
+                                          <SelectItem value="15m">15 Minutes</SelectItem>
+                                          <SelectItem value="30m">30 Minutes</SelectItem>
+                                          <SelectItem value="1h">1 Hour</SelectItem>
+                                          <SelectItem value="4h">4 Hours</SelectItem>
+                                          <SelectItem value="1d">1 Day</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                  )}
+
+                                  {paperTradeSLType === 'duration' && (
+                                    <div className="flex gap-1.5">
+                                      <Input
+                                        type="number"
+                                        placeholder="Duration"
+                                        value={paperTradeSLValue}
+                                        onChange={(e) => setPaperTradeSLValue(e.target.value)}
+                                        className="h-6 text-xs flex-1"
+                                        data-testid="input-paper-sl-duration"
+                                      />
+                                      <Select value={paperTradeSLDurationUnit} onValueChange={(v) => setPaperTradeSLDurationUnit(v)}>
+                                        <SelectTrigger className="h-6 text-xs w-14">
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="min">Min</SelectItem>
+                                          <SelectItem value="hr">Hr</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                  )}
+
+                                  {paperTradeSLType !== 'high' && paperTradeSLType !== 'low' && paperTradeSLType !== 'duration' && (
+                                    <Input
+                                      type="number"
+                                      placeholder={paperTradeSLType === 'price' ? 'Price' : '%'}
+                                      value={paperTradeSLValue}
+                                      onChange={(e) => setPaperTradeSLValue(e.target.value)}
+                                      className="h-6 text-xs"
+                                      data-testid="input-paper-sl-value"
+                                    />
+                                  )}
+
+                                  <Button
+                                    onClick={() => {
+                                      if (paperTradeSLValue || paperTradeSLType === 'high' || paperTradeSLType === 'low') {
+                                        setPaperTradeSLEnabled(true);
+                                        toast({
+                                          title: "Stop Loss Set",
+                                          description: paperTradeSLType === 'price' 
+                                            ? `SL at ₹${paperTradeSLValue}` 
+                                            : paperTradeSLType === 'percent'
+                                            ? `SL at ${paperTradeSLValue}% loss`
+                                            : paperTradeSLType === 'duration'
+                                            ? `SL after ${paperTradeSLValue} ${paperTradeSLDurationUnit}`
+                                            : `SL at ${paperTradeSLTimeframe} candle ${paperTradeSLType}`
+                                        });
+                                      }
+                                      setShowPaperTradeSLDropdown(false);
+                                    }}
+                                    size="sm"
+                                    className="w-full h-6 text-xs bg-gray-600 hover:bg-gray-700 text-white"
+                                    data-testid="button-set-paper-sl"
+                                  >
+                                    Set SL
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </div>
+
+                  {/* Trade Value */}
+                  {paperTradeSymbol && paperTradeCurrentPrice && (() => {
+                    const inputValue = paperTradeType === 'STOCK' ? paperTradeQuantity : paperTradeLotInput;
+                    if (!inputValue) return null;
+                    let quantity = parseInt(inputValue);
+                    if (paperTradeType !== 'STOCK') {
+                      const lotSize = getLotSizeForInstrument(paperTradeSymbol, paperTradeType);
+                      quantity = quantity * lotSize;
+                    }
+                    return (
+                      <div className="mt-2 text-[10px] text-gray-500 dark:text-gray-400">
+                        Value: ₹{(quantity * paperTradeCurrentPrice).toLocaleString('en-IN')}
+                      </div>
+                    );
+                  })()}
+                </div>
+
+                {/* Open Positions - Compact Table */}
+                {paperPositions.filter(p => p.isOpen).length > 0 && (
+                  <div>
+                    <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5">
+                        Open Positions
+                        {paperTradingWsStatus === 'connected' && <span className="w-1 h-1 bg-green-500 rounded-full" />}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          onClick={() => setHidePositionDetails(!hidePositionDetails)}
+                          size="icon"
+                          variant="ghost"
+                          className="h-5 w-5"
+                          data-testid="button-toggle-position-visibility"
+                          title={hidePositionDetails ? "Show details" : "Hide details"}
+                        >
+                          {hidePositionDetails ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </Button>
+                        <Button
+                          onClick={exitAllPaperPositions}
+                          size="sm"
+                          variant="outline"
+                          className="h-5 px-2 text-[10px] text-red-500 border-red-300 hover:bg-red-50 hover:text-red-600 dark:border-red-700 dark:hover:bg-red-900/20"
+                          data-testid="button-exit-all-positions"
+                        >
+                          Exit All
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="border border-gray-200 dark:border-gray-800 rounded-md overflow-x-auto">
+                      <table className="w-full text-[11px]">
+                        <thead>
+                          <tr className="bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400">
+                            <th className="px-2 py-1.5 text-left font-medium">Symbol</th>
+                            <th className="px-2 py-1.5 text-center font-medium">Order</th>
+                            <th className="px-2 py-1.5 text-right font-medium">Qty</th>
+                            <th className="px-2 py-1.5 text-right font-medium">Avg</th>
+                            <th className="px-2 py-1.5 text-right font-medium">LTP</th>
+                            <th className="px-2 py-1.5 text-right font-medium">SL</th>
+                            <th className="px-2 py-1.5 text-right font-medium">P&L</th>
+                            <th className="px-2 py-1.5 text-right font-medium">%</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {paperPositions.filter(p => p.isOpen).map(position => (
+                            <tr 
+                              key={position.id} 
+                              className="border-t border-gray-100 dark:border-gray-800"
+                              data-testid={`position-row-${position.symbol}`}
+                            >
+                              <td className="px-2 py-1.5 font-medium flex items-center gap-2">
+                                <span>{position.symbol}</span>
+                                <button
+                                  onClick={() => exitPosition(position.id)}
+                                  className="h-5 w-5 text-red-500 hover:text-red-600 hover:opacity-80 transition-all"
+                                  data-testid="button-exit-desktop-position"
+                                  title="Exit position"
+                                >
+                                  <X className="w-3.5 h-3.5" />
+                                </button>
+                              </td>
+                              <td className="px-2 py-1.5 text-center">
+                                <span className={`text-[10px] ${position.action === 'BUY' ? 'text-green-600' : 'text-red-600'}`}>
+                                  {position.action}
+                                </span>
+                              </td>
+                              <td className="px-2 py-1.5 text-right">{position.quantity}</td>
+                              <td className="px-2 py-1.5 text-right text-gray-500">{hidePositionDetails ? '***' : position.entryPrice.toFixed(2)}</td>
+                              <td className="px-2 py-1.5 text-right">{position.currentPrice.toFixed(2)}</td>
+                              <td className="px-2 py-1.5 text-right text-orange-500 text-[10px] font-medium">
+                                {(position as any).slTriggerPrice ? `₹${(position as any).slTriggerPrice.toFixed(2)}` : '-'}
+                              </td>
+                              <td className={`px-2 py-1.5 text-right font-medium ${position.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {hidePositionDetails ? '***' : `₹${position.pnl.toFixed(0)}`}
+                              </td>
+                              <td className={`px-2 py-1.5 text-right text-[10px] ${position.pnlPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Trade History */}
+                {paperTradeHistory.length > 0 && (
+                  <div>
+                    <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-between gap-2">
+                      <div>History</div>
+                      <Button
+                        onClick={recordAllPaperTrades}
+                        size="sm"
+                        variant="outline"
+                        className="h-5 px-2 text-[10px] text-blue-600 border-blue-300 hover:bg-blue-50 hover:text-blue-700 dark:border-blue-700 dark:hover:bg-blue-900/20"
+                        data-testid="button-record-all-trades"
+                      >
+                        Record
+                      </Button>
+                    </div>
+                    <div className="border border-gray-200 dark:border-gray-800 rounded-md overflow-x-auto max-h-40 overflow-y-auto custom-thin-scrollbar">
+                      <table className="w-full text-[11px]">
+                        <thead className="sticky top-0">
+                          <tr className="bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400">
+                            <th className="px-2 py-1.5 text-left font-medium">Time</th>
+                            <th className="px-2 py-1.5 text-center font-medium">Order</th>
+                            <th className="px-2 py-1.5 text-left font-medium">Symbol</th>
+                            <th className="px-2 py-1.5 text-right font-medium">Qty</th>
+                            <th className="px-2 py-1.5 text-right font-medium">Price</th>
+                            <th className="px-2 py-1.5 text-right font-medium">P&L</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[...paperTradeHistory].reverse().map(trade => (
+                            <tr key={trade.id} className="border-t border-gray-100 dark:border-gray-800">
+                              <td className="px-2 py-1.5 text-gray-400">{trade.time}</td>
+                              <td className="px-2 py-1.5 text-center">
+                                <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${
+                                  trade.action === 'BUY' 
+                                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+                                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                                }`}>
+                                  {trade.action}
+                                </span>
+                              </td>
+                              <td className="px-2 py-1.5 font-medium">{trade.symbol}</td>
+                              <td className="px-2 py-1.5 text-right">{trade.quantity}</td>
+                              <td className="px-2 py-1.5 text-right">₹{trade.price.toFixed(2)}</td>
+                              <td className={`px-2 py-1.5 text-right font-medium ${
+                                !trade.pnl ? 'text-gray-600 dark:text-gray-400' : trade.pnl.includes('+') ? 'text-green-600' : 'text-red-600'
+                              }`}>
+                                {trade.pnl || '-'}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <button
+                    onClick={resetPaperTradingAccount}
+                    className="text-[10px] text-gray-400 hover:text-red-500 transition-colors"
+                    data-testid="button-reset-paper-trading"
+                  >
+                    Reset Account
+                  </button>
+                  <span className="text-[10px] text-gray-400">Demo mode - no real trades</span>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Save Confirmation Dialog - Minimalistic Design */}
+        <Dialog open={showSaveConfirmation} onOpenChange={setShowSaveConfirmation}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader className="space-y-2">
+              {saveConfirmationData?.error ? (
+                <>
+                  <DialogTitle className="text-red-600">Save Failed</DialogTitle>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {saveConfirmationData.errorMessage}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <DialogTitle className="text-green-600">Saved Successfully</DialogTitle>
+                  <div className="space-y-2 text-sm mt-4">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Date:</span>
+                      <span className="font-medium">{saveConfirmationData?.formattedDate}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Saved to:</span>
+                      <span className="font-medium">{saveConfirmationData?.saveLocation}</span>
+                    </div>
+                    <div className="border-t pt-2 mt-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 dark:text-gray-400">Trades:</span>
+                        <span>{saveConfirmationData?.trades}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 dark:text-gray-400">Notes:</span>
+                        <span>{saveConfirmationData?.notes}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 dark:text-gray-400">Tags:</span>
+                        <span>{saveConfirmationData?.tags}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 dark:text-gray-400">Images:</span>
+                        <span>{saveConfirmationData?.images}</span>
+                      </div>
+                      <div className="flex justify-between font-semibold">
+                        <span className="text-gray-600 dark:text-gray-400">Net P&L:</span>
+                        <span>₹{saveConfirmationData?.netPnL}</span>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </DialogHeader>
+            <div className="flex justify-center gap-3 mt-4">
+              <Button
+                onClick={() => setShowSaveConfirmation(false)}
+                variant={saveConfirmationData?.error ? "outline" : "default"}
+              >
+                OK
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Passcode Modal */}
+        <Dialog open={showPasscodeModal} onOpenChange={setShowPasscodeModal}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle className="text-center">Enter Passcode</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="text-center text-sm text-muted-foreground">
+                This section is protected. Please enter the passcode to
+                continue.
+              </div>
+              <div className="flex justify-center">
+                <Input
+                  type="password"
+                  placeholder="Enter 4-digit passcode"
+                  value={passcodeInput}
+                  onChange={(e) => setPasscodeInput(e.target.value)}
+                  className="w-40 text-center text-lg tracking-widest"
+                  maxLength={4}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handlePasscodeSubmit();
+                    }
+                  }}
+                  autoFocus
+                  data-testid="input-passcode"
+                />
+              </div>
+              <div className="flex justify-center gap-3">
+                <Button
+                  variant="outline"
+                  onClick={handlePasscodeCancel}
+                  data-testid="button-cancel-passcode"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handlePasscodeSubmit}
+                  data-testid="button-submit-passcode"
+                >
+                  Submit
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Option Chain Modal */}
+        <Dialog open={showOptionChain} onOpenChange={(open) => { setShowOptionChain(open); if (open) { fetchOptionChainData(selectedOptionIndex); } }}>
+          <DialogContent className="w-full max-w-2xl md:max-w-2xl p-0 md:p-0 bg-white dark:bg-gray-900 rounded-lg md:rounded-lg border border-gray-200 dark:border-gray-700">
+
+            {/* Desktop Header */}
+            <div className="hidden md:block border-b border-gray-200 dark:border-gray-700 px-4 py-2">
+              <div className="flex items-center justify-center mb-2">
+                <span className="text-xs font-semibold text-green-600 dark:text-green-400">Spot: ₹{(optionChainData?.spotPrice || 0)?.toLocaleString()}</span>
+              </div>
+
+              {/* Desktop Controls */}
+              <div className="flex items-center justify-center gap-2">
+                <Select value={selectedOptionIndex} onValueChange={(val) => { setSelectedOptionIndex(val); setSelectedOptionExpiryDate(""); setOptionChainData(null); setTimeout(() => fetchOptionChainData(val), 0); }}>
+                  <SelectTrigger className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded text-gray-900 dark:text-white text-xs w-auto" data-testid="select-option-index-desktop">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg">
+                    <SelectItem value="NIFTY">NIFTY</SelectItem>
+                    <SelectItem value="BANKNIFTY">BANKNIFTY</SelectItem>
+                    <SelectItem value="SENSEX">SENSEX</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select value={selectedOptionExpiryDate || (getOptionExpiryDates(selectedOptionIndex)[0]?.value || "")} onValueChange={(val) => { setSelectedOptionExpiryDate(val); fetchOptionChainData(selectedOptionIndex, val); }}>
+                  <SelectTrigger className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded text-gray-900 dark:text-white text-xs w-auto" data-testid="select-option-expiry-date-desktop">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg">
+                    {getOptionExpiryDates(selectedOptionIndex).map((date) => (
+                      <SelectItem key={date.value} value={date.value}>
+                        {date.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Content Area */}
+            {/* Desktop Table View */}
+            <div className="hidden md:block px-6 py-4 overflow-y-auto max-h-96">
+              {optionChainLoading && (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Loading {selectedOptionIndex} options...</p>
+                </div>
+              )}
+
+              {!optionChainLoading && optionChainData && (() => {
+                const getOptionSymbols = () => {
+                  const calls = optionChainData?.calls || [];
+                  const puts = optionChainData?.puts || [];
+                  const effectiveExpiry = normalizeExpiryDate(getEffectiveExpiry());
+                  const filteredCalls = filterOptionsByExpiry(calls, effectiveExpiry);
+                  const filteredPuts = filterOptionsByExpiry(puts, effectiveExpiry);
+                  return { calls: filteredCalls, puts: filteredPuts };
+                };
+
+                const { calls, puts } = getOptionSymbols();
+                const currentPrice = optionChainData?.spotPrice || 0;
+                const allStrikes = new Set();
+                calls.forEach(c => allStrikes.add(c.strikePrice));
+                puts.forEach(p => allStrikes.add(p.strikePrice));
+                const strikeArray = Array.from(allStrikes) as number[];
+                let atmStrike = null;
+                if (strikeArray.length > 0) {
+                  atmStrike = strikeArray.reduce((nearest, strike) => 
+                    Math.abs(strike - currentPrice) < Math.abs(nearest - currentPrice) ? strike : nearest
+                  );
+                }
+
+                const filteredCalls = (() => {
+                  const itm = calls.filter(c => c.strikePrice < currentPrice && c.strikePrice !== atmStrike).reverse().slice(0, 10).reverse();
+                  const oTm = calls.filter(c => c.strikePrice > currentPrice && c.strikePrice !== atmStrike).slice(0, 10);
+                  const atm = atmStrike ? calls.filter(c => c.strikePrice === atmStrike).slice(0, 1) : [];
+                  return [...itm, ...atm, ...oTm].sort((a, b) => a.strikePrice - b.strikePrice);
+                })();
+
+                const filteredPuts = (() => {
+                  const itm = puts.filter(p => p.strikePrice > currentPrice && p.strikePrice !== atmStrike).slice(0, 10);
+                  const oTm = puts.filter(p => p.strikePrice < currentPrice && p.strikePrice !== atmStrike).reverse().slice(0, 10).reverse();
+                  const atm = atmStrike ? puts.filter(p => p.strikePrice === atmStrike).slice(0, 1) : [];
+                  return [...oTm, ...atm, ...itm].sort((a, b) => a.strikePrice - b.strikePrice);
+                })();
+
+                const maxRows = Math.max(filteredCalls.length, filteredPuts.length);
+                const getOptionStatus = (strike, isCall) => {
+                  const allStrikes = new Set();
+                  calls.forEach(c => allStrikes.add(c.strikePrice));
+                  puts.forEach(p => allStrikes.add(p.strikePrice));
+                  const strikeArray = Array.from(allStrikes);
+                  if (strikeArray.length === 0) return 'OTM';
+                  if (strike === atmStrike) return 'ATM';
+                  if (isCall) return strike < currentPrice ? 'ITM' : 'OTM';
+                  return strike > currentPrice ? 'ITM' : 'OTM';
+                };
+
+                const getExchangeForIndex = (index: string): string => {
+                  const exchangeMap: Record<string, string> = {
+                    'NIFTY': 'NFO',
+                    'BANKNIFTY': 'NFO',
+                    'SENSEX': 'BFO',
+                    'MIDCPNIFTY': 'NFO'
+                  };
+                  return exchangeMap[index] || 'NFO';
+                };
+
+                const handleOptionClick = async (option: any) => {
+                  const { symbol: instrumentSymbol, ltp, token: optionToken, exchange: optionExchange } = option;
+                  setPaperTradeSymbol(instrumentSymbol);
+                  setPaperTradeSymbolSearch(instrumentSymbol);
+                  setPaperTradeType('OPTIONS');
+                  setPaperTradeLotInput("1");
+
+                  if (ltp && ltp > 0) {
+                    setPaperTradeCurrentPrice(ltp);
+                    setPaperTradePriceLoading(false);
+                    const optionInstrument = {
+                      symbol: instrumentSymbol,
+                      exchange: optionExchange || getExchangeForIndex(selectedOptionIndex),
+                      token: optionToken || '',
+                      name: instrumentSymbol
+                    };
+                    setSelectedPaperTradingInstrument(optionInstrument);
+                    fetchPaperTradePrice(optionInstrument);
+                  }
+                  setShowOptionChain(false);
+                };
+
+                const getClasses = (strike, isCall) => {
+                  const status = getOptionStatus(strike, isCall);
+                  if (status === 'ATM') return 'px-2 py-1 bg-yellow-100 dark:bg-yellow-900/20 rounded text-center cursor-pointer hover:bg-yellow-200 dark:hover:bg-yellow-900/40 transition-colors';
+                  if (status === 'ITM' && isCall) return 'px-2 py-1 bg-green-100 dark:bg-green-900/20 rounded text-center cursor-pointer hover:bg-green-200 dark:hover:bg-green-900/40 transition-colors';
+                  if (status === 'ITM') return 'px-2 py-1 bg-red-100 dark:bg-red-900/20 rounded text-center cursor-pointer hover:bg-red-200 dark:hover:bg-red-900/40 transition-colors';
+                  return 'px-2 py-1 bg-gray-100 dark:bg-gray-800/40 rounded text-center cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800/60 transition-colors';
+                };
+
+                const getTextClasses = (strike, isCall) => {
+                  const status = getOptionStatus(strike, isCall);
+                  if (status === 'ATM') return 'text-xs font-semibold text-yellow-900 dark:text-yellow-300';
+                  if (status === 'ITM' && isCall) return 'text-xs font-semibold text-green-900 dark:text-green-300';
+                  if (status === 'ITM') return 'text-xs font-semibold text-red-900 dark:text-red-300';
+                  return 'text-xs font-semibold text-gray-700 dark:text-gray-400';
+                };
+
+                const getPriceClasses = (strike, isCall) => {
+                  const status = getOptionStatus(strike, isCall);
+                  if (status === 'ATM') return 'text-xs text-yellow-700 dark:text-yellow-400 mt-0.5';
+                  if (status === 'ITM' && isCall) return 'text-xs text-green-700 dark:text-green-400 mt-0.5';
+                  if (status === 'ITM') return 'text-xs text-red-700 dark:text-red-400 mt-0.5';
+                  return 'text-xs text-gray-600 dark:text-gray-500 mt-0.5';
+                };
+
+                if (maxRows === 0) {
+                  return <div className="text-center py-8"><p className="text-sm text-gray-600 dark:text-gray-400">No options available for {selectedOptionIndex} on {selectedOptionExpiryDate}</p></div>;
+                }
+
+                return <div className="overflow-x-auto"><table className="w-full text-xs"><thead className="sticky top-0 bg-gray-100 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700"><tr><th className="text-left py-2 px-3 font-semibold text-gray-900 dark:text-white">CE</th><th className="text-center py-2 px-2 font-semibold text-gray-900 dark:text-white">Strike</th><th className="text-right py-2 px-3 font-semibold text-gray-900 dark:text-white">PE</th></tr></thead><tbody>{Array.from({ length: maxRows }).map((_, index) => <tr key={index} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"><td className="py-2 px-3">{filteredCalls[index] ? <div onClick={() => handleOptionClick(filteredCalls[index])} className={getClasses(filteredCalls[index].strikePrice, true)} data-testid={`option-call-${filteredCalls[index].strikePrice}`}><div className={getPriceClasses(filteredCalls[index].strikePrice, true)}>₹{filteredCalls[index].ltp?.toFixed(2) || 0}</div></div> : null}</td><td className="py-2 px-2 text-center font-medium text-gray-700 dark:text-gray-300">{filteredCalls[index]?.strikePrice || filteredPuts[index]?.strikePrice || '-'}</td><td className="py-2 px-3 text-right">{filteredPuts[index] ? <div onClick={() => handleOptionClick(filteredPuts[index])} className={getClasses(filteredPuts[index].strikePrice, false)} data-testid={`option-put-${filteredPuts[index].strikePrice}`}><div className={getPriceClasses(filteredPuts[index].strikePrice, false)}>₹{filteredPuts[index].ltp?.toFixed(2) || 0}</div></div> : null}</td></tr>)}</tbody></table></div>;
+              })()}
+            </div>
+          </DialogContent>
+        </Dialog>
+
+
+        {/* Trading Master Coming Soon Modal */}
+        <Dialog open={showTradingMasterComingSoon} onOpenChange={setShowTradingMasterComingSoon}>
+          <DialogContent className="max-w-md">
+            <div className="space-y-6 py-6">
+              <div className="flex flex-col items-center justify-center space-y-4">
+                <div className="w-20 h-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center animate-pulse">
+                  <Activity className="h-10 w-10 text-white" />
+                </div>
+                <DialogHeader className="space-y-2">
+                  <DialogTitle className="text-center text-2xl bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent font-bold">
+                    Advanced Trading Master
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="text-center space-y-2">
+                  <p className="text-lg font-semibold text-foreground">Coming Soon!</p>
+                  <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+                    We're working on bringing you advanced trading features and analytics.
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <Button
+                  onClick={() => setShowTradingMasterComingSoon(false)}
+                  className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                  data-testid="button-close-trading-master-coming-soon"
+                >
+                  Got It
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Journal AI Dialog */}
+        <Dialog open={showJournalAI} onOpenChange={setShowJournalAI}>
+          <DialogContent className="max-w-5xl h-[85vh] p-0">
+            <DialogHeader className="p-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <DialogTitle className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <Bot className="h-5 w-5 text-white" />
+                </div>
+                <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent font-bold">
+                  Trading Journal AI Assistant
+                </span>
+              </DialogTitle>
+            </DialogHeader>
+
+            <div className="flex-1 h-full overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-3 h-full">
+                {/* Performance Report */}
+                <div className="lg:col-span-2 p-6 overflow-y-auto">
+                  <div className="prose prose-sm max-w-none dark:prose-invert">
+                    {journalAIData?.report ? (
+                      <div className="whitespace-pre-wrap text-sm leading-relaxed">
+                        {journalAIData.report}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          Loading journal analysis...
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Performance Trend Chart */}
+                <div className="lg:col-span-1 bg-gray-50 dark:bg-gray-800 p-6 border-l border-gray-200 dark:border-gray-700">
+                  <div className="h-full flex flex-col">
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        Performance Trend
+                      </h3>
+                      <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                        <span>Not Profitable</span>
+                      </div>
+                    </div>
+
+                    <div className="flex-1 min-h-[250px]">
+                      {journalAIData?.performanceData &&
+                      journalAIData.performanceData.length > 0 ? (
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart
+                            data={journalAIData.performanceData}
+                            margin={{
+                              top: 20,
+                              right: 20,
+                              left: 20,
+                              bottom: 20,
+                            }}
+                          >
+                            <defs>
+                              <linearGradient
+                                id="performanceGradient"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="0%"
+                                  stopColor="rgb(107, 114, 128)"
+                                  stopOpacity={0.4}
+                                />
+                                <stop
+                                  offset="100%"
+                                  stopColor="rgb(107, 114, 128)"
+                                  stopOpacity={0.1}
+                                />
+                              </linearGradient>
+                            </defs>
+                            <XAxis
+                              dataKey="day"
+                              axisLine={false}
+                              tickLine={false}
+                              tick={{ fontSize: 11, fill: "#6B7280" }}
+                            />
+                            <YAxis
+                              axisLine={false}
+                              tickLine={false}
+                              tick={{ fontSize: 11, fill: "#6B7280" }}
+                              tickFormatter={(value) => `₹${value}`}
+                            />
+                            <Tooltip
+                              contentStyle={{
+                                backgroundColor: "rgba(17, 24, 39, 0.95)",
+                                border: "none",
+                                borderRadius: "8px",
+                                color: "white",
+                                fontSize: "12px",
+                              }}
+                              formatter={(value: any, name: string) => [
+                                `₹${parseFloat(value).toFixed(2)}`,
+                                "P&L",
+                              ]}
+                              labelFormatter={(label) => `Day: ${label}`}
+                            />
+                            <Area
+                              type="monotone"
+                              dataKey="value"
+                              stroke="rgb(107, 114, 128)"
+                              strokeWidth={2}
+                              fill="url(#performanceGradient)"
+                            />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      ) : (
+                        <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                          <div className="text-center">
+                            <BarChart3 className="h-12 w-12 mx-auto mb-3 opacity-40" />
+                            <p className="text-sm">
+                              No performance data available
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+
+        {/* Minimalist Floating Pill Navigation - Mobile Only */}
+        {activeTab === "journal" && (
+          <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 pb-4 px-6 pointer-events-none">
+            <div className="max-w-xs mx-auto bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-full shadow-lg border border-gray-200/50 dark:border-gray-700/50 pointer-events-auto">
+              <div className="flex items-center justify-around px-1.5 py-1.5">
+                {/* Home Tab */}
+                <button
+                  onClick={() => setMobileBottomTab("home")}
+                  className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
+                    mobileBottomTab === "home"
+                      ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                  data-testid="mobile-tab-home"
+                >
+                  <HomeIcon className={`h-5 w-5 ${mobileBottomTab === "home" ? "fill-current" : ""}`} />
+                </button>
+
+                {/* Insight Tab */}
+                <button
+                  onClick={() => setMobileBottomTab("insight")}
+                  className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
+                    mobileBottomTab === "insight"
+                      ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                  data-testid="mobile-tab-insight"
+                >
+                  <svg viewBox="0 0 24 16" className="h-5 w-6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id={`navAreaGradient-${mobileBottomTab === "insight" ? "active" : navSparklineData.trend}`} x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor={mobileBottomTab === "insight" ? "#d1d5db" : (navSparklineData.trend === "up" ? "#22c55e" : navSparklineData.trend === "down" ? "#ef4444" : "#9ca3af")} stopOpacity="0.4" />
+                        <stop offset="100%" stopColor={mobileBottomTab === "insight" ? "#d1d5db" : (navSparklineData.trend === "up" ? "#22c55e" : navSparklineData.trend === "down" ? "#ef4444" : "#9ca3af")} stopOpacity="0.05" />
+                      </linearGradient>
+                    </defs>
+                    <polygon 
+                      points={`0,14 ${navSparklineData.points.split(' ').map((p, i) => {
+                        const [x, y] = p.split(',');
+                        return `${(parseFloat(x) / 40 * 22) + 1},${(parseFloat(y) / 24 * 12) + 1}`;
+                      }).join(' ')} 22,14`}
+                      fill={`url(#navAreaGradient-${mobileBottomTab === "insight" ? "active" : navSparklineData.trend})`}
+                    />
+                    <polyline 
+                      points={navSparklineData.points.split(' ').map(p => {
+                        const [x, y] = p.split(',');
+                        return `${(parseFloat(x) / 40 * 22) + 1},${(parseFloat(y) / 24 * 12) + 1}`;
+                      }).join(' ')}
+                      stroke={mobileBottomTab === "insight" ? "#ffffff" : (navSparklineData.trend === "up" ? "#22c55e" : navSparklineData.trend === "down" ? "#ef4444" : "#9ca3af")} 
+                      strokeWidth={mobileBottomTab === "insight" ? "2" : "1.5"} 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      fill="none"
+                    />
+                  </svg>
+                </button>
+
+                {/* Paper Trade Tab */}
+                <button
+                  onClick={() => setMobileBottomTab("paper-trade")}
+                  className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
+                    mobileBottomTab === "paper-trade"
+                      ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                  data-testid="mobile-tab-paper-trade"
+                >
+                  <TrendingUp className={`h-5 w-5 ${mobileBottomTab === "paper-trade" ? "fill-current" : ""}`} />
+                </button>
+
+                {/* Ranking Tab */}
+                <button
+                  onClick={() => setMobileBottomTab("ranking")}
+                  className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
+                    mobileBottomTab === "ranking"
+                      ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                  data-testid="mobile-tab-ranking"
+                >
+                  <Trophy className={`h-5 w-5 ${mobileBottomTab === "ranking" ? "fill-current" : ""}`} />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Paper Trade Tab - Full Screen */}
+{activeTab === "journal" && mobileBottomTab === "paper-trade" && (
+          <div className="md:hidden fixed inset-0 z-40 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 overflow-y-auto pb-20 flex flex-col">
+            {/* Hero Balance Section - Dark gradient background */}
+            <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-5 pt-8 pb-6 relative">
+
+              <div className="text-gray-400 text-xs mb-1">P&L</div>
+              <div className={`text-3xl font-bold mb-2 ${paperTradingTotalPnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`} data-testid="paper-trading-pnl-mobile">
+                {hidePositionDetails ? '***' : `₹${paperTradingTotalPnl.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
+              </div>
+              <div className="text-sm flex items-center gap-1 text-gray-400">
+                <span>{hidePositionDetails ? '***' : `₹${paperTradingCapital.toLocaleString('en-IN')}`}</span>
+                <span className="text-gray-500 text-xs">Total Capital</span>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="flex items-center gap-4 mt-4 text-xs">
+                <div className="flex items-center gap-1.5 text-gray-400">
+                  <span>Positions:</span>
+                  <span className="text-white font-medium">{paperPositions.filter(p => p.isOpen).length}</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-gray-400">
+                  <span>Trades:</span>
+                  <span className="text-white font-medium">{paperTradeHistory.length}</span>
+                </div>
+                <Button
+                  onClick={() => setHidePositionDetails(!hidePositionDetails)}
+                  size="icon"
+                  variant="ghost"
+                  className="h-6 w-6 ml-auto text-gray-400 hover:text-slate-900 dark:hover:text-white"
+                  data-testid="button-toggle-visibility-mobile"
+                >
+                  {hidePositionDetails ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </Button>
+              </div>
+            </div>
+
+            {/* Content Area - Scrollable */}
+            <div className="flex-1 overflow-y-auto">
+              {/* New Trade Card */}
+              <div className="px-4 py-4">
+                <div className="bg-white dark:bg-gray-900 rounded-xl p-4 border border-gray-100 dark:border-gray-800">
+                  <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">New Trade</div>
+
+                  {/* Search Input */}
+                  <div className="relative mb-3">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input
+                      placeholder="Search instrument..."
+                      value={paperTradeSymbolSearch}
+                      onChange={(e) => {
+                        const query = e.target.value;
+                        if (!query && paperTradeSymbol && paperTradingEventSourcesRef.current.has(paperTradeSymbol)) {
+                          const stream = paperTradingEventSourcesRef.current.get(paperTradeSymbol);
+                          if (stream) stream.close();
+                          paperTradingEventSourcesRef.current.delete(paperTradeSymbol);
+                          setPaperTradingWsStatus('disconnected');
+                        }
+                        setPaperTradeSymbolSearch(query);
+                        setPaperTradeSymbol("");
+                        setPaperTradeCurrentPrice(null);
+                        if (query.length > 0) {
+                          searchPaperTradingInstruments(query);
+                        } else {
+                          setPaperTradeSearchResults([]);
+                        }
+                      }}
+                      className="h-10 pl-10 text-sm rounded-lg bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                      data-testid="input-paper-trade-search-mobile-tab"
+                    />
+                    {/* Search Dropdown */}
+                    {paperTradeSymbolSearch && !paperTradeSymbol && (
+                      <div className="absolute z-[100] left-0 right-0 mt-1 max-h-48 overflow-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
+                        {paperTradeSearchLoading ? (
+                          <div className="px-4 py-3 text-sm text-gray-500 flex items-center gap-2">
+                            <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                            Searching...
+                          </div>
+                        ) : paperTradeSearchResults.length === 0 ? (
+                          <div className="px-4 py-3 text-sm text-gray-500">No results found</div>
+                        ) : (
+                          paperTradeSearchResults.slice(0, 6).map((stock, idx) => (
+                            <button
+                              key={`${stock.symbol}-${stock.exchange}-${idx}`}
+                              onClick={() => {
+                                setSelectedPaperTradingInstrument(stock);
+                                setPaperTradeSymbol(stock.symbol);
+                                setPaperTradeSymbolSearch(stock.symbol);
+                                if (paperTradeType === 'STOCK') {
+                                  setPaperTradeQuantity("");
+                                } else {
+                                  setPaperTradeLotInput("1");
+                                }
+                                fetchPaperTradePrice(stock);
+                              }}
+                              className="w-full text-left px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center justify-between text-sm border-b border-gray-100 dark:border-gray-800 last:border-0"
+                              data-testid={`select-stock-mobile-tab-${stock.symbol}`}
+                            >
+                              <span className="font-medium">{stock.symbol}</span>
+                              <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">{stock.exchange}</span>
+                            </button>
+                          ))
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Type and Option Chain Row */}
+                  <div className="flex gap-2 mb-3">
+                    <Select 
+                      value={paperTradeType} 
+                      onValueChange={(v) => {
+                        const newType = v as 'STOCK' | 'FUTURES' | 'OPTIONS' | 'MCX';
+                        if (paperTradeSymbol && paperTradingEventSourcesRef.current.has(paperTradeSymbol)) {
+                          const stream = paperTradingEventSourcesRef.current.get(paperTradeSymbol);
+                          if (stream) stream.close();
+                          paperTradingEventSourcesRef.current.delete(paperTradeSymbol);
+                        }
+                        setPaperTradeType(newType);
+                        setPaperTradeSymbol("");
+                        setPaperTradeSymbolSearch("");
+                        setPaperTradeSearchResults([]);
+                        setPaperTradeCurrentPrice(null);
+                        setSelectedPaperTradingInstrument(null);
+                        setPaperTradeQuantity("");
+                        setPaperTradeLotInput("");
+                        setPaperTradeSLPrice("");
+                        setPaperTradingWsStatus('disconnected');
+                      }}
+                    >
+                      <SelectTrigger className="flex-1 h-10 text-sm rounded-lg" data-testid="select-paper-trade-type-mobile-tab">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="STOCK">Stock</SelectItem>
+                        <SelectItem value="FUTURES">Futures</SelectItem>
+                        <SelectItem value="OPTIONS">Options</SelectItem>
+                        <SelectItem value="MCX">MCX</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      onClick={() => {
+                        fetchOptionChainData();
+                        setShowOptionChain(true);
+                      }}
+                      size="icon"
+                      variant="outline"
+                      className="h-10 w-10 rounded-lg"
+                      data-testid="button-option-chain-mobile-tab"
+                    >
+                      <Grid3X3 className="h-4 w-4" />
+                    </Button>
+                  </div>
+
+                  {/* Quantity and Price Row */}
+                  <div className="flex gap-2 mb-4">
+                    {paperTradeType === 'STOCK' ? (
+                      <Input
+                        type="number"
+                        placeholder="Quantity"
+                        value={paperTradeQuantity}
+                        onChange={(e) => setPaperTradeQuantity(e.target.value)}
+                        className="flex-1 h-10 text-sm text-center rounded-lg"
+                        min="1"
+                        data-testid="input-paper-trade-qty-mobile-tab"
+                      />
+                    ) : (
+                      <Input
+                        type="number"
+                        placeholder="Lots"
+                        value={paperTradeLotInput}
+                        onChange={(e) => setPaperTradeLotInput(e.target.value)}
+                        className="flex-1 h-10 text-sm text-center rounded-lg"
+                        min="1"
+                        data-testid="input-paper-trade-lots-mobile-tab"
+                      />
+                    )}
+                    <div className="flex-1 h-10 flex items-center justify-center text-sm font-medium border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-gray-800">
+                      {paperTradePriceLoading ? (
+                        <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                      ) : paperTradeCurrentPrice ? (
+                        <span>₹{paperTradeCurrentPrice.toFixed(2)}</span>
+                      ) : (
+                        <span className="text-gray-500 dark:text-gray-400">Price</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Stop Loss Button with Dropdown - Mobile Tab */}
+                  <div className="flex gap-2 mb-3">
+                    <div className="relative flex-1">
+                      <Button
+                        onClick={() => setShowMobilePaperTradeSLDropdown(!showMobilePaperTradeSLDropdown)}
+                        disabled={!paperTradeSymbol || !(paperTradeType === 'STOCK' ? paperTradeQuantity : paperTradeLotInput) || !paperTradeCurrentPrice}
+                        variant={paperTradeSLEnabled ? "default" : "outline"}
+                        className={`w-full h-10 rounded-lg ${paperTradeSLEnabled ? 'bg-orange-500 hover:bg-orange-600 text-white' : ''}`}
+                        data-testid="button-paper-sl-mobile-tab"
+                      >
+                        <Shield className="h-4 w-4 mr-2" />
+                        {paperTradeSLEnabled ? `SL: ₹${paperTradeSLPrice}` : 'Set SL'}
+                      </Button>
+                      {showMobilePaperTradeSLDropdown && (
+                        <div className="absolute z-50 bottom-1/2 transform translate-y-1/2 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg w-64">
+                          <div className="p-4 space-y-3">
+                            <div className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Stop Loss Configuration</div>
+                            <div>
+                              <label className="text-[10px] text-gray-500 uppercase">Type</label>
+                              <Select value={paperTradeSLType} onValueChange={(v: any) => setPaperTradeSLType(v)}>
+                                <SelectTrigger className="h-9 text-sm mt-1">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="price">Price SL</SelectItem>
+                                  <SelectItem value="percent">% SL</SelectItem>
+                                  <SelectItem value="duration">Duration</SelectItem>
+                                  <SelectItem value="high">Candle High</SelectItem>
+                                  <SelectItem value="low">Candle Low</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            {(paperTradeSLType === 'high' || paperTradeSLType === 'low') && (
+                              <div>
+                                <label className="text-[10px] text-gray-500 uppercase">Timeframe</label>
+                                <Select value={paperTradeSLTimeframe} onValueChange={(v) => setPaperTradeSLTimeframe(v)}>
+                                  <SelectTrigger className="h-9 text-sm mt-1">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="1m">1 Minute</SelectItem>
+                                    <SelectItem value="5m">5 Minutes</SelectItem>
+                                    <SelectItem value="15m">15 Minutes</SelectItem>
+                                    <SelectItem value="30m">30 Minutes</SelectItem>
+                                    <SelectItem value="1h">1 Hour</SelectItem>
+                                    <SelectItem value="4h">4 Hours</SelectItem>
+                                    <SelectItem value="1d">1 Day</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            )}
+
+                            {paperTradeSLType === 'duration' && (
+                              <div>
+                                <label className="text-[10px] text-gray-500 uppercase">Duration Unit</label>
+                                <Select value={paperTradeSLDurationUnit} onValueChange={(v) => setPaperTradeSLDurationUnit(v)}>
+                                  <SelectTrigger className="h-9 text-sm mt-1">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="min">Minutes</SelectItem>
+                                    <SelectItem value="hr">Hours</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            )}
+
+                            {paperTradeSLType !== 'high' && paperTradeSLType !== 'low' && (
+                              <div>
+                                <label className="text-[10px] text-gray-500 uppercase">Value</label>
+                                <Input
+                                  type="number"
+                                  placeholder={paperTradeSLType === 'price' ? 'Price' : '%'}
+                                  value={paperTradeSLValue}
+                                  onChange={(e) => setPaperTradeSLValue(e.target.value)}
+                                  className="h-9 text-sm mt-1"
+                                  data-testid="input-paper-sl-value-mobile-tab"
+                                />
+                              </div>
+                            )}
+
+                            <div className="flex gap-2 pt-1">
+                              <Button
+                                onClick={() => {
+                                  setPaperTradeSLEnabled(false);
+                                  setPaperTradeSLValue("");
+                                  setPaperTradeSLPrice("");
+                                  setShowMobilePaperTradeSLDropdown(false);
+                                }}
+                                size="sm"
+                                variant="outline"
+                                className="flex-1 h-9"
+                                data-testid="button-clear-sl-mobile-tab"
+                              >
+                                Clear
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  if (paperTradeSLValue || paperTradeSLType === 'high' || paperTradeSLType === 'low') {
+                                    setPaperTradeSLEnabled(true);
+                                    setPaperTradeSLPrice(paperTradeSLValue);
+                                    toast({
+                                      title: "Stop Loss Set",
+                                      description: paperTradeSLType === 'price' 
+                                        ? `SL at ₹${paperTradeSLValue}` 
+                                        : paperTradeSLType === 'percent'
+                                        ? `SL at ${paperTradeSLValue}% loss`
+                                        : paperTradeSLType === 'duration'
+                                        ? `SL after ${paperTradeSLValue} ${paperTradeSLDurationUnit}`
+                                        : `SL at ${paperTradeSLTimeframe} candle ${paperTradeSLType}`
+                                    });
+                                  }
+                                  setShowMobilePaperTradeSLDropdown(false);
+                                }}
+                                size="sm"
+                                className="flex-1 h-9 bg-orange-500 hover:bg-orange-600 text-white"
+                                data-testid="button-set-sl-mobile-tab"
+                              >
+                                Set SL
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3">
+                    {(() => {
+                      const inputValue = paperTradeType === 'STOCK' ? paperTradeQuantity : paperTradeLotInput;
+                      return (
+                        <>
+                          <Button
+                            onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }}
+                            disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
+                            className="flex-1 h-12 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-base"
+                            data-testid="button-paper-buy-mobile-tab"
+                          >
+                            BUY
+                          </Button>
+                          <Button
+                            onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }}
+                            disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
+                            className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-base"
+                            data-testid="button-paper-sell-mobile-tab"
+                          >
+                            SELL
+                          </Button>
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+
+              {/* Positions & Trade History Toggle Section */}
+              {(paperPositions.filter(p => p.isOpen).length > 0 || paperTradeHistory.length > 0) && (
+                <div className="">
+                  <div className="flex items-center justify-between mb-3">
+                    <Button
+                      onClick={() => setShowMobileTradeHistory(!showMobileTradeHistory)}
+                      size="icon"
+                      variant="ghost"
+                      className="h-7 w-7 text-gray-400 hover:text-slate-900 dark:hover:text-white"
+                      data-testid="button-toggle-mobile-position-history"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                      {showMobileTradeHistory ? 'Trade History' : 'Open Positions'}
+                      {!showMobileTradeHistory && paperTradingWsStatus === 'connected' && <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />}
+                    </div>
+                    <Button
+                      onClick={showMobileTradeHistory ? recordAllPaperTrades : exitAllPaperPositions}
+                      size="sm"
+                      variant="ghost"
+                      className={`h-7 px-2 text-xs ${
+                        showMobileTradeHistory 
+                          ? 'text-blue-400 hover:text-blue-500' 
+                          : 'text-red-500 hover:text-red-600'
+                      }`}
+                      data-testid={showMobileTradeHistory ? "button-record-all-mobile-tab" : "button-exit-all-mobile-tab"}
+                    >
+                      {showMobileTradeHistory ? 'Record' : 'Exit All'}
+                    </Button>
+                  </div>
+
+
+
+
+                  {/* Open Positions View */}
+                  {!showMobileTradeHistory && paperPositions.filter(p => p.isOpen).length > 0 && (
+                    <div className="space-y-2 px-4 divide-gray-200 dark:divide-gray-800">
+                      {paperPositions.filter(p => p.isOpen).map(position => (
+                        <div 
+                          key={position.id}
+                          className="relative bg-red-500 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden select-none cursor-grab active:cursor-grabbing h-auto"
+                          data-testid={`position-card-tab-${position.symbol}`}
+                          onMouseDown={(e) => {
+                            swipeStartXRef.current = e.clientX;
+                            swipeStartYRef.current = e.clientY;
+                            console.log('🔴 MOUSE DOWN on', position.symbol, ':', swipeStartXRef.current);
+                          }}
+                          onMouseUp={(e) => {
+                            const endX = e.clientX;
+                            const endY = e.clientY;
+                            const diffX = swipeStartXRef.current - endX;
+                            const diffY = Math.abs(swipeStartYRef.current - endY);
+
+                            console.log('🟢 MOUSE UP on', position.symbol, '- diffX:', diffX, 'diffY:', diffY);
+
+                            // Swipe left (diffX > 0) with minimal vertical movement - REVEAL EXIT
+                            if (diffX > 25 && diffY < 50) {
+                              console.log('✅ LEFT SWIPE DETECTED - SHOW EXIT BUTTON');
+                              setSwipedPositionId(position.id);
+                            }
+                            // Swipe right to close (diffX < 0) - HIDE EXIT
+                            else if (diffX < -25 && diffY < 50) {
+                              console.log('✅ RIGHT SWIPE DETECTED - HIDE EXIT BUTTON');
+                              setSwipedPositionId(null);
+                            }
+                          }}
+                          onTouchStart={(e) => {
+                            if (e.touches && e.touches[0]) {
+                              swipeStartXRef.current = e.touches[0].clientX;
+                              swipeStartYRef.current = e.touches[0].clientY;
+                              console.log('🔴 TOUCH START on', position.symbol, ':', swipeStartXRef.current);
+                            }
+                          }}
+                          onTouchMove={(e) => {
+                            if (Math.abs(swipeStartXRef.current - (e.touches[0]?.clientX || 0)) > 10) {
+                              e.preventDefault();
+                            }
+                          }}
+                          onTouchEnd={(e) => {
+                            if (e.changedTouches && e.changedTouches[0]) {
+                              const endX = e.changedTouches[0].clientX;
+                              const endY = e.changedTouches[0].clientY;
+                              const diffX = swipeStartXRef.current - endX;
+                              const diffY = Math.abs(swipeStartYRef.current - endY);
+
+                              console.log('🟢 TOUCH END on', position.symbol, '- diffX:', diffX, 'diffY:', diffY);
+
+                              if (diffX > 25 && diffY < 50) {
+                                console.log('✅ LEFT SWIPE DETECTED - SHOW EXIT BUTTON');
+                                setSwipedPositionId(position.id);
+                              }
+                              else if (diffX < -25 && diffY < 50) {
+                                console.log('✅ RIGHT SWIPE DETECTED - HIDE EXIT BUTTON');
+                                setSwipedPositionId(null);
+                              }
+                            }
+                          }}
+                        >
+                          {/* Exit button - always rendered, visible when card slides */}
+                          <div className="absolute right-0 top-0 bottom-0 w-1/5 bg-red-500 flex items-center justify-center">
+                            <button
+                              onClick={() => exitPosition(position.id)}
+                              className="flex flex-col items-center justify-center w-full h-full hover:bg-red-600 transition-colors active:bg-red-700"
+                              data-testid={`button-exit-position-${position.symbol}`}
+                              title="Exit position"
+                            >
+                              <div className="text-white text-sm font-bold">×</div>
+                              <div className="text-[7px] text-white dark:text-white font-bold whitespace-nowrap">EXIT</div>
+                            </button>
+                          </div>
+
+                          {/* Main position card content - slides left on swipe */}
+                          <div 
+                            className="w-full p-3 bg-white dark:bg-gray-900 cursor-pointer"
+                            style={{
+                              transform: swipedPositionId === position.id ? 'translateX(-20%)' : 'translateX(0)',
+                              transition: 'transform 300ms ease-in-out'
+                            }}
+                            onClick={() => {
+                              // Clicking on main content (80% area) resets the swipe
+                              if (swipedPositionId === position.id) {
+                                console.log('🔄 Tapped on content - resetting swipe');
+                                setSwipedPositionId(null);
+                              }
+                            }}
+                          >
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium text-sm">{position.symbol}</span>
+                                <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                                  position.action === 'BUY' 
+                                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+                                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                                }`}>
+                                  {position.action}
+                                </span>
+                              </div>
+                              {swipedPositionId !== position.id && (
+                                <ChevronLeft className="w-4 h-4 text-gray-400 opacity-50" />
+                              )}
+                            </div>
+                            <div className="flex items-center justify-between text-xs">
+                              <div className="text-gray-600 dark:text-gray-400">
+                                Qty: {position.quantity} | Avg: {hidePositionDetails ? '***' : `₹${position.entryPrice.toFixed(2)}`}
+                              </div>
+                              <div className={`font-semibold ${position.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {hidePositionDetails ? '***' : `₹${position.pnl.toFixed(0)}`}
+                              </div>
+                            </div>
+                            <div className="text-[10px] text-gray-400 mt-1">
+                            <div className="text-[10px] text-gray-400 mt-1 flex items-center justify-between">
+                              <div>
+                                LTP: ₹{position.currentPrice.toFixed(2)}
+                                {(position as any).slTriggerPrice && (
+                                  <span className="text-orange-500 ml-2">SL: ₹{(position as any).slTriggerPrice.toFixed(2)}</span>
+                                )}
+                              </div>
+                              <div className={`text-[10px] font-semibold ${position.pnlPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
+                              </div>
+                            </div>
+                              {(position as any).slTriggerPrice && (
+                                <span className="text-orange-500 ml-2">SL: ₹{(position as any).slTriggerPrice.toFixed(2)}</span>
+                              )}
+                            </div>
+                          </div>
+
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+
+
+
+
+                  {/* Trade History View */}
+                  {showMobileTradeHistory && paperTradeHistory.length > 0 && (
+                    <div className="space-y-1 bg-white dark:bg-gray-900/50 rounded-lg p-3">
+                      {[...paperTradeHistory].reverse().slice(0, 10).map(trade => (
+                        <div 
+                          key={trade.id}
+                          className="flex items-center justify-between py-2.5 border-b border-gray-200 dark:border-gray-800 last:border-0"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
+                              trade.action === 'BUY' 
+                                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
+                                : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                            }`}>
+                              {trade.action === 'BUY' ? 'B' : 'S'}
+                            </div>
+                            <div>
+                              <div className="text-sm font-medium text-gray-900 dark:text-white">{trade.symbol}</div>
+                              <div className="text-[10px] text-gray-400">{trade.time} | Qty: {trade.quantity}</div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">₹{trade.price.toFixed(2)}</div>
+                            <div className={`text-xs ${
+                              !trade.pnl ? 'text-gray-600 dark:text-gray-400' : trade.pnl.includes('+') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                            }`}>
+                              {trade.pnl || '-'}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Footer */}
+              <div className="px-4 pb-6">
+                <div className="flex items-center justify-between pt-3 border-t border-gray-800">
+                  <button
+                    onClick={resetPaperTradingAccount}
+                    className="text-xs text-gray-400 hover:text-red-500 transition-colors"
+                    data-testid="button-reset-mobile-tab"
+                  >
+                    Reset Account
+                  </button>
+                  <span className="text-xs text-gray-400">Demo mode</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Share Tradebook Dialog */}
+        <Dialog 
+          open={showShareDialog} 
+          onOpenChange={(open) => {
+            if (!open) {
+              // Use the centralized close handler
+              handleShareDialogClose();
+              // Reset BOTH share dialog tag highlight AND report dialog tag highlight
+              setShareDialogTagHighlight(null);
+              setReportDialogTagHighlight(null);
+              console.log('🔄 Share Dialog closed - reset tag highlighting and shareable URL');
+            } else {
+              setShowShareDialog(open);
+            }
+          }}
+        >
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col" data-testid="dialog-share-tradebook">
+            <DialogHeader className="flex-shrink-0">
+              <div className="flex items-start justify-between gap-4">
+                {/* Left side: PERALA and tagline */}
+                <div className="flex flex-col gap-1">
+                  <h1 className="text-3xl font-bold tracking-tight">PERALA</h1>
+                  <p className="text-xs text-muted-foreground">rethink & reinvest</p>
+                </div>
+
+                {/* Right side: Report title, UserID, and Link icon */}
+                <div className="flex flex-col items-end gap-2">
+                  <DialogTitle className="text-lg font-semibold">MY trading report</DialogTitle>
+
+                  {/* UserID */}
+                  <p className="text-xs text-muted-foreground">
+                    userID: {isSharedReportMode && sharedReportData?.reportData?.username 
+                      ? sharedReportData.reportData.username 
+                      : (currentUser?.displayName || currentUser?.email || currentUser?.userId || 'Guest')}
+                  </p>
+
+                  {/* Link icon button - Only show for owners (not in shared report mode) */}
+                  {!isSharedReportMode && (
+                    <div className="flex flex-col items-end gap-1">
+                      {!shareableUrl ? (
+                        <Button
+                          size="icon"
+                          onClick={handleCreateShareableLink}
+                          disabled={isCreatingShareableLink}
+                          className="bg-green-600 hover:bg-green-700 h-8 w-8"
+                          data-testid="button-create-shareable-link"
+                        >
+                          {isCreatingShareableLink ? (
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <Link2 className="w-4 h-4" />
+                          )}
+                        </Button>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="icon"
+                            variant="outline"
+                            className="bg-green-600 hover:bg-green-700 text-white h-8 w-8"
+                            onClick={() => {
+                              navigator.clipboard.writeText(shareableUrl);
+                              toast({
+                                title: "Link copied!",
+                                description: "Shareable URL copied to clipboard",
+                              });
+                            }}
+                            data-testid="button-copy-shareable-url"
+                          >
+                            <Copy className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-8 w-8"
+                            onClick={() => window.open(shareableUrl, '_blank')}
+                            data-testid="button-open-shareable-url"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </DialogHeader>
+
+            <div className="flex-1 overflow-auto space-y-4">
+              {/* Heatmap Container with ref for curved lines */}
+              <div className="relative">
+                <div 
+                  ref={reportDialogHeatmapContainerRef}
+                  className="max-h-96 overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg"
+                >
+                  <DemoHeatmap
+                    tradingDataByDate={isSharedReportMode && sharedReportData?.reportData?.tradingDataByDate 
+                      ? sharedReportData.reportData.tradingDataByDate 
+                      : getFilteredHeatmapData()}
+                    onDateSelect={() => {}}
+                    selectedDate={null}
+                    onDataUpdate={() => {}}
+                    isPublicView={true}
+                    onSelectDateForHeatmap={(symbol, date) => {
+                      console.log(`📊 [REPORT] Switching to heatmap mode - Symbol: ${symbol}, Date: ${date}`);
+                      setJournalChartMode('heatmap');
+                      fetchHeatmapChartData(symbol, date);
+                    }}
+                  />
+                </div>
+
+                {/* Curved Lines Overlay for FOMO button */}
+                {reportDialogTagHighlight?.tag === 'fomo' && reportDialogTagHighlight.dates.length > 0 && (() => {
+                  // Force recalculation on scroll
+                  void reportDialogScrollTrigger;
+
+                  const paths: JSX.Element[] = [];
+
+                  if (!reportDialogFomoButtonRef.current || !reportDialogHeatmapContainerRef.current) {
+                    return null;
+                  }
+
+                  // Get scrollable dimensions
+                  const scrollWidth = reportDialogHeatmapContainerRef.current.scrollWidth || 0;
+                  const scrollHeight = reportDialogHeatmapContainerRef.current.scrollHeight || 0;
+                  const scrollLeft = reportDialogHeatmapContainerRef.current.scrollLeft || 0;
+                  const scrollTop = reportDialogHeatmapContainerRef.current.scrollTop || 0;
+
+                  // Get positions relative to the heatmap's scrollable content
+                  const containerRect = reportDialogHeatmapContainerRef.current.getBoundingClientRect();
+                  const buttonRect = reportDialogFomoButtonRef.current.getBoundingClientRect();
+
+                  // Calculate button position relative to scrollable content
+                  const buttonCenterX = buttonRect.left - containerRect.left + scrollLeft + buttonRect.width / 2;
+                  const buttonCenterY = buttonRect.top - containerRect.top + scrollTop + buttonRect.height / 2;
+
+                  // Find all highlighted date cells and draw curved lines to them
+                  reportDialogTagHighlight.dates.forEach((date, index) => {
+                    // Find the heatmap cell for this date
+                    const cellElement = reportDialogHeatmapContainerRef.current?.querySelector(
+                      `[data-date="${date}"]`
+                    );
+
+                    if (cellElement) {
+                      const cellRect = cellElement.getBoundingClientRect();
+
+                      // Calculate cell position relative to scrollable content
+                      const cellCenterX = cellRect.left - containerRect.left + scrollLeft + cellRect.width / 2;
+                      const cellCenterY = cellRect.top - containerRect.top + scrollTop + cellRect.height / 2;
+
+                      // Create quadratic Bezier curve (Q command)
+                      // Control point is positioned to create a nice arc
+                      const controlX = (buttonCenterX + cellCenterX) / 2;
+                      const controlY = Math.min(buttonCenterY, cellCenterY) - 50; // Arc upward
+
+                      const pathD = `M ${buttonCenterX} ${buttonCenterY} Q ${controlX} ${controlY}, ${cellCenterX} ${cellCenterY}`;
+
+                      paths.push(
+                        <g key={`connection-${date}-${index}`}>
+                          {/* Bright colored line with dashed pattern */}
+                          <path
+                            d={pathD}
+                            fill="none"
+                            stroke="url(#reportDialogCurvedLineGradient)"
+                            strokeWidth="2.5"
+                            strokeDasharray="6,4"
+                            opacity="0.95"
+                          />
+                          {/* Glowing dot at the end of each line */}
+                          <circle
+                            cx={cellCenterX}
+                            cy={cellCenterY}
+                            r="4"
+                            fill="#fcd34d"
+                            opacity="0.9"
+                          />
+                          <circle
+                            cx={cellCenterX}
+                            cy={cellCenterY}
+                            r="3"
+                            fill="#fbbf24"
+                            className="animate-pulse"
+                          />
+                        </g>
+                      );
+                    }
+                  });
+
+                  return (
+                    <svg
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: `${scrollWidth}px`,
+                        height: `${scrollHeight}px`,
+                        pointerEvents: 'none',
+                        zIndex: 10,
+                      }}
+                    >
+                      {/* Define bright gradient for the curved lines */}
+                      <defs>
+                        <linearGradient id="reportDialogCurvedLineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#c084fc" stopOpacity="1" />
+                          <stop offset="50%" stopColor="#f472b6" stopOpacity="1" />
+                          <stop offset="100%" stopColor="#fbbf24" stopOpacity="1" />
+                        </linearGradient>
+                      </defs>
+                      {paths}
+                    </svg>
+                  );
+                })()}
+              </div>
+
+              {/* Stats Bar - Purple metrics from journal tab */}
+              {(() => {
+                const filteredData = isSharedReportMode && sharedReportData?.reportData?.tradingDataByDate 
+                  ? sharedReportData.reportData.tradingDataByDate 
+                  : getFilteredHeatmapData();
+                const dates = Object.keys(filteredData).sort();
+
+                let totalPnL = 0;
+                let totalTrades = 0;
+                let winningTrades = 0;
+                let currentStreak = 0;
+                let maxWinStreak = 0;
+                let fomoTrades = 0;
+                const trendData: number[] = [];
+
+                dates.forEach(dateKey => {
+                  const dayData = filteredData[dateKey];
+                  const metrics = dayData?.tradingData?.performanceMetrics || dayData?.performanceMetrics;
+                  const tags = dayData?.tradingData?.tradingTags || dayData?.tradingTags || [];
+
+                  if (metrics) {
+                    const netPnL = metrics.netPnL || 0;
+                    totalPnL += netPnL;
+                    totalTrades += metrics.totalTrades || 0;
+                    winningTrades += metrics.winningTrades || 0;
+                    trendData.push(netPnL);
+
+                    // Calculate streak
+                    if (netPnL > 0) {
+                      currentStreak++;
+                      maxWinStreak = Math.max(maxWinStreak, currentStreak);
+                    } else {
+                      currentStreak = 0;
+                    }
+
+                    // Count FOMO tags
+                    if (Array.isArray(tags)) {
+                      tags.forEach((tag: string) => {
+                        if (tag.toLowerCase().includes('fomo')) {
+                          fomoTrades++;
+                        }
+                      });
+                    }
+                  }
+                });
+
+                const isProfitable = totalPnL >= 0;
+                const winRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
+
+                // Create trend path function (from public-heatmap.tsx)
+                const createTrendPath = (data: number[]) => {
+                  if (data.length === 0) return '';
+                  const max = Math.max(...data, 0);
+                  const min = Math.min(...data, 0);
+                  const range = max - min || 1;
+                  const width = 40;
+                  const height = 20;
+
+                  const points = data.map((val, i) => {
+                    const x = (i / (data.length - 1 || 1)) * width;
+                    const y = height - ((val - min) / range) * height;
+                    return `${x},${y}`;
+                  }).join(' L ');
+
+                  return `M ${points}`;
+                };
+
+                return (
+                  <div className="bg-gradient-to-r from-violet-500 to-purple-600 rounded-md px-2 py-1.5">
+                    <div className="flex items-center justify-around text-white gap-1">
+                      {/* P&L */}
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="text-[10px] opacity-80">P&L</div>
+                        <div className="text-xs font-bold">
+                          {isProfitable ? '+' : ''}₹{(totalPnL / 1000).toFixed(1)}K
+                        </div>
+                      </div>
+
+                      {/* Trend */}
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="text-[10px] opacity-80">Trend</div>
+                        <div className="w-8 h-4">
+                          <svg viewBox="0 0 40 20" className="w-full h-full">
+                            <path
+                              d={createTrendPath(trendData)}
+                              fill="none"
+                              stroke="white"
+                              strokeWidth="1.5"
+                              opacity="0.9"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* FOMO - Clickable button with curved lines */}
+                      <button
+                        ref={reportDialogFomoButtonRef}
+                        className={`flex flex-col items-center justify-center hover-elevate active-elevate-2 rounded px-1 transition-all ${
+                          reportDialogTagHighlight?.tag === 'fomo' ? 'bg-white/30 ring-2 ring-white/50' : ''
+                        }`}
+                        onClick={() => {
+                          if (reportDialogTagHighlight?.tag === 'fomo') {
+                            // Toggle off if already active
+                            setReportDialogTagHighlight(null);
+                            console.log('📍 Deactivated FOMO tag highlighting in report dialog');
+                          } else {
+                            // Get FOMO dates from filtered data
+                            const filteredData = isSharedReportMode && sharedReportData?.reportData?.tradingDataByDate 
+                              ? sharedReportData.reportData.tradingDataByDate 
+                              : getFilteredHeatmapData();
+                            const dates = Object.keys(filteredData).sort();
+
+                            const fomoDates: string[] = [];
+                            dates.forEach(dateKey => {
+                              const dayData = filteredData[dateKey];
+                              const tags = dayData?.tradingData?.tradingTags || dayData?.tradingTags || [];
+
+                              if (Array.isArray(tags)) {
+                                tags.forEach((tag: string) => {
+                                  if (tag.toLowerCase().includes('fomo') && !fomoDates.includes(dateKey)) {
+                                    fomoDates.push(dateKey);
+                                  }
+                                });
+                              }
+                            });
+
+                            // Activate FOMO highlighting
+                            setReportDialogTagHighlight({ tag: 'fomo', dates: fomoDates });
+                            console.log(`📍 Activated FOMO tag highlighting in report dialog for ${fomoDates.length} dates:`, fomoDates);
+                          }
+                        }}
+                        title={`Click to ${reportDialogTagHighlight?.tag === 'fomo' ? 'hide' : 'show'} FOMO dates on heatmap`}
+                      >
+                        <div className="text-[10px] opacity-80">FOMO</div>
+                        <div className="text-xs font-bold">{fomoTrades}</div>
+                      </button>
+
+                      {/* Win% */}
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="text-[10px] opacity-80">Win%</div>
+                        <div className="text-xs font-bold">{winRate.toFixed(0)}%</div>
+                      </div>
+
+                      {/* Streak */}
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="text-[10px] opacity-80">Streak</div>
+                        <div className="text-xs font-bold">{maxWinStreak}</div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Analytics Row: Total P&L, Performance Trend, Top Tags */}
+              <div className="grid grid-cols-3 gap-3">
+                {(() => {
+                  const filteredData = isSharedReportMode && sharedReportData?.reportData?.tradingDataByDate 
+                    ? sharedReportData.reportData.tradingDataByDate 
+                    : getFilteredHeatmapData();
+                  const dates = Object.keys(filteredData).sort();
+
+                  let totalPnL = 0;
+                  let totalTrades = 0;
+                  let winningTrades = 0;
+                  const trendData: number[] = [];
+                  const lossTagsMap = new Map<string, number>();
+
+                  dates.forEach(dateKey => {
+                    const dayData = filteredData[dateKey];
+                    const metrics = dayData?.tradingData?.performanceMetrics || dayData?.performanceMetrics;
+                    const tags = dayData?.tradingData?.tradingTags || dayData?.tradingTags || [];
+
+                    if (metrics) {
+                      const netPnL = metrics.netPnL || 0;
+                      totalPnL += netPnL;
+                      totalTrades += metrics.totalTrades || 0;
+                      winningTrades += metrics.winningTrades || 0;
+                      trendData.push(netPnL);
+
+                      // Only track tags from losing trades - accumulate actual loss amounts
+                      if (netPnL < 0 && Array.isArray(tags) && tags.length > 0) {
+                        tags.forEach((tag: string) => {
+                          const normalizedTag = tag.trim().toLowerCase();
+                          lossTagsMap.set(normalizedTag, (lossTagsMap.get(normalizedTag) || 0) + Math.abs(netPnL));
+                        });
+                      }
+                    }
+                  });
+
+                  const isProfitable = totalPnL >= 0;
+                  const successRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
+
+                  const lossTags = Array.from(lossTagsMap.entries())
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([tag, lossAmount]) => ({ tag, lossAmount }));
+
+                  const createTrendPath = (data: number[]) => {
+                    if (data.length === 0) return '';
+                    const max = Math.max(...data, 0);
+                    const min = Math.min(...data, 0);
+                    const range = max - min || 1;
+                    const width = 100;
+                    const height = 45;
+
+                    if (data.length === 1) {
+                      const x = width / 2;
+                      const y = height - ((data[0] - min) / range) * height;
+                      return `M ${x} ${y}`;
+                    }
+
+                    // Create smooth bezier curve
+                    let path = '';
+                    const points = data.map((val, i) => {
+                      const x = (i / (data.length - 1)) * width;
+                      const y = height - ((val - min) / range) * height;
+                      return { x, y };
+                    });
+
+                    // Start path
+                    path += `M ${points[0].x} ${points[0].y}`;
+
+                    // Use quadratic bezier curves for smoothness
+                    for (let i = 1; i < points.length; i++) {
+                      const current = points[i];
+                      const prev = points[i - 1];
+                      const cpX = (prev.x + current.x) / 2;
+                      const cpY = (prev.y + current.y) / 2;
+                      path += ` Q ${cpX} ${cpY}, ${current.x} ${current.y}`;
+                    }
+
+                    return path;
+                  };
+
+                  return (
+                    <>
+                      {/* Column 1: Total P&L - Minimalistic Card */}
+                      <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-800 shadow-lg">
+                        <div className="mb-4">
+                          <div className="text-[11px] text-slate-600 dark:text-slate-400 uppercase font-semibold mb-2">Total P&L</div>
+                          <div className={`text-2xl font-bold ${isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
+                            {isProfitable ? '+' : ''}₹{(Math.abs(totalPnL) / 1000).toFixed(1)}K
+                          </div>
+                        </div>
+                        <div className="space-y-2.5">
+                          <div className="flex justify-between text-[12px]">
+                            <span className="text-slate-600 dark:text-slate-400">Total Trades</span>
+                            <span className="font-medium text-slate-900 dark:text-slate-100">{totalTrades}</span>
+                          </div>
+                          <div className="flex justify-between text-[12px]">
+                            <span className="text-slate-600 dark:text-slate-400">Success Rate</span>
+                            <span className="font-medium text-slate-900 dark:text-slate-100">{successRate.toFixed(1)}%</span>
+                          </div>
+                          <div className="mt-3">
+                            <div className="h-1.5 bg-slate-200 dark:bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                              <div 
+                                className={`h-full rounded-full transition-all ${isProfitable ? 'bg-emerald-500' : 'bg-red-500'}`}
+                                style={{ width: `${successRate}%` }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Column 2: Performance Trend */}
+                      <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-800 shadow-lg">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="text-[11px] text-gray-600 dark:text-gray-400 uppercase font-semibold">Performance Trend</div>
+                          <div className={`text-[10px] px-2 py-1 rounded ${isProfitable ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'}`}>
+                            {isProfitable ? 'Profitable' : 'Not Profitable'}
+                          </div>
+                        </div>
+                        {trendData.length > 0 ? (
+                          <div className="h-28 w-full">
+                            {(() => {
+                              // Convert trend data to chart format
+                              const chartData = trendData.map((pnl, idx) => ({
+                                day: `${idx + 1}`,
+                                value: pnl,
+                                pnl: pnl,
+                              }));
+
+                              
+  return (
+                                <ResponsiveContainer width="100%" height="100%">
+                                  <AreaChart
+                                    data={chartData}
+                                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                                  >
+                                    <defs>
+                                      <linearGradient id="reportTrendGradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="rgb(107, 114, 128)" stopOpacity={0.4} />
+                                        <stop offset="100%" stopColor="rgb(107, 114, 128)" stopOpacity={0.05} />
+                                      </linearGradient>
+                                    </defs>
+                                    <XAxis dataKey="day" axisLine={false} tickLine={false} tick={false} />
+                                    <YAxis axisLine={false} tickLine={false} tick={false} domain={['dataMin - 1000', 'dataMax + 1000']} />
+                                    <Tooltip
+                                      contentStyle={{
+                                        background: 'var(--background)',
+                                        border: '1px solid var(--border)',
+                                        borderRadius: '8px',
+                                        fontSize: '11px',
+                                        padding: '6px 10px',
+                                      }}
+                                      formatter={(value: any) => [
+                                        `${value >= 0 ? '₹' : '-₹'}${Math.abs(value).toLocaleString()}`,
+                                        'P&L',
+                                      ]}
+                                    />
+                                    <Area
+                                      type="natural"
+                                      dataKey="value"
+                                      stroke={isProfitable ? '#16a34a' : '#dc2626'}
+                                      strokeWidth={2}
+                                      fill="url(#reportTrendGradient)"
+                                      dot={false}
+                                      activeDot={{
+                                        r: 4,
+                                        fill: isProfitable ? '#16a34a' : '#dc2626',
+                                        stroke: 'white',
+                                        strokeWidth: 2,
+                                      }}
+                                      isAnimationActive={true}
+                                      animationDuration={600}
+                                      animationEasing="ease-in-out"
+                                    />
+                                  </AreaChart>
+                                </ResponsiveContainer>
+                              );
+                            })()}
+                          </div>
+                        ) : (
+                          <div className="h-28 flex items-center justify-center text-gray-400 text-xs">
+                            No data
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Column 3: Loss Tags */}
+                      <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-800 shadow-lg">
+                        <div className="text-[11px] text-gray-600 dark:text-gray-400 uppercase font-semibold mb-3">Loss Tags</div>
+                        {lossTags.length > 0 ? (
+                          <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-md p-3 space-y-2 max-h-32 overflow-y-auto">
+                            {lossTags.map(({ tag, lossAmount }) => (
+                              <div
+                                key={tag}
+                                className="flex items-center justify-between px-2.5 py-1.5 bg-red-100 dark:bg-red-900/50 border border-red-300 dark:border-red-700 rounded-md"
+                                data-testid={`tag-loss-${tag}`}
+                              >
+                                <span className="text-[12px] font-medium text-red-800 dark:text-red-300 capitalize truncate">{tag}</span>
+                                <span className="text-[11px] font-bold text-red-600 dark:text-red-400 ml-2 flex-shrink-0">-₹{lossAmount.toLocaleString('en-IN')}</span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-[12px] text-gray-500 dark:text-gray-400 italic py-3">No loss tags</div>
+                        )}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+
+              {/* Promotional Section */}
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 rounded-lg p-4 border border-purple-200 dark:border-purple-800 mt-4">
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-white text-xs font-bold">★</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">Advanced Trading Journal</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Tracks emotional decisions • Works on all brokers • NSE, Crypto, Commodity, Forex</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </DialogContent>
+        </Dialog>
+
+      </div>
+    </div>
+  );
+}
