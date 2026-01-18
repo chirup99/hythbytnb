@@ -17272,8 +17272,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <div className="h-[70%] flex flex-col">
                           <CardContent className="p-2 flex-1 flex flex-col h-full overflow-hidden">
                             <div className="flex items-center justify-between mb-2">
-                              <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
+                              <h3 className="text-sm font-semibold text-gray-800 dark:text-white flex items-center gap-1.5">
                                 TRADING NOTES
+                                <Newspaper className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
                               </h3>
                               <div className="flex items-center gap-1">
                                 {/* Daily Life Factors Dropdown */}
