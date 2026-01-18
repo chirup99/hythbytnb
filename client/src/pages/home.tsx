@@ -9572,7 +9572,28 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     return [];
   });
   const [isDailyFactorsDropdownOpen, setIsDailyFactorsDropdownOpen] = useState(false);
+  const [newsData, setNewsData] = useState<any[]>([]);
+  const [isNewsLoading, setIsNewsLoading] = useState(false);
+
   const [isNotesInNewsMode, setIsNotesInNewsMode] = useState(false);
+  useEffect(() => {
+    if (isNotesInNewsMode && newsData.length === 0) {
+      const fetchGeneralNews = async () => {
+        setIsNewsLoading(true);
+        try {
+          const response = await fetch("/api/stock-news?query=Indian%20Market");
+          const data = await response.json();
+          if (data.success) setNewsData(data.results || []);
+        } catch (error) {
+          console.error("Error fetching news:", error);
+        } finally {
+          setIsNewsLoading(false);
+        }
+      };
+      fetchGeneralNews();
+    }
+  }, [isNotesInNewsMode, newsData.length]);
+
 
   // Daily life factors system - personal factors affecting market performance
   const dailyFactorsSystem = {
@@ -17737,7 +17758,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <Button
                                     size="sm"
                                     variant="ghost"
-                                    onClick={handleEditNotes}
+                                    onClick={() => !isNotesInNewsMode && handleEditNotes()}
                                     className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-slate-900 dark:hover:text-white"
                                     data-testid="button-edit-notes"
                                   >
@@ -17820,16 +17841,42 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </div>
                                 )}
 
-                                {/* Notes content */}
-                                {notesContent ? (
-                                  <pre className="font-sans text-xs overflow-y-auto flex-1 whitespace-pre">
-                                    {notesContent}
-                                  </pre>
+                                {/* News or Notes content */}
+                                {isNotesInNewsMode ? (
+                                  <div className="flex-1 overflow-y-auto custom-thin-scrollbar">
+                                    {isNewsLoading ? (
+                                      <div className="flex items-center justify-center h-20">
+                                        <Loader2 className="w-4 h-4 animate-spin text-purple-500" />
+                                      </div>
+                                    ) : newsData.length > 0 ? (
+                                      <div className="space-y-3">
+                                        {newsData.slice(0, 10).map((news, idx) => (
+                                          <div key={idx} className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-100 dark:border-slate-800">
+                                            <p className="text-[10px] font-medium text-slate-800 dark:text-slate-200 line-clamp-2">{news.title}</p>
+                                            <div className="flex items-center justify-between mt-1">
+                                              <span className="text-[9px] text-purple-500">{news.source}</span>
+                                              <span className="text-[9px] text-slate-500">{news.time}</span>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    ) : (
+                                      <p className="text-gray-500 italic text-center text-xs mt-4">No news found.</p>
+                                    )}
+                                  </div>
                                 ) : (
-                                  <p className="text-gray-500 dark:text-gray-400 italic">
-                                    No trading notes yet. Click Edit to add your
-                                    first note.
-                                  </p>
+                                  <>
+                                    {notesContent ? (
+                                      <pre className="font-sans text-xs overflow-y-auto flex-1 whitespace-pre">
+                                        {notesContent}
+                                      </pre>
+                                    ) : (
+                                      <p className="text-gray-500 dark:text-gray-400 italic">
+                                        No trading notes yet. Click Edit to add your
+                                        first note.
+                                      </p>
+                                    )}
+                                  </>
                                 )}
                               </div>
                             )}
