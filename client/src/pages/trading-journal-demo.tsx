@@ -190,7 +190,7 @@ export default function TradingJournalDemo() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold flex items-center gap-1.5" data-testid="text-notes-title">
                   TRADING NOTES
-                  <Newspaper className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
+                  <Newspaper className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
                 </h3>
                 <div className="flex items-center gap-2">
                   <Button size="sm" variant="ghost" data-testid="button-tags">Tags (3)</Button>
