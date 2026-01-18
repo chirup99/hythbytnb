@@ -17276,7 +17276,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 TRADING NOTES
                               </h3>
                               <div className="flex items-center gap-1">
-                                <Newspaper className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400 mr-1" />
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => {/* Add functionality or trigger if needed */}} data-testid="button-trading-news">
+                                  <Newspaper className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
+                                </Button>
                                 {/* Daily Life Factors Dropdown */}
                                 <Popover
                                   open={isDailyFactorsDropdownOpen}
