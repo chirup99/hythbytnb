@@ -19501,7 +19501,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <div className="h-64 w-full">
                               {(() => {
                                 // ✅ NEW: Get filtered heatmap data and prepare daily chart data
-                                const allDates = Object.keys(filteredHeatmapData).sort();
+                                const allDates = Object.keys(filteredHeatmapData).filter(date => filteredHeatmapData[date] !== undefined).sort();
 
                                 // ✅ NEW: Convert filtered heatmap data to daily chart data format
                                 const chartData = allDates.map(
@@ -19751,7 +19751,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {(() => {
                             // Filter to only include dates with actual trading activity (non-zero P&L)
                             const allData = Object.values(
-                              tradingDataByDate,
+                              filteredHeatmapData,
                             ).filter(
                               (data: any) => data && data.performanceMetrics && data.performanceMetrics.netPnL !== 0,
                             );
@@ -19858,7 +19858,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                           {(() => {
                             const allData = Object.values(
-                              tradingDataByDate
+                              filteredHeatmapData
                             ).filter(
                               (data: any) =>
                                 data &&
