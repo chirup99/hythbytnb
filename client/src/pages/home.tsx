@@ -19425,8 +19425,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <div
                             className={`md:col-span-3 rounded-3xl p-6 md:p-8 text-white shadow-2xl ${isProfitable ? "bg-gradient-to-br from-emerald-500 to-teal-600" : "bg-gradient-to-br from-red-500 to-rose-600"}`}
                           >
-                            <div className="flex items-center justify-between w-full justify-between mb-6">
-                              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-between w-full justify-center">
+                            <div className="flex items-center justify-start mb-6">
+                              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
                                 <Target className="w-6 h-6" />
                               </div>
                               <div className="text-right">
@@ -24190,6 +24190,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       {/* Column 1: Total P&L - Minimalistic Card */}
                       <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-800 shadow-lg">
                         <div className="mb-4">
+                          <div className="text-[11px] text-slate-600 dark:text-slate-400 uppercase font-semibold mb-2">Total P&L</div>
                           <div className={`text-2xl font-bold ${isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
                             {isProfitable ? '+' : ''}₹{(Math.abs(totalPnL) / 1000).toFixed(1)}K
                           </div>
