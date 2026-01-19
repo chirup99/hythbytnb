@@ -22618,7 +22618,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 )}
 
                 {/* Footer */}
-                <div className="flex items-center justify-start pt-2 border-t border-gray-100 dark:border-gray-800">
+                <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800">
                   <button
                     onClick={resetPaperTradingAccount}
                     className="text-[10px] text-gray-400 hover:text-red-500 transition-colors"
