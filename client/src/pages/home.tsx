@@ -23750,7 +23750,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         >
           <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col" data-testid="dialog-share-tradebook">
             <DialogHeader className="flex-shrink-0">
-              <div className="flex items-start justify-start gap-4">
+              <div className="flex items-start justify-between w-full gap-4">
                 {/* Left side: PERALA and tagline */}
                 <div className="flex flex-col gap-1">
                   <h1 className="text-3xl font-bold tracking-tight">PERALA</h1>
