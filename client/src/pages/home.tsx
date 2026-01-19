@@ -13513,7 +13513,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-between"
                             data-testid="nav-profile"
                           >
-                            <span>profile</span>
+                            <User className="h-4 w-4 mr-2" />
+                                <span>profile</span>
                             {isEditingUsername || isEditingDisplayName || isEditingDob || isEditingLocation ? ( <X className="h-4 w-4" /> ) : ( <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isProfileActive ? "rotate-180" : ""}`} /> )}
                           </button>
                           
@@ -13655,6 +13656,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-between"
                                 data-testid="nav-voice"
                               >
+                                <Mic className="h-4 w-4 mr-2" />
                                 <span>Voice</span>
                                 <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isVoiceActive ? "rotate-180" : ""}`} />
                               </button>
