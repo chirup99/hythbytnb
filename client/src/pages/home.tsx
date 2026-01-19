@@ -17286,7 +17286,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                             <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
                               <div className="space-y-0.5 bg-white dark:bg-gray-900/50 rounded-lg p-2">
-                                <div className="flex justify-start">
+                                <div className="flex justify-between">
                                   <span className="text-gray-600 dark:text-gray-400">
                                     Winning Trades:
                                   </span>
@@ -17294,7 +17294,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     {performanceMetrics.winningTrades}
                                   </span>
                                 </div>
-                                <div className="flex justify-start">
+                                <div className="flex justify-between">
                                   <span className="text-gray-600 dark:text-gray-400">
                                     Total Profit:
                                   </span>
@@ -17307,7 +17307,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 </div>
                               </div>
                               <div className="space-y-0.5 bg-white dark:bg-gray-900/50 rounded-lg p-2">
-                                <div className="flex justify-start">
+                                <div className="flex justify-between">
                                   <span className="text-gray-600 dark:text-gray-400">
                                     Losing Trades:
                                   </span>
@@ -17315,7 +17315,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     {performanceMetrics.losingTrades}
                                   </span>
                                 </div>
-                                <div className="flex justify-start">
+                                <div className="flex justify-between">
                                   <span className="text-gray-600 dark:text-gray-400">
                                     Total Loss:
                                   </span>
@@ -22648,28 +22648,28 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 <>
                   <DialogTitle className="text-green-600">Saved Successfully</DialogTitle>
                   <div className="space-y-2 text-sm mt-4">
-                    <div className="flex justify-start">
+                    <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Date:</span>
                       <span className="font-medium">{saveConfirmationData?.formattedDate}</span>
                     </div>
-                    <div className="flex justify-start">
+                    <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Saved to:</span>
                       <span className="font-medium">{saveConfirmationData?.saveLocation}</span>
                     </div>
                     <div className="border-t pt-2 mt-2">
-                      <div className="flex justify-start">
+                      <div className="flex justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Trades:</span>
                         <span>{saveConfirmationData?.trades}</span>
                       </div>
-                      <div className="flex justify-start">
+                      <div className="flex justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Notes:</span>
                         <span>{saveConfirmationData?.notes}</span>
                       </div>
-                      <div className="flex justify-start">
+                      <div className="flex justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Tags:</span>
                         <span>{saveConfirmationData?.tags}</span>
                       </div>
-                      <div className="flex justify-start">
+                      <div className="flex justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Images:</span>
                         <span>{saveConfirmationData?.images}</span>
                       </div>

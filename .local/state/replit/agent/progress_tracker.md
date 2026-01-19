@@ -315,5 +315,6 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## FEAT: UI ALIGNMENT (Jan 19, 2026)
 - Moved Trading Notes controls to the right side (justify-between).
+- Aligned Winning/Losing trades and Profit/Loss values to the right (justify-between).
 
 ---
