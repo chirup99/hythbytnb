@@ -22131,7 +22131,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             <div className="hidden sm:block">
               {/* Compact Header */}
               <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3">
-                <div className="flex items-center justify-start">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">Paper Trading</span>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${
@@ -22157,7 +22157,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
               <div className="p-4 space-y-4">
                 {/* Compact Stats Row */}
-                <div className="flex items-center gap-4 text-xs">
+                <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-1.5">
                     <span className="text-gray-500 dark:text-gray-400">Positions:</span>
                     <span className="font-medium">{paperPositions.filter(p => p.isOpen).length}</span>
