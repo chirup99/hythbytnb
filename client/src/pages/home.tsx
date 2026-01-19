@@ -19439,16 +19439,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 </div>
                               </div>
                             </div>
-
-                            <div className="space-y-4">
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm opacity-80">
-                                  Total Trades
-                                </span>
-                                <span className="font-semibold">
-                                  {heatmapMetrics.totalTrades}
-                                </span>
-                              </div>
+                                <div className="flex justify-between items-center mb-1">
+                                  <span className="text-sm opacity-80">Total P&L</span>
+                                  <span className="text-2xl md:text-3xl font-bold">
+                                    {heatmapMetrics.totalPnL >= 0 ? "+" : "-"}₹
+                                    {Math.abs(heatmapMetrics.totalPnL).toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                                  </span>
+                                </div>
                               <div className="flex justify-between items-center">
                                 <span className="text-sm opacity-80">
                                   Success Rate
