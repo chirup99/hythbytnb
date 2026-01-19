@@ -15525,9 +15525,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 className="bg-cyan-600 hover:bg-cyan-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0"
                                 onClick={() => {
                                   setIsWatchlistLoading(true);
-                                  setIsSearchActive(true);
-                                  setSearchResults("[CHART:WATCHLIST]");
-                                  setIsWatchlistOpen(true);
+                                  handleSuggestionClick("[CHART:WATCHLIST]");
                                   // Auto-select first stock in watchlist and fetch its quarterly data
                                   if (watchlistSymbols.length > 0 && !selectedWatchlistSymbol) {
                                     const firstStock = watchlistSymbols[0];
