@@ -13676,52 +13676,34 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             key={profile.id} 
                                             className="flex flex-col items-center gap-1.5 group cursor-pointer" 
                                             onClick={() => {
-                                              if (!profile.isAdd) {
-                                                if (typeof window !== "undefined" && "speechSynthesis" in window) {
-                                                  const name = currentUser?.displayName || currentUser?.username || "Trader";
-                                                  const utterance = new SpeechSynthesisUtterance(`Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`);
-                                                  const voices = window.speechSynthesis.getVoices();
-                                                  if (profile.id === "samantha" || profile.name.toLowerCase().includes("samantha")) {
-                                                    const v = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
-                                                    if (v) utterance.voice = v;
-                                                  } else if (profile.id === "amro" || profile.name.toLowerCase().includes("amro")) {
-                                                    const v = voices.find(v => (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
-                                                    if (v) utterance.voice = v;
-                                                  } else if (profile.id === "heera" || profile.name.toLowerCase().includes("heera")) {
-                                                    const v = voices.find(v => v.name.includes("Hindi") || v.name.includes("India") || v.name.includes("Kalpana") || v.name.includes("Hemant"));
-                                                    if (v) utterance.voice = v;
-                                                  }
-                                                  window.speechSynthesis.speak(utterance);
+                                              if (typeof window !== "undefined" && "speechSynthesis" in window) {
+                                                const name = currentUser?.displayName || currentUser?.username || "Trader";
+                                                const utterance = new SpeechSynthesisUtterance(`Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`);
+                                                const voices = window.speechSynthesis.getVoices();
+                                                if (profile.id === "samantha" || profile.name.toLowerCase().includes("samantha")) {
+                                                  const v = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
+                                                  if (v) utterance.voice = v;
+                                                } else if (profile.id === "amro" || profile.name.toLowerCase().includes("amro")) {
+                                                  const v = voices.find(v => (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
+                                                  if (v) utterance.voice = v;
+                                                } else if (profile.id === "heera" || profile.name.toLowerCase().includes("heera")) {
+                                                  const v = voices.find(v => v.name.includes("Hindi") || v.name.includes("India") || v.name.includes("Kalpana") || v.name.includes("Hemant"));
+                                                  if (v) utterance.voice = v;
                                                 }
+                                                window.speechSynthesis.speak(utterance);
+                                                setActiveVoiceProfileId(profile.id);
                                               }
                                             }}
+                                          >
                                             <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 ${isSelected ? "border-blue-500 ring-2 ring-blue-500/50" : "border-transparent"} active:scale-95 overflow-hidden bg-gray-700 shadow-lg`}>
                                               <img src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />
                                             </div>
                                             <span className={`text-[10px] font-medium transition-colors flex items-center gap-1 ${isSelected ? "text-blue-400 font-bold" : "text-gray-300 group-hover:text-blue-400"}`}>
                                               {profile.name} {isSelected && <Check className="h-2.5 w-2.5" />}
                                             </span>
-})}
-</div>
-<div className="w-full h-px bg-gray-700/50 my-1" />
-                                    <p className="text-[11px] text-gray-500 italic">Select a voice for your minicast</p>
-                                  </div>
-                                </div>
-                              )}
-                              {!isVoiceActive && (
-                                <>
-                                  {localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
-                                    <button
-                                      onClick={() => {
-                                        setTabWithAuthCheck("dashboard");
-                                        setIsNavOpen(false);
-                                      }}
-                                      className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
-                                      data-testid="nav-dashboard"
-                                    >
-                                      <BarChart3 className="h-4 w-4" />
-                                      <span>dashboard</span>
-                                    </button>
+                                          </div>
+                                        );
+                                      })}
                                   )}
                                   <button
                                     onClick={() => setShowSettingsPanel(true)}
