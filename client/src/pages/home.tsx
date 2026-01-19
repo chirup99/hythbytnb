@@ -16369,7 +16369,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* Professional Visual Chart with Fyers Data - Same as Trading Master */}
                         <div className="h-full relative bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
                           <div className="h-full flex flex-col">
-                            <div className="flex items-center justify-start px-2 py-2">
+                            <div className="flex items-center justify-between px-2 py-2">
                               <div className="flex items-center gap-1 md:gap-2 flex-wrap">
                                 {/* Stock Search Button - ONLY IN SEARCH MODE */}
                                 {journalChartMode === 'search' && (
@@ -16507,7 +16507,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     }`}
                                                     data-testid={`default-stock-${instrument.exchange}:${instrument.symbol}`}
                                                   >
-                                                    <div className="flex items-center justify-start gap-2">
+                                                    <div className="flex items-center justify-between gap-2">
                                                       <span className="flex-1 font-medium">{instrument.name}</span>
                                                       <div className="flex items-center gap-1">
                                                         <span className={`px-1.5 py-0.5 text-xs font-semibold rounded ${
@@ -16619,7 +16619,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             }`}
                                             data-testid={`stock-option-${instrument.exchange}:${instrument.symbol}`}
                                           >
-                                            <div className="flex items-center justify-start gap-2">
+                                            <div className="flex items-center justify-between gap-2">
                                               <span className="flex-1 font-medium">{instrument.name}</span>
                                               <div className="flex items-center gap-1">
                                                 <span className={`px-1.5 py-0.5 text-xs font-semibold rounded ${
@@ -17990,7 +17990,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       <Button
                         variant="ghost"
                         onClick={() => setShowMobileTradeHistory(!showMobileTradeHistory)}
-                        className="w-full flex items-center justify-start h-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-4"
+                        className="w-full flex items-center justify-between h-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-4"
                         data-testid="button-mobile-trade-history-toggle"
                       >
                         <div className="flex items-center gap-2">
@@ -18026,7 +18026,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       {showMobileTradeHistory && (
                         <Card className="mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-h-[420px] overflow-hidden">
                           <CardContent className="p-3">
-                            <div className="flex items-center justify-start mb-3 gap-2">
+                            <div className="flex items-center justify-between mb-3 gap-2">
                               <div className="flex gap-1.5 overflow-x-auto custom-thin-scrollbar pb-1">
                                 <Button
                                   variant="ghost"
@@ -18122,7 +18122,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     {/* Desktop: TRADE HISTORY SUMMARY - Left Side - MINIMALIST WITH BRIGHT COLORS */}
                     <Card className="hidden md:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-[420px]">
                       <CardContent className="p-3">
-                        <div className="flex items-center justify-start mb-3 gap-2">
+                        <div className="flex items-center justify-between mb-3 gap-2">
                           <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wide">
                             Trade History
                           </h3>
@@ -18555,7 +18555,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <div className="relative">
                     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                       <CardContent className="p-6 px-0.5 md:px-4 md:py-4 pt-[10px] pb-[10px]">
-                        <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-start gap-2">
+                        <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-between gap-2">
                           <div className="flex items-center gap-1">
                             <div>Trade Book</div>
                             <Dialog>
@@ -20525,7 +20525,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 <div className="border border-slate-200 dark:border-slate-200 dark:border-slate-700 rounded-md bg-slate-50 dark:bg-slate-900/30 p-3 mb-3">
                   {isBuildMode ? (
                     <div className="space-y-1">
-                      <div className="flex items-center justify-start gap-2">
+                      <div className="flex items-center justify-between gap-2">
                         <div className="text-xs font-medium text-slate-700 dark:text-slate-300">
                           Build Mode - Select text, click +, X to delete
                         </div>
@@ -22477,7 +22477,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 {/* Open Positions - Compact Table */}
                 {paperPositions.filter(p => p.isOpen).length > 0 && (
                   <div>
-                    <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-start gap-2">
+                    <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-between gap-2">
                       <div className="flex items-center gap-1.5">
                         Open Positions
                         {paperTradingWsStatus === 'connected' && <span className="w-1 h-1 bg-green-500 rounded-full" />}
@@ -22564,7 +22564,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 {/* Trade History */}
                 {paperTradeHistory.length > 0 && (
                   <div>
-                    <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-start gap-2">
+                    <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-between gap-2">
                       <div>History</div>
                       <Button
                         onClick={recordAllPaperTrades}
