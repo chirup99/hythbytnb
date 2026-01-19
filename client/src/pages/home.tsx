@@ -13669,9 +13669,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         { id: "samantha", name: "Samantha", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" },
                                         { id: "amro", name: "Amro", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" },
                                         { id: "heera", name: "Heera", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" },
-                                        { id: "add", name: "Add", isAdd: true }
                                       ].map((profile) => {
-                                        const isSelected = typeof activeVoiceProfileId !== "undefined" && activeVoiceProfileId === profile.id;
+                                        const isSelected = activeVoiceProfileId === profile.id;
                                         return (
                                           <div 
                                             key={profile.id} 
