@@ -1910,6 +1910,7 @@ const getFullApiUrl = (path: string): string => {
 };
 
 export default function Home() {
+  const [isBugReportOpen, setIsBugReportOpen] = useState(false);
   const [activeVoiceProfileId, setActiveVoiceProfileId] = useState<string>(() => { if (typeof window !== 'undefined') { return localStorage.getItem('activeVoiceProfileId') || 'ravi'; } return 'ravi'; });
 
   useEffect(() => { localStorage.setItem('activeVoiceProfileId', activeVoiceProfileId); }, [activeVoiceProfileId]);
@@ -13507,11 +13508,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* Navigation Menu Items - Left aligned */}
                         <div className="space-y-3 flex flex-col">
                           <button
-                            onClick={() => { if (isEditingUsername || isEditingDisplayName || isEditingDob || isEditingLocation) { setIsEditingUsername(false); setIsEditingDisplayName(false); setIsEditingDob(false); setIsEditingLocation(false); } else { setIsProfileActive(!isProfileActive); } }}
-                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-start"
-                            data-testid="nav-profile"
+                            onClick={() => setIsBugReportOpen(true)}
+                            className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-start gap-2"
+                            data-testid="nav-bug-report"
                           >
-                            <User className="h-4 w-4 mr-2" />
+                            <Bug className="h-4 w-4" />
+                            <span>report bug</span>
+                          </button>
                                 <span>profile</span>
                             {isEditingUsername || isEditingDisplayName || isEditingDob || isEditingLocation ? ( <X className="h-4 w-4" /> ) : ( <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isProfileActive ? "rotate-180" : ""}`} /> )}
                           </button>
@@ -13524,7 +13527,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="relative flex items-center gap-2">
                                     <div className="relative w-full">
                                       <Input value={newUsername} onChange={(e) => setNewUsername(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" autoFocus />
-                                      <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ username: newUsername }); setIsEditingUsername(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
+                                      <button onClick={() => setIsBugReportOpen(true)}); setIsEditingUsername(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
                                         <CheckCircle className="h-4 w-4 text-green-400" />
                                       </button>
                                     </div>
@@ -13551,7 +13554,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="relative flex items-center gap-2">
                                     <div className="relative w-full">
                                       <Input value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" autoFocus />
-                                      <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ displayName: newDisplayName }); setIsEditingDisplayName(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
+                                      <button onClick={() => setIsBugReportOpen(true)}); setIsEditingDisplayName(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
                                         <CheckCircle className="h-4 w-4 text-green-400" />
                                       </button>
                                     </div>
@@ -13559,7 +13562,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.displayName && currentUser.displayName !== "Not available" ? currentUser.displayName : ""}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <button onClick={() => setIsBugReportOpen(true)}} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
@@ -13602,7 +13605,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewDob(currentUser?.dob || ""); setIsEditingDob(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <button onClick={() => setIsBugReportOpen(true)}} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
@@ -13640,7 +13643,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.location && currentUser.location !== "empty" ? currentUser.location : ""}</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
+                                    <button onClick={() => setIsBugReportOpen(true)}} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
                                   </div>
                                 )}
                               </div>
@@ -13650,7 +13653,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {!isProfileActive && (
                             <>
                               <button
-                                onClick={() => setIsVoiceActive(!isVoiceActive)}
+                                onClick={() => setIsBugReportOpen(true)}
                                 className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center justify-start"
                                 data-testid="nav-voice"
                               >
@@ -13746,7 +13749,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <span>Admin -dashboard</span>
                                   </button>
                                   <button
-                                    onClick={toggleTheme}
+                                    onClick={() => setIsBugReportOpen(true)}
                                     className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
                                     data-testid="nav-dark-theme"
                                   >
@@ -13819,7 +13822,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                 {/* Home Screen - Stacks on top with card effect */}
                 <div
-                  onClick={() => isNavOpen && setIsNavOpen(false)}
+                  onClick={() => setIsBugReportOpen(true)}
                   className={`min-h-screen bg-gray-900 flex flex-col transition-all duration-500 ease-out relative z-20 ${
                     isNavOpen
                       ? "scale-90 -translate-x-[70%] rounded-tr-3xl shadow-2xl"
@@ -13909,7 +13912,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <Button
                           size="sm"
                           className="absolute right-2 top-1/2 -translate-y-1/2 bg-gray-700 hover:bg-gray-600 text-gray-300 h-6 w-6 p-0"
-                          onClick={() => handleSearch()}
+                          onClick={() => setIsBugReportOpen(true)}
                           disabled={!searchQuery.trim() || isSearchLoading}
                         >
                           {isSearchLoading ? (
@@ -13943,7 +13946,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               size="sm"
                               className="bg-gray-700 hover:bg-gray-600 text-gray-300 h-10 px-4"
-                              onClick={() => handleSearch()}
+                              onClick={() => setIsBugReportOpen(true)}
                               disabled={!searchQuery.trim() || isSearchLoading}
                             >
                               {isSearchLoading ? (
@@ -14243,7 +14246,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     <div 
                                                       key={index} 
                                                       className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700"
-                                                      onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
+                                                      onClick={() => setIsBugReportOpen(true)}
                                                       data-testid={`search-news-item-${index}`}
                                                     >
                                                       <h4 className="text-gray-200 font-medium text-sm mb-2 hover:text-gray-100 transition-colors line-clamp-2">
@@ -14296,7 +14299,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         key={tf}
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => setNifty50Timeframe(tf)}
+                                                        onClick={() => setIsBugReportOpen(true)}
                                                         className={`px-1.5 py-0.5 text-xs h-6 ${nifty50Timeframe === tf ? 'bg-blue-600/20 text-blue-400' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-700/50'}`}
                                                       >
                                                         {tf}
@@ -14401,7 +14404,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         key={tf}
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => setNiftyBankTimeframe(tf)}
+                                                        onClick={() => setIsBugReportOpen(true)}
                                                         className={`px-1.5 py-0.5 text-xs h-6 ${niftyBankTimeframe === tf ? 'bg-blue-600/20 text-blue-400' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-700/50'}`}
                                                       >
                                                         {tf}
@@ -14539,7 +14542,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           ? 'bg-blue-600/30 border border-blue-500/50' 
                                                           : 'hover:bg-gray-700/50'
                                                       }`}
-                                                      onClick={() => setSelectedWatchlistSymbol(stock.symbol)}
+                                                      onClick={() => setIsBugReportOpen(true)}
                                                       data-testid={`watchlist-item-${idx}`}
                                                     >
                                                       <div className="flex items-center justify-between w-full">
@@ -14609,7 +14612,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     <div 
                                                       key={index} 
                                                       className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700"
-                                                      onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
+                                                      onClick={() => setIsBugReportOpen(true)}
                                                       data-testid={`news-item-${index}`}
                                                     >
                                                       <h4 className="text-gray-200 font-medium text-sm mb-2 hover:text-gray-100 transition-colors line-clamp-2">
@@ -15391,7 +15394,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <Button
                           variant="secondary"
                           className="bg-indigo-600 hover:bg-indigo-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200"
-                          onClick={generateJournalAIReport}
+                          onClick={() => setIsBugReportOpen(true)}
                           data-testid="button-trading-journal"
                         >
                           <div className="flex items-center gap-2">
@@ -15488,7 +15491,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               size="sm"
                               className="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700 hover:bg-gray-600 text-gray-300"
-                              onClick={() => handleSearch()}
+                              onClick={() => setIsBugReportOpen(true)}
                               disabled={!searchQuery.trim() || isSearchLoading}
                             >
                               {isSearchLoading ? (
@@ -15581,7 +15584,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <Button
                                 variant="secondary"
                                 className="bg-indigo-600 hover:bg-indigo-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0"
-                                onClick={generateJournalAIReport}
+                                onClick={() => setIsBugReportOpen(true)}
                                 data-testid="button-trading-journal-mobile"
                               >
                                 <div className="flex items-center gap-1">
@@ -15674,7 +15677,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             </div>
                                             <div className="flex items-center gap-0.5">
                                               {['1D', '5D', '1M'].map((tf) => (
-                                                <Button key={tf} variant="ghost" size="sm" onClick={() => setNifty50Timeframe(tf)} className={`px-1 py-0 text-xs h-5 ${nifty50Timeframe === tf ? 'bg-blue-600/20 text-blue-400' : 'text-gray-400'}`}>
+                                                <Button key={tf} variant="ghost" size="sm" onClick={() => setIsBugReportOpen(true)} className={`px-1 py-0 text-xs h-5 ${nifty50Timeframe === tf ? 'bg-blue-600/20 text-blue-400' : 'text-gray-400'}`}>
                                                   {tf}
                                                 </Button>
                                               ))}
@@ -15704,7 +15707,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               </div>
                                               <div className="flex items-center gap-0.5">
                                                 {['1D', '5D', '1M'].map((tf) => (
-                                                  <Button key={tf} variant="ghost" size="sm" onClick={() => {}} className={`px-1 py-0 text-xs h-5 bg-blue-600/20 text-blue-400`}>
+                                                  <Button key={tf} variant="ghost" size="sm" onClick={() => setIsBugReportOpen(true)}} className={`px-1 py-0 text-xs h-5 bg-blue-600/20 text-blue-400`}>
                                                     {tf}
                                                   </Button>
                                                 ))}
@@ -15730,7 +15733,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           </div>
                                           <div className="space-y-1 max-h-20 overflow-y-auto">
                                             {watchlistSymbols.map((stock) => (
-                                              <div key={stock.symbol} onClick={() => setSelectedWatchlistSymbol(stock.symbol)} className={`px-2 py-1 rounded text-xs cursor-pointer ${selectedWatchlistSymbol === stock.symbol ? 'bg-blue-600/30 border border-blue-500/50' : 'hover:bg-gray-700/50'}`}>
+                                              <div key={stock.symbol} onClick={() => setIsBugReportOpen(true)} className={`px-2 py-1 rounded text-xs cursor-pointer ${selectedWatchlistSymbol === stock.symbol ? 'bg-blue-600/30 border border-blue-500/50' : 'hover:bg-gray-700/50'}`}>
                                                 <div className="font-medium text-gray-200">{stock.displayName || stock.symbol}</div>
                                               </div>
                                             ))}
@@ -15800,7 +15803,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {/* Social Feed Card */}
                           <div
                             className="bg-blue-500 rounded-2xl overflow-hidden h-36 w-full relative cursor-pointer hover:scale-105 transition-transform"
-                            onClick={() => checkAuthAndNavigate("voice")}
+                            onClick={() => setIsBugReportOpen(true)}
                           >
                             <div className="absolute top-3 left-3">
                               <span className="bg-white bg-opacity-90 text-blue-600 px-2.5 py-1 rounded-full text-xs font-medium">
@@ -15817,7 +15820,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {/* Trading Master Card */}
                           <div
                             className="bg-indigo-500 rounded-2xl overflow-hidden h-36 w-full relative cursor-pointer hover:scale-105 transition-transform"
-                            onClick={handleTradingMasterAccess}
+                            onClick={() => setIsBugReportOpen(true)}
                           >
                             <div className="absolute top-3 left-3">
                               <span className="bg-white bg-opacity-90 text-indigo-600 px-2.5 py-1 rounded-full text-xs font-medium">
@@ -15834,7 +15837,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {/* Trading Charts Card */}
                           <div
                             className="bg-emerald-500 rounded-2xl overflow-hidden h-36 w-full relative cursor-pointer hover:scale-105 transition-transform"
-                            onClick={() => checkAuthAndNavigate("journal")}
+                            onClick={() => setIsBugReportOpen(true)}
                           >
                             <div className="absolute top-3 left-3">
                               <span className="bg-white bg-opacity-90 text-emerald-600 px-2.5 py-1 rounded-full text-xs font-medium">
@@ -15867,7 +15870,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             {/* Social Feed Card */}
                             <div
                               className="bg-blue-500 rounded-xl overflow-hidden h-20 relative cursor-pointer active:scale-95 transition-transform"
-                              onClick={() => checkAuthAndNavigate("voice")}
+                              onClick={() => setIsBugReportOpen(true)}
                             >
                               <div className="absolute top-2 left-2">
                                 <span className="bg-white bg-opacity-90 text-blue-600 px-2 py-0.5 rounded-full text-[10px] font-medium">
@@ -15884,7 +15887,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             {/* Trading Master Card */}
                             <div
                               className="bg-purple-500 rounded-xl overflow-hidden h-20 relative cursor-pointer active:scale-95 transition-transform"
-                              onClick={handleTradingMasterAccess}
+                              onClick={() => setIsBugReportOpen(true)}
                             >
                               <div className="absolute top-2 left-2">
                                 <span className="bg-white bg-opacity-90 text-purple-600 px-2 py-0.5 rounded-full text-[10px] font-medium">
@@ -15901,7 +15904,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             {/* Journal Card */}
                             <div
                               className="bg-green-500 rounded-xl overflow-hidden h-20 relative cursor-pointer active:scale-95 transition-transform"
-                              onClick={() => checkAuthAndNavigate("journal")}
+                              onClick={() => setIsBugReportOpen(true)}
                             >
                               <div className="absolute top-2 left-2">
                                 <span className="bg-white bg-opacity-90 text-green-600 px-2 py-0.5 rounded-full text-[10px] font-medium">
@@ -15963,7 +15966,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                         {/* Main clickable button */}
                         <Button
-                          onClick={() => { const currentEmail = localStorage.getItem("currentUserEmail"); if (currentEmail === "chiranjeevi.perala99@gmail.com") { setTabWithAuthCheck("tutor"); } else { setShowComingSoonDialog(true); } }}
+                          onClick={() => setIsBugReportOpen(true)} else { setShowComingSoonDialog(true); } }}
                           className="relative w-16 h-16 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 shadow-2xl hover:animate-none transition-all duration-300 border-4 border-white/20 pointer-events-auto animate-bounce hover:scale-110"
                         >
                           <ChevronUp className="h-8 w-8 text-gray-400 pointer-events-none" />
@@ -15973,13 +15976,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     )}
 
                     {/* Tutor Vertical Sidebar - Slides from right */}
-{/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">                                          <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Mini-cast                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                Explore interactive trading lessons and personalized guidance with Mini-cast.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
+{/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">                                          <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Mini-cast                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                Explore interactive trading lessons and personalized guidance with Mini-cast.              </p>                            <Button                 onClick={() => setIsBugReportOpen(true)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
                     {showTutorOverlay && (
                       <>
                         {/* Backdrop */}
                         <div
                           className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
-                          onClick={() => setShowTutorOverlay(false)}
+                          onClick={() => setIsBugReportOpen(true)}
                         />
 
                         {/* Sidebar */}
@@ -16002,7 +16005,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => setShowTutorOverlay(false)}
+                              onClick={() => setIsBugReportOpen(true)}
                               className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:bg-slate-800"
                             >
                               <X className="h-5 w-5" />
@@ -16210,7 +16213,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               <div className="h-full relative">
                 {/* Back Button - Mobile Only */}
                 <Button
-                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  onClick={() => setIsBugReportOpen(true)}
                   variant="ghost"
                   size="icon"
                   className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
@@ -16225,7 +16228,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             {activeTab === "backtest" && (
               <div className="h-full relative">
                 <Button
-                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  onClick={() => setIsBugReportOpen(true)}
                   variant="ghost"
                   size="icon"
                   className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
@@ -16240,7 +16243,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             {activeTab === "chart" && (
               <div className="h-full relative">
                 <Button
-                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  onClick={() => setIsBugReportOpen(true)}
                   variant="ghost"
                   size="icon"
                   className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
@@ -16256,7 +16259,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             {activeTab === "check" && (
               <div className="h-full relative">
                 <Button
-                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  onClick={() => setIsBugReportOpen(true)}
                   variant="ghost"
                   size="icon"
                   className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
@@ -16271,7 +16274,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             {activeTab === "4candle" && (
               <div className="h-full relative">
                 <Button
-                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  onClick={() => setIsBugReportOpen(true)}
                   variant="ghost"
                   size="icon"
                   className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
@@ -16286,7 +16289,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             {activeTab === "scanner" && (
               <div className="h-full relative">
                 <Button
-                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  onClick={() => setIsBugReportOpen(true)}
                   variant="ghost"
                   size="icon"
                   className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
@@ -16302,7 +16305,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 <div className="space-y-6 px-0.5 md:px-6 py-0.5 relative">
                 {/* Back Button - Mobile Only */}
                 <Button
-                  onClick={() => setTabWithAuthCheck("trading-home")}
+                  onClick={() => setIsBugReportOpen(true)}
                   variant="ghost"
                   size="icon"
                   className="lg:hidden absolute top-4 right-4 z-50 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
@@ -16550,7 +16553,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   {(categorySearchSuggestions[selectedInstrumentCategory] || []).map((suggestion) => (
                                                     <button
                                                       key={suggestion}
-                                                      onClick={() => setStockSearchQuery(suggestion)}
+                                                      onClick={() => setIsBugReportOpen(true)}
                                                       className="px-2.5 py-1.5 text-xs font-medium bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
                                                       data-testid={`search-suggestion-${suggestion}`}
                                                     >
@@ -17053,7 +17056,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="hidden flex items-center justify-start px-2 py-1 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
                                 <div className="flex items-center gap-1">
                                   <button
-                                    onClick={() => setJournalChartMode('search')}
+                                    onClick={() => setIsBugReportOpen(true)}
                                     className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
                                       journalChartMode === 'search'
                                         ? 'bg-blue-500 text-white'
@@ -17065,7 +17068,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     Search
                                   </button>
                                   <button
-                                    onClick={() => setJournalChartMode('heatmap')}
+                                    onClick={() => setIsBugReportOpen(true)}
                                     className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
                                       journalChartMode === 'heatmap'
                                         ? 'bg-purple-500 text-white'
@@ -17341,7 +17344,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 {isNotesInNewsMode ? "NEWS" : "TRADING NOTES"}
                               </h3>
                               <div className="flex items-center gap-1">
-                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setIsNotesInNewsMode(!isNotesInNewsMode)} data-testid="button-trading-news">
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setIsBugReportOpen(true)} data-testid="button-trading-news">
                                   <Newspaper className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
                                 </Button>
                                 {/* Daily Life Factors Dropdown */}
@@ -17369,7 +17372,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <Button
                                             variant="ghost"
                                             size="sm"
-                                            onClick={clearAllDailyFactors}
+                                            onClick={() => setIsBugReportOpen(true)}
                                             className="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                                             data-testid="button-clear-daily-factors"
                                           >
@@ -17386,7 +17389,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <span
                                               key={factor}
                                               className="inline-flex items-center px-2 py-1 text-xs font-medium bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800 transition-colors"
-                                              onClick={() => toggleDailyFactor(factor)}
+                                              onClick={() => setIsBugReportOpen(true)}
                                               data-testid={`selected-daily-factor-${factor}`}
                                             >
                                               {factor}
@@ -17489,7 +17492,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <Button
                                             variant="ghost"
                                             size="sm"
-                                            onClick={clearAllIndicators}
+                                            onClick={() => setIsBugReportOpen(true)}
                                             className="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                                             data-testid="button-clear-indicators"
                                           >
@@ -17614,7 +17617,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <span
                                               key={indicator}
                                               className="inline-flex items-center px-2 py-1 text-xs font-medium bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 rounded-full cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-800 transition-colors"
-                                              onClick={() => toggleIndicator(indicator)}
+                                              onClick={() => setIsBugReportOpen(true)}
                                               data-testid={`selected-indicator-${indicator}`}
                                             >
                                               {indicator}
@@ -17631,7 +17634,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           return (
                                             <button
                                               key={indicator}
-                                              onClick={() => toggleIndicator(indicator)}
+                                              onClick={() => setIsBugReportOpen(true)}
                                               className={`px-2 py-1.5 text-xs rounded-md border transition-all duration-200 text-left ${
                                                 isSelected
                                                   ? "bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600"
@@ -17673,7 +17676,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <Button
                                             variant="ghost"
                                             size="sm"
-                                            onClick={clearAllTags}
+                                            onClick={() => setIsBugReportOpen(true)}
                                             className="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                                             data-testid="button-clear-tags"
                                           >
@@ -17690,7 +17693,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <span
                                               key={tag}
                                               className="inline-flex items-center px-2 py-1 text-xs font-medium bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full cursor-pointer hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors"
-                                              onClick={() => toggleTag(tag)}
+                                              onClick={() => setIsBugReportOpen(true)}
                                               data-testid={`selected-tag-${tag}`}
                                             >
                                               {tag}
@@ -17782,7 +17785,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <Button
                                       size="icon"
                                       variant="ghost"
-                                      onClick={handleCancelNotes}
+                                      onClick={() => setIsBugReportOpen(true)}
                                       className="h-7 w-7 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                                       data-testid="button-cancel-notes"
                                     >
@@ -17790,7 +17793,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </Button>
                                     <Button
                                       size="icon"
-                                      onClick={handleSaveNotesOnly}
+                                      onClick={() => setIsBugReportOpen(true)}
                                       className="h-7 w-7 bg-green-600 hover:bg-green-700 text-white"
                                       data-testid="button-save-notes"
                                     >
@@ -17801,7 +17804,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <Button
                                     size="sm"
                                     variant="ghost"
-                                    onClick={() => !isNotesInNewsMode && handleEditNotes()}
+                                    onClick={() => setIsBugReportOpen(true)}
                                     className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-slate-900 dark:hover:text-white"
                                     data-testid="button-edit-notes"
                                   >
@@ -17831,7 +17834,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <span
                                           key={factor}
                                           className="inline-flex items-center px-1.5 py-0.5 text-xs font-medium bg-amber-100 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-700 transition-colors group"
-                                          onClick={() => toggleDailyFactor(factor)}
+                                          onClick={() => setIsBugReportOpen(true)}
                                           title="Click to remove daily factor"
                                           data-testid={`inline-daily-factor-${factor}`}
                                         >
@@ -17851,7 +17854,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <span
                                           key={indicator}
                                           className="inline-flex items-center px-1.5 py-0.5 text-xs font-medium bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 rounded-full cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-700 transition-colors group"
-                                          onClick={() => toggleIndicator(indicator)}
+                                          onClick={() => setIsBugReportOpen(true)}
                                           title="Click to remove indicator"
                                           data-testid={`inline-indicator-${indicator}`}
                                         >
@@ -17872,7 +17875,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <span
                                           key={tag}
                                           className="inline-flex items-center px-1.5 py-0.5 text-xs font-medium bg-indigo-100 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-200 rounded-full cursor-pointer hover:bg-indigo-200 dark:hover:bg-indigo-700 transition-colors group"
-                                          onClick={() => toggleTag(tag)}
+                                          onClick={() => setIsBugReportOpen(true)}
                                           title="Click to remove tag"
                                           data-testid={`inline-tag-${tag}`}
                                         >
@@ -17991,7 +17994,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <div className="md:hidden">
                       <Button
                         variant="ghost"
-                        onClick={() => setShowMobileTradeHistory(!showMobileTradeHistory)}
+                        onClick={() => setIsBugReportOpen(true)}
                         className="w-full flex items-center justify-between h-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-4"
                         data-testid="button-mobile-trade-history-toggle"
                       >
@@ -18033,7 +18036,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => setShowConnectDialog(true)}
+                                  onClick={() => setIsBugReportOpen(true)}
                                   className="h-7 px-2 text-xs shrink-0"
                                   data-testid="button-connect-mobile"
                                 >
@@ -18044,7 +18047,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     variant="ghost"
                                     size="sm"
                                     className="h-7 px-2 text-xs shrink-0"
-                                    onClick={() => setShowOrderModal(true)}
+                                    onClick={() => setIsBugReportOpen(true)}
                                     data-testid="button-broker-orders-zerodha-mobile"
                                   >
                                     <img 
@@ -18132,7 +18135,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => setShowConnectDialog(true)}
+                              onClick={() => setIsBugReportOpen(true)}
                               className="h-7 px-2 text-xs"
                               data-testid="button-connect"
                             >
@@ -18143,7 +18146,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 variant="ghost"
                                 size="sm"
                                 className="h-7 px-2 text-xs"
-                                onClick={() => setShowOrderModal(true)}
+                                onClick={() => setIsBugReportOpen(true)}
                                 data-testid="button-broker-orders-zerodha"
                                 title="View Orders & Positions (Zerodha)"
                               >
@@ -18159,7 +18162,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 variant="ghost"
                                 size="sm"
                                 className="h-7 px-2 text-xs"
-                                onClick={() => setShowOrderModal(true)}
+                                onClick={() => setIsBugReportOpen(true)}
                                 data-testid="button-broker-orders-upstox"
                                 title="View Orders & Positions (Upstox)"
                               >
@@ -18175,7 +18178,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 variant="ghost"
                                 size="sm"
                                 className="h-7 px-2 text-xs"
-                                onClick={() => setShowOrderModal(true)}
+                                onClick={() => setIsBugReportOpen(true)}
                                 data-testid="button-broker-orders-angelone"
                                 title="View Orders & Positions (Angel One)"
                               >
@@ -18191,7 +18194,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 variant="ghost"
                                 size="sm"
                                 className="h-7 px-2 text-xs"
-                                onClick={() => setShowOrderModal(true)}
+                                onClick={() => setIsBugReportOpen(true)}
                                 data-testid="button-broker-orders-dhan"
                                 title="View Orders & Positions (Dhan)"
                               >
@@ -18205,7 +18208,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => setShowImportModal(true)}
+                              onClick={() => setIsBugReportOpen(true)}
                               className="h-7 px-2 text-xs"
                               data-testid="button-import-pnl"
                             >
@@ -18214,7 +18217,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => setShowPaperTradingModal(true)}
+                              onClick={() => setIsBugReportOpen(true)}
                               className="h-7 px-2 text-xs hidden md:flex items-center gap-1"
                               data-testid="button-paper-trade"
                             >
@@ -18224,7 +18227,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => setShowTradingChallengeModal(true)}
+                              onClick={() => setIsBugReportOpen(true)}
                               className="h-7 w-7"
                               data-testid="button-trading-challenge"
                               title="Trading Challenge"
@@ -18234,7 +18237,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => setShowJournalInfoModal("manual")}
+                              onClick={() => setIsBugReportOpen(true)}
                               className="h-7 w-7 bg-slate-100 dark:bg-white dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-200 dark:border-slate-600 rounded-full"
                               data-testid="button-journal-info"
                               title="Journal Information"
@@ -18411,7 +18414,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                           ) : (
                             <Button
-                              onClick={handleZerodhaConnect}
+                              onClick={() => setIsBugReportOpen(true)}
                               variant="outline"
                               className={`w-full h-10 ${
                                 (upstoxIsConnected || angelOneIsConnected || dhanIsConnected)
@@ -18443,7 +18446,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 variant="ghost" 
                                 size="icon" 
                                 className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
-                                onClick={handleUpstoxDisconnect}
+                                onClick={() => setIsBugReportOpen(true)}
                                 title="Disconnect Upstox"
                               >
                                 <X className="h-4 w-4" />
@@ -18458,7 +18461,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
                               }`}
                               data-testid="button-upstox-dialog"
-                              onClick={handleUpstoxConnect}
+                              onClick={() => setIsBugReportOpen(true)}
                               disabled={zerodhaIsConnected || angelOneIsConnected || dhanIsConnected}
                             >
                               <img src="https://assets.upstox.com/content/assets/images/cms/202494/MediumWordmark_UP(WhiteOnPurple).png" alt="Upstox" className="h-4 mr-2" />
@@ -18498,7 +18501,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
                               }`}
                               data-testid="button-angelone-dialog"
-                              onClick={handleAngelOneConnect}
+                              onClick={() => setIsBugReportOpen(true)}
                               disabled={zerodhaIsConnected || upstoxIsConnected || dhanIsConnected}
                             >
                               <img src="https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701" alt="Angel One" className="h-4 mr-2" />
@@ -18531,7 +18534,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                           ) : (
                             <Button
-                              onClick={handleDhanConnect}
+                              onClick={() => setIsBugReportOpen(true)}
                               variant="outline"
                               className={`w-full h-10 ${
                                 (zerodhaIsConnected || upstoxIsConnected || angelOneIsConnected)
@@ -18590,7 +18593,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <div className="space-y-4">
                                         <div className="flex items-center gap-2">
                                           <div className="text-sm font-bold text-white tracking-[0.2em]"></div>
-                                          <button onClick={() => selectedAudioTrack?.youtubeId && window.open(`https://www.youtube.com/watch?v=${selectedAudioTrack.youtubeId}`, "_blank")} className="absolute bottom-4 right-4 z-10 hover:scale-110 transition-transform active:scale-95"><Info className="w-4 h-4 text-black" /></button>
+                                          <button onClick={() => setIsBugReportOpen(true)}`, "_blank")} className="absolute bottom-4 right-4 z-10 hover:scale-110 transition-transform active:scale-95"><Info className="w-4 h-4 text-black" /></button>
                                         </div>
                                         <div className="flex justify-start items-end">
                                           <div className="text-xs font-medium text-white/80 uppercase tracking-widest"></div>
@@ -18615,7 +18618,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           {[
                                             { title: "Deep Relaxation Meditation", duration: "10:05", id: "m1", youtubeId: "B7nkVhC10Gw" }
                                           ].map((track) => (
-                                            <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
+                                            <div key={track.id} onClick={() => setIsBugReportOpen(true)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
                                               <div className="flex items-center gap-3">
                                                 <div className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center group-hover:bg-violet-500 transition-colors">
                                                   <Play className="w-3 h-3 text-violet-500 group-hover:text-slate-900 dark:hover:text-white" />
@@ -18638,7 +18641,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           {[
                                             { title: 'Bruce Lee: "Your Greatest Enemy Is Within"', duration: "22:30", id: "p1", youtubeId: "KnppzfiZcgM" }
                                           ].map((track) => (
-                                            <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
+                                            <div key={track.id} onClick={() => setIsBugReportOpen(true)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
                                               <div className="flex items-center gap-3">
                                                 <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
                                                   <Play className="w-3 h-3 text-blue-500 group-hover:text-slate-900 dark:hover:text-white" />
@@ -18679,7 +18682,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             size="icon" 
                                             variant="ghost" 
                                             className="h-8 w-8 text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
-                                            onClick={() => setIsAudioPlaying(!isAudioPlaying)}
+                                            onClick={() => setIsBugReportOpen(true)}
                                           >
                                             {isAudioPlaying ? <Pause className="h-4 w-4 fill-current" /> : <Play className="h-4 w-4 fill-current" />}
                                           </Button>
@@ -18691,7 +18694,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       
                                       {/* Audio Progress Slider */}
                                       <div className="px-1">
-                                        <div className="relative w-full h-1 bg-slate-200 dark:bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden cursor-pointer" onClick={(e) => { if (selectedAudioTrack && youtubePlayerRef.current && duration > 0) { const rect = e.currentTarget.getBoundingClientRect(); const x = e.clientX - rect.left; const clickedProgress = x / rect.width; const newTime = clickedProgress * duration; youtubePlayerRef.current.seekTo(newTime, true); setCurrentTime(newTime); setAudioProgress(clickedProgress * 100); } } }>
+                                        <div className="relative w-full h-1 bg-slate-200 dark:bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden cursor-pointer" onClick={() => setIsBugReportOpen(true)} } }>
                                           <div 
                                             className="absolute top-0 left-0 h-full bg-gradient-to-r from-violet-500 to-purple-600 transition-all duration-300"
                                             style={{ width: `${selectedAudioTrack ? audioProgress : 0}%` }}
@@ -18735,7 +18738,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               className="scale-75"
                             />
                             <Button
-                              onClick={saveAllTradingData}
+                              onClick={() => setIsBugReportOpen(true)}
                               size="sm"
                               variant="outline"
                               disabled={isDemoMode && localStorage.getItem('currentUserId') !== 'c06ce90c-20a1-7033-d457-efac5a682529'}
@@ -19034,7 +19037,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         className={`flex flex-col items-center justify-center hover-elevate active-elevate-2 rounded px-1 transition-all ${
                                           activeTagHighlight?.tag === 'fomo' ? 'bg-white/30 ring-2 ring-white/50' : ''
                                         }`} 
-                                        onClick={() => setActiveTagHighlight(activeTagHighlight?.tag === 'fomo' ? null : { tag: 'fomo', dates: fomoDates })} 
+                                        onClick={() => setIsBugReportOpen(true)})} 
                                         data-testid="stat-fomo"
                                         title={`Click to ${activeTagHighlight?.tag === 'fomo' ? 'hide' : 'show'} FOMO dates on heatmap`}
                                       >
@@ -19060,7 +19063,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         className={`flex flex-col items-center justify-center hover-elevate active-elevate-2 rounded px-1 transition-all ${
                                           activeTagHighlight?.tag === 'overtrading' ? 'bg-white/30 ring-2 ring-white/50' : ''
                                         }`} 
-                                        onClick={() => setActiveTagHighlight(activeTagHighlight?.tag === 'overtrading' ? null : { tag: 'overtrading', dates: overTradingDates })} 
+                                        onClick={() => setIsBugReportOpen(true)})} 
                                         data-testid="stat-overtrading"
                                         title={`Click to ${activeTagHighlight?.tag === 'overtrading' ? 'hide' : 'show'} overtrading dates on heatmap`}
                                       >
@@ -19072,7 +19075,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <button 
                                         ref={plannedButtonRef}
                                         className={`flex flex-col items-center justify-center hover-elevate active-elevate-2 rounded px-1 transition-all ${activeTagHighlight?.tag === 'planned' ? 'bg-white/30 ring-2 ring-white/50' : ''}`} 
-                                        onClick={() => setActiveTagHighlight(activeTagHighlight?.tag === 'planned' ? null : { tag: 'planned', dates: plannedDates })} 
+                                        onClick={() => setIsBugReportOpen(true)})} 
                                         data-testid="stat-planned"
                                         title={`Click to ${activeTagHighlight?.tag === 'planned' ? 'hide' : 'show'} planned trade dates on heatmap`}
                                       >
@@ -19086,7 +19089,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   {/* Share Icon */}
                                   <button
                                     className="flex items-center justify-center w-6 h-6 bg-white/20 rounded hover:bg-white/30 transition-colors"
-                                    onClick={() => setShowShareDialog(true)}
+                                    onClick={() => setIsBugReportOpen(true)}
                                     data-testid="button-share-tradebook"
                                     title="Share tradebook"
                                   >
@@ -19172,7 +19175,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           className={`hover-elevate active-elevate-2 rounded px-2 py-0.5 text-xs transition-all ${
                                             activeTagHighlight?.tag === tag ? 'bg-white/50 ring-2 ring-white/50' : 'bg-white/20'
                                           }`}
-                                          onClick={() => setActiveTagHighlight(activeTagHighlight?.tag === tag ? null : { tag, dates: tagDates[tag] || [] })}
+                                          onClick={() => setIsBugReportOpen(true)})}
                                           data-testid={`stat-toptag-${tag}`}
                                         >
                                           {tag} <span className="text-black">({count})</span>
@@ -20626,7 +20629,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => setIsBuildMode(false)}
+                            onClick={() => setIsBugReportOpen(true)}
                             data-testid="button-close-build-mode"
                           >
                             <X className="w-4 h-4" />
@@ -21160,7 +21163,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       {Object.keys(savedFormats).length > 0 && (
                         <div className="mt-4 space-y-2">
                           <button
-                            onClick={() => setShowSavedFormatsDropdown(!showSavedFormatsDropdown)}
+                            onClick={() => setIsBugReportOpen(true)}
                             className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors w-full"
                             data-testid="button-toggle-saved-formats"
                           >
@@ -21212,7 +21215,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           className="h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 disabled:opacity-50 disabled:cursor-not-allowed"
                                           disabled={!currentUser?.userId}
                                           title={!currentUser?.userId ? "Log in to delete formats" : ""}
-                                          onClick={async () => {if (confirm(`Delete format "${displayLabel}"?`)) {
+                                          onClick={() => setIsBugReportOpen(true)}"?`)) {
                                               const newFormats = { ...savedFormats };
                                               delete newFormats[formatId];
                                               setSavedFormats(newFormats);
@@ -21553,7 +21556,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </Button>
                 <Button 
                   size="sm"
-                  onClick={handleImportData}
+                  onClick={() => setIsBugReportOpen(true)}
                   className="h-8 text-xs"
                 >
                   Import
@@ -21601,7 +21604,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               </div>
             </div>
             <Button 
-              onClick={() => setShowTradingChallengeModal(false)}
+              onClick={() => setIsBugReportOpen(true)}
               className="w-full"
               data-testid="button-close-challenge-modal"
             >
@@ -21641,7 +21644,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <span className="text-white font-medium">{paperTradeHistory.length}</span>
                   </div>
                   <Button
-                    onClick={() => setHidePositionDetails(!hidePositionDetails)}
+                    onClick={() => setIsBugReportOpen(true)}
                     size="icon"
                     variant="ghost"
                     className="h-6 w-6 ml-auto text-gray-400 hover:text-slate-900 dark:hover:text-white"
@@ -21826,7 +21829,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         return (
                           <>
                             <Button
-                              onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }}
+                              onClick={() => setIsBugReportOpen(true)}}
                               disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                               className="flex-1 h-12 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-base"
                               data-testid="button-paper-buy-mobile"
@@ -21834,7 +21837,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               BUY
                             </Button>
                             <Button
-                              onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }}
+                              onClick={() => setIsBugReportOpen(true)}}
                               disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                               className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-base"
                               data-testid="button-paper-sell-mobile"
@@ -21845,7 +21848,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             {/* Mobile SL Button with Dropdown */}
                             <div className="relative">
                               <Button
-                                onClick={() => setShowMobilePaperTradeSLDropdown(!showMobilePaperTradeSLDropdown)}
+                                onClick={() => setIsBugReportOpen(true)}
                                 disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                                 variant={paperTradeSLEnabled ? "default" : "outline"}
                                 className={`h-12 w-12 rounded-xl ${paperTradeSLEnabled ? 'bg-orange-500 hover:bg-orange-600 text-white' : ''}`}
@@ -21984,7 +21987,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {paperTradingWsStatus === 'connected' && <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />}
                       </div>
                       <Button
-                        onClick={exitAllPaperPositions}
+                        onClick={() => setIsBugReportOpen(true)}
                         size="sm"
                         variant="ghost"
                         className="h-7 px-2 text-xs text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
@@ -22068,7 +22071,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         Trade History
                       </div>
                       <Button
-                        onClick={recordAllPaperTrades}
+                        onClick={() => setIsBugReportOpen(true)}
                         size="sm"
                         variant="ghost"
                         className="h-7 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20"
@@ -22114,7 +22117,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 <div className="px-4 pb-6">
                   <div className="flex items-center justify-start pt-3 border-t border-gray-100 dark:border-gray-800">
                     <button
-                      onClick={resetPaperTradingAccount}
+                      onClick={() => setIsBugReportOpen(true)}
                       className="text-xs text-gray-400 hover:text-red-500 transition-colors"
                       data-testid="button-reset-mobile"
                     >
@@ -22322,7 +22325,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       return (
                         <div className="flex gap-2 items-center justify-end">
                           <Button
-                            onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }}
+                            onClick={() => setIsBugReportOpen(true)}}
                             disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                             size="sm"
                             className="h-8 px-4 bg-green-600 hover:bg-green-700 text-white text-xs"
@@ -22331,7 +22334,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             BUY
                           </Button>
                           <Button
-                            onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }}
+                            onClick={() => setIsBugReportOpen(true)}}
                             disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                             size="sm"
                             className="h-8 px-4 bg-red-600 hover:bg-red-700 text-white text-xs"
@@ -22343,7 +22346,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {/* SL Button with Dropdown */}
                           <div className="relative">
                             <Button
-                              onClick={() => setShowPaperTradeSLDropdown(!showPaperTradeSLDropdown)}
+                              onClick={() => setIsBugReportOpen(true)}
                               disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                               size="sm"
                               variant={paperTradeSLEnabled ? "default" : "outline"}
@@ -22483,7 +22486,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       </div>
                       <div className="flex items-center gap-2">
                         <Button
-                          onClick={() => setHidePositionDetails(!hidePositionDetails)}
+                          onClick={() => setIsBugReportOpen(true)}
                           size="icon"
                           variant="ghost"
                           className="h-5 w-5"
@@ -22493,7 +22496,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {hidePositionDetails ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </Button>
                         <Button
-                          onClick={exitAllPaperPositions}
+                          onClick={() => setIsBugReportOpen(true)}
                           size="sm"
                           variant="outline"
                           className="h-5 px-2 text-[10px] text-red-500 border-red-300 hover:bg-red-50 hover:text-red-600 dark:border-red-700 dark:hover:bg-red-900/20"
@@ -22527,7 +22530,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <td className="px-2 py-1.5 font-medium flex items-center gap-2">
                                 <span>{position.symbol}</span>
                                 <button
-                                  onClick={() => exitPosition(position.id)}
+                                  onClick={() => setIsBugReportOpen(true)}
                                   className="h-5 w-5 text-red-500 hover:text-red-600 hover:opacity-80 transition-all"
                                   data-testid="button-exit-desktop-position"
                                   title="Exit position"
@@ -22566,7 +22569,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 flex items-center justify-between gap-2">
                       <div>History</div>
                       <Button
-                        onClick={recordAllPaperTrades}
+                        onClick={() => setIsBugReportOpen(true)}
                         size="sm"
                         variant="outline"
                         className="h-5 px-2 text-[10px] text-blue-600 border-blue-300 hover:bg-blue-50 hover:text-blue-700 dark:border-blue-700 dark:hover:bg-blue-900/20"
@@ -22619,7 +22622,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 {/* Footer */}
                 <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800">
                   <button
-                    onClick={resetPaperTradingAccount}
+                    onClick={() => setIsBugReportOpen(true)}
                     className="text-[10px] text-gray-400 hover:text-red-500 transition-colors"
                     data-testid="button-reset-paper-trading"
                   >
@@ -22683,7 +22686,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             </DialogHeader>
             <div className="flex justify-center gap-3 mt-4">
               <Button
-                onClick={() => setShowSaveConfirmation(false)}
+                onClick={() => setIsBugReportOpen(true)}
                 variant={saveConfirmationData?.error ? "outline" : "default"}
               >
                 OK
@@ -22723,13 +22726,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               <div className="flex justify-center gap-3">
                 <Button
                   variant="outline"
-                  onClick={handlePasscodeCancel}
+                  onClick={() => setIsBugReportOpen(true)}
                   data-testid="button-cancel-passcode"
                 >
                   Cancel
                 </Button>
                 <Button
-                  onClick={handlePasscodeSubmit}
+                  onClick={() => setIsBugReportOpen(true)}
                   data-testid="button-submit-passcode"
                 >
                   Submit
@@ -22896,7 +22899,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   return <div className="text-center py-8"><p className="text-sm text-gray-600 dark:text-gray-400">No options available for {selectedOptionIndex} on {selectedOptionExpiryDate}</p></div>;
                 }
 
-                return <div className="overflow-x-auto"><table className="w-full text-xs"><thead className="sticky top-0 bg-gray-100 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700"><tr><th className="text-left py-2 px-3 font-semibold text-gray-900 dark:text-white">CE</th><th className="text-center py-2 px-2 font-semibold text-gray-900 dark:text-white">Strike</th><th className="text-right py-2 px-3 font-semibold text-gray-900 dark:text-white">PE</th></tr></thead><tbody>{Array.from({ length: maxRows }).map((_, index) => <tr key={index} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"><td className="py-2 px-3">{filteredCalls[index] ? <div onClick={() => handleOptionClick(filteredCalls[index])} className={getClasses(filteredCalls[index].strikePrice, true)} data-testid={`option-call-${filteredCalls[index].strikePrice}`}><div className={getPriceClasses(filteredCalls[index].strikePrice, true)}>₹{filteredCalls[index].ltp?.toFixed(2) || 0}</div></div> : null}</td><td className="py-2 px-2 text-center font-medium text-gray-700 dark:text-gray-300">{filteredCalls[index]?.strikePrice || filteredPuts[index]?.strikePrice || '-'}</td><td className="py-2 px-3 text-right">{filteredPuts[index] ? <div onClick={() => handleOptionClick(filteredPuts[index])} className={getClasses(filteredPuts[index].strikePrice, false)} data-testid={`option-put-${filteredPuts[index].strikePrice}`}><div className={getPriceClasses(filteredPuts[index].strikePrice, false)}>₹{filteredPuts[index].ltp?.toFixed(2) || 0}</div></div> : null}</td></tr>)}</tbody></table></div>;
+                return <div className="overflow-x-auto"><table className="w-full text-xs"><thead className="sticky top-0 bg-gray-100 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700"><tr><th className="text-left py-2 px-3 font-semibold text-gray-900 dark:text-white">CE</th><th className="text-center py-2 px-2 font-semibold text-gray-900 dark:text-white">Strike</th><th className="text-right py-2 px-3 font-semibold text-gray-900 dark:text-white">PE</th></tr></thead><tbody>{Array.from({ length: maxRows }).map((_, index) => <tr key={index} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"><td className="py-2 px-3">{filteredCalls[index] ? <div onClick={() => setIsBugReportOpen(true)} className={getClasses(filteredCalls[index].strikePrice, true)} data-testid={`option-call-${filteredCalls[index].strikePrice}`}><div className={getPriceClasses(filteredCalls[index].strikePrice, true)}>₹{filteredCalls[index].ltp?.toFixed(2) || 0}</div></div> : null}</td><td className="py-2 px-2 text-center font-medium text-gray-700 dark:text-gray-300">{filteredCalls[index]?.strikePrice || filteredPuts[index]?.strikePrice || '-'}</td><td className="py-2 px-3 text-right">{filteredPuts[index] ? <div onClick={() => handleOptionClick(filteredPuts[index])} className={getClasses(filteredPuts[index].strikePrice, false)} data-testid={`option-put-${filteredPuts[index].strikePrice}`}><div className={getPriceClasses(filteredPuts[index].strikePrice, false)}>₹{filteredPuts[index].ltp?.toFixed(2) || 0}</div></div> : null}</td></tr>)}</tbody></table></div>;
               })()}
             </div>
           </DialogContent>
@@ -22925,7 +22928,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               </div>
               <div className="flex justify-center">
                 <Button
-                  onClick={() => setShowTradingMasterComingSoon(false)}
+                  onClick={() => setIsBugReportOpen(true)}
                   className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
                   data-testid="button-close-trading-master-coming-soon"
                 >
@@ -23077,7 +23080,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               <div className="flex items-center justify-around px-1.5 py-1.5">
                 {/* Home Tab */}
                 <button
-                  onClick={() => setMobileBottomTab("home")}
+                  onClick={() => setIsBugReportOpen(true)}
                   className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
                     mobileBottomTab === "home"
                       ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
@@ -23090,7 +23093,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                 {/* Insight Tab */}
                 <button
-                  onClick={() => setMobileBottomTab("insight")}
+                  onClick={() => setIsBugReportOpen(true)}
                   className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
                     mobileBottomTab === "insight"
                       ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
@@ -23128,7 +23131,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                 {/* Paper Trade Tab */}
                 <button
-                  onClick={() => setMobileBottomTab("paper-trade")}
+                  onClick={() => setIsBugReportOpen(true)}
                   className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
                     mobileBottomTab === "paper-trade"
                       ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
@@ -23141,7 +23144,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                 {/* Ranking Tab */}
                 <button
-                  onClick={() => setMobileBottomTab("ranking")}
+                  onClick={() => setIsBugReportOpen(true)}
                   className={`flex items-center justify-center flex-1 rounded-full px-4 py-2 transition-all duration-200 ${
                     mobileBottomTab === "ranking"
                       ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md"
@@ -23182,7 +23185,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   <span className="text-white font-medium">{paperTradeHistory.length}</span>
                 </div>
                 <Button
-                  onClick={() => setHidePositionDetails(!hidePositionDetails)}
+                  onClick={() => setIsBugReportOpen(true)}
                   size="icon"
                   variant="ghost"
                   className="h-6 w-6 ml-auto text-gray-400 hover:text-slate-900 dark:hover:text-white"
@@ -23348,7 +23351,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   <div className="flex gap-2 mb-3">
                     <div className="relative flex-1">
                       <Button
-                        onClick={() => setShowMobilePaperTradeSLDropdown(!showMobilePaperTradeSLDropdown)}
+                        onClick={() => setIsBugReportOpen(true)}
                         disabled={!paperTradeSymbol || !(paperTradeType === 'STOCK' ? paperTradeQuantity : paperTradeLotInput) || !paperTradeCurrentPrice}
                         variant={paperTradeSLEnabled ? "default" : "outline"}
                         className={`w-full h-10 rounded-lg ${paperTradeSLEnabled ? 'bg-orange-500 hover:bg-orange-600 text-white' : ''}`}
@@ -23480,7 +23483,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       return (
                         <>
                           <Button
-                            onClick={() => { setPaperTradeAction('BUY'); executePaperTrade(); }}
+                            onClick={() => setIsBugReportOpen(true)}}
                             disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                             className="flex-1 h-12 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-base"
                             data-testid="button-paper-buy-mobile-tab"
@@ -23488,7 +23491,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             BUY
                           </Button>
                           <Button
-                            onClick={() => { setPaperTradeAction('SELL'); executePaperTrade(); }}
+                            onClick={() => setIsBugReportOpen(true)}}
                             disabled={!paperTradeSymbol || !inputValue || !paperTradeCurrentPrice}
                             className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-base"
                             data-testid="button-paper-sell-mobile-tab"
@@ -23507,7 +23510,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 <div className="">
                   <div className="flex items-center justify-start mb-3">
                     <Button
-                      onClick={() => setShowMobileTradeHistory(!showMobileTradeHistory)}
+                      onClick={() => setIsBugReportOpen(true)}
                       size="icon"
                       variant="ghost"
                       className="h-7 w-7 text-gray-400 hover:text-slate-900 dark:hover:text-white"
@@ -23520,7 +23523,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       {!showMobileTradeHistory && paperTradingWsStatus === 'connected' && <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />}
                     </div>
                     <Button
-                      onClick={showMobileTradeHistory ? recordAllPaperTrades : exitAllPaperPositions}
+                      onClick={() => setIsBugReportOpen(true)}
                       size="sm"
                       variant="ghost"
                       className={`h-7 px-2 text-xs ${
@@ -23604,7 +23607,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {/* Exit button - always rendered, visible when card slides */}
                           <div className="absolute right-0 top-0 bottom-0 w-1/5 bg-red-500 flex items-center justify-center">
                             <button
-                              onClick={() => exitPosition(position.id)}
+                              onClick={() => setIsBugReportOpen(true)}
                               className="flex flex-col items-center justify-center w-full h-full hover:bg-red-600 transition-colors active:bg-red-700"
                               data-testid={`button-exit-position-${position.symbol}`}
                               title="Exit position"
@@ -23719,7 +23722,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               <div className="px-4 pb-6">
                 <div className="flex items-center justify-start pt-3 border-t border-gray-800">
                   <button
-                    onClick={resetPaperTradingAccount}
+                    onClick={() => setIsBugReportOpen(true)}
                     className="text-xs text-gray-400 hover:text-red-500 transition-colors"
                     data-testid="button-reset-mobile-tab"
                   >
@@ -23774,7 +23777,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       {!shareableUrl ? (
                         <Button
                           size="icon"
-                          onClick={handleCreateShareableLink}
+                          onClick={() => setIsBugReportOpen(true)}
                           disabled={isCreatingShareableLink}
                           className="bg-green-600 hover:bg-green-700 h-8 w-8"
                           data-testid="button-create-shareable-link"
@@ -23806,7 +23809,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             size="icon"
                             variant="ghost"
                             className="h-8 w-8"
-                            onClick={() => window.open(shareableUrl, '_blank')}
+                            onClick={() => setIsBugReportOpen(true)}
                             data-testid="button-open-shareable-url"
                           >
                             <ExternalLink className="w-4 h-4" />
@@ -24327,6 +24330,57 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
             </div>
           </DialogContent>
+        <Dialog open={isBugReportOpen} onOpenChange={setIsBugReportOpen}>
+          <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden bg-white dark:bg-slate-900 border-none shadow-2xl">
+            <div className="p-6 space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Report bug</h2>
+                <Button variant="ghost" size="icon" onClick={() => setIsBugReportOpen(false)} className="rounded-full h-8 w-8">
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Title</label>
+                  <Input 
+                    placeholder="Briefly describe the bug..." 
+                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Best streamer, you know it</p>
+                </div>
+
+                <div className="relative group">
+                  <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-8 transition-all hover:border-indigo-400 dark:hover:border-indigo-500 bg-slate-50/50 dark:bg-slate-800/50 flex flex-col items-center justify-center gap-3 cursor-pointer">
+                    <div className="w-12 h-12 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                      <Upload className="h-6 w-6" />
+                    </div>
+                    <div className="text-center space-y-1">
+                      <p className="text-sm font-medium text-slate-900 dark:text-slate-100">Click to browse your computer or drag the file to this area</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Upload an image file (max 20MB)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setIsBugReportOpen(false)} 
+                  className="rounded-lg px-6"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-8 shadow-lg shadow-indigo-200 dark:shadow-none"
+                  onClick={() => setIsBugReportOpen(false)}
+                >
+                  Send
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
         </Dialog>
 
       </div>
