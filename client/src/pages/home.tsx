@@ -19449,7 +19449,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   {heatmapMetrics.totalTrades}
                                 </span>
                               </div>
-                              <div className="flex justify-start items-center">
+                              <div className="flex justify-between items-center">
                                 <span className="text-sm opacity-80">
                                   Success Rate
                                 </span>
