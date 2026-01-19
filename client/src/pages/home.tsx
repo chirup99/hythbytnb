@@ -13712,7 +13712,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       })}
                                     </div>
                                     <div className="w-full h-px bg-gray-700/50 my-1" />
-                                    <p className="text-[11px] text-gray-500 italic">Select a voice for your minicast</p>
+                                    <p className="text-[11px] text-gray-500 italic">Select a voice for your audio post</p>
                                   </div>
                                 </div>
                               )}
