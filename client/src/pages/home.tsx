@@ -15525,7 +15525,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 className="bg-cyan-600 hover:bg-cyan-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0"
                                 onClick={() => {
                                   setIsWatchlistLoading(true);
-                                  handleSuggestionClick("[CHART:WATCHLIST]");
+                                  setIsSearchActive(true);
+                                  setSearchResults("[CHART:WATCHLIST]");
+                                  setIsWatchlistOpen(true);
                                   // Auto-select first stock in watchlist and fetch its quarterly data
                                   if (watchlistSymbols.length > 0 && !selectedWatchlistSymbol) {
                                     const firstStock = watchlistSymbols[0];
@@ -15607,32 +15609,35 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                           {/* Mobile AI Search Results - Extends to bottom */}
                           {isSearchActive && searchResults && (
-                            <div className="fixed inset-0 bg-slate-950/98 backdrop-blur-md z-[100] overflow-y-auto">
-                              <div className="p-4 space-y-4">
-                                <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
+                            <div className="md:hidden fixed inset-x-0 top-0 bottom-0 bg-gray-900/95 backdrop-blur-sm z-[60] overflow-y-auto">
+                              <div className="p-3 space-y-3">
+                                <div className="flex items-center justify-start pb-2 border-b border-gray-700">
                                   <div className="flex items-center gap-1.5">
                                     {searchResults.includes("[CHART:WATCHLIST]") ? (
                                       <>
-                                        <Eye className="h-5 w-5 text-blue-500" />
-                                        <h3 className="text-sm font-bold text-gray-100">
+                                        <Eye className="h-4 w-4 text-gray-700 dark:text-blue-400" />
+                                        <h3 className="text-xs font-medium text-gray-100">
                                           Watchlist
                                         </h3>
                                       </>
                                     ) : searchResults.includes("[CHART:TRADE]") ? (
                                       <>
-                                        <Trophy className="h-5 w-5 text-red-400" />
-                                        <h3 className="text-sm font-bold text-gray-100">
+                                        <Trophy className="h-4 w-4 text-red-400" />
+                                        <h3 className="text-xs font-medium text-gray-100">
                                           Trade Challenge
                                         </h3>
                                       </>
                                     ) : (
                                       <>
-                                        <Bot className="h-5 w-5 text-blue-400" />
-                                        <h3 className="text-sm font-bold text-gray-100">
+                                        <Bot className="h-4 w-4 text-blue-400" />
+                                        <h3 className="text-xs font-medium text-gray-100">
                                           Trading Challenge
                                         </h3>
                                       </>
                                     )}
+                                  </div>
+                                  <Button
+                                    variant="ghost"
                                     size="sm"
                                     onClick={() => {
                                       setSearchQuery("");
@@ -15648,7 +15653,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="text-gray-300 whitespace-pre-wrap leading-tight text-xs">
                                     {searchResults.includes("[CHART:WATCHLIST]") ? (
 // Mobile Watchlist Layout - Using compact desktop layout
-                                      <div className="space-y-4">
+                                      <div className="space-y-2">
                                         {/* NIFTY 50 Chart */}
                                         <div className="bg-gray-800/50 rounded-lg p-2 border border-gray-700">
                                           <div className="space-y-1">
