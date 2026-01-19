@@ -15607,35 +15607,32 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                           {/* Mobile AI Search Results - Extends to bottom */}
                           {isSearchActive && searchResults && (
-                            <div className="md:hidden fixed inset-x-0 top-0 bottom-0 bg-slate-950/98 backdrop-blur-md z-[100] overflow-y-auto">
-                              <div className="p-4 space-y-3">
+                            <div className="fixed inset-0 bg-slate-950/98 backdrop-blur-md z-[100] overflow-y-auto">
+                              <div className="p-4 space-y-4">
                                 <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
                                   <div className="flex items-center gap-1.5">
                                     {searchResults.includes("[CHART:WATCHLIST]") ? (
                                       <>
-                                        <Eye className="h-4 w-4 text-gray-700 dark:text-blue-400" />
-                                        <h3 className="text-xs font-medium text-gray-100">
+                                        <Eye className="h-5 w-5 text-blue-500" />
+                                        <h3 className="text-sm font-bold text-gray-100">
                                           Watchlist
                                         </h3>
                                       </>
                                     ) : searchResults.includes("[CHART:TRADE]") ? (
                                       <>
-                                        <Trophy className="h-4 w-4 text-red-400" />
-                                        <h3 className="text-xs font-medium text-gray-100">
+                                        <Trophy className="h-5 w-5 text-red-400" />
+                                        <h3 className="text-sm font-bold text-gray-100">
                                           Trade Challenge
                                         </h3>
                                       </>
                                     ) : (
                                       <>
-                                        <Bot className="h-4 w-4 text-blue-400" />
-                                        <h3 className="text-xs font-medium text-gray-100">
+                                        <Bot className="h-5 w-5 text-blue-400" />
+                                        <h3 className="text-sm font-bold text-gray-100">
                                           Trading Challenge
                                         </h3>
                                       </>
                                     )}
-                                  </div>
-                                  <Button
-                                    variant="ghost"
                                     size="sm"
                                     onClick={() => {
                                       setSearchQuery("");
