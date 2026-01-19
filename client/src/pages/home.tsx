@@ -19441,7 +19441,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
 
                             <div className="space-y-4">
-                              <div className="flex justify-between items-center">
+                              <div className="flex justify-between items-center w-full">
                                 <span className="text-sm opacity-80">
                                   Total Trades
                                 </span>
@@ -19449,7 +19449,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   {heatmapMetrics.totalTrades}
                                 </span>
                               </div>
-                              <div className="flex justify-between items-center">
+                              <div className="flex justify-between items-center w-full">
                                 <span className="text-sm opacity-80">
                                   Success Rate
                                 </span>
