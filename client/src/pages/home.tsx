@@ -13740,6 +13740,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <span>setting & privacy</span>
                                   </button>
                                   <button
+                                    className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                                    data-testid="nav-report-bug"
+                                  >
+                                    <Bug className="h-4 w-4" />
+                                    <span>report bug</span>
+                                  </button>
+                                  <button
                                     onClick={toggleTheme}
                                     className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
                                     data-testid="nav-dark-theme"
