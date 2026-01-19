@@ -9587,6 +9587,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           query = selectedJournalSymbol.replace("NSE:", "").replace("-INDEX", "").replace("-EQ", "").replace("-BE", "");
           isSymbolSearch = true;
         }
+        
         const endpoint = isSymbolSearch 
           ? `/api/stock-news/${query}?refresh=${Date.now()}`
           : `/api/stock-news?query=${encodeURIComponent(query)}`;
@@ -9594,13 +9595,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         const response = await fetch(endpoint);
         const data = await response.json();
         
-        // Use the same logic as NeoFeed Related News
         const newsItems = Array.isArray(data) ? data : (data.news || data.results || data.articles || []);
         
         if (newsItems.length > 0) {
           setNewsData(newsItems.slice(0, 20));
         } else if (isSymbolSearch) {
-          console.log(`u26a0ufe0f [JOURNAL NEWS] No specific news for ${query}, falling back to general news`);
           const generalResponse = await fetch("/api/stock-news?query=Indian%20Market");
           const generalData = await generalResponse.json();
           const generalResults = Array.isArray(generalData) ? generalData : (generalData.news || generalData.results || generalData.articles || []);
@@ -9608,14 +9607,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         } else {
           setNewsData([]);
         }
-    if (isNotesInNewsMode) {
-      fetchNewsForJournal();
-    }
-  }, [isNotesInNewsMode, selectedJournalSymbol]);
-
-
-  // Daily life factors system - personal factors affecting market performance
-  const dailyFactorsSystem = {
+      } catch (error) {
+        console.error("❌ [JOURNAL NEWS] Error:", error);
+      } finally {
+        setIsNewsLoading(false);
+      }
+    };
     financial: {
       name: "Financial",
       color: "amber",
@@ -17889,20 +17886,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <p className="text-[11px] font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 leading-relaxed group-hover:text-purple-600 dark:group-hover:text-purple-400">
                                               {news.title}
                                               <ExternalLink className="h-2.5 w-2.5 inline ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                            </p>
-                                            <div className="flex items-center gap-3 mt-2 opacity-80">
-                                              <div className="flex items-center gap-1">
-                                                <span className="text-[9px] font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 px-1.5 py-0.5 rounded">
-                                                  {news.source}
-                                                </span>
-                                              </div>
-                                              <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
-                                                <Clock className="h-3 w-3" />
-                                                <span className="text-[9px]">{news.time}</span>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        ))}
+                                {isNotesInNewsMode ? (
+                                  <div className="flex-1 overflow-y-auto custom-thin-scrollbar px-1">
+                                    {isNewsLoading ? (
+                                      <div className="flex items-center justify-center h-20">
+                                        <Loader2 className="w-4 h-4 animate-spin text-purple-500" />
+                                      </div>
+                                    ) : newsData.length > 0 ? (
+                                      <div className="space-y-2.5 py-1">
+                                        {newsData.slice(0, 10).map((news, idx) => (
+                                          <div 
+                                            key={idx} 
+                                            className="group p-2.5 bg-white dark:bg-slate-900/40 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-purple-200 dark:hover:border-purple-900/30 transition-all duration-200 cursor-pointer"
                                             onClick={() => (news.url || news.link) && window.open(news.url || news.link, "_blank", "noopener,noreferrer")}
                                           >
                                             <p className="text-[11px] font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 leading-relaxed group-hover:text-purple-600 dark:group-hover:text-purple-400">
@@ -17912,21 +17907,24 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <div className="flex items-center gap-3 mt-2 opacity-80">
                                               <div className="flex items-center gap-1">
                                                 <span className="text-[9px] font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 px-1.5 py-0.5 rounded">
-                                                  {news.source || news.publisher}
+                                                  {news.source || news.publisher || "Market News"}
                                                 </span>
                                               </div>
                                               <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
                                                 <Clock className="h-3 w-3" />
-                                                <span className="text-[9px]">{news.time || news.publishedAt || news.date}</span>
+                                                <span className="text-[9px]">{news.time || news.publishedAt || news.date || "Just now"}</span>
                                               </div>
                                             </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    ) : (
+                                      <div className="flex flex-col items-center justify-center py-8 opacity-60">
+                                        <Newspaper className="w-8 h-8 mb-2 text-slate-300" />
                                         <p className="text-slate-500 italic text-center text-xs">No recent news for {selectedJournalSymbol}</p>
                                       </div>
                                     )}
                                   </div>
-                                ) : (
-                                  <>
-                                    {notesContent ? (
                                       <pre className="font-sans text-xs overflow-y-auto flex-1 whitespace-pre">
                                         {notesContent}
                                       </pre>
