@@ -19413,21 +19413,35 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                     const heatmapMetrics = calculateHeatmapMetrics();
                     const totalPnL = heatmapMetrics.totalPnL;
-                            <div className="flex justify-between items-center w-full mb-2">
-                              <span className="text-xs font-medium uppercase tracking-wider opacity-70">Total P&L</span>
-                              <div className="text-right">
-                                <div className="text-3xl md:text-4xl font-bold">
-                                  {heatmapMetrics.totalPnL >= 0 ? "+" : "-"}
-                                  ₹{Math.abs(heatmapMetrics.totalPnL).toLocaleString("en-IN", { maximumFractionDigits: 1 })}
-                                </div>
+                    const isProfitable = totalPnL >= 0;
+
+                    console.log(`📊 Performance Trend using ${selectedDateRange ? 'FILTERED' : 'ALL'} heatmap data: ${heatmapMetrics.datesCount} dates, Total P&L: ₹${totalPnL.toFixed(2)}`);
+
+                    return (
+                      <div className="space-y-6">
+                        {/* Desktop: Single Row with Total P&L, Performance Trend, Top Tags */}
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                          {/* Total Performance Card - Desktop: Left side */}
+                          <div
+                            className={`md:col-span-3 rounded-3xl p-6 md:p-8 text-white shadow-2xl ${isProfitable ? "bg-gradient-to-br from-emerald-500 to-teal-600" : "bg-gradient-to-br from-red-500 to-rose-600"}`}
+                          >
+                            <div className="flex items-center justify-start mb-6">
+                              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                                <Target className="w-6 h-6" />
                               </div>
-                            </div>
+                              <div className="text-right">
+                                <div className="text-sm opacity-80">
+                                  {selectedDateRange ? 'Range' : 'Total'} P&L
+                                </div>
+                                <div className="text-2xl md:text-3xl font-bold">
+                                  {totalPnL >= 0 ? "" : "-"}₹
+                                  {Math.abs(totalPnL).toLocaleString("en-IN")}
                                 </div>
                               </div>
                             </div>
 
                             <div className="space-y-4">
-                              <div className="flex justify-between items-center w-full">
+                              <div className="flex justify-between items-center">
                                 <span className="text-sm opacity-80">
                                   Total Trades
                                 </span>
@@ -19435,7 +19449,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   {heatmapMetrics.totalTrades}
                                 </span>
                               </div>
-                              <div className="flex justify-between items-center w-full">
+                              <div className="flex justify-between items-center">
                                 <span className="text-sm opacity-80">
                                   Success Rate
                                 </span>
