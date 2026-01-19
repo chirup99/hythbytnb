@@ -23762,7 +23762,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   <DialogTitle className="text-lg font-semibold">MY trading report</DialogTitle>
 
                   {/* UserID */}
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground text-right">
                     userID: {isSharedReportMode && sharedReportData?.reportData?.username 
                       ? sharedReportData.reportData.username 
                       : (currentUser?.displayName || currentUser?.email || currentUser?.userId || 'Guest')}
