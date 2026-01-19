@@ -23758,7 +23758,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </div>
 
                 {/* Right side: Report title, UserID, and Link icon */}
-                <div className="flex flex-col items-end gap-2">
+                <div className="flex flex-col items-end text-right gap-2">
                   <DialogTitle className="text-lg font-semibold">MY trading report</DialogTitle>
 
                   {/* UserID */}
