@@ -19437,7 +19437,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
 
                             <div className="space-y-4">
-                              <div className="flex justify-start items-center">
+                              <div className="flex justify-between items-center">
                                 <span className="text-sm opacity-80">
                                   Total Trades
                                 </span>
@@ -19445,7 +19445,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   {heatmapMetrics.totalTrades}
                                 </span>
                               </div>
-                              <div className="flex justify-start items-center">
+                              <div className="flex justify-between items-center">
                                 <span className="text-sm opacity-80">
                                   Success Rate
                                 </span>
@@ -19469,7 +19469,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                           {/* Performance Trend Chart - Desktop: Middle */}
                           <div className="md:col-span-6 bg-white dark:bg-slate-900 rounded-3xl p-4 md:p-8 shadow-lg border border-slate-200 dark:border-slate-800">
-                          <div className="flex items-center justify-start mb-6">
+                          <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
                               Performance Trend
                             </h3>

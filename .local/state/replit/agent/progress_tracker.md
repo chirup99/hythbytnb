@@ -317,5 +317,6 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 - Moved Trading Notes controls to the right side (justify-between).
 - Aligned Winning/Losing trades and Profit/Loss values to the right (justify-between).
 - Aligned Trade History and Trade Book headers to the right (justify-between).
+- Aligned Total Trades, Success Rate, and Performance Trend header to the right (justify-between).
 
 ---
