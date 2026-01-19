@@ -15841,7 +15841,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                             <div className="absolute bottom-3 right-3">
                               <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center overflow-hidden">
-                                <img src={journalImage} alt="Journal" className="w-full h-full object-cover" />
+                                <Pencil className="h-5 w-5 text-white" />
                               </div>
                             </div>
                           </div>
@@ -15908,7 +15908,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                               <div className="absolute bottom-2 right-2">
                                 <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center overflow-hidden">
-                                  <img src={journalImage} alt="Journal" className="w-full h-full object-cover" />
+                                  <Pencil className="h-5 w-5 text-white" />
                                 </div>
                               </div>
                             </div>
