@@ -313,4 +313,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 3. Verify the project is working - Angel One auto-connected (P176266), JWT tokens generated, WebSocket streaming BANKNIFTY/SENSEX/GOLD live prices, all services initialized (Dhan, Upstox, NLP Agent with 25+ intents, Gemini AI, DynamoDB tables ready, NeoFeed tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
 
+## FEAT: UI ALIGNMENT (Jan 19, 2026)
+- Moved Trading Notes controls to the right side (justify-between).
+
 ---
