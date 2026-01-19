@@ -15607,9 +15607,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                           {/* Mobile AI Search Results - Extends to bottom */}
                           {isSearchActive && searchResults && (
-                            <div className="md:hidden fixed inset-x-0 top-0 bottom-0 bg-gray-900/95 backdrop-blur-sm z-[60] overflow-y-auto">
-                              <div className="p-3 space-y-3">
-                                <div className="flex items-center justify-start pb-2 border-b border-gray-700">
+                            <div className="md:hidden fixed inset-x-0 top-0 bottom-0 bg-slate-950/98 backdrop-blur-md z-[60] overflow-y-auto">
+                              <div className="p-4 space-y-3">
+                                <div className="flex items-center justify-between pb-2 border-b border-gray-700">
                                   <div className="flex items-center gap-1.5">
                                     {searchResults.includes("[CHART:WATCHLIST]") ? (
                                       <>
@@ -15651,7 +15651,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="text-gray-300 whitespace-pre-wrap leading-tight text-xs">
                                     {searchResults.includes("[CHART:WATCHLIST]") ? (
 // Mobile Watchlist Layout - Using compact desktop layout
-                                      <div className="space-y-2">
+                                      <div className="space-y-4">
                                         {/* NIFTY 50 Chart */}
                                         <div className="bg-gray-800/50 rounded-lg p-2 border border-gray-700">
                                           <div className="space-y-1">
