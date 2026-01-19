@@ -224,7 +224,7 @@ import {
   Facebook,
   Linkedin,
   Twitter,
-  Settings,
+  Bug, Settings,
   Filter,
   Radar,
   RefreshCcw,
