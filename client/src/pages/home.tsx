@@ -8080,21 +8080,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     }
   }, [selectedJournalSymbol, journalChartTimeframe]);
 
-  // ✅ AUTO-FETCH CHART DATA IN MANUAL MODE (only when symbol changes)
-  // ✅ AUTO-FETCH CHART DATA IN MANUAL MODE (only when symbol changes)
+  // ✅ AUTO-FETCH CHART DATA IN MANUAL MODE
   useEffect(() => {
-    if (!selectedJournalSymbol || activeTab !== "journal") return;
+    if (activeTab !== "journal" || !selectedJournalSymbol) return;
 
-    // Auto-fetch when symbol is selected or journal tab is opened
+    console.log(`🔄 [JOURNAL-TAB] Tab activated or symbol changed to ${selectedJournalSymbol}, triggering auto-fetch...`);
+    
+    // Use a small delay to ensure refs are ready and to debounce rapid switching
     const timer = setTimeout(() => {
-      console.log(`🔄 [AUTO-FETCH] Triggering auto-fetch for ${selectedJournalSymbol}`);
       setJournalChartMode("search"); 
       fetchJournalChartData();
-    }, 500); 
+    }, 200); 
 
     return () => clearTimeout(timer);
-  }, [selectedJournalSymbol, activeTab, fetchJournalChartData]);
-
+  }, [activeTab, selectedJournalSymbol, fetchJournalChartData]);
   // ✅ AUTO-RELOAD CHART ON MOBILE PANEL SWITCH (Fixes zoom/resize issues)
   useEffect(() => {
     if (mobileJournalPanel === 0 && activeTab === 'journal') {
