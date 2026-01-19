@@ -14506,7 +14506,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       {watchlistSearchResults.map((result, idx) => (
                                                         <div
                                                           key={idx}
-                                                          className="px-3 py-2 border-b border-gray-700 last:border-b-0 flex items-center justify-start hover:bg-gray-700/50 transition-colors"
+                                                          className="px-3 py-2 border-b border-gray-700 last:border-b-0 flex items-center justify-between hover:bg-gray-700/50 transition-colors"
                                                           data-testid={`watchlist-search-result-${idx}`}
                                                         >
                                                           <div className="flex-1 min-w-0">
@@ -14534,7 +14534,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   {watchlistSymbols.map((stock, idx) => (
                                                     <div
                                                       key={stock.symbol}
-                                                      className={`flex items-center justify-start px-2 py-2 rounded-lg cursor-pointer transition-colors ${
+                                                      className={`flex items-center justify-between px-2 py-2 rounded-lg cursor-pointer transition-colors ${
                                                         selectedWatchlistSymbol === stock.symbol 
                                                           ? 'bg-blue-600/30 border border-blue-500/50' 
                                                           : 'hover:bg-gray-700/50'
@@ -14542,7 +14542,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       onClick={() => setSelectedWatchlistSymbol(stock.symbol)}
                                                       data-testid={`watchlist-item-${idx}`}
                                                     >
-                                                      <div className="flex items-center gap-2">
+                                                      <div className="flex items-center justify-between w-full">
                                                         <div className={`w-2 h-2 rounded-full ${
                                                           selectedWatchlistSymbol === stock.symbol ? 'bg-blue-400' : 'bg-gray-500'
                                                         }`} />
