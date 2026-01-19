@@ -23753,11 +23753,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               <div className="flex items-start justify-between w-full gap-4">
                 {/* Left side: PERALA and tagline */}
                 <div className="flex flex-col gap-1">
-                  <h1 className="text-3xl font-bold tracking-tight">PERALA</h1>
-                  <p className="text-xs text-muted-foreground">rethink & reinvest</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+                      <span className="text-white text-lg font-bold">P</span>
+                    </div>
+                    <h1 className="text-2xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300">PERALA</h1>
+                  </div>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">rethink . reinvest .</p>
+                    <svg className="w-4 h-4 text-purple-600 dark:text-purple-400 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" />
+                    </svg>
+                  </div>
                 </div>
-
-                {/* Right side: Report title, UserID, and Link icon */}
                 <div className="flex flex-col items-end text-right gap-2">
                   <DialogTitle className="text-lg font-semibold">MY trading report</DialogTitle>
 
