@@ -6766,6 +6766,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   // Personal heatmap data (Heatmap loaded from AWS DynamoDB
   const [personalTradingDataByDate, setPersonalTradingDataByDate] = useState<Record<string, any>>({});
+  const [isLoadingHeatmapData, setIsLoadingHeatmapData] = useState(false);
 
   // ✅ PERSONAL HEATMAP REVISION: Track updates to force React re-renders
   // This counter increments after personal auto-clicking completes
@@ -6809,9 +6810,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     console.log("🧹 Startup cleanup: Removing stale localStorage trading data caches...");
 
     // Remove stale personal trading data cache - forces fresh fetch from AWS
-    localStorage.removeItem("personalTradingDataByDate");
-
-    // Remove stale calendar data cache
     localStorage.removeItem("calendarData");
 
     // Remove stale heatmap data cache
