@@ -24233,7 +24233,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <ResponsiveContainer width="100%" height="100%">
                                   <AreaChart
                                     data={chartData}
-                                    margin={{ top: 5, right: 5, left: 30, bottom: 5 }}
+                                    margin={{ top: 5, right: 5, left: 0, bottom: 5 }}
                                   >
                                     <defs>
                                       <linearGradient id="reportTrendGradient" x1="0" y1="0" x2="0" y2="1">
@@ -24242,7 +24242,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       </linearGradient>
                                     </defs>
                                     <XAxis dataKey="day" axisLine={false} tickLine={false} tick={false} />
-                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 7, fill: "#64748b" }} tickFormatter={(value) => `₹${(value/1000).toFixed(1)}k`} domain={['auto', 'auto']} />
+                                    <YAxis orientation="right" axisLine={false} tickLine={false} tick={{ fontSize: 7, fill: "#64748b" }} tickFormatter={(value) => `₹${(value/1000).toFixed(1)}k`} domain={['auto', 'auto']} />
                                     <Tooltip
                                       contentStyle={{
                                         background: 'var(--background)',
