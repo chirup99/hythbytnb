@@ -14176,7 +14176,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   const close = lastCandle?.price || 0;
 
                                                   return (
-                                                    <div className="mt-4 grid grid-cols-4 justify-between gap-2">
+                                                    <div className="mt-4 grid grid-cols-4 justify-between justify-between gap-2">
                                                       <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
                                                         <div className="text-xs font-medium text-gray-400 mb-1">Open</div>
                                                         <div className="text-sm font-semibold text-gray-100">₹{open.toFixed(2)}</div>
@@ -14484,7 +14484,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                               {/* My Watchlist */}
                                               <div className="bg-gray-900/50 rounded-lg p-3 border border-gray-600">
-                                                <div className="flex items-center justify-start mb-3">
+                                                <div className="flex items-center justify-between mb-3">
                                                   <h4 className="text-sm font-medium text-gray-200">My Watchlist</h4>
                                                   <span className="text-xs text-gray-400">{watchlistSymbols.length} stocks</span>
                                                 </div>
@@ -14506,12 +14506,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       {watchlistSearchResults.map((result, idx) => (
                                                         <div
                                                           key={idx}
-                                                          className="px-3 py-2 border-b border-gray-700 last:border-b-0 flex items-center justify-between hover:bg-gray-700/50 transition-colors"
+                                                          className="px-3 py-2 border-b border-gray-700 last:border-b-0 flex items-center justify-start hover:bg-gray-700/50 transition-colors"
                                                           data-testid={`watchlist-search-result-${idx}`}
                                                         >
+                                                        <div className="flex items-center justify-between w-full">
                                                           <div className="flex-1 min-w-0">
                                                             <div className="text-xs font-medium text-gray-200">{result.displayName || result.symbol}</div>
                                                             <div className="text-xs text-gray-400 truncate">{result.name}</div>
+                                                        </div>
                                                           </div>
                                                           <button
                                                             onClick={() => {
@@ -14534,7 +14536,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   {watchlistSymbols.map((stock, idx) => (
                                                     <div
                                                       key={stock.symbol}
-                                                      className={`flex items-center justify-between px-2 py-2 rounded-lg cursor-pointer transition-colors ${
+                                                      className={`flex items-center justify-start px-2 py-2 rounded-lg cursor-pointer transition-colors ${
                                                         selectedWatchlistSymbol === stock.symbol 
                                                           ? 'bg-blue-600/30 border border-blue-500/50' 
                                                           : 'hover:bg-gray-700/50'
@@ -14543,6 +14545,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       data-testid={`watchlist-item-${idx}`}
                                                     >
                                                       <div className="flex items-center justify-between w-full">
+                                                      <div className="flex items-center gap-2 flex-1 min-w-0">
                                                         <div className={`w-2 h-2 rounded-full ${
                                                           selectedWatchlistSymbol === stock.symbol ? 'bg-blue-400' : 'bg-gray-500'
                                                         }`} />
@@ -14550,6 +14553,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           <div className="text-xs font-medium text-gray-200">{stock.displayName || stock.symbol.replace('-EQ', '')}</div>
                                                           <div className="text-xs text-gray-500 truncate max-w-[150px]">{stock.name}</div>
                                                         </div>
+                                                      </div>
                                                       </div>
                                                       <button
                                                         onClick={(e) => {
