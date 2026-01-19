@@ -68,6 +68,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -92,6 +93,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -109,6 +111,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -126,6 +129,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -143,6 +147,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -160,6 +165,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -177,6 +183,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -195,6 +202,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -212,6 +220,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -233,6 +242,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -250,6 +260,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LABEL REFINEMENT (Jan 16, 2026)
 - Corrected labels for the animated bouncing ball popup and its description to "Mini-cast".
@@ -266,6 +277,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI LIGHT MODE VISIBILITY (Jan 17, 2026)
 - Fixed text visibility issues in light mode for the home page.
@@ -286,6 +298,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 17, 2026 - Session 26)
 
@@ -297,6 +310,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 17, 2026 - Session 27)
 
@@ -308,6 +322,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 17, 2026 - Session 28)
 
@@ -319,6 +334,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 18, 2026 - Session 29)
 
@@ -330,6 +346,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 18, 2026 - Session 30)
 
@@ -341,6 +358,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 18, 2026 - Session 31)
 
@@ -352,6 +370,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 18, 2026 - Session 32)
 
@@ -363,6 +382,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 18, 2026 - Session 34)
 
@@ -382,6 +402,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 19, 2026 - Session 36)
 
@@ -393,6 +414,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 19, 2026 - Session 37)
 
@@ -404,6 +426,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## FEAT: UI ALIGNMENT (Jan 19, 2026)
 - Moved Trading Notes controls to the right side (justify-between).
@@ -425,6 +448,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.
 
 ## IMPORT SESSION (Jan 19, 2026 - Session 39)
 
@@ -436,3 +460,4 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 ## UI REFINEMENT (Jan 19, 2026)
 [x] 1. Align Total P&L and its value to the right side of the card in home.tsx.
 [x] 2. Match Total P&L card layout to the provided image (Icon left, P&L right).
+[x] 3. Isolated Journal tab analytics to active mode (Demo/Personal) exclusively.

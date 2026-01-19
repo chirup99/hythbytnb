@@ -19246,8 +19246,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 >
                   {(() => {
                     // Calculate comprehensive insights from all trading data
-                    const calculateTradingInsights = () => {
-                      const allData = Object.values(tradingDataByDate).filter(
+                    const calculateTradingInsights = (data = tradingDataByDate) => {
+                      const allData = Object.values(filteredHeatmapData).filter(
                         (data: any) =>
                           data &&
                           data.tradeHistory &&
@@ -19377,16 +19377,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                     // ✅ NEW: Use filtered heatmap data directly instead of complex insights
                     const filteredHeatmapData = getFilteredHeatmapData();
-                    const insights = calculateTradingInsights(); // Keep for other sections that still need it
-
-                    // Calculate metrics from filtered heatmap data - only include dates with actual trading (non-zero P&L)
+                    const insights = calculateTradingInsights(filteredHeatmapData);
                     const calculateHeatmapMetrics = () => {
                       const dates = Object.keys(filteredHeatmapData);
                       let totalPnL = 0;
                       let totalTrades = 0;
                       let winningTrades = 0;
                       let datesWithTrading = 0;
-
                       dates.forEach(dateKey => {
                         const dayData = filteredHeatmapData[dateKey];
 
