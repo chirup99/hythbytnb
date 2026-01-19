@@ -9588,6 +9588,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           isSymbolSearch = true;
         }
         
+        console.log(`📰 [JOURNAL NEWS] Fetching news for: ${query} (isSymbol: ${isSymbolSearch})`);
+        
         const endpoint = isSymbolSearch 
           ? `/api/stock-news/${query}?refresh=${Date.now()}`
           : `/api/stock-news?query=${encodeURIComponent(query)}`;
@@ -9595,24 +9597,39 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         const response = await fetch(endpoint);
         const data = await response.json();
         
-        const newsItems = Array.isArray(data) ? data : (data.news || data.results || data.articles || []);
+        // Handle different backend response structures
+        const results = data.results || data.articles || [];
         
-        if (newsItems.length > 0) {
-          setNewsData(newsItems.slice(0, 20));
+        if (data.success && results.length > 0) {
+          setNewsData(results);
         } else if (isSymbolSearch) {
+          // Fallback to general news only if we searched for a symbol and found nothing
+          console.log(`⚠️ [JOURNAL NEWS] No specific news for ${query}, falling back to general news`);
           const generalResponse = await fetch("/api/stock-news?query=Indian%20Market");
           const generalData = await generalResponse.json();
-          const generalResults = Array.isArray(generalData) ? generalData : (generalData.news || generalData.results || generalData.articles || []);
-          setNewsData(generalResults.slice(0, 10));
+          const generalResults = generalData.results || generalData.articles || [];
+          if (generalData.success) {
+            setNewsData(generalResults);
+          }
         } else {
+          // If general search failed or no symbol selected and fetch failed
           setNewsData([]);
         }
       } catch (error) {
-        console.error("❌ [JOURNAL NEWS] Error:", error);
+        console.error("❌ [JOURNAL NEWS] Error fetching news:", error);
       } finally {
         setIsNewsLoading(false);
       }
     };
+
+    if (isNotesInNewsMode) {
+      fetchNewsForJournal();
+    }
+  }, [isNotesInNewsMode, selectedJournalSymbol]);
+
+
+  // Daily life factors system - personal factors affecting market performance
+  const dailyFactorsSystem = {
     financial: {
       name: "Financial",
       color: "amber",
@@ -17870,61 +17887,30 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                 {/* News or Notes content */}
                                 {isNotesInNewsMode ? (
-                                  <div className="flex-1 overflow-y-auto custom-thin-scrollbar px-1">
+                                  <div className="flex-1 overflow-y-auto custom-thin-scrollbar">
                                     {isNewsLoading ? (
                                       <div className="flex items-center justify-center h-20">
                                         <Loader2 className="w-4 h-4 animate-spin text-purple-500" />
                                       </div>
                                     ) : newsData.length > 0 ? (
-                                      <div className="space-y-2.5 py-1">
+                                      <div className="space-y-3">
                                         {newsData.slice(0, 10).map((news, idx) => (
-                                          <div 
-                                            key={idx} 
-                                            className="group p-2.5 bg-white dark:bg-slate-900/40 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-purple-200 dark:hover:border-purple-900/30 transition-all duration-200 cursor-pointer"
-                                            onClick={() => news.link && window.open(news.link, "_blank")}
-                                          >
-                                            <p className="text-[11px] font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 leading-relaxed group-hover:text-purple-600 dark:group-hover:text-purple-400">
-                                              {news.title}
-                                              <ExternalLink className="h-2.5 w-2.5 inline ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                {isNotesInNewsMode ? (
-                                  <div className="flex-1 overflow-y-auto custom-thin-scrollbar px-1">
-                                    {isNewsLoading ? (
-                                      <div className="flex items-center justify-center h-20">
-                                        <Loader2 className="w-4 h-4 animate-spin text-purple-500" />
-                                      </div>
-                                    ) : newsData.length > 0 ? (
-                                      <div className="space-y-2.5 py-1">
-                                        {newsData.slice(0, 10).map((news, idx) => (
-                                          <div 
-                                            key={idx} 
-                                            className="group p-2.5 bg-white dark:bg-slate-900/40 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-purple-200 dark:hover:border-purple-900/30 transition-all duration-200 cursor-pointer"
-                                            onClick={() => (news.url || news.link) && window.open(news.url || news.link, "_blank", "noopener,noreferrer")}
-                                          >
-                                            <p className="text-[11px] font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 leading-relaxed group-hover:text-purple-600 dark:group-hover:text-purple-400">
-                                              {news.title}
-                                              <ExternalLink className="h-2.5 w-2.5 inline ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                            </p>
-                                            <div className="flex items-center gap-3 mt-2 opacity-80">
-                                              <div className="flex items-center gap-1">
-                                                <span className="text-[9px] font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 px-1.5 py-0.5 rounded">
-                                                  {news.source || news.publisher || "Market News"}
-                                                </span>
-                                              </div>
-                                              <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
-                                                <Clock className="h-3 w-3" />
-                                                <span className="text-[9px]">{news.time || news.publishedAt || news.date || "Just now"}</span>
-                                              </div>
+                                          <div key={idx} className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-100 dark:border-slate-800">
+                                            <p className="text-[10px] font-medium text-slate-800 dark:text-slate-200 line-clamp-2">{news.title}</p>
+                                            <div className="flex items-center justify-start mt-1">
+                                              <span className="text-[9px] text-purple-500">{news.source}</span>
+                                              <span className="text-[9px] text-slate-500">{news.time}</span>
                                             </div>
                                           </div>
                                         ))}
                                       </div>
                                     ) : (
-                                      <div className="flex flex-col items-center justify-center py-8 opacity-60">
-                                        <Newspaper className="w-8 h-8 mb-2 text-slate-300" />
-                                        <p className="text-slate-500 italic text-center text-xs">No recent news for {selectedJournalSymbol}</p>
-                                      </div>
+                                      <p className="text-gray-500 italic text-center text-xs mt-4">No news found.</p>
                                     )}
                                   </div>
+                                ) : (
+                                  <>
+                                    {notesContent ? (
                                       <pre className="font-sans text-xs overflow-y-auto flex-1 whitespace-pre">
                                         {notesContent}
                                       </pre>
