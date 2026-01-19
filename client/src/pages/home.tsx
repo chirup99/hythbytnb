@@ -15607,9 +15607,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                           {/* Mobile AI Search Results - Extends to bottom */}
                           {isSearchActive && searchResults && (
-                            <div className="md:hidden fixed inset-x-0 top-0 bottom-0 bg-slate-950/98 backdrop-blur-md z-[60] overflow-y-auto">
+                            <div className="md:hidden fixed inset-x-0 top-0 bottom-0 bg-slate-950/98 backdrop-blur-md z-[100] overflow-y-auto">
                               <div className="p-4 space-y-3">
-                                <div className="flex items-center justify-between pb-2 border-b border-gray-700">
+                                <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
                                   <div className="flex items-center gap-1.5">
                                     {searchResults.includes("[CHART:WATCHLIST]") ? (
                                       <>
