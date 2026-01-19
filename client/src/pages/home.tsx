@@ -9587,9 +9587,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           query = selectedJournalSymbol.replace("NSE:", "").replace("-INDEX", "").replace("-EQ", "").replace("-BE", "");
           isSymbolSearch = true;
         }
-        
-        console.log(`📰 [JOURNAL NEWS] Fetching news for: ${query} (isSymbol: ${isSymbolSearch})`);
-        
         const endpoint = isSymbolSearch 
           ? `/api/stock-news/${query}?refresh=${Date.now()}`
           : `/api/stock-news?query=${encodeURIComponent(query)}`;
@@ -9597,31 +9594,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         const response = await fetch(endpoint);
         const data = await response.json();
         
-        // Handle different backend response structures
-        const results = data.results || data.articles || [];
+        // Use the same logic as NeoFeed Related News
+        const newsItems = Array.isArray(data) ? data : (data.news || data.results || data.articles || []);
         
-        if (data.success && results.length > 0) {
-          setNewsData(results);
+        if (newsItems.length > 0) {
+          setNewsData(newsItems.slice(0, 20));
         } else if (isSymbolSearch) {
-          // Fallback to general news only if we searched for a symbol and found nothing
-          console.log(`⚠️ [JOURNAL NEWS] No specific news for ${query}, falling back to general news`);
+          console.log(`u26a0ufe0f [JOURNAL NEWS] No specific news for ${query}, falling back to general news`);
           const generalResponse = await fetch("/api/stock-news?query=Indian%20Market");
           const generalData = await generalResponse.json();
-          const generalResults = generalData.results || generalData.articles || [];
-          if (generalData.success) {
-            setNewsData(generalResults);
-          }
+          const generalResults = Array.isArray(generalData) ? generalData : (generalData.news || generalData.results || generalData.articles || []);
+          setNewsData(generalResults.slice(0, 10));
         } else {
-          // If general search failed or no symbol selected and fetch failed
           setNewsData([]);
         }
-      } catch (error) {
-        console.error("❌ [JOURNAL NEWS] Error fetching news:", error);
-      } finally {
-        setIsNewsLoading(false);
-      }
-    };
-
     if (isNotesInNewsMode) {
       fetchNewsForJournal();
     }
@@ -17917,10 +17903,23 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             </div>
                                           </div>
                                         ))}
-                                      </div>
-                                    ) : (
-                                      <div className="flex flex-col items-center justify-center py-8 opacity-60">
-                                        <Newspaper className="w-8 h-8 mb-2 text-slate-300" />
+                                            onClick={() => (news.url || news.link) && window.open(news.url || news.link, "_blank", "noopener,noreferrer")}
+                                          >
+                                            <p className="text-[11px] font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 leading-relaxed group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                                              {news.title}
+                                              <ExternalLink className="h-2.5 w-2.5 inline ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                            </p>
+                                            <div className="flex items-center gap-3 mt-2 opacity-80">
+                                              <div className="flex items-center gap-1">
+                                                <span className="text-[9px] font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 px-1.5 py-0.5 rounded">
+                                                  {news.source || news.publisher}
+                                                </span>
+                                              </div>
+                                              <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
+                                                <Clock className="h-3 w-3" />
+                                                <span className="text-[9px]">{news.time || news.publishedAt || news.date}</span>
+                                              </div>
+                                            </div>
                                         <p className="text-slate-500 italic text-center text-xs">No recent news for {selectedJournalSymbol}</p>
                                       </div>
                                     )}
