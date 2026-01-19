@@ -14203,7 +14203,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             )}
                                             {/* Related News for Search Results */}
                                             <div className="flex-1 bg-gray-900/50 rounded-lg p-4 border border-gray-600">
-                                              <div className="flex items-center justify-start mb-4">
+                                              <div className="flex items-center justify-between mb-4">
                                                 <div className="flex items-center gap-2">
                                                   <Clock className="h-4 w-4 text-gray-400" />
                                                   <h3 className="text-sm font-medium text-gray-200">
@@ -14616,7 +14616,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       {item.description && (
                                                         <p className="text-gray-400 text-xs mb-2 line-clamp-2">{item.description}</p>
                                                       )}
-                                                      <div className="flex items-center justify-start">
+                                                      <div className="flex items-center justify-between">
                                                         <span className="text-gray-500 text-xs">{item.source}</span>
                                                         <span className="text-gray-500 text-xs">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
                                                       </div>
@@ -14633,7 +14633,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                               {/* Quarterly Results for Selected Stock Only */}
                                               <div className="border-t border-gray-700 pt-4">
-                                                <div className="flex items-center justify-start mb-3">
+                                                <div className="flex items-center justify-between mb-3">
                                                   <div className="flex items-center gap-2">
                                                     <TrendingUp className="h-4 w-4 text-gray-400" />
                                                     <h3 className="text-sm font-medium text-gray-200">
@@ -15000,7 +15000,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             {parts[0]}
                                             {chartData.length > 0 && (
                                               <div className="my-4 bg-gray-900/50 rounded-lg p-4 border border-gray-600">
-                                                <div className="flex items-center justify-start mb-3">
+                                                <div className="flex items-center justify-between mb-3">
                                                   <span className="text-sm font-medium text-gray-300">Quarterly Performance Trend</span>
                                                   <span className={`text-xs px-2 py-1 rounded ${overallTrend === 'positive' ? 'bg-green-500/20 text-green-400' : overallTrend === 'negative' ? 'bg-red-500/20 text-red-400' : 'bg-gray-500/20 text-gray-400'}`}>
                                                     {overallTrend === 'positive' ? '↑ Uptrend' : overallTrend === 'negative' ? '↓ Downtrend' : '→ Neutral'}
