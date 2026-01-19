@@ -13734,14 +13734,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </button>
                                   )}
                                   <button
-                                    onClick={() => setShowSettingsPanel(true)}
-                                    className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
-                                    data-testid="nav-settings"
-                                  >
-                                    <Settings className="h-4 w-4" />
-                                    <span>setting & privacy</span>
-                                  </button>
-                                  <button
                                     className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
                                     data-testid="nav-report-bug"
                                   >
