@@ -14032,7 +14032,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               <div className="flex-1 mb-4 bg-gray-900/50 rounded-lg p-4 border border-gray-600">
                                                 {/* Header with timeframes and price info */}
                                                 <div className="mb-4">
-                                                  <div className="flex items-center justify-start mb-3">
+                                                  <div className="flex items-center justify-between mb-3">
                                                     {/* Timeframe buttons */}
                                                     <div className="flex gap-1.5">
                                                       {timeframes.map((tf) => (
@@ -14072,7 +14072,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                                     {/* Price info on right */}
                                                     <div className="text-right">
-                                                      <div className="flex items-center gap-2 justify-end">
+                                                      <div className="flex items-center justify-between w-full justify-between">
                                                         <div>
                                                           <div className="text-sm font-semibold text-gray-100">
                                                             ₹{currentPrice.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
@@ -14176,7 +14176,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   const close = lastCandle?.price || 0;
 
                                                   return (
-                                                    <div className="mt-4 grid grid-cols-4 gap-2">
+                                                    <div className="mt-4 grid grid-cols-4 justify-between gap-2">
                                                       <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
                                                         <div className="text-xs font-medium text-gray-400 mb-1">Open</div>
                                                         <div className="text-sm font-semibold text-gray-100">₹{open.toFixed(2)}</div>
