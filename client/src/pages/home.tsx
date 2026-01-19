@@ -17887,25 +17887,42 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                 {/* News or Notes content */}
                                 {isNotesInNewsMode ? (
-                                  <div className="flex-1 overflow-y-auto custom-thin-scrollbar">
+                                  <div className="flex-1 overflow-y-auto custom-thin-scrollbar px-1">
                                     {isNewsLoading ? (
                                       <div className="flex items-center justify-center h-20">
                                         <Loader2 className="w-4 h-4 animate-spin text-purple-500" />
                                       </div>
                                     ) : newsData.length > 0 ? (
-                                      <div className="space-y-3">
+                                      <div className="space-y-2.5 py-1">
                                         {newsData.slice(0, 10).map((news, idx) => (
-                                          <div key={idx} className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-100 dark:border-slate-800">
-                                            <p className="text-[10px] font-medium text-slate-800 dark:text-slate-200 line-clamp-2">{news.title}</p>
-                                            <div className="flex items-center justify-start mt-1">
-                                              <span className="text-[9px] text-purple-500">{news.source}</span>
-                                              <span className="text-[9px] text-slate-500">{news.time}</span>
+                                          <div 
+                                            key={idx} 
+                                            className="group p-2.5 bg-white dark:bg-slate-900/40 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-purple-200 dark:hover:border-purple-900/30 transition-all duration-200 cursor-pointer"
+                                            onClick={() => news.link && window.open(news.link, "_blank")}
+                                          >
+                                            <p className="text-[11px] font-semibold text-slate-800 dark:text-slate-100 line-clamp-2 leading-relaxed group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                                              {news.title}
+                                              <ExternalLink className="h-2.5 w-2.5 inline ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                            </p>
+                                            <div className="flex items-center gap-3 mt-2 opacity-80">
+                                              <div className="flex items-center gap-1">
+                                                <span className="text-[9px] font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 px-1.5 py-0.5 rounded">
+                                                  {news.source}
+                                                </span>
+                                              </div>
+                                              <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
+                                                <Clock className="h-3 w-3" />
+                                                <span className="text-[9px]">{news.time}</span>
+                                              </div>
                                             </div>
                                           </div>
                                         ))}
                                       </div>
                                     ) : (
-                                      <p className="text-gray-500 italic text-center text-xs mt-4">No news found.</p>
+                                      <div className="flex flex-col items-center justify-center py-8 opacity-60">
+                                        <Newspaper className="w-8 h-8 mb-2 text-slate-300" />
+                                        <p className="text-slate-500 italic text-center text-xs">No recent news for {selectedJournalSymbol}</p>
+                                      </div>
                                     )}
                                   </div>
                                 ) : (
