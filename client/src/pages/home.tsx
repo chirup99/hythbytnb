@@ -19425,8 +19425,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <div
                             className={`md:col-span-3 rounded-3xl p-6 md:p-8 text-white shadow-2xl ${isProfitable ? "bg-gradient-to-br from-emerald-500 to-teal-600" : "bg-gradient-to-br from-red-500 to-rose-600"}`}
                           >
-                            <div className="flex items-center justify-start mb-6">
-                              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                            <div className="flex items-center justify-between w-full justify-between mb-6">
+                              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-between w-full justify-center">
                                 <Target className="w-6 h-6" />
                               </div>
                               <div className="text-right">
