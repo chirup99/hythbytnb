@@ -8070,7 +8070,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       setJournalChartData(candleData);
 
       // Ensure we're on journal tab only (don't change mode here - let auto-fetch handle mode detection)
-      setActiveTab('journal');
 
     } catch (error) {
       console.error("❌ [SEARCH CHART] Error:", error);
