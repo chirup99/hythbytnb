@@ -6766,7 +6766,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   // Personal heatmap data (Heatmap loaded from AWS DynamoDB
   const [personalTradingDataByDate, setPersonalTradingDataByDate] = useState<Record<string, any>>({});
-  const [isLoadingHeatmapData, setIsLoadingHeatmapData] = useState(false);
 
   // ✅ PERSONAL HEATMAP REVISION: Track updates to force React re-renders
   // This counter increments after personal auto-clicking completes
@@ -6779,37 +6778,37 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [isDemoMode, setIsDemoMode] = useState(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("tradingJournalDemoMode");
+      // If user has explicitly set a preference, respect it
       if (stored !== null) {
         return stored === "true";
       }
+
+      // ✅ SMART DEFAULT: If no userId exists, automatically start in Demo mode
+      // This ensures heatmap loads instantly without needing to toggle
       const userId = localStorage.getItem("currentUserId");
-      if (!userId) return true;
+      if (!userId) {
+        console.log("🎯 Auto-default: Demo mode ON (no userId found)");
+        return true; // Demo mode
+      }
     }
+    // If userId exists, default to personal mode
+    console.log("🎯 Default: Personal mode (userId found)");
     return false;
   });
 
-  // ✅ AUTO-SWITCH LOGIC: Switch to Personal mode if data exists, otherwise Demo
-  useEffect(() => {
-    const personalDataCount = Object.keys(personalTradingDataByDate).length;
-    const demoDataCount = Object.keys(demoTradingDataByDate).length;
+  // Loading state for heatmap data
+  const [isLoadingHeatmapData, setIsLoadingHeatmapData] = useState(false);
 
-    // Only auto-switch if user hasn't manually toggled in this session
-    const hasManuallyToggled = sessionStorage.getItem("hasManuallyToggledMode") === "true";
 
-    if (!hasManuallyToggled) {
-      if (personalDataCount >= 1 && isDemoMode) {
-        console.log("🎯 Auto-switch: Personal mode ON (data found)");
-        setIsDemoMode(false);
-      } else if (personalDataCount === 0 && demoDataCount >= 1 && !isDemoMode) {
-        console.log("🎯 Auto-switch: Demo mode ON (no personal data)");
-        setIsDemoMode(true);
-      }
-    }
-  }, [personalTradingDataByDate, demoTradingDataByDate]);
+  // ✅ CLEANUP: Remove stale localStorage data on startup to prevent state mismatches
+  // This ensures fresh data is always fetched from AWS DynamoDB
   useEffect(() => {
     console.log("🧹 Startup cleanup: Removing stale localStorage trading data caches...");
 
     // Remove stale personal trading data cache - forces fresh fetch from AWS
+    localStorage.removeItem("personalTradingDataByDate");
+
+    // Remove stale calendar data cache
     localStorage.removeItem("calendarData");
 
     // Remove stale heatmap data cache
@@ -10267,7 +10266,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     setHeatmapDataFromComponent(data);
 
     // ✅ AUTO-SWITCH TO DEMO MODE: Only for new users on initial load (not after manual toggle)
-    if (!isDemoMode && getUserId() && sessionStorage.getItem("hasManuallyToggledMode") !== "true") {
+    if (!isDemoMode && getUserId() && !hasManuallyToggledMode) {
       const hasAnyTradeData = Object.values(data).some((dayData: any) => {
         // Check both wrapped (AWS) and unwrapped formats
         const metrics = dayData?.tradingData?.performanceMetrics || dayData?.performanceMetrics;
@@ -18725,13 +18724,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 console.log(`🔄 Demo mode toggle: ${checked ? 'ON (Demo)' : 'OFF (Personal)'}`);
                                 setHasManuallyToggledMode(true);
                                 localStorage.setItem("hasManuallyToggledMode", "true");
-                                setIsDemoMode(checked); sessionStorage.setItem("hasManuallyToggledMode", "true");
+                                setIsDemoMode(checked);
                                 setSelectedDailyFactors([]);
                                 setSelectedIndicators([]);
                                 setTradeHistoryData([]);
                                 setTradingImages([]);
                                 setTradingDataByDate({});
-                                sessionStorage.setItem("hasManuallyToggledMode", "true");
                                 setPersonalHeatmapRevision(prev => prev + 1);
                                 console.log(`✅ Switched to ${checked ? 'Demo' : 'Personal'} mode - CLEARED cache, heatmap fetching fresh AWS data...`);
                               }}
