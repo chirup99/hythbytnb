@@ -19449,7 +19449,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   {heatmapMetrics.totalTrades}
                                 </span>
                               </div>
-                              <div className="flex justify-between items-center">
+                              <div className="flex justify-start items-center">
                                 <span className="text-sm opacity-80">
                                   Success Rate
                                 </span>
@@ -19697,7 +19697,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   .slice(0, 4)
                                   .map((tag: any, idx: number) => (
                                     <div key={tag.tag} className="relative">
-                                      <div className="flex items-center justify-between mb-2">
+                                      <div className="flex items-center justify-between w-full justify-start mb-2">
                                         <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                                           {tag.tag}
                                         </span>
@@ -19784,7 +19784,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               },
                               {
                                 label: "Best Day",
-                                value: `₹${maxProfit.toLocaleString()}`,
+                                value: <div className="flex justify-between w-full"><span>₹</span><span>{maxProfit.toLocaleString()}</span></div>,
                                 icon: TrendingUp,
                                 color: "from-emerald-500 to-green-600",
                                 textColor: "text-emerald-600",
@@ -19828,7 +19828,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <div
                                       className={`text-xl md:text-2xl font-bold ${metric.textColor}`}
                                     >
-                                      {metric.value}
+                                      <div className="flex justify-between w-full">{metric.value}</div>
                                     </div>
                                     <div className="text-xs md:text-sm text-slate-600 dark:text-slate-400">
                                       {metric.label}
