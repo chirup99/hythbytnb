@@ -12947,7 +12947,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <p className="text-white/90 text-xs mb-1">Sat, 06 Sept • 9:00 AM</p>
                             <p className="text-white/70 text-xs">📍 Deccan Serai Hotel, Hitech City, Hyderabad</p>
                           </div>
-                          <div className="flex items-center justify-start mb-2">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex-1 bg-white/30 rounded-full h-1.5 mr-3">
                               <div className="bg-white h-1.5 rounded-full w-4/5"></div>
                             </div>
@@ -12988,7 +12988,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <p className="text-white/90 text-xs mb-1">Feb 10, 2025 • 9:30 AM</p>
                             <p className="text-white/70 text-xs">📍 TiE Bangalore, Koramangala</p>
                           </div>
-                          <div className="flex items-center justify-start mb-2">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex-1 bg-white/30 rounded-full h-1.5 mr-3">
                               <div className="bg-white h-1.5 rounded-full w-3/4"></div>
                             </div>
@@ -13028,7 +13028,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <p className="text-white/90 text-xs mb-1">Jan 28, 2025 • 10:00 AM</p>
                             <p className="text-white/70 text-xs">📍 HICC, Hyderabad</p>
                           </div>
-                          <div className="flex items-center justify-start mb-2">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex-1 bg-white/30 rounded-full h-1.5 mr-3">
                               <div className="bg-white h-1.5 rounded-full w-2/5"></div>
                             </div>
@@ -13068,7 +13068,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <p className="text-white/90 text-xs mb-1">Feb 20, 2025 • 6:00 PM</p>
                             <p className="text-white/70 text-xs">📍 Shilpakala Vedika, Hyderabad</p>
                           </div>
-                          <div className="flex items-center justify-start mb-2">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex-1 bg-white/30 rounded-full h-1.5 mr-3">
                               <div className="bg-white h-1.5 rounded-full w-3/5"></div>
                             </div>
@@ -13110,7 +13110,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <p className="text-white/90 text-xs mb-1">Mar 5, 2025 • 9:00 AM</p>
                             <p className="text-white/70 text-xs">📍 Hitex Exhibition Centre</p>
                           </div>
-                          <div className="flex items-center justify-start mb-2">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex-1 bg-white/30 rounded-full h-1.5 mr-3">
                               <div className="bg-white h-1.5 rounded-full w-1/2"></div>
                             </div>
@@ -13156,7 +13156,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <p className="text-white/90 text-xs mb-1">Jan 15, 2025 • 10:30 AM</p>
                             <p className="text-white/70 text-xs">📍 Bombay Exhibition Centre</p>
                           </div>
-                          <div className="flex items-center justify-start mb-2">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex-1 bg-white/30 rounded-full h-1.5 mr-3">
                               <div className="bg-white h-1.5 rounded-full w-4/5"></div>
                             </div>
@@ -13203,7 +13203,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <p className="text-white/90 text-xs mb-1">Feb 25, 2025 • 9:00 AM</p>
                             <p className="text-white/70 text-xs">📍 UB City Mall, Bengaluru</p>
                           </div>
-                          <div className="flex items-center justify-start mb-2">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex-1 bg-white/30 rounded-full h-1.5 mr-3">
                               <div className="bg-white h-1.5 rounded-full w-4/5"></div>
                             </div>
@@ -13249,7 +13249,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <p className="text-white/90 text-xs mb-1">Mar 12, 2025 • 10:00 AM</p>
                             <p className="text-white/70 text-xs">📍 NESCO Goregaon, Mumbai</p>
                           </div>
-                          <div className="flex items-center justify-start mb-2">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex-1 bg-white/30 rounded-full h-1.5 mr-3">
                               <div className="bg-white h-1.5 rounded-full w-3/4"></div>
                             </div>
@@ -14759,7 +14759,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         {/* PDF Links for Deep Analysis */}
                                                         {quarterlyData.some((q: any) => q.pdf_url) && (
                                                           <div className="mt-3 pt-3 border-t border-gray-700">
-                                                            <div className="flex items-center justify-start mb-2">
+                                                            <div className="flex items-center justify-between mb-2">
                                                               <span className="text-xs font-medium text-gray-400">Quarterly Results PDFs</span>
                                                               <button
                                                                 onClick={() => {
@@ -15722,7 +15722,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                         {/* My Watchlist */}
                                         <div className="bg-gray-800/50 rounded-lg p-2 border border-gray-700">
-                                          <div className="flex items-center justify-start mb-2">
+                                          <div className="flex items-center justify-between mb-2">
                                             <h4 className="text-xs font-medium text-gray-200">My Watchlist</h4>
                                             <span className="text-xs text-gray-400">{watchlistSymbols.length} stocks</span>
                                           </div>
@@ -17334,7 +17334,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* Bottom 70% - Notes Section */}
                         <div className="h-[70%] flex flex-col">
                           <CardContent className="p-2 flex-1 flex flex-col h-full overflow-hidden">
-                            <div className="flex items-center justify-start mb-2">
+                            <div className="flex items-center justify-between mb-2">
                               <h3 className="text-sm font-semibold text-gray-800 dark:text-white flex items-center gap-1.5">
                                 {isNotesInNewsMode ? "NEWS" : "TRADING NOTES"}
                               </h3>
@@ -19693,7 +19693,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   .slice(0, 4)
                                   .map((tag: any, idx: number) => (
                                     <div key={tag.tag} className="relative">
-                                      <div className="flex items-center justify-start mb-2">
+                                      <div className="flex items-center justify-between mb-2">
                                         <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                                           {tag.tag}
                                         </span>
@@ -22026,7 +22026,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             className="bg-gray-50 dark:bg-gray-900 rounded-xl p-3 border border-gray-100 dark:border-gray-800"
                             data-testid={`position-card-${position.symbol}`}
                           >
-                            <div className="flex items-center justify-start mb-2">
+                            <div className="flex items-center justify-between mb-2">
                               <div className="flex items-center gap-2">
                                 <span className="font-medium text-sm">{position.symbol}</span>
                                 <span className={`text-[10px] px-1.5 py-0.5 rounded ${
@@ -23630,7 +23630,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               }
                             }}
                           >
-                            <div className="flex items-center justify-start mb-2">
+                            <div className="flex items-center justify-between mb-2">
                               <div className="flex items-center gap-2">
                                 <span className="font-medium text-sm">{position.symbol}</span>
                                 <span className={`text-[10px] px-1.5 py-0.5 rounded ${
