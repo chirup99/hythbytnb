@@ -14277,7 +14277,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               {/* NIFTY 50 Chart */}
                                               <div className="bg-gray-900/50 rounded-lg p-3 border border-gray-600">
                                                 <div className="space-y-2">
-                                                  <div className="flex items-center justify-start mb-1">
+                                                  <div className="flex items-center justify-between mb-1">
                                                     <div className="flex items-center gap-1">
                                                       <h4 className="text-sm font-semibold text-gray-200">NIFTY 50</h4>
                                                       <span className="text-xs text-green-400 flex items-center gap-1">
@@ -14380,7 +14380,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               {/* Dynamic Watchlist Chart */}
                                               <div className="bg-gray-900/50 rounded-lg p-3 border border-gray-600">
                                                 <div className="space-y-2">
-                                                  <div className="flex items-center justify-start mb-1">
+                                                  <div className="flex items-center justify-between mb-1">
                                                     <div className="flex items-center gap-1">
                                                       <h4 className="text-sm font-semibold text-gray-200">
                                                         {watchlistSymbols.find(s => s.symbol === selectedWatchlistSymbol)?.displayName || selectedWatchlistSymbol.replace('-EQ', '').replace('-BE', '')}
