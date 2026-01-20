@@ -581,7 +581,7 @@ function FuturisticPostCard({ post }: { post: SocialPost }) {
         <div className="p-6 pb-4">
           <div className="flex items-start gap-4">
             <Avatar className="w-12 h-12 border-2 border-slate-600">
-              <AvatarImage src={post.author.avatar} fetchPriority="high" loading="eager" />
+              <AvatarImage src={post.author.avatar} />
               <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-bold">
                 {post.author.displayName.slice(0, 2).toUpperCase()}
               </AvatarFallback>
