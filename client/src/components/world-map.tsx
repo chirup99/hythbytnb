@@ -286,6 +286,20 @@ export function WorldMap() {
               <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.6" />
               <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0" />
             </radialGradient>
+            
+            {/* New Glow Gradients for Navigation Lights */}
+            <radialGradient id="whiteGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="greenGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#10b981" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="redGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#ef4444" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+            </radialGradient>
           </defs>
           {/* Saved Drawing Layer */}
           {savedPaths.map((path, i) => (
@@ -376,20 +390,32 @@ export function WorldMap() {
                       <mpath href={`#saved-path-${i}`} />
                     </animateMotion>
                     
-                    {/* Masthead/Front White Light */}
-                    <circle cx="15" cy="0" r="1.2" fill="#ffffff">
-                      <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" />
-                    </circle>
+                    {/* Masthead/Front White Light with Flow/Glow */}
+                    <g>
+                      <circle cx="15" cy="0" r="4" fill="url(#whiteGlow)">
+                        <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="15" cy="0" r="1.2" fill="#ffffff" />
+                    </g>
                     
-                    {/* Starboard Green Light (Right) */}
-                    <circle cx="-2" cy="4" r="1" fill="#10b981">
-                      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" />
-                    </circle>
+                    {/* Starboard Green Light (Right) with Flow/Glow */}
+                    <g>
+                      <circle cx="-2" cy="4" r="3" fill="url(#greenGlow)">
+                        <animate attributeName="r" values="2;4;2" dur="1.5s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.3;0.6;0.3" dur="1.5s" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="-2" cy="4" r="1" fill="#10b981" />
+                    </g>
                     
-                    {/* Port Red Light (Left) */}
-                    <circle cx="-2" cy="-4" r="1" fill="#ef4444">
-                      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" />
-                    </circle>
+                    {/* Port Red Light (Left) with Flow/Glow */}
+                    <g>
+                      <circle cx="-2" cy="-4" r="3" fill="url(#redGlow)">
+                        <animate attributeName="r" values="2;4;2" dur="1.5s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.3;0.6;0.3" dur="1.5s" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="-2" cy="-4" r="1" fill="#ef4444" />
+                    </g>
                     
                     {/* Stern White Light (Back) */}
                     <circle cx="-13" cy="0" r="0.8" fill="#ffffff" opacity="0.6" />
