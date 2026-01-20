@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useMarketData } from "../hooks/useMarketData";
 import { useTheme } from "@/components/theme-provider";
-import { ArrowUp, ArrowDown, Pencil, RotateCcw, Save } from "lucide-react";
+import { ArrowUp, ArrowDown, Pencil, RotateCcw, Save, X, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -189,40 +189,55 @@ export function WorldMap() {
       >
         {/* Drawing Tools Overlay */}
         <div className="absolute top-2 right-2 z-50 flex gap-2">
-          {allPaths.length > 0 && (
+          {isDrawing ? (
+            <>
+              {allPaths.length > 0 && (
+                <Button 
+                  size="icon" 
+                  variant="secondary" 
+                  onClick={handleSave}
+                  className="h-8 w-8"
+                  title="Save Drawing"
+                  data-testid="button-save-path"
+                >
+                  <Save className="h-4 w-4" />
+                </Button>
+              )}
+              {(allPaths.length > 0 || savedPaths.length > 0) && (
+                <Button 
+                  size="icon" 
+                  variant="secondary" 
+                  onClick={resetDrawing}
+                  className="h-8 w-8 text-destructive"
+                  title="Delete All"
+                  data-testid="button-reset-drawing"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+              <Button 
+                size="icon" 
+                variant="secondary"
+                onClick={() => setIsDrawing(false)}
+                className="h-8 w-8"
+                title="Cancel"
+                data-testid="button-cancel-draw"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </>
+          ) : (
             <Button 
               size="icon" 
-              variant="secondary" 
-              onClick={handleSave}
+              variant="secondary"
+              onClick={() => setIsDrawing(true)}
               className="h-8 w-8"
-              title="Save Drawing"
-              data-testid="button-save-path"
+              title="Start Drawing"
+              data-testid="button-toggle-draw"
             >
-              <Save className="h-4 w-4" />
+              <Pencil className="h-4 w-4" />
             </Button>
           )}
-          {(allPaths.length > 0 || savedPaths.length > 0) && (
-            <Button 
-              size="icon" 
-              variant="secondary" 
-              onClick={resetDrawing}
-              className="h-8 w-8"
-              title="Reset Drawing"
-              data-testid="button-reset-drawing"
-            >
-              <RotateCcw className="h-4 w-4" />
-            </Button>
-          )}
-          <Button 
-            size="icon" 
-            variant={isDrawing ? "default" : "secondary"}
-            onClick={() => setIsDrawing(!isDrawing)}
-            className="h-8 w-8"
-            title={isDrawing ? "Stop Drawing" : "Start Drawing"}
-            data-testid="button-toggle-draw"
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
         </div>
 
         <svg
