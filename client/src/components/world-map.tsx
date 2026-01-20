@@ -289,39 +289,56 @@ export function WorldMap() {
                 opacity={isDrawing ? "0.4" : "0"} 
               />
               <g>
-                {/* Ship Wake/Waves */}
+                {/* Ship Wake/Waves - Enhanced motion like image */}
                 <g>
                   <animateMotion 
                     dur="40s" 
                     repeatCount="indefinite" 
                     rotate="auto"
-                    begin={`${i * 10}s`} // Stagger ships by 10 seconds to maintain distance
+                    begin={`${i * 10}s`}
                   >
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
+                  
+                  {/* Outer glow/motion blur */}
                   <path
-                    d="M -15,-5 Q -25,0 -15,5"
+                    d="M -25,-8 Q 0,0 -25,8"
+                    fill="none"
+                    stroke="#a5f3fc"
+                    strokeWidth="12"
+                    opacity="0.1"
+                  />
+                  
+                  {/* Main V-Wake */}
+                  <path
+                    d="M -20,-6 Q -35,0 -20,6"
                     fill="none"
                     stroke="#ffffff"
-                    strokeWidth="2"
-                    opacity="0.2"
+                    strokeWidth="3"
+                    opacity="0.3"
                   >
-                    <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite" />
                   </path>
-                  <circle r="15" fill="#ffffff" opacity="0.05">
-                    <animate attributeName="r" values="12;18;12" dur="3s" repeatCount="indefinite" />
-                  </circle>
+                  
+                  {/* Side ripple lines */}
+                  <path d="M -15,-10 L 5,-10" stroke="#ffffff" strokeWidth="1" opacity="0.1" />
+                  <path d="M -15,10 L 5,10" stroke="#ffffff" strokeWidth="1" opacity="0.1" />
+                  
+                  {/* Underwater displacement */}
+                  <ellipse cx="0" cy="0" rx="25" ry="12" fill="#a5f3fc" opacity="0.05">
+                    <animate attributeName="rx" values="22;28;22" dur="3s" repeatCount="indefinite" />
+                  </ellipse>
                 </g>
 
-                {/* Alternating between Container and Oil Tanker */}
+                {/* Alternating between Container and Oil Tanker - Smaller size */}
                 {i % 2 === 0 ? (
                   /* Container Ship - Red Hull design from image */
-                  <g transform="scale(1.8)">
+                  <g transform="scale(1.2)">
                     <animateMotion 
                       dur="40s" 
                       repeatCount="indefinite" 
                       rotate="auto"
-                      begin={`${i * 10}s`} // Stagger ships
+                      begin={`${i * 10}s`}
                     >
                       <mpath href={`#saved-path-${i}`} />
                     </animateMotion>
@@ -349,13 +366,13 @@ export function WorldMap() {
                     <rect x="4.5" y="1" width="2" height="2" fill="#eab308" />
                   </g>
                 ) : (
-                  /* Crude Oil Tanker - Long and flat with pipes */
-                  <g transform="scale(1.8)">
+                  /* Crude Oil Tanker - Long and flat with pipes - Smaller size */
+                  <g transform="scale(1.2)">
                     <animateMotion 
                       dur="40s" 
                       repeatCount="indefinite" 
                       rotate="auto"
-                      begin={`${i * 10}s`} // Stagger ships
+                      begin={`${i * 10}s`}
                     >
                       <mpath href={`#saved-path-${i}`} />
                     </animateMotion>
