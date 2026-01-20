@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useMarketData } from "../hooks/useMarketData";
 import { useTheme } from "@/components/theme-provider";
-import { ArrowUp, ArrowDown, Pencil, RotateCcw, Copy } from "lucide-react";
+import { ArrowUp, ArrowDown, Pencil, RotateCcw, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -82,9 +82,20 @@ export function WorldMap() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentPath, setCurrentPath] = useState<string>("");
   const [allPaths, setAllPaths] = useState<string[]>([]);
+  const [savedPaths, setSavedPaths] = useState<string[]>([]);
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
+    // Load saved paths from localStorage on mount
+    const saved = localStorage.getItem("world-map-ship-routes");
+    if (saved) {
+      try {
+        setSavedPaths(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse saved paths", e);
+      }
+    }
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -144,18 +155,26 @@ export function WorldMap() {
     setCurrentPath("");
   };
 
-  const copyPathToClipboard = () => {
-    const fullPath = allPaths.join(" ");
-    navigator.clipboard.writeText(fullPath);
+  const handleSave = () => {
+    const newSavedPaths = [...savedPaths, ...allPaths];
+    setSavedPaths(newSavedPaths);
+    setAllPaths([]);
+    localStorage.setItem("world-map-ship-routes", JSON.stringify(newSavedPaths));
     toast({
-      title: "Path Copied",
-      description: "SVG path data copied to clipboard. You can now use this in the code.",
+      title: "Routes Saved",
+      description: "Ship routes have been saved locally.",
     });
   };
 
   const resetDrawing = () => {
     setAllPaths([]);
+    setSavedPaths([]);
     setCurrentPath("");
+    localStorage.removeItem("world-map-ship-routes");
+    toast({
+      title: "Routes Reset",
+      description: "All ship routes have been cleared.",
+    });
   };
 
   // Smaller dot size for mobile screens
@@ -171,28 +190,28 @@ export function WorldMap() {
         {/* Drawing Tools Overlay */}
         <div className="absolute top-2 right-2 z-50 flex gap-2">
           {allPaths.length > 0 && (
-            <>
-              <Button 
-                size="icon" 
-                variant="secondary" 
-                onClick={copyPathToClipboard}
-                className="h-8 w-8"
-                title="Copy SVG Path"
-                data-testid="button-copy-path"
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-              <Button 
-                size="icon" 
-                variant="secondary" 
-                onClick={resetDrawing}
-                className="h-8 w-8"
-                title="Reset Drawing"
-                data-testid="button-reset-drawing"
-              >
-                <RotateCcw className="h-4 w-4" />
-              </Button>
-            </>
+            <Button 
+              size="icon" 
+              variant="secondary" 
+              onClick={handleSave}
+              className="h-8 w-8"
+              title="Save Drawing"
+              data-testid="button-save-path"
+            >
+              <Save className="h-4 w-4" />
+            </Button>
+          )}
+          {(allPaths.length > 0 || savedPaths.length > 0) && (
+            <Button 
+              size="icon" 
+              variant="secondary" 
+              onClick={resetDrawing}
+              className="h-8 w-8"
+              title="Reset Drawing"
+              data-testid="button-reset-drawing"
+            >
+              <RotateCcw className="h-4 w-4" />
+            </Button>
           )}
           <Button 
             size="icon" 
@@ -225,9 +244,13 @@ export function WorldMap() {
             touchAction: isDrawing ? 'none' : 'auto'
           }}
         >
+          {/* Saved Drawing Layer */}
+          {savedPaths.map((path, i) => (
+            <path key={`saved-${i}`} d={path} fill="none" stroke="#facc15" strokeWidth="2.5" opacity="0.4" />
+          ))}
           {/* User Drawing Layer */}
           {allPaths.map((path, i) => (
-            <path key={i} d={path} fill="none" stroke="#facc15" strokeWidth="3" opacity="0.8" />
+            <path key={`current-${i}`} d={path} fill="none" stroke="#facc15" strokeWidth="3" opacity="0.8" />
           ))}
           {currentPath && (
             <path d={currentPath} fill="none" stroke="#facc15" strokeWidth="3" opacity="0.5" />
