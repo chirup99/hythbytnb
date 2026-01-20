@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useMarketData } from "../hooks/useMarketData";
 import { useTheme } from "@/components/theme-provider";
-import { ArrowUp, ArrowDown, Pencil, RotateCcw, Save, X, Trash2 } from "lucide-react";
+import { ArrowUp, ArrowDown, Pencil, RotateCcw, Save, X, Trash2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -83,6 +83,7 @@ export function WorldMap() {
   const [currentPath, setCurrentPath] = useState<string>("");
   const [allPaths, setAllPaths] = useState<string[]>([]);
   const [savedPaths, setSavedPaths] = useState<string[]>([]);
+  const [showShips, setShowShips] = useState(true);
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -227,6 +228,16 @@ export function WorldMap() {
             ? "bottom-2 right-2 opacity-100" 
             : "top-2 right-2 opacity-0 group-hover:opacity-100"
         }`}>
+          <Button
+            size="icon"
+            variant="secondary"
+            onClick={() => setShowShips(!showShips)}
+            className="h-8 w-8 bg-background/80 hover:bg-background border-none shadow-none"
+            title={showShips ? "Hide Ships" : "Show Ships"}
+            data-testid="button-toggle-ships"
+          >
+            {showShips ? <Eye className="h-4 w-4 text-foreground/70" /> : <EyeOff className="h-4 w-4 text-foreground/70" />}
+          </Button>
           {isDrawing ? (
             <>
               {allPaths.length > 0 && (
@@ -326,7 +337,7 @@ export function WorldMap() {
             </radialGradient>
           </defs>
           {/* Saved Drawing Layer */}
-          {savedPaths.length > 0 && savedPaths.map((path, i) => {
+          {showShips && savedPaths.length > 0 && savedPaths.map((path, i) => {
             if (!path || path.trim().length < 10) return null;
             const pathId = `saved-path-${i}`;
             
