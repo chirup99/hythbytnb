@@ -313,34 +313,34 @@ export function WorldMap() {
                   {/* Front tiny bow waves - white and blue */}
                   <g opacity="0.4">
                     <path
-                      d="M 14,0 L 17,-2 M 14,0 L 17,2"
+                      d="M 14,0 L 19,-4 M 14,0 L 19,4"
                       fill="none"
                       stroke="#ffffff"
-                      strokeWidth="0.8"
+                      strokeWidth="1.5"
                       strokeLinecap="round"
                     >
-                      <animate attributeName="opacity" values="0.2;0.6;0.2" dur="0.8s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.3;0.7;0.3" dur="1s" repeatCount="indefinite" />
                     </path>
                     <path
-                      d="M 13,0 L 16,-1.5 M 13,0 L 16,1.5"
+                      d="M 13,0 L 18,-3.5 M 13,0 L 18,3.5"
                       fill="none"
                       stroke="#0ea5e9"
-                      strokeWidth="1.2"
+                      strokeWidth="2"
                       strokeLinecap="round"
-                      opacity="0.5"
+                      opacity="0.4"
                     />
                   </g>
                   
                   {/* Very Tiny Foam/Spray Layer */}
                   <g opacity="0.3">
                     <path
-                      d="M 12,-1 L -5,-3 Q -8,-3 -10,-4 M 12,1 L -5,3 Q -8,3 -10,4"
+                      d="M 12,-1.5 L -10,-4.5 Q -15,-5 -18,-6 M 12,1.5 L -10,4.5 Q -15,5 -18,6"
                       fill="none"
                       stroke="#ffffff"
-                      strokeWidth="1.5"
+                      strokeWidth="2"
                       strokeLinecap="round"
                     >
-                      <animate attributeName="strokeWidth" values="1;1.8;1" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="strokeWidth" values="1.5;3;1.5" dur="1.5s" repeatCount="indefinite" />
                     </path>
                   </g>
                   
