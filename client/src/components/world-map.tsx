@@ -102,10 +102,9 @@ export function WorldMap() {
             "M 650.2,210.2 L 670.0,210.2 L 690.0,210.2 L 710.0,210.2 L 730.0,210.2 L 750.0,210.2",
             "M 380.0,180.0 L 400.0,185.0 L 430.0,195.0 L 460.0,205.0 L 490.0,215.0 L 520.0,225.0"
           ];
-          // Merge existing user routes with defaults to reach 5
-          const merged = [...(Array.isArray(parsed) ? parsed : []), ...defaultRoutes].slice(0, 5);
-          setSavedPaths(merged);
-          localStorage.setItem("world-map-ship-routes", JSON.stringify(merged));
+          // Always use default routes, ignore local storage if it exists to reset to these values
+          setSavedPaths(defaultRoutes);
+          localStorage.setItem("world-map-ship-routes", JSON.stringify(defaultRoutes));
         }
       } catch (e) {
         console.error("Failed to parse saved paths", e);
