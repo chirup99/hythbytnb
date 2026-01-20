@@ -159,6 +159,7 @@ export function WorldMap() {
     const newSavedPaths = [...savedPaths, ...allPaths];
     setSavedPaths(newSavedPaths);
     setAllPaths([]);
+    setIsDrawing(false); // Close drawing mode automatically
     localStorage.setItem("world-map-ship-routes", JSON.stringify(newSavedPaths));
     toast({
       title: "Routes Saved",
