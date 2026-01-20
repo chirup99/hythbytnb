@@ -554,10 +554,10 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-xs p-0 overflow-visible border-none bg-white dark:bg-gray-900 rounded-2xl shadow-2xl">
         <div className="relative pt-10 pb-5 px-5 flex flex-col items-center text-center">
-          {/* Top floating link icon */}
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-lg border border-gray-100 dark:border-gray-800 z-10">
-            <div className="w-11 h-11 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
-              <LinkIcon className="w-5 h-5 text-blue-600 dark:text-blue-400 rotate-45" />
+          {/* Top floating logo */}
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-lg border border-gray-100 dark:border-gray-800 z-10 p-1">
+            <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center">
+              <img src="/logo.png" alt="NeoFeed Logo" className="w-full h-full object-cover" />
             </div>
           </div>
 
