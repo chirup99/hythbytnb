@@ -233,36 +233,6 @@ export function WorldMap() {
             <path d={currentPath} fill="none" stroke="#facc15" strokeWidth="3" opacity="0.5" />
           )}
 
-          {/* Yellow outline for ship routes - adjusted to be outside landmasses */}
-          <path
-            d="M 10,180
-               C 10,250 50,350 150,420
-               C 250,490 400,480 450,420
-               C 500,360 480,250 450,180
-               C 420,110 300,80 150,80
-               C 50,80 10,110 10,180
-               
-               M 450,180
-               C 450,120 500,100 600,100
-               C 700,100 850,110 950,150
-               C 1050,190 1050,300 950,380
-               C 850,460 700,470 600,440
-               C 500,410 450,320 450,180
-
-               M 600,440
-               C 650,480 750,480 850,440
-               C 950,400 980,300 950,220
-               C 920,140 850,120 750,120
-               C 650,120 600,150 600,220
-               C 600,290 550,400 600,440"
-            fill="none"
-            stroke="#facc15"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.4"
-          />
-
           {/* Continent dots - Smaller on mobile */}
           {worldMapDots.map(([cx, cy], index) => {
             const dotColor = getRegionColor(cx, cy, marketData, isDarkMode);
