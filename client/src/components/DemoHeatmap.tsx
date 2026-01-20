@@ -79,7 +79,7 @@ function getPnLColor(pnl: number): string {
 
 export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeChange, highlightedDates, isPublicView, tradingDataByDate, onSelectDateForHeatmap, refreshTrigger = 0 }: DemoHeatmapProps) {
   const { currentUser } = useCurrentUser();
-  const [currentDate, setCurrentDate] = useState(new Date(new Date().getFullYear(), 0, 1));
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 0, 1));
   const [selectedRange, setSelectedRange] = useState<{ from: Date; to: Date } | null>(null);
   const [heatmapData, setHeatmapData] = useState<Record<string, any>>({});
   const [isLoading, setIsLoading] = useState(true);

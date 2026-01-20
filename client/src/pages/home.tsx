@@ -10311,7 +10311,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   // ✅ FIXED: Now uses tradingDataByDate (mode-aware) instead of shared heatmapDataFromComponent
   const getFilteredHeatmapData = () => {
     // ✅ CRITICAL FIX: Use tradingDataByDate which correctly switches between demo and personal data
-    const modeAwareData = isSharedReportMode ? (sharedReportData?.reportData?.tradingDataByDate || {}) : (isDemoMode ? demoTradingDataByDate : personalTradingDataByDate);
+    const modeAwareData = tradingDataByDate;
     const totalDates = Object.keys(modeAwareData).length;
 
     if (!selectedDateRange) {
@@ -23870,7 +23870,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   className="max-h-96 overflow-auto border border-gray-200 scrollbar-hide dark:border-gray-700 rounded-lg"
                 >
                   <DemoHeatmap
-                    tradingDataByDate={isSharedReportMode ? (sharedReportData?.reportData?.tradingDataByDate || {}) : (isDemoMode ? demoTradingDataByDate : personalTradingDataByDate)}
+                    tradingDataByDate={isSharedReportMode && sharedReportData?.reportData?.tradingDataByDate 
+                      ? sharedReportData.reportData.tradingDataByDate 
+                      : getFilteredHeatmapData()}
                     onDateSelect={() => {}}
                     selectedDate={null}
                     onDataUpdate={() => {}}
