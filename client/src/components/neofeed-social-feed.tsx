@@ -563,7 +563,7 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
 
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Share with Friends</h2>
           <p className="text-gray-500 dark:text-gray-400 text-xs mb-4 leading-relaxed px-2">
-            Share this with your trading network
+            Trading is more effective when you connect with friends!
           </p>
 
           <div className="w-full space-y-3 text-left">
