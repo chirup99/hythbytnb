@@ -313,7 +313,7 @@ export function WorldMap() {
                   {/* Front tiny bow waves - white and blue */}
                   <g opacity="0.4">
                     <path
-                      d="M 14,0 L 19,-4 M 14,0 L 19,4"
+                      d="M 14,0 L 10,4 M 14,0 L 10,-4"
                       fill="none"
                       stroke="#ffffff"
                       strokeWidth="1.5"
@@ -322,7 +322,7 @@ export function WorldMap() {
                       <animate attributeName="opacity" values="0.3;0.7;0.3" dur="1s" repeatCount="indefinite" />
                     </path>
                     <path
-                      d="M 13,0 L 18,-3.5 M 13,0 L 18,3.5"
+                      d="M 13,0 L 9,3.5 M 13,0 L 9,-3.5"
                       fill="none"
                       stroke="#0ea5e9"
                       strokeWidth="2"
