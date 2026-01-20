@@ -92,10 +92,22 @@ export function WorldMap() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        // FORCE reset if old routes are detected or if we want to ensure the specific live yellow lines
+        const isOldRoute = Array.isArray(parsed) && (parsed[0]?.startsWith("M 800.0,200.0") || parsed.length !== 5);
+        
+        if (Array.isArray(parsed) && parsed.length > 0 && !isOldRoute) {
           setSavedPaths(parsed);
         } else {
-          setSavedPaths([]);
+          // Force reset to specific live yellow markings from attached image
+          const defaultRoutes = [
+            "M 197.6,180.8 L 341.2,180.8", // North America route
+            "M 197.6,220.8 L 341.2,220.8", // USA Atlantic route
+            "M 430.2,210.4 L 795.8,210.4", // Atlantic to Asia route
+            "M 630.5,285.2 L 795.8,285.2", // Indian Ocean route
+            "M 740.2,230.6 L 860.4,230.6"  // Japan/Asia route
+          ];
+          setSavedPaths(defaultRoutes);
+          localStorage.setItem("world-map-ship-routes", JSON.stringify(defaultRoutes));
         }
       } catch (e) {
         console.error("Failed to parse saved paths", e);
