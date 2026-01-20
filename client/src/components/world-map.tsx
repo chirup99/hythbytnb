@@ -246,7 +246,10 @@ export function WorldMap() {
               <Button 
                 size="icon" 
                 variant="secondary"
-                onClick={() => setIsDrawing(false)}
+                onClick={() => {
+                  setAllPaths([]);
+                  setIsDrawing(false);
+                }}
                 className="h-8 w-8"
                 title="Cancel"
                 data-testid="button-cancel-draw"
