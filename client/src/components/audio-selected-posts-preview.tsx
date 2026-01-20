@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { SelectedTextSnippet } from '@/contexts/AudioModeContext';
+import { useAudioMode } from '@/contexts/AudioModeContext';
 import { X } from 'lucide-react';
 
 interface AudioSelectedPostsPreviewProps {
@@ -16,6 +17,7 @@ export function AudioSelectedPostsPreview({ snippets, onTap, onDeactivate }: Aud
   const [cards, setCards] = useState<CardWithColor[]>([]);
   const [nextColorIndex, setNextColorIndex] = useState(0);
   const [isAnimatingIn, setIsAnimatingIn] = useState(false);
+  const { isAudioMode } = useAudioMode();
 
   useEffect(() => {
     const currentIds = cards.map(c => c.id);
@@ -51,7 +53,9 @@ export function AudioSelectedPostsPreview({ snippets, onTap, onDeactivate }: Aud
     return gradients[idx % gradients.length];
   };
 
-  if (hasNoSnippets && !snippets.length) return null;
+  const hasNoSnippets = cards.length === 0;
+
+  if (!isAudioMode) return null;
 
   return (
     <div 
