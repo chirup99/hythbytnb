@@ -94,6 +94,16 @@ export function WorldMap() {
       } catch (e) {
         console.error("Failed to parse saved paths", e);
       }
+    } else {
+      // Default initial routes if none are saved
+      const defaultRoutes = [
+        "M 184.2,211.2 L 204.0,211.2 L 235.0,211.2 L 270.0,211.2 L 310.0,211.2 L 350.0,211.2",
+        "M 578.2,248.2 L 598.0,248.2 L 620.0,248.2 L 650.0,248.2 L 680.0,248.2 L 710.0,248.2",
+        "M 160.2,130.2 L 180.0,130.2 L 210.0,130.2 L 240.0,130.2 L 270.0,130.2 L 300.0,130.2",
+        "M 680.2,185.2 L 700.0,185.2 L 720.0,185.2 L 740.0,185.2 L 760.0,185.2 L 780.0,185.2"
+      ];
+      setSavedPaths(defaultRoutes);
+      localStorage.setItem("world-map-ship-routes", JSON.stringify(defaultRoutes));
     }
 
     const checkMobile = () => {
