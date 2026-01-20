@@ -106,7 +106,7 @@ export function AuthButtonAngelOne() {
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/status"] });
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/profile"] });
       setHasWarnedAboutExpiry(false);
-      toast({ title: "Connected!", description: "Angel One API connected successfully." });
+      // Removed: toast({ title: "Connected!", description: "Angel One API connected successfully." });
     },
     onError: (error: any) => {
       toast({ title: "Connection Failed", description: error?.message || "Failed to connect. Check environment credentials.", variant: "destructive" });
@@ -130,7 +130,7 @@ export function AuthButtonAngelOne() {
       localStorage.setItem("angel_one_client_code", data.clientCode);
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/status"] });
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/profile"] });
-      toast({ title: "Connected!", description: `Connected as ${data.clientCode} successfully.` });
+      // Removed: toast({ title: "Connected!", description: `Connected as ${data.clientCode} successfully.` });
     },
     onError: (error: any) => {
       toast({ title: "Manual Login Failed", description: error?.message || "Check your credentials.", variant: "destructive" });
@@ -147,7 +147,7 @@ export function AuthButtonAngelOne() {
       localStorage.removeItem("angel_one_client_code");
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/status"] });
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/profile"] });
-      toast({ title: "Disconnected", description: "Angel One API disconnected." });
+      // Removed: toast({ title: "Disconnected", description: "Angel One API disconnected." });
     },
     onError: (error: any) => {
       toast({ title: "Error", description: error?.message || "Failed to disconnect.", variant: "destructive" });
@@ -272,10 +272,7 @@ export function AngelOneStatus() {
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/statistics"] });
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/activity-logs"] });
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/profile"] });
-      toast({
-        title: "Disconnected",
-        description: "Angel One connection has been closed.",
-      });
+      // Removed: toast({ title: "Disconnected", description: "Angel One connection has been closed." });
     },
     onError: () => {
       toast({
