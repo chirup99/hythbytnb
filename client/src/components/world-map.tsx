@@ -223,7 +223,11 @@ export function WorldMap() {
         style={{ backgroundColor: isDarkMode ? "#1a1a1a" : "#e3f2fd" }}
       >
         {/* Drawing Tools Overlay */}
-        <div className="absolute top-2 right-2 z-50 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className={`absolute z-50 flex gap-2 transition-opacity duration-300 ${
+          isMobile 
+            ? "bottom-2 right-2 opacity-100" 
+            : "top-2 right-2 opacity-0 group-hover:opacity-100"
+        }`}>
           {isDrawing ? (
             <>
               {allPaths.length > 0 && (
