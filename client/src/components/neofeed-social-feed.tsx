@@ -11,7 +11,8 @@ import {
   TrendingUp, TrendingDown, Activity, Plus, Home, PenTool,
   Copy, ExternalLink, X, Send, Bot, Trash2, User, MapPin, Calendar,
   ChevronDown, ChevronUp, ArrowLeft, Check, Layers, Mic, Newspaper,
-  Users, UserPlus, ThumbsUp, Loader2, Camera, ZoomIn, ZoomOut, Move
+  Users, UserPlus, ThumbsUp, Loader2, Camera, ZoomIn, ZoomOut, Move,
+  Link as LinkIcon, Facebook, MessageCircle as WhatsApp, Send as Telegram, Linkedin
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, ReferenceLine, Tooltip } from 'recharts';
 import { Button } from './ui/button';
@@ -526,7 +527,6 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
         await navigator.clipboard.writeText(postUrl);
         toast({ description: "Link copied to clipboard!" });
       } else {
-        // Fallback for browsers that don't support clipboard API
         const textArea = document.createElement('textarea');
         textArea.value = postUrl;
         document.body.appendChild(textArea);
@@ -536,53 +536,81 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
         document.body.removeChild(textArea);
         toast({ description: "Link copied to clipboard!" });
       }
-      onClose();
     } catch (err) {
       console.error('Copy failed:', err);
       toast({ description: "Failed to copy link", variant: "destructive" });
     }
   };
 
-  const shareOptions = [
-    {
-      name: 'Copy Link',
-      icon: Copy,
-      action: copyToClipboard,
-      description: 'Copy post link to clipboard'
-    },
-    {
-      name: 'Open in New Tab',
-      icon: ExternalLink,
-      action: () => {
-        window.open(postUrl, '_blank');
-        onClose();
-      },
-      description: 'Open post in new tab'
-    }
+  const socialPlatforms = [
+    { name: 'Facebook', icon: Facebook, color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}` },
+    { name: 'X', icon: X, color: 'text-gray-900 dark:text-white', bgColor: 'bg-gray-100 dark:bg-gray-800', url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}` },
+    { name: 'Whatsapp', icon: WhatsApp, color: 'text-green-500', bgColor: 'bg-green-100 dark:bg-green-900/30', url: `https://wa.me/?text=${encodeURIComponent(postUrl)}` },
+    { name: 'Telegram', icon: Telegram, color: 'text-sky-500', bgColor: 'bg-sky-100 dark:bg-sky-900/30', url: `https://t.me/share/url?url=${encodeURIComponent(postUrl)}` },
+    { name: 'Linkedin', icon: Linkedin, color: 'text-blue-700', bgColor: 'bg-blue-100 dark:bg-blue-900/30', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}` },
   ];
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md transition-none">
-        <DialogHeader>
-          <DialogTitle>Share Post</DialogTitle>
-        </DialogHeader>
-        
-        <div className="space-y-2">
-          {shareOptions.map((option) => (
-            <Button
-              key={option.name}
-              variant="ghost"
-              className="w-full justify-start gap-3 p-4 h-auto"
-              onClick={option.action}
-            >
-              <option.icon className="h-5 w-5" />
-              <div className="text-left">
-                <div className="font-medium">{option.name}</div>
-                <div className="text-sm text-muted-foreground">{option.description}</div>
+      <DialogContent className="max-w-sm p-0 overflow-visible border-none bg-white dark:bg-gray-900 rounded-[32px] shadow-2xl">
+        <div className="relative pt-16 pb-8 px-8 flex flex-col items-center text-center">
+          {/* Top floating link icon */}
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-lg border border-gray-100 dark:border-gray-800 z-10">
+            <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+              <LinkIcon className="w-8 h-8 text-blue-600 dark:text-blue-400 rotate-45" />
+            </div>
+          </div>
+
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors z-10"
+          >
+            <X className="w-5 h-5 text-gray-400" />
+          </button>
+
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Share with Friends</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-8 leading-relaxed px-4">
+            Trading is more effective when you connect with friends!
+          </p>
+
+          <div className="w-full space-y-8 text-left">
+            <div>
+              <label className="text-sm font-bold text-gray-900 dark:text-white mb-3 block">Share you link</label>
+              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-gray-100 dark:border-gray-800">
+                <p className="flex-1 text-sm text-gray-600 dark:text-gray-300 truncate font-medium">
+                  {postUrl}
+                </p>
+                <button 
+                  onClick={copyToClipboard}
+                  className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-400"
+                >
+                  <Copy className="w-5 h-5" />
+                </button>
               </div>
-            </Button>
-          ))}
+            </div>
+
+            <div>
+              <label className="text-sm font-bold text-gray-900 dark:text-white mb-4 block">Share to</label>
+              <div className="flex justify-between items-start gap-1">
+                {socialPlatforms.map((platform) => (
+                  <button
+                    key={platform.name}
+                    onClick={() => {
+                      window.open(platform.url, '_blank');
+                    }}
+                    className="flex flex-col items-center gap-3 group transition-all flex-1"
+                  >
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center ${platform.bgColor} group-hover:scale-110 transition-transform shadow-sm`}>
+                      <platform.icon className={`w-7 h-7 ${platform.color}`} />
+                    </div>
+                    <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-tight">
+                      {platform.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
