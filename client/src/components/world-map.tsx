@@ -410,22 +410,26 @@ export function WorldMap() {
                       </path>
                     </g>
                     
-                    {/* Starboard Green Light (Right) with Flow/Glow */}
+                    {/* Starboard Green Light (Right) with High Blinking Flow/Glow */}
                     <g>
-                      <circle cx="-2" cy="4" r="3" fill="url(#greenGlow)">
-                        <animate attributeName="r" values="2;4;2" dur="1.5s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.3;0.6;0.3" dur="1.5s" repeatCount="indefinite" />
+                      <circle cx="-2" cy="4" r="5" fill="url(#greenGlow)">
+                        <animate attributeName="r" values="3;7;3" dur="0.8s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.2;0.8;0.2" dur="0.8s" repeatCount="indefinite" />
                       </circle>
-                      <circle cx="-2" cy="4" r="1" fill="#10b981" />
+                      <circle cx="-2" cy="4" r="1.5" fill="#10b981">
+                        <animate attributeName="opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
+                      </circle>
                     </g>
                     
-                    {/* Port Red Light (Left) with Flow/Glow */}
+                    {/* Port Red Light (Left) with High Blinking Flow/Glow */}
                     <g>
-                      <circle cx="-2" cy="-4" r="3" fill="url(#redGlow)">
-                        <animate attributeName="r" values="2;4;2" dur="1.5s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.3;0.6;0.3" dur="1.5s" repeatCount="indefinite" />
+                      <circle cx="-2" cy="-4" r="5" fill="url(#redGlow)">
+                        <animate attributeName="r" values="3;7;3" dur="0.8s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.2;0.8;0.2" dur="0.8s" repeatCount="indefinite" />
                       </circle>
-                      <circle cx="-2" cy="-4" r="1" fill="#ef4444" />
+                      <circle cx="-2" cy="-4" r="1.5" fill="#ef4444">
+                        <animate attributeName="opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
+                      </circle>
                     </g>
                     
                     {/* Stern White Light (Back) */}
