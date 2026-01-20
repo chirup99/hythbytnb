@@ -205,8 +205,9 @@ export function WorldMap() {
         style={{ backgroundColor: isDarkMode ? "#1a1a1a" : "#e3f2fd" }}
       >
         {/* Drawing Tools Overlay */}
+        <div className="absolute top-2 right-2 z-50 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           {isDrawing ? (
-            <div className="absolute top-2 right-2 z-50 flex gap-2">
+            <>
               {allPaths.length > 0 && (
                 <Button 
                   size="icon" 
@@ -242,21 +243,20 @@ export function WorldMap() {
               >
                 <X className="h-4 w-4" />
               </Button>
-            </div>
+            </>
           ) : (
-            <div className="absolute top-2 right-2 md:top-2 md:right-2 bottom-4 right-4 md:bottom-auto md:right-auto z-50">
-              <Button 
-                size="icon" 
-                variant="secondary"
-                onClick={() => setIsDrawing(true)}
-                className="h-10 w-10 md:h-8 md:w-8 bg-background/90 md:bg-background/80 hover:bg-background border-none shadow-lg md:shadow-none"
-                title="Start Drawing"
-                data-testid="button-toggle-draw"
-              >
-                <Pencil className="h-5 w-5 md:h-4 md:w-4 text-foreground/70" />
-              </Button>
-            </div>
+            <Button 
+              size="icon" 
+              variant="secondary"
+              onClick={() => setIsDrawing(true)}
+              className="h-8 w-8 bg-background/80 hover:bg-background border-none shadow-none"
+              title="Start Drawing"
+              data-testid="button-toggle-draw"
+            >
+              <Pencil className="h-4 w-4 text-foreground/70" />
+            </Button>
           )}
+        </div>
 
         <svg
           ref={svgRef}
