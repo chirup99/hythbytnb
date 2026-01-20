@@ -4273,45 +4273,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/angelone/status", async (req, res) => {
     try {
+      // 1. Check database status first
       const storage = app.locals.storage;
-      
-      // If storage not available, return disconnected
-      if (!storage) {
-        console.log("⚠️ [STATUS] Storage not initialized, returning disconnected");
-        return res.json({ isConnected: false });
+      let dbStatus = null;
+      if (storage) {
+        dbStatus = await storage.getApiStatus();
       }
+
+      // 2. Check live API instance status
+      const liveStatus = angelOneApi.getConnectionStatus();
+
+      // 3. Merge status: prefer live instance if it says it's connected
+      const connected = liveStatus.connected || (dbStatus?.authenticated && dbStatus?.brokerName === "angel_one" && !!dbStatus?.accessToken);
       
-      const apiStatus = await storage.getApiStatus();
-      
-      console.log("🔶 [STATUS] Retrieved apiStatus from database:", {
-        authenticated: apiStatus?.authenticated,
-        broker: apiStatus?.broker,
-        hasAccessToken: !!apiStatus?.accessToken,
-        hasFeedToken: !!apiStatus?.feedToken
+      console.log("🔶 [STATUS] Connection check:", { 
+        liveConnected: liveStatus.connected, 
+        dbAuthenticated: dbStatus?.authenticated,
+        finalConnected: connected
       });
-      
-      // Angel One tokens are stored in apiStatus (database) - check brokerName field
-      if (apiStatus?.authenticated && apiStatus?.brokerName === "angel_one" && apiStatus?.accessToken && apiStatus?.feedToken) {
-        console.log("✅ [STATUS] Angel One tokens found in database!");
-        res.json({
-          isConnected: true,
-          token: apiStatus.accessToken,
-          refreshToken: apiStatus.refreshToken || "",
-          feedToken: apiStatus.feedToken,
-          clientCode: process.env.ANGEL_ONE_CLIENT_CODE || "P176266"
-        });
-      } else {
-        console.log("⚠️ [STATUS] No Angel One tokens in database", { 
-          authenticated: apiStatus?.authenticated, 
-          broker: apiStatus?.broker,
-          hasAccessToken: !!apiStatus?.accessToken, 
-          hasFeedToken: !!apiStatus?.feedToken 
-        });
-        res.json({ isConnected: false });
-      }
-    } catch (error) {
+
+      res.json({
+        success: true,
+        connected: connected,
+        authenticated: connected,
+        profile: liveStatus.profile || (dbStatus?.authenticated ? { name: dbStatus.username, clientcode: dbStatus.clientCode } : null),
+        clientCode: liveStatus.clientCode || dbStatus?.clientCode || process.env.ANGEL_ONE_CLIENT_CODE || "P176266",
+        tokenExpiry: liveStatus.tokenExpiry,
+        tokenExpired: liveStatus.tokenExpired,
+        // Include tokens if connected for frontend use
+        token: liveStatus.connected ? angelOneApi.getSession()?.jwtToken : dbStatus?.accessToken,
+        feedToken: liveStatus.connected ? angelOneApi.getSession()?.feedToken : dbStatus?.feedToken
+      });
+    } catch (error: any) {
       console.error("❌ [STATUS] Error checking Angel One status:", error);
-      res.status(500).json({ isConnected: false });
+      res.status(500).json({ success: false, connected: false, message: error.message });
     }
   });
   app.get("/api/angelone/auth-url", (req, res) => {
