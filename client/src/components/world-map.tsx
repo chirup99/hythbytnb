@@ -277,6 +277,16 @@ export function WorldMap() {
             touchAction: isDrawing ? 'none' : 'auto'
           }}
         >
+          <defs>
+            <radialGradient id="foamGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="waterWash" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+              <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0" />
+            </radialGradient>
+          </defs>
           {/* Saved Drawing Layer */}
           {savedPaths.map((path, i) => (
             <g key={`saved-group-${i}`}>
@@ -289,7 +299,7 @@ export function WorldMap() {
                 opacity={isDrawing ? "0.4" : "0"} 
               />
               <g>
-                {/* Ship Wake/Waves - Enhanced motion like image */}
+                {/* Ship Wake/Waves - Enhanced V-shape from reference image */}
                 <g>
                   <animateMotion 
                     dur="40s" 
@@ -300,33 +310,43 @@ export function WorldMap() {
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
                   
-                  {/* Outer glow/motion blur */}
-                  <path
-                    d="M -25,-8 Q 0,0 -25,8"
-                    fill="none"
-                    stroke="#a5f3fc"
-                    strokeWidth="12"
-                    opacity="0.1"
-                  />
+                  {/* Thick Foam/Spray Layer (White/Blue mix) */}
+                  <g opacity="0.4">
+                    <path
+                      d="M -5,-2 L -35,-15 Q -45,-15 -50,-20 M -5,2 L -35,15 Q -45,15 -50,20"
+                      fill="none"
+                      stroke="#ffffff"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      filter="blur(2px)"
+                    >
+                      <animate attributeName="strokeWidth" values="5;8;5" dur="1.5s" repeatCount="indefinite" />
+                    </path>
+                    <path
+                      d="M -5,-2 L -30,-12 Q -40,-12 -45,-18 M -5,2 L -30,12 Q -40,12 -45,18"
+                      fill="none"
+                      stroke="#0ea5e9"
+                      strokeWidth="8"
+                      strokeLinecap="round"
+                      opacity="0.3"
+                    />
+                  </g>
                   
-                  {/* Main V-Wake */}
+                  {/* Main V-Wake Foam */}
                   <path
-                    d="M -20,-6 Q -35,0 -20,6"
+                    d="M 0,-2 C -15,-5 -35,-15 -55,-25 M 0,2 C -15,5 -35,15 -55,25"
                     fill="none"
-                    stroke="#ffffff"
-                    strokeWidth="3"
-                    opacity="0.3"
+                    stroke="url(#foamGradient)"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    opacity="0.6"
                   >
-                    <animate attributeName="opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.4;0.7;0.4" dur="2s" repeatCount="indefinite" />
                   </path>
                   
-                  {/* Side ripple lines */}
-                  <path d="M -15,-10 L 5,-10" stroke="#ffffff" strokeWidth="1" opacity="0.1" />
-                  <path d="M -15,10 L 5,10" stroke="#ffffff" strokeWidth="1" opacity="0.1" />
-                  
-                  {/* Underwater displacement */}
-                  <ellipse cx="0" cy="0" rx="25" ry="12" fill="#a5f3fc" opacity="0.05">
-                    <animate attributeName="rx" values="22;28;22" dur="3s" repeatCount="indefinite" />
+                  {/* Underwater Blue Wash */}
+                  <ellipse cx="-15" cy="0" rx="35" ry="18" fill="url(#waterWash)" opacity="0.15">
+                    <animate attributeName="rx" values="30;40;30" dur="3s" repeatCount="indefinite" />
                   </ellipse>
                 </g>
 
