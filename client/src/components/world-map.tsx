@@ -318,7 +318,7 @@ export function WorldMap() {
                 fill="none" 
                 stroke="#facc15" 
                 strokeWidth="2.5" 
-                opacity={isDrawing ? "0.4" : "0"} 
+                opacity="0.8" 
               />
               <g>
                 {/* Alternating between Container and Oil Tanker - Smaller size */}
