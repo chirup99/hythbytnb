@@ -90,7 +90,20 @@ export function WorldMap() {
     const saved = localStorage.getItem("world-map-ship-routes");
     if (saved) {
       try {
-        setSavedPaths(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSavedPaths(parsed);
+        } else {
+          // If empty array, load defaults
+          const defaultRoutes = [
+            "M 184.2,211.2 L 204.0,211.2 L 235.0,211.2 L 270.0,211.2 L 310.0,211.2 L 350.0,211.2",
+            "M 578.2,248.2 L 598.0,248.2 L 620.0,248.2 L 650.0,248.2 L 680.0,248.2 L 710.0,248.2",
+            "M 160.2,130.2 L 180.0,130.2 L 210.0,130.2 L 240.0,130.2 L 270.0,130.2 L 300.0,130.2",
+            "M 680.2,185.2 L 700.0,185.2 L 720.0,185.2 L 740.0,185.2 L 760.0,185.2 L 780.0,185.2"
+          ];
+          setSavedPaths(defaultRoutes);
+          localStorage.setItem("world-map-ship-routes", JSON.stringify(defaultRoutes));
+        }
       } catch (e) {
         console.error("Failed to parse saved paths", e);
       }
@@ -319,6 +332,9 @@ export function WorldMap() {
             if (!path || path.trim().length < 10) return null;
             const pathId = `saved-path-${i}`;
             
+            // Generate a unique ID for this instance to ensure no clashes during re-renders
+            const motionId = `motion-${pathId}-${i}`;
+            
             return (
               <g key={`saved-group-${i}`}>
                 <path 
@@ -330,7 +346,7 @@ export function WorldMap() {
                   opacity={isDrawing ? "0.4" : "0"} 
                 />
                 
-                <g>
+                <g visibility={savedPaths.length > 0 ? "visible" : "hidden"}>
                   {/* Alternating between Container and Oil Tanker - Smaller size */}
                   {i % 3 === 0 ? (
                     /* Container Ship - Red Hull design from image */
