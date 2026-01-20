@@ -398,8 +398,8 @@ export function WorldMap() {
                       </circle>
                       <circle cx="15" cy="0" r="1.2" fill="#ffffff" />
                       
-                      {/* Rotating beam effect - 30 degree sweep */}
-                      <path d="M 15,0 L 75,-8 A 75,75 0 0 1 75,8 Z" fill="url(#whiteGlow)" opacity="0.6">
+                      {/* Rotating beam effect - 30 degree sweep - Small range focus */}
+                      <path d="M 15,0 L 45,-5 A 45,45 0 0 1 45,5 Z" fill="url(#whiteGlow)" opacity="0.6">
                         <animateTransform
                           attributeName="transform"
                           type="rotate"
