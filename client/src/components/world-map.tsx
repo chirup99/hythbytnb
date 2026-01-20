@@ -310,6 +310,27 @@ export function WorldMap() {
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
                   
+                  {/* Front tiny bow waves - white and blue */}
+                  <g opacity="0.4">
+                    <path
+                      d="M 14,0 L 17,-2 M 14,0 L 17,2"
+                      fill="none"
+                      stroke="#ffffff"
+                      strokeWidth="0.8"
+                      strokeLinecap="round"
+                    >
+                      <animate attributeName="opacity" values="0.2;0.6;0.2" dur="0.8s" repeatCount="indefinite" />
+                    </path>
+                    <path
+                      d="M 13,0 L 16,-1.5 M 13,0 L 16,1.5"
+                      fill="none"
+                      stroke="#0ea5e9"
+                      strokeWidth="1.2"
+                      strokeLinecap="round"
+                      opacity="0.5"
+                    />
+                  </g>
+                  
                   {/* Very Tiny Foam/Spray Layer */}
                   <g opacity="0.3">
                     <path
