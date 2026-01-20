@@ -543,11 +543,11 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
   };
 
   const socialPlatforms = [
-    { name: 'Facebook', icon: 'https://www.facebook.com/favicon.ico', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/10', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}` },
-    { name: 'X', icon: 'https://abs.twimg.com/favicons/twitter.2.ico', color: 'text-gray-900 dark:text-white', bgColor: 'bg-gray-50 dark:bg-gray-800/50', url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}` },
-    { name: 'Whatsapp', icon: 'https://whatsapp.com/favicon.ico', color: 'text-green-500', bgColor: 'bg-green-50 dark:bg-green-900/10', url: `https://wa.me/?text=${encodeURIComponent(postUrl)}` },
-    { name: 'Telegram', icon: 'https://telegram.org/favicon.ico', color: 'text-sky-500', bgColor: 'bg-sky-50 dark:bg-sky-900/10', url: `https://t.me/share/url?url=${encodeURIComponent(postUrl)}` },
-    { name: 'Linkedin', icon: 'https://www.linkedin.com/favicon.ico', color: 'text-blue-700', bgColor: 'bg-blue-50 dark:bg-blue-900/10', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}` },
+    { name: 'Facebook', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/facebook/facebook-original.svg', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/10', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}` },
+    { name: 'X', icon: 'https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.svg', color: 'text-gray-900 dark:text-white', bgColor: 'bg-black dark:bg-gray-800/50', url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}` },
+    { name: 'Whatsapp', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg', color: 'text-green-500', bgColor: 'bg-green-50 dark:bg-green-900/10', url: `https://wa.me/?text=${encodeURIComponent(postUrl)}` },
+    { name: 'Telegram', icon: 'https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg', color: 'text-sky-500', bgColor: 'bg-sky-50 dark:bg-sky-900/10', url: `https://t.me/share/url?url=${encodeURIComponent(postUrl)}` },
+    { name: 'Linkedin', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png', color: 'text-blue-700', bgColor: 'bg-blue-50 dark:bg-blue-900/10', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}` },
   ];
 
   return (
@@ -600,8 +600,12 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
                     }}
                     className="flex flex-col items-center gap-3 group transition-all flex-1"
                   >
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${platform.bgColor} group-hover:scale-110 transition-transform shadow-sm overflow-hidden p-2`}>
-                      <img src={platform.icon} alt={platform.name} className="w-full h-full object-contain" />
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${platform.bgColor} group-hover:scale-110 transition-transform shadow-sm overflow-hidden ${platform.name === 'X' ? 'p-3' : 'p-2.5'}`}>
+                      <img 
+                        src={platform.icon} 
+                        alt={platform.name} 
+                        className={`w-full h-full object-contain ${platform.name === 'X' ? 'brightness-100 dark:brightness-100' : ''}`}
+                      />
                     </div>
                     <span className="text-[9px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-tight">
                       {platform.name}
