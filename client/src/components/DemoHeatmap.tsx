@@ -80,8 +80,11 @@ function getPnLColor(pnl: number): string {
 export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeChange, highlightedDates, isPublicView, tradingDataByDate, onSelectDateForHeatmap, refreshTrigger = 0 }: DemoHeatmapProps) {
   const { currentUser } = useCurrentUser();
   const [currentDate, setCurrentDate] = useState(() => {
-    // Default to 2025 for demo mode, or current year if data is available
-    return new Date(new Date().getFullYear(), 0, 1);
+    // If tradingDataByDate is provided (personal data), use current year
+    // If not provided (demo mode), default to 2025
+    const hasExternalData = tradingDataByDate && Object.keys(tradingDataByDate).length > 0;
+    const defaultYear = hasExternalData ? new Date().getFullYear() : 2025;
+    return new Date(defaultYear, 0, 1);
   });
   const [selectedRange, setSelectedRange] = useState<{ from: Date; to: Date } | null>(null);
   const [heatmapData, setHeatmapData] = useState<Record<string, any>>({});
