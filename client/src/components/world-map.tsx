@@ -100,11 +100,11 @@ export function WorldMap() {
         } else {
           // Force reset to specific live yellow markings from attached image
           const defaultRoutes = [
-            "M 197.6,180.8 L 341.2,180.8", // North America route
-            "M 197.6,220.8 L 341.2,220.8", // USA Atlantic route
-            "M 430.2,210.4 L 795.8,210.4", // Atlantic to Asia route
-            "M 630.5,285.2 L 795.8,285.2", // Indian Ocean route
-            "M 740.2,230.6 L 860.4,230.6"  // Japan/Asia route
+            "M 310.5,230.2 L 350.4,220.5 L 430.2,180.4 L 480.5,230.6 L 550.2,250.4 L 630.5,285.2 L 720.4,310.5 L 795.8,285.2", // Atlantic to Asia main route
+            "M 630.5,285.2 L 680.4,320.5 L 740.2,350.6 L 795.8,380.2", // South Asia to Australia route
+            "M 740.2,230.6 L 780.4,250.5 L 820.2,280.4 L 860.4,310.2", // East Asia coastal route
+            "M 310.5,230.2 L 380.4,250.5 L 450.2,280.4 L 520.4,310.2", // Atlantic South route
+            "M 550.2,250.4 L 600.4,230.5 L 650.2,210.4 L 700.4,190.2"  // Mediterranean to Central Asia route
           ];
           setSavedPaths(defaultRoutes);
           localStorage.setItem("world-map-ship-routes", JSON.stringify(defaultRoutes));
@@ -116,11 +116,11 @@ export function WorldMap() {
     } else {
       // Default initial routes - Live yellow line markings
       const defaultRoutes = [
-        "M 197.6,180.8 L 341.2,180.8", // North America route
-        "M 197.6,220.8 L 341.2,220.8", // USA Atlantic route
-        "M 430.2,210.4 L 795.8,210.4", // Atlantic to Asia route
-        "M 630.5,285.2 L 795.8,285.2", // Indian Ocean route
-        "M 740.2,230.6 L 860.4,230.6"  // Japan/Asia route
+        "M 310.5,230.2 L 350.4,220.5 L 430.2,180.4 L 480.5,230.6 L 550.2,250.4 L 630.5,285.2 L 720.4,310.5 L 795.8,285.2", // Atlantic to Asia main route
+        "M 630.5,285.2 L 680.4,320.5 L 740.2,350.6 L 795.8,380.2", // South Asia to Australia route
+        "M 740.2,230.6 L 780.4,250.5 L 820.2,280.4 L 860.4,310.2", // East Asia coastal route
+        "M 310.5,230.2 L 380.4,250.5 L 450.2,280.4 L 520.4,310.2", // Atlantic South route
+        "M 550.2,250.4 L 600.4,230.5 L 650.2,210.4 L 700.4,190.2"  // Mediterranean to Central Asia route
       ];
       setSavedPaths(defaultRoutes);
       localStorage.setItem("world-map-ship-routes", JSON.stringify(defaultRoutes));
