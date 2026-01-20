@@ -40,7 +40,6 @@ import PublicHeatmap from "@/pages/public-heatmap";
 import SharedReport from "@/pages/shared-report";
 import TradingJournalDemo from "@/pages/trading-journal-demo";
 import MarketNews from "@/pages/market-news";
-import RoughsPage from "@/pages/roughs";
 import NeoFeedSocialFeed from "@/components/neofeed-social-feed";
 import ZerodhaDebug from "@/pages/zerodha-debug";
 import { AngelOneGlobalAutoConnect } from "@/components/auth-button-angelone";
@@ -275,12 +274,6 @@ function MainLayout({ children }: { children: React.ReactNode }) {
       current: location === "/dashboard",
     }] : []),
     {
-      name: "Roughs",
-      href: "/roughs",
-      icon: PenTool,
-      current: location === "/roughs",
-    },
-    {
       name: "Theme",
       href: "#",
       icon: theme === 'dark' ? Sun : Moon,
@@ -451,11 +444,6 @@ function Router() {
       <Route path="/share/heatmap/:userId" component={PublicHeatmap} />
       <Route path="/shared/:reportId" component={SharedReport} />
       <Route path="/market-news" component={MarketNews} />
-      <Route path="/roughs">
-        <MainLayout>
-          <RoughsPage />
-        </MainLayout>
-      </Route>
       <Route path="/zerodha-debug" component={ZerodhaDebug} />
       <Route component={NotFound} />
     </Switch>
