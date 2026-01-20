@@ -39,7 +39,8 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ## IMPORT SESSION (Jan 20, 2026 - Session 39)
 
-[x] 1. Install the required packages - All npm packages installed successfully (dotenv added)
+[x] 1. Install the required packages - All npm packages installed successfully
 [x] 2. Restart the workflow - Server running on port 5000 with webview output
 [x] 3. Verify the project is working - Angel One auto-connecting (P176266), JWT tokens generating, WebSocket streaming live market data (BANKNIFTY, SENSEX, GOLD), all services initialized (Dhan, Upstox, NLP Agent with 25+ intents, Gemini AI, DynamoDB tables ready, NeoFeed tables ready, Cognito JWT Verifier)
 [x] 4. Import completed - Application fully operational and ready for use
+[x] 5. Remove default ship lines - Default lines removed from world-map.tsx, map starts empty as requested.
