@@ -398,13 +398,12 @@ export function WorldMap() {
                       </circle>
                       <circle cx="15" cy="0" r="1.2" fill="#ffffff" />
                       
-                      {/* Rotating beam effect */}
-                      <path d="M 15,0 L 45,-15 A 45,45 0 0 1 45,15 Z" fill="url(#whiteGlow)" opacity="0.3">
+                      {/* Rotating beam effect - 30 degree sweep */}
+                      <path d="M 15,0 L 75,-8 A 75,75 0 0 1 75,8 Z" fill="url(#whiteGlow)" opacity="0.6">
                         <animateTransform
                           attributeName="transform"
                           type="rotate"
-                          from="0 15 0"
-                          to="180 15 0"
+                          values="-15 15 0; 15 15 0; -15 15 0"
                           dur="4s"
                           repeatCount="indefinite"
                         />
