@@ -302,10 +302,10 @@ export function WorldMap() {
                 {/* Ship Wake/Waves - Enhanced V-shape from reference image */}
                 <g>
                   <animateMotion 
-                    dur="40s" 
+                    dur="80s" 
                     repeatCount="indefinite" 
                     rotate="auto"
-                    begin={`${i * 10}s`}
+                    begin={`${i * 20}s`}
                   >
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
