@@ -79,7 +79,10 @@ function getPnLColor(pnl: number): string {
 
 export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeChange, highlightedDates, isPublicView, tradingDataByDate, onSelectDateForHeatmap, refreshTrigger = 0 }: DemoHeatmapProps) {
   const { currentUser } = useCurrentUser();
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 0, 1));
+  const [currentDate, setCurrentDate] = useState(() => {
+    // Default to 2025 for demo mode, or current year if data is available
+    return new Date(new Date().getFullYear(), 0, 1);
+  });
   const [selectedRange, setSelectedRange] = useState<{ from: Date; to: Date } | null>(null);
   const [heatmapData, setHeatmapData] = useState<Record<string, any>>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -127,15 +130,12 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
 
   // Fetch data OR use provided tradingDataByDate - SECURE for public view
   useEffect(() => {
-    // ✅ DEMO MODE: Always fetch complete data from API, ignore parent data
-    // ✅ PUBLIC MODE: Use provided data if substantial (>10 dates), otherwise fetch
-    const externalDataCount = tradingDataByDate ? Object.keys(tradingDataByDate).length : 0;
-    const isPublicModeWithData = isPublicView && externalDataCount > 10;
-    
-    // In public view with substantial data, use it directly
-    if (isPublicModeWithData) {
-      console.log("🔓 DemoHeatmap: Using provided tradingDataByDate (public/secure mode)");
-      console.log(`✅ DemoHeatmap: ${externalDataCount} dates provided externally`);
+    // If tradingDataByDate is provided, use it directly (this covers both personal and shared reports)
+    if (tradingDataByDate && Object.keys(tradingDataByDate).length > 0) {
+      console.log("🔓 DemoHeatmap: Using provided tradingDataByDate", {
+        isPublicView,
+        dateCount: Object.keys(tradingDataByDate).length
+      });
       setHeatmapData(tradingDataByDate);
       setIsLoading(false);
       
@@ -146,8 +146,8 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
       return;
     }
     
-    // In demo/personal mode: ALWAYS fetch complete data from API (ignore parent data)
-    console.log(`🔥 DemoHeatmap: AUTO-FETCHING COMPLETE AWS data... (refreshKey: ${refreshKey}${externalDataCount > 0 ? `, ignoring ${externalDataCount} partial parent dates` : ''})`);
+    // Fallback: If no data provided, fetch from API (standard demo mode)
+    console.log(`🔥 DemoHeatmap: No data provided, fetching from API... (refreshKey: ${refreshKey})`);
     // ✅ CRITICAL FIX: Clear old data IMMEDIATELY before fetching to prevent stale cache display
     setHeatmapData({});
     setIsLoading(true);
