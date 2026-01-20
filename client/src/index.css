@@ -438,3 +438,13 @@ input[type="range"].slider-thumb-purple::-moz-range-track {
 .dark .overflow-y-auto::-webkit-scrollbar-thumb:hover {
   background: rgb(107, 114, 128);
 }
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

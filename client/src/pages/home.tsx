@@ -23862,12 +23862,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               </div>
             </DialogHeader>
 
-            <div className="flex-1 overflow-auto space-y-4">
+            <div className="flex-1 overflow-auto space-y-4 scrollbar-hide">
               {/* Heatmap Container with ref for curved lines */}
               <div className="relative">
                 <div 
                   ref={reportDialogHeatmapContainerRef}
-                  className="max-h-96 overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg"
+                  className="max-h-96 overflow-auto border border-gray-200 scrollbar-hide dark:border-gray-700 rounded-lg"
                 >
                   <DemoHeatmap
                     tradingDataByDate={isSharedReportMode && sharedReportData?.reportData?.tradingDataByDate 
