@@ -100,11 +100,11 @@ export function WorldMap() {
     } else {
       // Default initial routes - Live yellow line markings
       const defaultRoutes = [
-        "M 310.5,230.2 L 350.4,220.5 L 430.2,180.4 L 480.5,230.6 L 550.2,250.4 L 630.5,285.2 L 720.4,310.5 L 795.8,285.2", // Atlantic to Asia main route
-        "M 630.5,285.2 L 680.4,320.5 L 740.2,350.6 L 795.8,380.2", // South Asia to Australia route
-        "M 740.2,230.6 L 780.4,250.5 L 820.2,280.4 L 860.4,310.2", // East Asia coastal route
-        "M 310.5,230.2 L 380.4,250.5 L 450.2,280.4 L 520.4,310.2", // Atlantic South route
-        "M 550.2,250.4 L 600.4,230.5 L 650.2,210.4 L 700.4,190.2"  // Mediterranean to Central Asia route
+        "M 310.5,230.2 L 350.4,220.5 L 430.2,180.4 L 480.5,230.6 L 550.2,250.4 L 630.5,285.2 L 720.4,310.5 L 795.8,285.2",
+        "M 630.5,285.2 L 680.4,320.5 L 740.2,350.6 L 795.8,380.2",
+        "M 740.2,230.6 L 780.4,250.5 L 820.2,280.4 L 860.4,310.2",
+        "M 310.5,230.2 L 380.4,250.5 L 450.2,280.4 L 520.4,310.2",
+        "M 550.2,250.4 L 600.4,230.5 L 650.2,210.4 L 700.4,190.2"
       ];
       setSavedPaths(defaultRoutes);
       localStorage.setItem("world-map-ship-routes", JSON.stringify(defaultRoutes));
