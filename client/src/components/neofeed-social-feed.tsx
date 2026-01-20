@@ -552,48 +552,49 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm p-0 overflow-visible border-none bg-white dark:bg-gray-900 rounded-[32px] shadow-2xl">
-        <div className="relative pt-16 pb-8 px-8 flex flex-col items-center text-center">
+      <DialogContent className="max-w-xs p-0 overflow-visible border-none bg-white dark:bg-gray-900 rounded-2xl shadow-2xl">
+        <div className="relative pt-10 pb-5 px-5 flex flex-col items-center text-center">
           {/* Top floating link icon */}
-          <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-lg border border-gray-100 dark:border-gray-800 z-10">
-            <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
-              <LinkIcon className="w-8 h-8 text-blue-600 dark:text-blue-400 rotate-45" />
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-lg border border-gray-100 dark:border-gray-800 z-10">
+            <div className="w-11 h-11 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+              <LinkIcon className="w-5 h-5 text-blue-600 dark:text-blue-400 rotate-45" />
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Share with Friends</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm mb-8 leading-relaxed px-4">
-            Trading is more effective when you connect with friends!
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Share with Friends</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-xs mb-4 leading-relaxed px-2">
+            Share this with your trading network
           </p>
 
-          <div className="w-full space-y-8 text-left">
+          <div className="w-full space-y-3 text-left">
             <div>
-              <label className="text-sm font-bold text-gray-900 dark:text-white mb-3 block">Share you link</label>
-              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-                <p className="flex-1 text-sm text-gray-600 dark:text-gray-300 truncate font-medium">
-                  {postUrl.length > 25 ? postUrl.substring(0, 25) + '...' : postUrl}
+              <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">Link</label>
+              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 p-2 rounded-lg border border-gray-100 dark:border-gray-800 overflow-hidden">
+                <p className="flex-1 text-xs text-gray-600 dark:text-gray-300 truncate font-medium">
+                  {postUrl.length > 20 ? postUrl.substring(0, 20) + '...' : postUrl}
                 </p>
                 <button 
                   onClick={copyToClipboard}
-                  className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-500 dark:text-gray-400"
+                  className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors text-gray-500 dark:text-gray-400"
                 >
-                  <Copy className="w-5 h-5" />
+                  <Copy className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
             <div>
-              <label className="text-sm font-bold text-gray-900 dark:text-white mb-4 block">Share to</label>
-              <div className="flex justify-between items-start gap-1">
+              <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">Share to</label>
+              <div className="flex justify-between items-center gap-1">
                 {socialPlatforms.map((platform) => (
                   <button
                     key={platform.name}
                     onClick={() => {
                       window.open(platform.url, '_blank');
                     }}
-                    className="flex flex-col items-center gap-3 group transition-all flex-1"
+                    className="flex flex-col items-center gap-1 group transition-all flex-1"
+                    title={platform.name}
                   >
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${platform.bgColor} group-hover:scale-110 transition-transform shadow-sm overflow-hidden ${platform.name === 'X' ? 'p-3' : 'p-2'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${platform.bgColor} group-hover:scale-105 transition-transform shadow-sm overflow-hidden ${platform.name === 'X' ? 'p-2' : 'p-1.5'}`}>
                       <img 
                         src={platform.icon} 
                         alt={platform.name} 
@@ -601,7 +602,7 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
                         style={platform.name === 'Facebook' ? { filter: 'hue-rotate(-30deg)' } : platform.name === 'X' ? { filter: 'invert(1)' } : undefined}
                       />
                     </div>
-                    <span className="text-[9px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-tight">
+                    <span className="text-[7px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-tight">
                       {platform.name}
                     </span>
                   </button>
