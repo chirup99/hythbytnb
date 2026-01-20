@@ -73,14 +73,6 @@ const getRegionColor = (
   return isDarkMode ? "#ffffff" : "#00296b";
 };
 
-const defaultRoutes = [
-  "M 150,150 L 300,180 L 450,220",
-  "M 600,100 L 700,150 L 800,200",
-  "M 200,300 L 400,350 L 600,320",
-  "M 800,50 L 850,100 L 900,150",
-  "M 100,50 L 200,80 L 300,60"
-];
-
 export function WorldMap() {
   const { marketData, loading } = useMarketData(900000); // Refresh every 15 minutes (900000ms)
   const { theme } = useTheme();
@@ -90,7 +82,7 @@ export function WorldMap() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentPath, setCurrentPath] = useState<string>("");
   const [allPaths, setAllPaths] = useState<string[]>([]);
-  const [savedPaths, setSavedPaths] = useState<string[]>(defaultRoutes);
+  const [savedPaths, setSavedPaths] = useState<string[]>([]);
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -318,7 +310,7 @@ export function WorldMap() {
                 fill="none" 
                 stroke="#facc15" 
                 strokeWidth="2.5" 
-                opacity="0.8" 
+                opacity={isDrawing ? "0.4" : "0"} 
               />
               <g>
                 {/* Alternating between Container and Oil Tanker - Smaller size */}
