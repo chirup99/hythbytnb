@@ -604,7 +604,8 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
                       <img 
                         src={platform.icon} 
                         alt={platform.name} 
-                        className={`w-full h-full object-contain ${platform.name === 'X' || platform.name === 'Facebook' ? 'invert dark:invert-0' : ''}`}
+                        className="w-full h-full object-contain"
+                        style={platform.name === 'Facebook' ? { filter: 'hue-rotate(-30deg)' } : platform.name === 'X' ? { filter: 'invert(1)' } : undefined}
                       />
                     </div>
                     <span className="text-[9px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-tight">
