@@ -249,11 +249,11 @@ export function WorldMap() {
               size="icon" 
               variant="secondary"
               onClick={() => setIsDrawing(true)}
-              className="h-8 w-8"
+              className="h-8 w-8 bg-background/80 hover:bg-background border-none shadow-none"
               title="Start Drawing"
               data-testid="button-toggle-draw"
             >
-              <Pencil className="h-4 w-4" />
+              <Pencil className="h-4 w-4 text-foreground/70" />
             </Button>
           )}
         </div>
