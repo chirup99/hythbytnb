@@ -325,131 +325,134 @@ export function WorldMap() {
                 strokeWidth="2.5" 
                 opacity={isDrawing ? "0.4" : "0"} 
               />
-              <g>
-                {/* Alternating between Container and Oil Tanker - Smaller size */}
-                {i % 3 === 0 ? (
-                  /* Container Ship - Red Hull design from image */
-                  <g transform="scale(1.2)">
-                    <animateMotion 
-                      dur="80s" 
-                      repeatCount="indefinite" 
-                      rotate="auto"
-                      begin={`${i * 10}s`}
-                    >
-                      <mpath href={`#saved-path-${i}`} />
-                    </animateMotion>
-                    
-                    {/* Dark Red Hull */}
-                    <path d="M -12,-4 C -12,-6 10,-6 14,0 C 10,6 -12,6 -12,4 Z" fill="#991b1b" />
-                    
-                    {/* White Deck Section (Rear) */}
-                    <path d="M -11,-3.5 L -5,-3.5 L -5,3.5 L -11,3.5 Z" fill="#ffffff" />
-                    
-                    {/* Bridge / Cabin */}
-                    <rect x="-10" y="-1.5" width="3" height="3" fill="#333333" rx="0.5" />
-
-                    {/* Container Stack - Colorful and blocky */}
-                    <rect x="-4" y="-3.5" width="12" height="7" fill="#1a1a1a" />
-                    {/* Grid of colors */}
-                    <rect x="-3" y="-3" width="2" height="2" fill="#3b82f6" />
-                    <rect x="-0.5" y="-3" width="2" height="2" fill="#ef4444" />
-                    <rect x="2" y="-3" width="2" height="2" fill="#eab308" />
-                    <rect x="4.5" y="-3" width="2" height="2" fill="#3b82f6" />
-                    
-                    <rect x="-3" y="1" width="2" height="2" fill="#eab308" />
-                    <rect x="-0.5" y="1" width="2" height="2" fill="#3b82f6" />
-                    <rect x="2" y="1" width="2" height="2" fill="#ef4444" />
-                    <rect x="4.5" y="1" width="2" height="2" fill="#eab308" />
-                  </g>
-                ) : (
-                  /* Crude Oil Tanker - Long and flat with pipes - Smaller size */
-                  <g transform="scale(1.2)">
-                    <animateMotion 
-                      dur="80s" 
-                      repeatCount="indefinite" 
-                      rotate="auto"
-                      begin={`${i * 10}s`}
-                    >
-                      <mpath href={`#saved-path-${i}`} />
-                    </animateMotion>
-                    
-                    {/* Dark Hull */}
-                    <path d="M -14,-4 C -14,-6 12,-6 16,0 C 12,6 -14,6 -14,4 Z" fill="#1f2937" />
-                    
-                    {/* Long Flat Deck */}
-                    <rect x="-10" y="-3" width="20" height="6" fill="#374151" rx="1" />
-                    
-                    {/* Piping/Manifold Details */}
-                    <rect x="-6" y="-0.5" width="12" height="1" fill="#4b5563" />
-                    <rect x="-4" y="-2" width="0.5" height="4" fill="#4b5563" />
-                    <rect x="0" y="-2" width="0.5" height="4" fill="#4b5563" />
-                    <rect x="4" y="-2" width="0.5" height="4" fill="#4b5563" />
-
-                    {/* Bridge (Aft) */}
-                    <rect x="-13" y="-2.5" width="4" height="5" fill="#f8fafc" rx="0.5" />
-                    <rect x="-11" y="-1" width="1" height="2" fill="#333333" />
-                  </g>
-                )}
-                
-                {/* Navigation Lights for Dark Mode */}
-                {isDarkMode && (
-                  <g>
-                    <animateMotion 
-                      dur="80s" 
-                      repeatCount="indefinite" 
-                      rotate="auto"
-                      begin={`${i * 10}s`}
-                    >
-                      <mpath href={`#saved-path-${i}`} />
-                    </animateMotion>
-                    
-                    {/* Masthead/Front White Light with Flow/Glow and 180 degree rotation */}
-                    <g>
-                      <circle cx="15" cy="0" r="4" fill="url(#whiteGlow)">
-                        <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite" />
-                      </circle>
-                      <circle cx="15" cy="0" r="1.2" fill="#ffffff" />
+              {/* Only render ship if path has points and is not empty */}
+              {path && path.length > 5 && (
+                <g>
+                  {/* Alternating between Container and Oil Tanker - Smaller size */}
+                  {i % 3 === 0 ? (
+                    /* Container Ship - Red Hull design from image */
+                    <g transform="scale(1.2)">
+                      <animateMotion 
+                        dur="80s" 
+                        repeatCount="indefinite" 
+                        rotate="auto"
+                        begin={`${i * 10}s`}
+                      >
+                        <mpath href={`#saved-path-${i}`} />
+                      </animateMotion>
                       
-                      {/* Rotating beam effect - 30 degree sweep - Small range focus */}
-                      <path d="M 15,0 L 45,-5 A 45,45 0 0 1 45,5 Z" fill="url(#whiteGlow)" opacity="0.6">
-                        <animateTransform
-                          attributeName="transform"
-                          type="rotate"
-                          values="-15 15 0; 15 15 0; -15 15 0"
-                          dur="4s"
-                          repeatCount="indefinite"
-                        />
-                      </path>
+                      {/* Dark Red Hull */}
+                      <path d="M -12,-4 C -12,-6 10,-6 14,0 C 10,6 -12,6 -12,4 Z" fill="#991b1b" />
+                      
+                      {/* White Deck Section (Rear) */}
+                      <path d="M -11,-3.5 L -5,-3.5 L -5,3.5 L -11,3.5 Z" fill="#ffffff" />
+                      
+                      {/* Bridge / Cabin */}
+                      <rect x="-10" y="-1.5" width="3" height="3" fill="#333333" rx="0.5" />
+
+                      {/* Container Stack - Colorful and blocky */}
+                      <rect x="-4" y="-3.5" width="12" height="7" fill="#1a1a1a" />
+                      {/* Grid of colors */}
+                      <rect x="-3" y="-3" width="2" height="2" fill="#3b82f6" />
+                      <rect x="-0.5" y="-3" width="2" height="2" fill="#ef4444" />
+                      <rect x="2" y="-3" width="2" height="2" fill="#eab308" />
+                      <rect x="4.5" y="-3" width="2" height="2" fill="#3b82f6" />
+                      
+                      <rect x="-3" y="1" width="2" height="2" fill="#eab308" />
+                      <rect x="-0.5" y="1" width="2" height="2" fill="#3b82f6" />
+                      <rect x="2" y="1" width="2" height="2" fill="#ef4444" />
+                      <rect x="4.5" y="1" width="2" height="2" fill="#eab308" />
                     </g>
-                    
-                    {/* Starboard Green Light (Right) with High Blinking Flow/Glow */}
+                  ) : (
+                    /* Crude Oil Tanker - Long and flat with pipes - Smaller size */
+                    <g transform="scale(1.2)">
+                      <animateMotion 
+                        dur="80s" 
+                        repeatCount="indefinite" 
+                        rotate="auto"
+                        begin={`${i * 10}s`}
+                      >
+                        <mpath href={`#saved-path-${i}`} />
+                      </animateMotion>
+                      
+                      {/* Dark Hull */}
+                      <path d="M -14,-4 C -14,-6 12,-6 16,0 C 12,6 -14,6 -14,4 Z" fill="#1f2937" />
+                      
+                      {/* Long Flat Deck */}
+                      <rect x="-10" y="-3" width="20" height="6" fill="#374151" rx="1" />
+                      
+                      {/* Piping/Manifold Details */}
+                      <rect x="-6" y="-0.5" width="12" height="1" fill="#4b5563" />
+                      <rect x="-4" y="-2" width="0.5" height="4" fill="#4b5563" />
+                      <rect x="0" y="-2" width="0.5" height="4" fill="#4b5563" />
+                      <rect x="4" y="-2" width="0.5" height="4" fill="#4b5563" />
+
+                      {/* Bridge (Aft) */}
+                      <rect x="-13" y="-2.5" width="4" height="5" fill="#f8fafc" rx="0.5" />
+                      <rect x="-11" y="-1" width="1" height="2" fill="#333333" />
+                    </g>
+                  )}
+                  
+                  {/* Navigation Lights for Dark Mode */}
+                  {isDarkMode && (
                     <g>
-                      <circle cx="-2" cy="4" r="5" fill="url(#greenGlow)">
-                        <animate attributeName="r" values="3;7;3" dur="0.8s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.2;0.8;0.2" dur="0.8s" repeatCount="indefinite" />
-                      </circle>
-                      <circle cx="-2" cy="4" r="1.5" fill="#10b981">
-                        <animate attributeName="opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
-                      </circle>
+                      <animateMotion 
+                        dur="80s" 
+                        repeatCount="indefinite" 
+                        rotate="auto"
+                        begin={`${i * 10}s`}
+                      >
+                        <mpath href={`#saved-path-${i}`} />
+                      </animateMotion>
+                      
+                      {/* Masthead/Front White Light with Flow/Glow and 180 degree rotation */}
+                      <g>
+                        <circle cx="15" cy="0" r="4" fill="url(#whiteGlow)">
+                          <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
+                          <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="15" cy="0" r="1.2" fill="#ffffff" />
+                        
+                        {/* Rotating beam effect - 30 degree sweep - Small range focus */}
+                        <path d="M 15,0 L 45,-5 A 45,45 0 0 1 45,5 Z" fill="url(#whiteGlow)" opacity="0.6">
+                          <animateTransform
+                            attributeName="transform"
+                            type="rotate"
+                            values="-15 15 0; 15 15 0; -15 15 0"
+                            dur="4s"
+                            repeatCount="indefinite"
+                          />
+                        </path>
+                      </g>
+                      
+                      {/* Starboard Green Light (Right) with High Blinking Flow/Glow */}
+                      <g>
+                        <circle cx="-2" cy="4" r="5" fill="url(#greenGlow)">
+                          <animate attributeName="r" values="3;7;3" dur="0.8s" repeatCount="indefinite" />
+                          <animate attributeName="opacity" values="0.2;0.8;0.2" dur="0.8s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="-2" cy="4" r="1.5" fill="#10b981">
+                          <animate attributeName="opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
+                        </circle>
+                      </g>
+                      
+                      {/* Port Red Light (Left) with High Blinking Flow/Glow */}
+                      <g>
+                        <circle cx="-2" cy="-4" r="5" fill="url(#redGlow)">
+                          <animate attributeName="r" values="3;7;3" dur="0.8s" repeatCount="indefinite" />
+                          <animate attributeName="opacity" values="0.2;0.8;0.2" dur="0.8s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="-2" cy="-4" r="1.5" fill="#ef4444">
+                          <animate attributeName="opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
+                        </circle>
+                      </g>
+                      
+                      {/* Stern White Light (Back) */}
+                      <circle cx="-13" cy="0" r="0.8" fill="#ffffff" opacity="0.6" />
                     </g>
-                    
-                    {/* Port Red Light (Left) with High Blinking Flow/Glow */}
-                    <g>
-                      <circle cx="-2" cy="-4" r="5" fill="url(#redGlow)">
-                        <animate attributeName="r" values="3;7;3" dur="0.8s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.2;0.8;0.2" dur="0.8s" repeatCount="indefinite" />
-                      </circle>
-                      <circle cx="-2" cy="-4" r="1.5" fill="#ef4444">
-                        <animate attributeName="opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
-                      </circle>
-                    </g>
-                    
-                    {/* Stern White Light (Back) */}
-                    <circle cx="-13" cy="0" r="0.8" fill="#ffffff" opacity="0.6" />
-                  </g>
-                )}
-              </g>
+                  )}
+                </g>
+              )}
             </g>
           ))}
           {/* User Drawing Layer */}
