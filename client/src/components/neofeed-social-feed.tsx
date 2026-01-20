@@ -547,7 +547,7 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
     { name: 'X', icon: 'https://cdn.simpleicons.org/x', color: 'text-gray-900 dark:text-white', bgColor: 'bg-black dark:bg-gray-800/50', url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}` },
     { name: 'Whatsapp', icon: 'https://cdn.simpleicons.org/whatsapp', color: 'text-green-500', bgColor: 'bg-green-50 dark:bg-green-900/10', url: `https://wa.me/?text=${encodeURIComponent(postUrl)}` },
     { name: 'Telegram', icon: 'https://cdn.simpleicons.org/telegram', color: 'text-sky-500', bgColor: 'bg-sky-50 dark:bg-sky-900/10', url: `https://t.me/share/url?url=${encodeURIComponent(postUrl)}` },
-    { name: 'Linkedin', icon: 'https://cdn.simpleicons.org/linkedin', color: 'text-blue-700', bgColor: 'bg-blue-50 dark:bg-blue-900/10', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}` },
+    { name: 'Linkedin', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg', color: 'text-blue-700', bgColor: 'bg-blue-50 dark:bg-blue-900/10', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}` },
   ];
 
   return (
