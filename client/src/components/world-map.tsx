@@ -272,82 +272,79 @@ export function WorldMap() {
                 opacity="0.4" 
               />
               <g>
-                {/* Ship Wake/Waves - Larger for bigger ship */}
-                <circle r="12" fill="#ffffff" opacity="0.2">
-                  <animateMotion
-                    dur="40s"
-                    repeatCount="indefinite"
-                    rotate="auto"
-                  >
+                {/* Ship Wake/Waves */}
+                <g>
+                  <animateMotion dur="40s" repeatCount="indefinite" rotate="auto">
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
-                </circle>
-                <circle r="20" fill="#ffffff" opacity="0.1">
-                  <animateMotion
-                    dur="40s"
-                    repeatCount="indefinite"
-                    rotate="auto"
-                  >
-                    <mpath href={`#saved-path-${i}`} />
-                  </animateMotion>
-                  <animate attributeName="r" values="16;24;16" dur="3s" repeatCount="indefinite" />
-                </circle>
-
-                {/* Container Ship - Top view design from image */}
-                <g transform="scale(1.8)">
-                  <animateMotion
-                    dur="40s"
-                    repeatCount="indefinite"
-                    rotate="auto"
-                  >
-                    <mpath href={`#saved-path-${i}`} />
-                  </animateMotion>
-                  
-                  {/* Rounded Hull - Charcoal Grey */}
                   <path
-                    d="M -12,-4 C -12,-6 10,-6 14,0 C 10,6 -12,6 -12,4 Z"
-                    fill="#2d2d2d"
-                  />
-                  
-                  {/* Deck White Section (Front) */}
-                  <path
-                    d="M 6,-3.5 C 8,-3.5 11,-2 12.5,0 C 11,2 8,3.5 6,3.5 Z"
-                    fill="#ffffff"
-                  />
-                  
-                  {/* Bridge / Cabin Detail on White Section */}
-                  <rect x="8" y="-1.5" width="3" height="3" fill="#333333" rx="0.5" />
-                  <rect x="9" y="-0.5" width="1" height="1" fill="#666666" />
-
-                  {/* Container Grid Section - Darker base */}
-                  <rect x="-10" y="-3.5" width="15" height="7" fill="#1a1a1a" />
-                  
-                  {/* Multi-colored Containers exactly like image */}
-                  {/* Column 1 */}
-                  <rect x="-9" y="-3" width="2.5" height="2" fill="#eab308" />
-                  <rect x="-9" y="-0.5" width="2.5" height="2" fill="#ef4444" />
-                  <rect x="-9" y="2" width="2.5" height="1" fill="#eab308" />
-                  
-                  {/* Column 2 */}
-                  <rect x="-6.2" y="-3" width="2.5" height="1" fill="#ef4444" />
-                  <rect x="-6.2" y="-1.5" width="2.5" height="2" fill="#3b82f6" />
-                  <rect x="-6.2" y="1" width="2.5" height="2" fill="#eab308" />
-                  
-                  {/* Column 3 */}
-                  <rect x="-3.4" y="-3" width="2.5" height="2" fill="#3b82f6" />
-                  <rect x="-3.4" y="-0.5" width="2.5" height="2" fill="#ef4444" />
-                  <rect x="-3.4" y="2" width="2.5" height="1" fill="#3b82f6" />
-
-                  {/* Column 4 */}
-                  <rect x="-0.6" y="-3" width="2.5" height="1" fill="#eab308" />
-                  <rect x="-0.6" y="-1.5" width="2.5" height="2" fill="#3b82f6" />
-                  <rect x="-0.6" y="1" width="2.5" height="2" fill="#ef4444" />
-
-                  {/* Column 5 */}
-                  <rect x="2.2" y="-3" width="2.5" height="2" fill="#ef4444" />
-                  <rect x="2.2" y="-0.5" width="2.5" height="2" fill="#eab308" />
-                  <rect x="2.2" y="2" width="2.5" height="1" fill="#ef4444" />
+                    d="M -15,-5 Q -25,0 -15,5"
+                    fill="none"
+                    stroke="#ffffff"
+                    strokeWidth="2"
+                    opacity="0.2"
+                  >
+                    <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite" />
+                  </path>
+                  <circle r="15" fill="#ffffff" opacity="0.05">
+                    <animate attributeName="r" values="12;18;12" dur="3s" repeatCount="indefinite" />
+                  </circle>
                 </g>
+
+                {/* Alternating between Container and Oil Tanker */}
+                {i % 2 === 0 ? (
+                  /* Container Ship - Red Hull design from image */
+                  <g transform="scale(1.8)">
+                    <animateMotion dur="40s" repeatCount="indefinite" rotate="auto">
+                      <mpath href={`#saved-path-${i}`} />
+                    </animateMotion>
+                    
+                    {/* Dark Red Hull */}
+                    <path d="M -12,-4 C -12,-6 10,-6 14,0 C 10,6 -12,6 -12,4 Z" fill="#991b1b" />
+                    
+                    {/* White Deck Section (Rear) */}
+                    <path d="M -11,-3.5 L -5,-3.5 L -5,3.5 L -11,3.5 Z" fill="#ffffff" />
+                    
+                    {/* Bridge / Cabin */}
+                    <rect x="-10" y="-1.5" width="3" height="3" fill="#333333" rx="0.5" />
+
+                    {/* Container Stack - Colorful and blocky */}
+                    <rect x="-4" y="-3.5" width="12" height="7" fill="#1a1a1a" />
+                    {/* Grid of colors */}
+                    <rect x="-3" y="-3" width="2" height="2" fill="#3b82f6" />
+                    <rect x="-0.5" y="-3" width="2" height="2" fill="#ef4444" />
+                    <rect x="2" y="-3" width="2" height="2" fill="#eab308" />
+                    <rect x="4.5" y="-3" width="2" height="2" fill="#3b82f6" />
+                    
+                    <rect x="-3" y="1" width="2" height="2" fill="#eab308" />
+                    <rect x="-0.5" y="1" width="2" height="2" fill="#3b82f6" />
+                    <rect x="2" y="1" width="2" height="2" fill="#ef4444" />
+                    <rect x="4.5" y="1" width="2" height="2" fill="#eab308" />
+                  </g>
+                ) : (
+                  /* Crude Oil Tanker - Long and flat with pipes */
+                  <g transform="scale(1.8)">
+                    <animateMotion dur="40s" repeatCount="indefinite" rotate="auto">
+                      <mpath href={`#saved-path-${i}`} />
+                    </animateMotion>
+                    
+                    {/* Dark Hull */}
+                    <path d="M -14,-4 C -14,-6 12,-6 16,0 C 12,6 -14,6 -14,4 Z" fill="#1f2937" />
+                    
+                    {/* Long Flat Deck */}
+                    <rect x="-10" y="-3" width="20" height="6" fill="#374151" rx="1" />
+                    
+                    {/* Piping/Manifold Details */}
+                    <rect x="-6" y="-0.5" width="12" height="1" fill="#4b5563" />
+                    <rect x="-4" y="-2" width="0.5" height="4" fill="#4b5563" />
+                    <rect x="0" y="-2" width="0.5" height="4" fill="#4b5563" />
+                    <rect x="4" y="-2" width="0.5" height="4" fill="#4b5563" />
+
+                    {/* Bridge (Aft) */}
+                    <rect x="-13" y="-2.5" width="4" height="5" fill="#f8fafc" rx="0.5" />
+                    <rect x="-11" y="-1" width="1" height="2" fill="#333333" />
+                  </g>
+                )}
               </g>
             </g>
           ))}
