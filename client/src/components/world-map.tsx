@@ -91,41 +91,23 @@ export function WorldMap() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length >= 5) {
+        if (Array.isArray(parsed) && parsed.length > 0) {
           setSavedPaths(parsed);
         } else {
-          // If less than 5 routes, add the 5th default route
-          const defaultRoutes = [
-            // Pacific Ocean: From East Asia towards North America (Open Water)
-            "M 800.0,200.0 L 850.0,200.0 L 900.0,210.0 L 950.0,220.0 L 1000.0,230.0",
-            // Atlantic Ocean: Between North America and Europe/Africa (Open Water)
-            "M 350.0,150.0 L 400.0,140.0 L 450.0,135.0 L 500.0,135.0 L 550.0,140.0",
-            // Indian Ocean: South of India towards Australia (Open Water)
-            "M 600.0,350.0 L 650.0,360.0 L 700.0,375.0 L 750.0,390.0 L 800.0,400.0",
-            // Southern Atlantic: Between South America and Africa (Open Water)
-            "M 250.0,380.0 L 300.0,390.0 L 350.0,400.0 L 400.0,410.0 L 450.0,415.0",
-            // Mediterranean / Arabian Sea area (Open Water)
-            "M 500.0,250.0 L 530.0,260.0 L 560.0,270.0 L 590.0,285.0 L 620.0,300.0"
-          ];
-          // Always use default routes, ignore local storage if it exists to reset to these values
-          setSavedPaths(defaultRoutes);
-          localStorage.setItem("world-map-ship-routes", JSON.stringify(defaultRoutes));
+          // If empty array, don't set anything (user might have cleared it)
+          setSavedPaths([]);
         }
       } catch (e) {
         console.error("Failed to parse saved paths", e);
+        setSavedPaths([]);
       }
     } else {
-      // Default initial routes if none are saved (5 routes total)
+      // Default initial routes if none exist (current display routes)
       const defaultRoutes = [
-        // Pacific Ocean: From East Asia towards North America (Open Water)
         "M 800.0,200.0 L 850.0,200.0 L 900.0,210.0 L 950.0,220.0 L 1000.0,230.0",
-        // Atlantic Ocean: Between North America and Europe/Africa (Open Water)
         "M 350.0,150.0 L 400.0,140.0 L 450.0,135.0 L 500.0,135.0 L 550.0,140.0",
-        // Indian Ocean: South of India towards Australia (Open Water)
         "M 600.0,350.0 L 650.0,360.0 L 700.0,375.0 L 750.0,390.0 L 800.0,400.0",
-        // Southern Atlantic: Between South America and Africa (Open Water)
         "M 250.0,380.0 L 300.0,390.0 L 350.0,400.0 L 400.0,410.0 L 450.0,415.0",
-        // Mediterranean / Arabian Sea area (Open Water)
         "M 500.0,250.0 L 530.0,260.0 L 560.0,270.0 L 590.0,285.0 L 620.0,300.0"
       ];
       setSavedPaths(defaultRoutes);
