@@ -292,7 +292,7 @@ export function WorldMap() {
                   <animate attributeName="r" values="16;24;16" dur="3s" repeatCount="indefinite" />
                 </circle>
 
-                {/* Container Ship - Bigger and slower */}
+                {/* Container Ship - Top view design from image */}
                 <g transform="scale(1.8)">
                   <animateMotion
                     dur="40s"
@@ -302,32 +302,50 @@ export function WorldMap() {
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
                   
-                  {/* Hull */}
+                  {/* Rounded Hull - Charcoal Grey */}
                   <path
-                    d="M -10,-4 L 10,-3 L 12,0 L 10,3 L -10,4 L -12,2 L -12,-2 Z"
-                    fill="#1e293b"
-                    stroke="#ffffff"
-                    strokeWidth="0.5"
+                    d="M -12,-4 C -12,-6 10,-6 14,0 C 10,6 -12,6 -12,4 Z"
+                    fill="#2d2d2d"
                   />
-                  {/* Deck/Containers area */}
-                  <rect x="-6" y="-3" width="12" height="6" fill="#334155" />
                   
-                  {/* Colored Containers */}
-                  <rect x="-5" y="-2" width="2" height="2" fill="#ef4444" />
-                  <rect x="-3" y="-2" width="2" height="2" fill="#facc15" />
-                  <rect x="-1" y="-2" width="2" height="2" fill="#3b82f6" />
-                  <rect x="1" y="-2" width="2" height="2" fill="#10b981" />
-                  <rect x="3" y="-2" width="2" height="2" fill="#ef4444" />
+                  {/* Deck White Section (Front) */}
+                  <path
+                    d="M 6,-3.5 C 8,-3.5 11,-2 12.5,0 C 11,2 8,3.5 6,3.5 Z"
+                    fill="#ffffff"
+                  />
                   
-                  <rect x="-5" y="0.5" width="2" height="2" fill="#3b82f6" />
-                  <rect x="-3" y="0.5" width="2" height="2" fill="#10b981" />
-                  <rect x="-1" y="0.5" width="2" height="2" fill="#ef4444" />
-                  <rect x="1" y="0.5" width="2" height="2" fill="#facc15" />
-                  <rect x="3" y="0.5" width="2" height="2" fill="#3b82f6" />
+                  {/* Bridge / Cabin Detail on White Section */}
+                  <rect x="8" y="-1.5" width="3" height="3" fill="#333333" rx="0.5" />
+                  <rect x="9" y="-0.5" width="1" height="1" fill="#666666" />
+
+                  {/* Container Grid Section - Darker base */}
+                  <rect x="-10" y="-3.5" width="15" height="7" fill="#1a1a1a" />
                   
-                  {/* Bridge / Cabin */}
-                  <rect x="-11" y="-2.5" width="4" height="5" fill="#f8fafc" rx="0.5" />
-                  <rect x="-10" y="-1.5" width="2" height="3" fill="#94a3b8" />
+                  {/* Multi-colored Containers exactly like image */}
+                  {/* Column 1 */}
+                  <rect x="-9" y="-3" width="2.5" height="2" fill="#eab308" />
+                  <rect x="-9" y="-0.5" width="2.5" height="2" fill="#ef4444" />
+                  <rect x="-9" y="2" width="2.5" height="1" fill="#eab308" />
+                  
+                  {/* Column 2 */}
+                  <rect x="-6.2" y="-3" width="2.5" height="1" fill="#ef4444" />
+                  <rect x="-6.2" y="-1.5" width="2.5" height="2" fill="#3b82f6" />
+                  <rect x="-6.2" y="1" width="2.5" height="2" fill="#eab308" />
+                  
+                  {/* Column 3 */}
+                  <rect x="-3.4" y="-3" width="2.5" height="2" fill="#3b82f6" />
+                  <rect x="-3.4" y="-0.5" width="2.5" height="2" fill="#ef4444" />
+                  <rect x="-3.4" y="2" width="2.5" height="1" fill="#3b82f6" />
+
+                  {/* Column 4 */}
+                  <rect x="-0.6" y="-3" width="2.5" height="1" fill="#eab308" />
+                  <rect x="-0.6" y="-1.5" width="2.5" height="2" fill="#3b82f6" />
+                  <rect x="-0.6" y="1" width="2.5" height="2" fill="#ef4444" />
+
+                  {/* Column 5 */}
+                  <rect x="2.2" y="-3" width="2.5" height="2" fill="#ef4444" />
+                  <rect x="2.2" y="-0.5" width="2.5" height="2" fill="#eab308" />
+                  <rect x="2.2" y="2" width="2.5" height="1" fill="#ef4444" />
                 </g>
               </g>
             </g>
