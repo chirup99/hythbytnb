@@ -580,8 +580,8 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
   // Generate calendar data for the year (ALWAYS show complete calendar, no filtering)
   const generateMonthsData = () => {
     // Always use current year - show complete calendar regardless of range selection
-    const startYear = currentDate.getFullYear();
-    const endYear = currentDate.getFullYear();
+    const startYear = new Date().getFullYear();
+    const endYear = new Date().getFullYear();
     const startMonth = 0;
     const endMonth = 11;
 
@@ -936,13 +936,13 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
 
   const handlePreviousYear = () => {
     const newDate = new Date(currentDate);
-    newDate.setFullYear(currentDate.getFullYear() - 1);
+    newDate.setFullYear(new Date().getFullYear() - 1);
     setCurrentDate(newDate);
   };
   
   const handleNextYear = () => {
     const newDate = new Date(currentDate);
-    newDate.setFullYear(currentDate.getFullYear() + 1);
+    newDate.setFullYear(new Date().getFullYear() + 1);
     setCurrentDate(newDate);
   };
   
@@ -1007,7 +1007,7 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
           <span>
             {selectedRange 
               ? `${selectedRange.from.getFullYear()}${selectedRange.from.getFullYear() !== selectedRange.to.getFullYear() ? `-${selectedRange.to.getFullYear()}` : ''}`
-              : currentDate.getFullYear()
+              : new Date().getFullYear()
             }
           </span>
         </div>
