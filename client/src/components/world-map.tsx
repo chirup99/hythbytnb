@@ -225,7 +225,7 @@ export function WorldMap() {
         {/* Drawing Tools Overlay */}
         <div className={`absolute z-50 flex gap-2 transition-opacity duration-300 ${
           isMobile 
-            ? "bottom-2 right-2 opacity-100" 
+            ? "bottom-2 right-2 opacity-0 group-hover:opacity-100 group-active:opacity-100" 
             : "top-2 right-2 opacity-0 group-hover:opacity-100"
         }`}>
           <Button
