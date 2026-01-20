@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useMarketData } from "../hooks/useMarketData";
 import { useTheme } from "@/components/theme-provider";
-import { ArrowUp, ArrowDown } from "lucide-react";
+import { ArrowUp, ArrowDown, Pencil, RotateCcw, Copy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 interface MarketRegion {
   name: string;
@@ -74,8 +76,13 @@ const getRegionColor = (
 export function WorldMap() {
   const { marketData, loading } = useMarketData(900000); // Refresh every 15 minutes (900000ms)
   const { theme } = useTheme();
+  const { toast } = useToast();
   const isDarkMode = theme === "dark";
   const [isMobile, setIsMobile] = useState(false);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [currentPath, setCurrentPath] = useState<string>("");
+  const [allPaths, setAllPaths] = useState<string[]>([]);
+  const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -87,6 +94,70 @@ export function WorldMap() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  const handleMouseDown = (e: React.MouseEvent<SVGSVGElement> | React.TouchEvent<SVGSVGElement>) => {
+    if (!isDrawing || !svgRef.current) return;
+    
+    const svg = svgRef.current;
+    const CTM = svg.getScreenCTM();
+    if (!CTM) return;
+
+    let clientX, clientY;
+    if ('touches' in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    const x = (clientX - CTM.e) / CTM.a;
+    const y = (clientY - CTM.f) / CTM.d;
+
+    setCurrentPath(`M ${x.toFixed(1)},${y.toFixed(1)}`);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement> | React.TouchEvent<SVGSVGElement>) => {
+    if (!isDrawing || !currentPath || !svgRef.current) return;
+
+    const svg = svgRef.current;
+    const CTM = svg.getScreenCTM();
+    if (!CTM) return;
+
+    let clientX, clientY;
+    if ('touches' in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    const x = (clientX - CTM.e) / CTM.a;
+    const y = (clientY - CTM.f) / CTM.d;
+
+    setCurrentPath(prev => `${prev} L ${x.toFixed(1)},${y.toFixed(1)}`);
+  };
+
+  const handleMouseUp = () => {
+    if (!isDrawing || !currentPath) return;
+    setAllPaths(prev => [...prev, currentPath]);
+    setCurrentPath("");
+  };
+
+  const copyPathToClipboard = () => {
+    const fullPath = allPaths.join(" ");
+    navigator.clipboard.writeText(fullPath);
+    toast({
+      title: "Path Copied",
+      description: "SVG path data copied to clipboard. You can now use this in the code.",
+    });
+  };
+
+  const resetDrawing = () => {
+    setAllPaths([]);
+    setCurrentPath("");
+  };
+
   // Smaller dot size for mobile screens
   const dotRadius = isMobile ? "1.5" : "1.8";
 
@@ -94,19 +165,74 @@ export function WorldMap() {
     <div className="mb-5 relative">
       {/* World Map with Dots - No Animation */}
       <div
-        className="relative h-35 overflow-hidden"
+        className="relative h-35 overflow-hidden group"
         style={{ backgroundColor: isDarkMode ? "#1a1a1a" : "#e3f2fd" }}
       >
+        {/* Drawing Tools Overlay */}
+        <div className="absolute top-2 right-2 z-50 flex gap-2">
+          {allPaths.length > 0 && (
+            <>
+              <Button 
+                size="icon" 
+                variant="secondary" 
+                onClick={copyPathToClipboard}
+                className="h-8 w-8"
+                title="Copy SVG Path"
+                data-testid="button-copy-path"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+              <Button 
+                size="icon" 
+                variant="secondary" 
+                onClick={resetDrawing}
+                className="h-8 w-8"
+                title="Reset Drawing"
+                data-testid="button-reset-drawing"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+            </>
+          )}
+          <Button 
+            size="icon" 
+            variant={isDrawing ? "default" : "secondary"}
+            onClick={() => setIsDrawing(!isDrawing)}
+            className="h-8 w-8"
+            title={isDrawing ? "Stop Drawing" : "Start Drawing"}
+            data-testid="button-toggle-draw"
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+        </div>
+
         <svg
+          ref={svgRef}
           viewBox="-10 0 1045.2 458"
-          className="w-full h-full"
+          className={`w-full h-full ${isDrawing ? 'cursor-crosshair' : ''}`}
           preserveAspectRatio="xMidYMid meet"
           shapeRendering="crispEdges"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleMouseDown}
+          onTouchMove={handleMouseMove}
+          onTouchEnd={handleMouseUp}
           style={{
             filter: "none",
             background: "none",
+            touchAction: isDrawing ? 'none' : 'auto'
           }}
         >
+          {/* User Drawing Layer */}
+          {allPaths.map((path, i) => (
+            <path key={i} d={path} fill="none" stroke="#facc15" strokeWidth="3" opacity="0.8" />
+          ))}
+          {currentPath && (
+            <path d={currentPath} fill="none" stroke="#facc15" strokeWidth="3" opacity="0.5" />
+          )}
+
           {/* Yellow outline for ship routes - adjusted to be outside landmasses */}
           <path
             d="M 10,180
