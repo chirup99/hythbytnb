@@ -92,13 +92,13 @@ export function WorldMap() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // FORCE reset if old routes are detected or if we want to ensure the specific live yellow lines
-        const isOldRoute = Array.isArray(parsed) && (parsed[0]?.startsWith("M 800.0,200.0") || parsed.length !== 5);
+        // FORCE reset to use the new complex live draw routes as default if they haven't been applied yet
+        const isOldRoute = Array.isArray(parsed) && (parsed[0]?.startsWith("M 800.0,200.0") || parsed[0]?.startsWith("M 197.6,180.8") || parsed.length !== 5);
         
         if (Array.isArray(parsed) && parsed.length > 0 && !isOldRoute) {
           setSavedPaths(parsed);
         } else {
-          // Force reset to specific live yellow markings from attached image
+          // Force reset to specific live yellow markings from attached image (complex mountain paths)
           const defaultRoutes = [
             "M 310.5,230.2 L 350.4,220.5 L 430.2,180.4 L 480.5,230.6 L 550.2,250.4 L 630.5,285.2 L 720.4,310.5 L 795.8,285.2", // Atlantic to Asia main route
             "M 630.5,285.2 L 680.4,320.5 L 740.2,350.6 L 795.8,380.2", // South Asia to Australia route
