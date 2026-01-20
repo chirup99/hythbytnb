@@ -92,10 +92,11 @@ export function WorldMap() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // FORCE reset to use the new complex live draw routes as default if they haven't been applied yet
-        const isOldRoute = Array.isArray(parsed) && (parsed[0]?.startsWith("M 800.0,200.0") || parsed[0]?.startsWith("M 197.6,180.8") || parsed.length !== 5);
+        // FORCE reset to use the new complex live draw routes as default
+        // We detect "wrong" routes by checking if they don't start with the specific new Atlantic coordinate
+        const isCorrectNewRoute = Array.isArray(parsed) && parsed.length === 5 && parsed[0]?.startsWith("M 310.5,230.2");
         
-        if (Array.isArray(parsed) && parsed.length > 0 && !isOldRoute) {
+        if (isCorrectNewRoute) {
           setSavedPaths(parsed);
         } else {
           // Force reset to specific live yellow markings from attached image (complex mountain paths)
