@@ -310,52 +310,40 @@ export function WorldMap() {
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
                   
-                  {/* Thick Foam/Spray Layer (White/Blue mix) */}
-                  <g opacity="0.4">
+                  {/* Very Tiny Foam/Spray Layer */}
+                  <g opacity="0.3">
                     <path
-                      d="M 12,-2 L -35,-15 Q -45,-15 -50,-20 M 12,2 L -35,15 Q -45,15 -50,20"
+                      d="M 12,-1 L -5,-3 Q -8,-3 -10,-4 M 12,1 L -5,3 Q -8,3 -10,4"
                       fill="none"
                       stroke="#ffffff"
-                      strokeWidth="6"
+                      strokeWidth="1.5"
                       strokeLinecap="round"
-                      filter="blur(2px)"
                     >
-                      <animate attributeName="strokeWidth" values="5;8;5" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="strokeWidth" values="1;1.8;1" dur="1.5s" repeatCount="indefinite" />
                     </path>
-                    <path
-                      d="M 12,-2 L -30,-12 Q -40,-12 -45,-18 M 12,2 L -30,12 Q -40,12 -45,18"
-                      fill="none"
-                      stroke="#0ea5e9"
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      opacity="0.3"
-                    />
                   </g>
                   
-                  {/* Main V-Wake Foam */}
+                  {/* Main V-Wake Foam - Shorter */}
                   <path
-                    d="M 14,-2 C 0,-5 -35,-15 -55,-25 M 14,2 C 0,5 -35,15 -55,25"
+                    d="M 14,-1 C 8,-1.5 -5,-3 -15,-5 M 14,1 C 8,1.5 -5,3 -15,5"
                     fill="none"
                     stroke="url(#foamGradient)"
-                    strokeWidth="4"
+                    strokeWidth="1.5"
                     strokeLinecap="round"
-                    opacity="0.6"
+                    opacity="0.4"
                   >
-                    <animate attributeName="opacity" values="0.4;0.7;0.4" dur="2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.3;0.5;0.3" dur="2s" repeatCount="indefinite" />
                   </path>
                   
-                  {/* Underwater Blue Wash */}
-                  <ellipse cx="-5" cy="0" rx="35" ry="18" fill="url(#waterWash)" opacity="0.15">
-                    <animate attributeName="rx" values="30;40;30" dur="3s" repeatCount="indefinite" />
+                  {/* Underwater Blue Wash - Smaller */}
+                  <ellipse cx="0" cy="0" rx="15" ry="8" fill="url(#waterWash)" opacity="0.1">
+                    <animate attributeName="rx" values="12;16;12" dur="3s" repeatCount="indefinite" />
                   </ellipse>
 
-                  {/* Tiny tail waves */}
-                  <g opacity="0.5">
-                    <path d="M -15,-5 L -25,-8 M -15,5 L -25,8" stroke="#ffffff" strokeWidth="1" strokeDasharray="2,2">
-                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite" />
-                    </path>
-                    <path d="M -20,-3 L -40,-6 M -20,3 L -40,6" stroke="#ffffff" strokeWidth="0.5" strokeDasharray="1,3">
-                      <animate attributeName="stroke-dashoffset" from="0" to="8" dur="1.5s" repeatCount="indefinite" />
+                  {/* Tiny tail waves - Extremely subtle and short */}
+                  <g opacity="0.25">
+                    <path d="M -8,-1.5 L -10,-2 M -8,1.5 L -10,2" stroke="#ffffff" strokeWidth="0.4" strokeDasharray="1,1">
+                      <animate attributeName="stroke-dashoffset" from="0" to="3" dur="1s" repeatCount="indefinite" />
                     </path>
                   </g>
                 </g>
