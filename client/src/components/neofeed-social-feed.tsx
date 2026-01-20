@@ -561,13 +561,6 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
             </div>
           </div>
 
-          <button 
-            onClick={onClose}
-            className="absolute top-4 right-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors z-10"
-          >
-            <X className="w-5 h-5 text-gray-400" />
-          </button>
-
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Share with Friends</h2>
           <p className="text-gray-500 dark:text-gray-400 text-sm mb-8 leading-relaxed px-4">
             Trading is more effective when you connect with friends!
