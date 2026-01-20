@@ -315,30 +315,33 @@ export function WorldMap() {
             </radialGradient>
           </defs>
           {/* Saved Drawing Layer */}
-          {savedPaths.length > 0 && savedPaths.map((path, i) => (
-            <g key={`saved-group-${i}`}>
-              <path 
-                id={`saved-path-${i}`}
-                d={path} 
-                fill="none" 
-                stroke="#facc15" 
-                strokeWidth="2.5" 
-                opacity={isDrawing ? "0.4" : "0"} 
-              />
-              {/* Only render ship if path has points and is not empty */}
-              {path && path.length > 5 && (
+          {savedPaths.length > 0 && savedPaths.map((path, i) => {
+            if (!path || path.trim().length < 10) return null;
+            const pathId = `saved-path-${i}`;
+            
+            return (
+              <g key={`saved-group-${i}`}>
+                <path 
+                  id={pathId}
+                  d={path} 
+                  fill="none" 
+                  stroke="#facc15" 
+                  strokeWidth="2.5" 
+                  opacity={isDrawing ? "0.4" : "0"} 
+                />
+                
                 <g>
                   {/* Alternating between Container and Oil Tanker - Smaller size */}
                   {i % 3 === 0 ? (
                     /* Container Ship - Red Hull design from image */
-                    <g transform="scale(1.2)">
+                    <g transform="scale(1.2)" opacity={isDrawing ? "0.4" : "1"}>
                       <animateMotion 
                         dur="80s" 
                         repeatCount="indefinite" 
                         rotate="auto"
                         begin={`${i * 10}s`}
                       >
-                        <mpath href={`#saved-path-${i}`} />
+                        <mpath href={`#${pathId}`} />
                       </animateMotion>
                       
                       {/* Dark Red Hull */}
@@ -365,14 +368,14 @@ export function WorldMap() {
                     </g>
                   ) : (
                     /* Crude Oil Tanker - Long and flat with pipes - Smaller size */
-                    <g transform="scale(1.2)">
+                    <g transform="scale(1.2)" opacity={isDrawing ? "0.4" : "1"}>
                       <animateMotion 
                         dur="80s" 
                         repeatCount="indefinite" 
                         rotate="auto"
                         begin={`${i * 10}s`}
                       >
-                        <mpath href={`#saved-path-${i}`} />
+                        <mpath href={`#${pathId}`} />
                       </animateMotion>
                       
                       {/* Dark Hull */}
@@ -395,14 +398,14 @@ export function WorldMap() {
                   
                   {/* Navigation Lights for Dark Mode */}
                   {isDarkMode && (
-                    <g>
+                    <g opacity={isDrawing ? "0.4" : "1"}>
                       <animateMotion 
                         dur="80s" 
                         repeatCount="indefinite" 
                         rotate="auto"
                         begin={`${i * 10}s`}
                       >
-                        <mpath href={`#saved-path-${i}`} />
+                        <mpath href={`#${pathId}`} />
                       </animateMotion>
                       
                       {/* Masthead/Front White Light with Flow/Glow and 180 degree rotation */}
@@ -452,9 +455,9 @@ export function WorldMap() {
                     </g>
                   )}
                 </g>
-              )}
-            </g>
-          ))}
+              </g>
+            );
+          })}
           {/* User Drawing Layer */}
           {allPaths.map((path, i) => (
             <path key={`current-${i}`} d={path} fill="none" stroke="#facc15" strokeWidth="3" opacity="0.8" />
