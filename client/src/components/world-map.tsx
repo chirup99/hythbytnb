@@ -157,12 +157,12 @@ export function WorldMap() {
 
   const saveDrawing = () => {
     if (allPaths.length > 0) {
-      // Limit to 4 routes total
-      const totalAvailableSlots = 4 - savedPaths.length;
+      // Limit to 5 routes total
+      const totalAvailableSlots = 5 - savedPaths.length;
       if (totalAvailableSlots <= 0) {
         toast({
           title: "Limit Reached",
-          description: "Maximum of 4 ship routes allowed. Please delete existing routes to add new ones.",
+          description: "Maximum of 5 ship routes allowed. Please delete existing routes to add new ones.",
           variant: "destructive"
         });
         return;
@@ -178,7 +178,7 @@ export function WorldMap() {
       
       toast({
         title: "Routes Saved",
-        description: `Saved ${pathsToAdd.length} new route(s). Total: ${newSavedPaths.length}/4.`,
+        description: `Saved ${pathsToAdd.length} new route(s). Total: ${newSavedPaths.length}/5.`,
       });
     }
   };
@@ -215,7 +215,7 @@ export function WorldMap() {
                   onClick={saveDrawing}
                   className="h-8 w-8 text-primary"
                   title="Save Route"
-                  disabled={savedPaths.length >= 4}
+                  disabled={savedPaths.length >= 5}
                   data-testid="button-save-route"
                 >
                   <Save className="h-4 w-4" />
@@ -314,7 +314,7 @@ export function WorldMap() {
               />
               <g>
                 {/* Alternating between Container and Oil Tanker - Smaller size */}
-                {i % 2 === 0 ? (
+                {i % 3 === 0 ? (
                   /* Container Ship - Red Hull design from image */
                   <g transform="scale(1.2)">
                     <animateMotion 
