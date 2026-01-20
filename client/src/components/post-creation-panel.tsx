@@ -392,7 +392,7 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
               )}
             </div>
             <span className="text-lg font-bold">
-              {viewMode === 'post' ? 'Create Post' : viewMode === 'audio' ? 'Audio MiniCast' : 'Messages'}
+              {viewMode === 'audio' && isAudioMode ? 'Audio MiniCast' : viewMode === 'post' ? 'Create Post' : 'Messages'}
             </span>
           </div>
           <div className="flex items-center gap-2">

@@ -51,7 +51,7 @@ export function AudioSelectedPostsPreview({ snippets, onTap, onDeactivate }: Aud
     return gradients[idx % gradients.length];
   };
 
-  const hasNoSnippets = cards.length === 0;
+  if (hasNoSnippets && !snippets.length) return null;
 
   return (
     <div 
