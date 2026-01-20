@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Avatar, AvatarFallback } from './ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
@@ -241,13 +241,10 @@ export function UserProfileDropdown() {
             data-testid="button-profile-avatar"
           >
             <Avatar className="h-10 w-10 border-2 border-gray-200 dark:border-gray-600">
-              {profile?.avatar ? (
-                <img src={profile.avatar} alt={displayName} className="h-full w-full object-cover" />
-              ) : (
-                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold text-sm">
-                  {getInitials(displayName)}
-                </AvatarFallback>
-              )}
+              <AvatarImage src={profile?.avatar} alt={displayName} className="object-cover" fetchPriority="high" />
+              <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold text-sm">
+                {getInitials(displayName)}
+              </AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -258,13 +255,10 @@ export function UserProfileDropdown() {
           <DropdownMenuLabel className="font-normal">
             <div className="flex items-start gap-3 py-2">
               <Avatar className="h-12 w-12 border-2 border-gray-200 dark:border-gray-600">
-                {profile?.avatar ? (
-                  <img src={profile.avatar} alt={displayName} className="h-full w-full object-cover" />
-                ) : (
-                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold">
-                    {getInitials(displayName)}
-                  </AvatarFallback>
-                )}
+                <AvatarImage src={profile?.avatar} alt={displayName} className="object-cover" />
+                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold">
+                  {getInitials(displayName)}
+                </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
@@ -357,6 +351,7 @@ export function UserProfileDropdown() {
           <div className="space-y-6 py-4">
             <div className="flex justify-center">
               <Avatar className="h-24 w-24 border-4 border-gray-200 dark:border-gray-600">
+                <AvatarImage src={profile?.avatar} alt={displayName} className="object-cover" />
                 <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-bold text-2xl">
                   {getInitials(displayName)}
                 </AvatarFallback>
