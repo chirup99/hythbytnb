@@ -576,9 +576,9 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
           <div className="w-full space-y-8 text-left">
             <div>
               <label className="text-sm font-bold text-gray-900 dark:text-white mb-3 block">Share you link</label>
-              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
                 <p className="flex-1 text-sm text-gray-600 dark:text-gray-300 truncate font-medium">
-                  {postUrl}
+                  {postUrl.length > 25 ? postUrl.substring(0, 25) + '...' : postUrl}
                 </p>
                 <button 
                   onClick={copyToClipboard}
