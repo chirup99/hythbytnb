@@ -4469,6 +4469,7 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
         <AudioSelectedPostsPreview
           snippets={selectedTextSnippets}
           onTap={() => setShowMobileAudioMinicast(true)}
+          onDeactivate={() => setIsAudioMode(false)}
         />
       </div>
 
