@@ -100,10 +100,18 @@ export function WorldMap() {
     // Load saved paths from localStorage on mount
     const saved = localStorage.getItem("world-map-ship-routes");
     
-    // FORCE CLEAR: User requested to remove "fake lines"
-    // We clear localStorage and state to ensure map starts completely empty
-    localStorage.removeItem("world-map-ship-routes");
-    setSavedPaths([]);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setSavedPaths(Array.isArray(parsed) ? parsed : []);
+      } catch (e) {
+        console.error("Failed to parse saved paths", e);
+        setSavedPaths([]);
+      }
+    } else {
+      // Initialize with empty array if nothing is saved
+      setSavedPaths([]);
+    }
 
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
