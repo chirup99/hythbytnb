@@ -271,7 +271,8 @@ export function WorldMap() {
                 opacity="0.4" 
               />
               <g>
-                <circle r="3" fill="#ffffff" opacity="0.6">
+                {/* Ship Wake/Waves */}
+                <circle r="6" fill="#ffffff" opacity="0.3">
                   <animateMotion
                     dur="15s"
                     repeatCount="indefinite"
@@ -280,10 +281,7 @@ export function WorldMap() {
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
                 </circle>
-                <path
-                  d="M -5,-2 L 5,0 L -5,2 Z"
-                  fill="#334155"
-                >
+                <circle r="10" fill="#ffffff" opacity="0.1">
                   <animateMotion
                     dur="15s"
                     repeatCount="indefinite"
@@ -291,7 +289,46 @@ export function WorldMap() {
                   >
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
-                </path>
+                  <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" />
+                </circle>
+
+                {/* Container Ship - More visible and detailed */}
+                <g>
+                  <animateMotion
+                    dur="15s"
+                    repeatCount="indefinite"
+                    rotate="auto"
+                  >
+                    <mpath href={`#saved-path-${i}`} />
+                  </animateMotion>
+                  
+                  {/* Hull */}
+                  <path
+                    d="M -10,-4 L 10,-3 L 12,0 L 10,3 L -10,4 L -12,2 L -12,-2 Z"
+                    fill="#1e293b"
+                    stroke="#ffffff"
+                    strokeWidth="0.5"
+                  />
+                  {/* Deck/Containers area */}
+                  <rect x="-6" y="-3" width="12" height="6" fill="#334155" />
+                  
+                  {/* Colored Containers (based on image) */}
+                  <rect x="-5" y="-2" width="2" height="2" fill="#ef4444" />
+                  <rect x="-3" y="-2" width="2" height="2" fill="#facc15" />
+                  <rect x="-1" y="-2" width="2" height="2" fill="#3b82f6" />
+                  <rect x="1" y="-2" width="2" height="2" fill="#10b981" />
+                  <rect x="3" y="-2" width="2" height="2" fill="#ef4444" />
+                  
+                  <rect x="-5" y="0.5" width="2" height="2" fill="#3b82f6" />
+                  <rect x="-3" y="0.5" width="2" height="2" fill="#10b981" />
+                  <rect x="-1" y="0.5" width="2" height="2" fill="#ef4444" />
+                  <rect x="1" y="0.5" width="2" height="2" fill="#facc15" />
+                  <rect x="3" y="0.5" width="2" height="2" fill="#3b82f6" />
+                  
+                  {/* Bridge / Cabin */}
+                  <rect x="-11" y="-2.5" width="4" height="5" fill="#f8fafc" rx="0.5" />
+                  <rect x="-10" y="-1.5" width="2" height="3" fill="#94a3b8" />
+                </g>
               </g>
             </g>
           ))}
