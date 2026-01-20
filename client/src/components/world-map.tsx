@@ -318,7 +318,7 @@ export function WorldMap() {
                   /* Container Ship - Red Hull design from image */
                   <g transform="scale(1.2)">
                     <animateMotion 
-                      dur="40s" 
+                      dur="80s" 
                       repeatCount="indefinite" 
                       rotate="auto"
                       begin={`${i * 10}s`}
@@ -352,7 +352,7 @@ export function WorldMap() {
                   /* Crude Oil Tanker - Long and flat with pipes - Smaller size */
                   <g transform="scale(1.2)">
                     <animateMotion 
-                      dur="40s" 
+                      dur="80s" 
                       repeatCount="indefinite" 
                       rotate="auto"
                       begin={`${i * 10}s`}
@@ -382,7 +382,7 @@ export function WorldMap() {
                 {isDarkMode && (
                   <g>
                     <animateMotion 
-                      dur="40s" 
+                      dur="80s" 
                       repeatCount="indefinite" 
                       rotate="auto"
                       begin={`${i * 10}s`}
