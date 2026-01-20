@@ -3106,29 +3106,17 @@ const PostCard = memo(function PostCard({ post, currentUserUsername, onViewUserP
                 
                 {/* Dropdown menu */}
                 {showOptionsMenu && (
-                  <div className="absolute right-0 top-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg py-1 z-50 min-w-[120px]">
-                    <button
-                      onClick={() => {
-                        setEditContent(post.content);
-                        setShowEditDialog(true);
-                        setShowOptionsMenu(false);
-                      }}
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left transition-colors"
-                      data-testid={`button-edit-${post.id}`}
-                    >
-                      <PenTool className="h-4 w-4" />
-                      Edit
-                    </button>
+                  <div className="absolute right-0 top-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg py-1 z-50 min-w-[50px]">
                     <button
                       onClick={() => {
                         setShowDeleteDialog(true);
                         setShowOptionsMenu(false);
                       }}
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 w-full text-left transition-colors"
+                      className="flex items-center justify-center p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 w-full transition-colors"
                       data-testid={`button-delete-${post.id}`}
+                      title="Delete Post"
                     >
                       <Trash2 className="h-4 w-4" />
-                      Delete
                     </button>
                   </div>
                 )}
