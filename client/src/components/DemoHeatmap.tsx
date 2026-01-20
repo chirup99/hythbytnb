@@ -79,30 +79,7 @@ function getPnLColor(pnl: number): string {
 
 export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeChange, highlightedDates, isPublicView, tradingDataByDate, onSelectDateForHeatmap, refreshTrigger = 0 }: DemoHeatmapProps) {
   const { currentUser } = useCurrentUser();
-  
-  // ✅ INITIAL YEAR LOGIC:
-  // 1. If selectedDate is provided, use that year
-  // 2. If tradingDataByDate has data, use current year
-  // 3. Fallback to 2025 for demo
-  const [currentDate, setCurrentDate] = useState(() => {
-    if (selectedDate) {
-      return new Date(selectedDate.getFullYear(), 0, 1);
-    }
-    const hasExternalData = tradingDataByDate && Object.keys(tradingDataByDate).length > 0;
-    const defaultYear = hasExternalData ? new Date().getFullYear() : 2025;
-    return new Date(defaultYear, 0, 1);
-  });
-
-  // Sync year when selectedDate changes (important for Trading Report)
-  useEffect(() => {
-    if (selectedDate) {
-      const selectedYear = selectedDate.getFullYear();
-      if (currentDate.getFullYear() !== selectedYear) {
-        console.log(`📅 Syncing heatmap year to ${selectedYear} from selectedDate`);
-        setCurrentDate(new Date(selectedYear, 0, 1));
-      }
-    }
-  }, [selectedDate]);
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 0, 1));
   const [selectedRange, setSelectedRange] = useState<{ from: Date; to: Date } | null>(null);
   const [heatmapData, setHeatmapData] = useState<Record<string, any>>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -150,12 +127,15 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
 
   // Fetch data OR use provided tradingDataByDate - SECURE for public view
   useEffect(() => {
-    // If tradingDataByDate is provided, use it directly (this covers both personal and shared reports)
-    if (tradingDataByDate && Object.keys(tradingDataByDate).length > 0) {
-      console.log("🔓 DemoHeatmap: Using provided tradingDataByDate", {
-        isPublicView,
-        dateCount: Object.keys(tradingDataByDate).length
-      });
+    // ✅ DEMO MODE: Always fetch complete data from API, ignore parent data
+    // ✅ PUBLIC MODE: Use provided data if substantial (>10 dates), otherwise fetch
+    const externalDataCount = tradingDataByDate ? Object.keys(tradingDataByDate).length : 0;
+    const isPublicModeWithData = isPublicView && externalDataCount > 10;
+    
+    // In public view with substantial data, use it directly
+    if (isPublicModeWithData) {
+      console.log("🔓 DemoHeatmap: Using provided tradingDataByDate (public/secure mode)");
+      console.log(`✅ DemoHeatmap: ${externalDataCount} dates provided externally`);
       setHeatmapData(tradingDataByDate);
       setIsLoading(false);
       
@@ -166,8 +146,8 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
       return;
     }
     
-    // Fallback: If no data provided, fetch from API (standard demo mode)
-    console.log(`🔥 DemoHeatmap: No data provided, fetching from API... (refreshKey: ${refreshKey})`);
+    // In demo/personal mode: ALWAYS fetch complete data from API (ignore parent data)
+    console.log(`🔥 DemoHeatmap: AUTO-FETCHING COMPLETE AWS data... (refreshKey: ${refreshKey}${externalDataCount > 0 ? `, ignoring ${externalDataCount} partial parent dates` : ''})`);
     // ✅ CRITICAL FIX: Clear old data IMMEDIATELY before fetching to prevent stale cache display
     setHeatmapData({});
     setIsLoading(true);
@@ -600,8 +580,8 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
   // Generate calendar data for the year (ALWAYS show complete calendar, no filtering)
   const generateMonthsData = () => {
     // Always use current year - show complete calendar regardless of range selection
-    const startYear = currentDate.getFullYear();
-    const endYear = currentDate.getFullYear();
+    const startYear = new Date().getFullYear();
+    const endYear = new Date().getFullYear();
     const startMonth = 0;
     const endMonth = 11;
 
@@ -956,13 +936,13 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
 
   const handlePreviousYear = () => {
     const newDate = new Date(currentDate);
-    newDate.setFullYear(currentDate.getFullYear() - 1);
+    newDate.setFullYear(new Date().getFullYear() - 1);
     setCurrentDate(newDate);
   };
   
   const handleNextYear = () => {
     const newDate = new Date(currentDate);
-    newDate.setFullYear(currentDate.getFullYear() + 1);
+    newDate.setFullYear(new Date().getFullYear() + 1);
     setCurrentDate(newDate);
   };
   
@@ -1023,11 +1003,11 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
     <div className="flex flex-col gap-2 p-3 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 select-none overflow-visible">
       <div className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-gray-400 dark:text-gray-500">demo</span>
+          {!tradingDataByDate && <span className="text-gray-400 dark:text-gray-500">demo</span>}
           <span>
             {selectedRange 
               ? `${selectedRange.from.getFullYear()}${selectedRange.from.getFullYear() !== selectedRange.to.getFullYear() ? `-${selectedRange.to.getFullYear()}` : ''}`
-              : currentDate.getFullYear()
+              : new Date().getFullYear()
             }
           </span>
         </div>
