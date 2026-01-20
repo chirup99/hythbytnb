@@ -97,20 +97,27 @@ export function WorldMap() {
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
+    // Default routes defined in UI code
+    const defaultRoutes = [
+      "M 310.5,230.2 L 350.4,220.5 L 430.2,180.4 L 480.5,230.6 L 550.2,250.4 L 630.5,285.2 L 720.4,310.5 L 795.8,285.2",
+      "M 630.5,285.2 L 680.4,320.5 L 740.2,350.6 L 795.8,380.2",
+      "M 740.2,230.6 L 780.4,250.5 L 820.2,280.4 L 860.4,310.2"
+    ];
+
     // Load saved paths from localStorage on mount
     const saved = localStorage.getItem("world-map-ship-routes");
     
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setSavedPaths(Array.isArray(parsed) ? parsed : []);
+        setSavedPaths(Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultRoutes);
       } catch (e) {
         console.error("Failed to parse saved paths", e);
-        setSavedPaths([]);
+        setSavedPaths(defaultRoutes);
       }
     } else {
-      // Initialize with empty array if nothing is saved
-      setSavedPaths([]);
+      // Initialize with default routes if nothing is saved
+      setSavedPaths(defaultRoutes);
     }
 
     const checkMobile = () => {
