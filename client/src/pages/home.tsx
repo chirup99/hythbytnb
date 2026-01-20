@@ -23754,8 +23754,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 {/* Left side: PERALA and tagline */}
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
-                      <span className="text-white text-lg font-bold">P</span>
+                    <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shadow-lg bg-white dark:bg-slate-800">
+                      <img 
+                        src="/logo.png" 
+                        alt="PERALA Logo" 
+                        className="w-full h-full object-contain" 
+                      />
                     </div>
                     <h1 className="text-2xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300">PERALA</h1>
                   </div>
