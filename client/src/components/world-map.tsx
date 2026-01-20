@@ -261,7 +261,39 @@ export function WorldMap() {
         >
           {/* Saved Drawing Layer */}
           {savedPaths.map((path, i) => (
-            <path key={`saved-${i}`} d={path} fill="none" stroke="#facc15" strokeWidth="2.5" opacity="0.4" />
+            <g key={`saved-group-${i}`}>
+              <path 
+                id={`saved-path-${i}`}
+                d={path} 
+                fill="none" 
+                stroke="#facc15" 
+                strokeWidth="2.5" 
+                opacity="0.4" 
+              />
+              <g>
+                <circle r="3" fill="#ffffff" opacity="0.6">
+                  <animateMotion
+                    dur="15s"
+                    repeatCount="indefinite"
+                    rotate="auto"
+                  >
+                    <mpath href={`#saved-path-${i}`} />
+                  </animateMotion>
+                </circle>
+                <path
+                  d="M -5,-2 L 5,0 L -5,2 Z"
+                  fill="#334155"
+                >
+                  <animateMotion
+                    dur="15s"
+                    repeatCount="indefinite"
+                    rotate="auto"
+                  >
+                    <mpath href={`#saved-path-${i}`} />
+                  </animateMotion>
+                </path>
+              </g>
+            </g>
           ))}
           {/* User Drawing Layer */}
           {allPaths.map((path, i) => (
