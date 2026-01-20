@@ -302,7 +302,7 @@ export function WorldMap() {
             </radialGradient>
           </defs>
           {/* Saved Drawing Layer */}
-          {savedPaths.map((path, i) => (
+          {savedPaths.length > 0 && savedPaths.map((path, i) => (
             <g key={`saved-group-${i}`}>
               <path 
                 id={`saved-path-${i}`}
