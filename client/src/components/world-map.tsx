@@ -155,16 +155,32 @@ export function WorldMap() {
     setCurrentPath("");
   };
 
-  const handleSave = () => {
-    const newSavedPaths = [...savedPaths, ...allPaths];
-    setSavedPaths(newSavedPaths);
-    setAllPaths([]);
-    setIsDrawing(false); // Close drawing mode automatically
-    localStorage.setItem("world-map-ship-routes", JSON.stringify(newSavedPaths));
-    toast({
-      title: "Routes Saved",
-      description: "Ship routes have been saved locally.",
-    });
+  const saveDrawing = () => {
+    if (allPaths.length > 0) {
+      // Limit to 4 routes total
+      const totalAvailableSlots = 4 - savedPaths.length;
+      if (totalAvailableSlots <= 0) {
+        toast({
+          title: "Limit Reached",
+          description: "Maximum of 4 ship routes allowed. Please delete existing routes to add new ones.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const pathsToAdd = allPaths.slice(0, totalAvailableSlots);
+      const newSavedPaths = [...savedPaths, ...pathsToAdd];
+      
+      setSavedPaths(newSavedPaths);
+      setAllPaths([]);
+      setIsDrawing(false);
+      localStorage.setItem("world-map-ship-routes", JSON.stringify(newSavedPaths));
+      
+      toast({
+        title: "Routes Saved",
+        description: `Saved ${pathsToAdd.length} new route(s). Total: ${newSavedPaths.length}/4.`,
+      });
+    }
   };
 
   const resetDrawing = () => {
@@ -196,10 +212,11 @@ export function WorldMap() {
                 <Button 
                   size="icon" 
                   variant="secondary" 
-                  onClick={handleSave}
-                  className="h-8 w-8"
-                  title="Save Drawing"
-                  data-testid="button-save-path"
+                  onClick={saveDrawing}
+                  className="h-8 w-8 text-primary"
+                  title="Save Route"
+                  disabled={savedPaths.length >= 4}
+                  data-testid="button-save-route"
                 >
                   <Save className="h-4 w-4" />
                 </Button>
@@ -274,7 +291,12 @@ export function WorldMap() {
               <g>
                 {/* Ship Wake/Waves */}
                 <g>
-                  <animateMotion dur="40s" repeatCount="indefinite" rotate="auto">
+                  <animateMotion 
+                    dur="40s" 
+                    repeatCount="indefinite" 
+                    rotate="auto"
+                    begin={`${i * 10}s`} // Stagger ships by 10 seconds to maintain distance
+                  >
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
                   <path
@@ -295,7 +317,12 @@ export function WorldMap() {
                 {i % 2 === 0 ? (
                   /* Container Ship - Red Hull design from image */
                   <g transform="scale(1.8)">
-                    <animateMotion dur="40s" repeatCount="indefinite" rotate="auto">
+                    <animateMotion 
+                      dur="40s" 
+                      repeatCount="indefinite" 
+                      rotate="auto"
+                      begin={`${i * 10}s`} // Stagger ships
+                    >
                       <mpath href={`#saved-path-${i}`} />
                     </animateMotion>
                     
@@ -324,7 +351,12 @@ export function WorldMap() {
                 ) : (
                   /* Crude Oil Tanker - Long and flat with pipes */
                   <g transform="scale(1.8)">
-                    <animateMotion dur="40s" repeatCount="indefinite" rotate="auto">
+                    <animateMotion 
+                      dur="40s" 
+                      repeatCount="indefinite" 
+                      rotate="auto"
+                      begin={`${i * 10}s`} // Stagger ships
+                    >
                       <mpath href={`#saved-path-${i}`} />
                     </animateMotion>
                     
