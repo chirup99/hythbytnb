@@ -390,13 +390,25 @@ export function WorldMap() {
                       <mpath href={`#saved-path-${i}`} />
                     </animateMotion>
                     
-                    {/* Masthead/Front White Light with Flow/Glow */}
+                    {/* Masthead/Front White Light with Flow/Glow and 180 degree rotation */}
                     <g>
                       <circle cx="15" cy="0" r="4" fill="url(#whiteGlow)">
                         <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite" />
                       </circle>
                       <circle cx="15" cy="0" r="1.2" fill="#ffffff" />
+                      
+                      {/* Rotating beam effect */}
+                      <path d="M 15,0 L 45,-15 A 45,45 0 0 1 45,15 Z" fill="url(#whiteGlow)" opacity="0.3">
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          from="0 15 0"
+                          to="180 15 0"
+                          dur="4s"
+                          repeatCount="indefinite"
+                        />
+                      </path>
                     </g>
                     
                     {/* Starboard Green Light (Right) with Flow/Glow */}
