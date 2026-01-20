@@ -543,7 +543,7 @@ function ShareModal({ isOpen, onClose, post }: { isOpen: boolean; onClose: () =>
   };
 
   const socialPlatforms = [
-    { name: 'Facebook', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/facebook/facebook-original.svg', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/10', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}` },
+    { name: 'Facebook', icon: 'https://play-lh.googleusercontent.com/KCMTYuiTrKom4Vyf0G4foetVOwhKWzNbHWumV73IXexAIy5TTgZipL52WTt8ICL-oIo=w240-h480-rw', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/10', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}` },
     { name: 'X', icon: 'https://cdn.simpleicons.org/x', color: 'text-gray-900 dark:text-white', bgColor: 'bg-black dark:bg-gray-800/50', url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}` },
     { name: 'Whatsapp', icon: 'https://cdn.simpleicons.org/whatsapp', color: 'text-green-500', bgColor: 'bg-green-50 dark:bg-green-900/10', url: `https://wa.me/?text=${encodeURIComponent(postUrl)}` },
     { name: 'Telegram', icon: 'https://cdn.simpleicons.org/telegram', color: 'text-sky-500', bgColor: 'bg-sky-50 dark:bg-sky-900/10', url: `https://t.me/share/url?url=${encodeURIComponent(postUrl)}` },
