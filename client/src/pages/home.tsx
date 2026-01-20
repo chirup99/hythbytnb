@@ -23764,9 +23764,40 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <h1 className="text-2xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300">PERALA</h1>
                   </div>
                   <div className="flex items-center gap-1.5 mt-0.5">
-                    <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">rethink . reinvest .</p>
-                    <svg className="w-4 h-4 text-purple-600 dark:text-purple-400 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" />
+                    <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Break the Loop, Find Your Edge</p>
+                    <svg 
+                      width="24" 
+                      height="12" 
+                      viewBox="0 0 24 12" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="text-purple-600 dark:text-purple-400 opacity-80"
+                    >
+                      <path 
+                        d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" 
+                        stroke="currentColor" 
+                        strokeWidth="1.5" 
+                        strokeLinecap="round" 
+                      />
+                      <path 
+                        d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" 
+                        stroke="currentColor" 
+                        strokeWidth="1.5" 
+                        strokeLinecap="round" 
+                      />
+                      <path 
+                        d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" 
+                        stroke="currentColor" 
+                        strokeWidth="1.5" 
+                        strokeLinecap="round" 
+                      />
+                      <path 
+                        d="M21 2L23 1" 
+                        stroke="currentColor" 
+                        strokeWidth="1.5" 
+                        strokeLinecap="round" 
+                        className="animate-pulse"
+                      />
                     </svg>
                   </div>
                 </div>
