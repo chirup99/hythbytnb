@@ -94,6 +94,11 @@ export function WorldMap() {
       } catch (e) {
         console.error("Failed to parse saved paths", e);
       }
+    } else {
+      // Default ship route for an oil tanker
+      const defaultRoute = "M 550,250 L 350,220 L 150,210";
+      setSavedPaths([defaultRoute]);
+      localStorage.setItem("world-map-ship-routes", JSON.stringify([defaultRoute]));
     }
 
     const checkMobile = () => {
