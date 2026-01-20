@@ -313,7 +313,7 @@ export function WorldMap() {
                   {/* Thick Foam/Spray Layer (White/Blue mix) */}
                   <g opacity="0.4">
                     <path
-                      d="M -5,-2 L -35,-15 Q -45,-15 -50,-20 M -5,2 L -35,15 Q -45,15 -50,20"
+                      d="M 12,-2 L -35,-15 Q -45,-15 -50,-20 M 12,2 L -35,15 Q -45,15 -50,20"
                       fill="none"
                       stroke="#ffffff"
                       strokeWidth="6"
@@ -323,7 +323,7 @@ export function WorldMap() {
                       <animate attributeName="strokeWidth" values="5;8;5" dur="1.5s" repeatCount="indefinite" />
                     </path>
                     <path
-                      d="M -5,-2 L -30,-12 Q -40,-12 -45,-18 M -5,2 L -30,12 Q -40,12 -45,18"
+                      d="M 12,-2 L -30,-12 Q -40,-12 -45,-18 M 12,2 L -30,12 Q -40,12 -45,18"
                       fill="none"
                       stroke="#0ea5e9"
                       strokeWidth="8"
@@ -334,7 +334,7 @@ export function WorldMap() {
                   
                   {/* Main V-Wake Foam */}
                   <path
-                    d="M 0,-2 C -15,-5 -35,-15 -55,-25 M 0,2 C -15,5 -35,15 -55,25"
+                    d="M 14,-2 C 0,-5 -35,-15 -55,-25 M 14,2 C 0,5 -35,15 -55,25"
                     fill="none"
                     stroke="url(#foamGradient)"
                     strokeWidth="4"
@@ -345,9 +345,19 @@ export function WorldMap() {
                   </path>
                   
                   {/* Underwater Blue Wash */}
-                  <ellipse cx="-15" cy="0" rx="35" ry="18" fill="url(#waterWash)" opacity="0.15">
+                  <ellipse cx="-5" cy="0" rx="35" ry="18" fill="url(#waterWash)" opacity="0.15">
                     <animate attributeName="rx" values="30;40;30" dur="3s" repeatCount="indefinite" />
                   </ellipse>
+
+                  {/* Tiny tail waves */}
+                  <g opacity="0.5">
+                    <path d="M -15,-5 L -25,-8 M -15,5 L -25,8" stroke="#ffffff" strokeWidth="1" strokeDasharray="2,2">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite" />
+                    </path>
+                    <path d="M -20,-3 L -40,-6 M -20,3 L -40,6" stroke="#ffffff" strokeWidth="0.5" strokeDasharray="1,3">
+                      <animate attributeName="stroke-dashoffset" from="0" to="8" dur="1.5s" repeatCount="indefinite" />
+                    </path>
+                  </g>
                 </g>
 
                 {/* Alternating between Container and Oil Tanker - Smaller size */}
