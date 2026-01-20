@@ -286,7 +286,7 @@ export function WorldMap() {
                 fill="none" 
                 stroke="#facc15" 
                 strokeWidth="2.5" 
-                opacity="0.4" 
+                opacity={isDrawing ? "0.4" : "0"} 
               />
               <g>
                 {/* Ship Wake/Waves */}
