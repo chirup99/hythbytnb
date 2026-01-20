@@ -23870,9 +23870,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   className="max-h-96 overflow-auto border border-gray-200 scrollbar-hide dark:border-gray-700 rounded-lg"
                 >
                   <DemoHeatmap
-                    tradingDataByDate={isSharedReportMode && sharedReportData?.reportData?.tradingDataByDate 
+                    tradingDataByDate={isSharedReportMode ? (sharedReportData?.reportData?.tradingDataByDate || {}) : tradingDataByDate 
                       ? sharedReportData.reportData.tradingDataByDate 
-                      : getFilteredHeatmapData()}
+                      }
                     onDateSelect={() => {}}
                     selectedDate={null}
                     onDataUpdate={() => {}}
