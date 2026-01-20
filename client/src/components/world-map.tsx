@@ -38,24 +38,24 @@ const getRegionColor = (
 ): string => {
   let regionName = "";
 
-  // North America - Canada (approximate x: 100-265, y: 70-180)
-  if (x >= 100 && x <= 265 && y >= 70 && y <= 170) {
+  // North America - Canada (approximate x: 100-265, y: 30-140)
+  if (x >= 100 && x <= 265 && y >= 30 && y <= 140) {
     regionName = "CANADA";
   }
-  // North America - USA (approximate x: 100-350, y: 180-260)
-  else if (x >= 100 && x <= 350 && y >= 170 && y <= 230) {
+  // North America - USA (approximate x: 100-350, y: 140-230)
+  else if (x >= 100 && x <= 350 && y >= 140 && y <= 230) {
     regionName = "USA";
   }
-  // India (approximate x: 520-600, y: 200-280)
-  else if (x >= 550 && x <= 600 && y >= 210 && y <= 280) {
+  // India (approximate x: 550-620, y: 220-320)
+  else if (x >= 550 && x <= 620 && y >= 220 && y <= 320) {
     regionName = "INDIA";
   }
-  // Hong Kong / Southern China (approximate x: 600-680, y: 180-240)
-  else if (x >= 550 && x <= 680 && y >= 145 && y <= 230) {
+  // Hong Kong / Southern China (approximate x: 620-700, y: 200-260)
+  else if (x >= 620 && x <= 700 && y >= 200 && y <= 260) {
     regionName = "HONG KONG";
   }
-  // Japan / Tokyo (approximate x: 680-740, y: 140-200)
-  else if (x >= 680 && x <= 740 && y >= 140 && y <= 230) {
+  // Japan / Tokyo (approximate x: 700-780, y: 160-230)
+  else if (x >= 700 && x <= 780 && y >= 160 && y <= 230) {
     regionName = "TOKYO";
   }
 
@@ -96,11 +96,11 @@ export function WorldMap() {
         } else {
           // If less than 5 routes, add the 5th default route
           const defaultRoutes = [
-            "M 184.2,211.2 L 204.0,211.2 L 235.0,211.2 L 270.0,211.2 L 310.0,211.2 L 350.0,211.2",
-            "M 578.2,248.2 L 598.0,248.2 L 620.0,248.2 L 650.0,248.2 L 680.0,248.2 L 710.0,248.2",
-            "M 160.2,130.2 L 180.0,130.2 L 210.0,130.2 L 240.0,130.2 L 270.0,130.2 L 300.0,130.2",
-            "M 680.2,185.2 L 700.0,185.2 L 720.0,185.2 L 740.0,185.2 L 760.0,185.2 L 780.0,185.2",
-            "M 400.0,150.0 L 420.0,155.0 L 450.0,165.0 L 480.0,175.0 L 510.0,185.0 L 540.0,195.0"
+            "M 160.2,211.2 L 180.0,211.2 L 210.0,211.2 L 240.0,211.2 L 270.0,211.2 L 300.0,211.2",
+            "M 550.2,260.2 L 570.0,260.2 L 600.0,260.2 L 630.0,260.2 L 660.0,260.2 L 690.0,260.2",
+            "M 140.2,100.2 L 160.0,100.2 L 190.0,100.2 L 220.0,100.2 L 250.0,100.2 L 280.0,100.2",
+            "M 650.2,210.2 L 670.0,210.2 L 690.0,210.2 L 710.0,210.2 L 730.0,210.2 L 750.0,210.2",
+            "M 380.0,180.0 L 400.0,185.0 L 430.0,195.0 L 460.0,205.0 L 490.0,215.0 L 520.0,225.0"
           ];
           // Merge existing user routes with defaults to reach 5
           const merged = [...(Array.isArray(parsed) ? parsed : []), ...defaultRoutes].slice(0, 5);
@@ -113,11 +113,11 @@ export function WorldMap() {
     } else {
       // Default initial routes if none are saved (5 routes total)
       const defaultRoutes = [
-        "M 184.2,211.2 L 204.0,211.2 L 235.0,211.2 L 270.0,211.2 L 310.0,211.2 L 350.0,211.2",
-        "M 578.2,248.2 L 598.0,248.2 L 620.0,248.2 L 650.0,248.2 L 680.0,248.2 L 710.0,248.2",
-        "M 160.2,130.2 L 180.0,130.2 L 210.0,130.2 L 240.0,130.2 L 270.0,130.2 L 300.0,130.2",
-        "M 680.2,185.2 L 700.0,185.2 L 720.0,185.2 L 740.0,185.2 L 760.0,185.2 L 780.0,185.2",
-        "M 400.0,150.0 L 420.0,155.0 L 450.0,165.0 L 480.0,175.0 L 510.0,185.0 L 540.0,195.0"
+        "M 160.2,211.2 L 180.0,211.2 L 210.0,211.2 L 240.0,211.2 L 270.0,211.2 L 300.0,211.2",
+        "M 550.2,260.2 L 570.0,260.2 L 600.0,260.2 L 630.0,260.2 L 660.0,260.2 L 690.0,260.2",
+        "M 140.2,100.2 L 160.0,100.2 L 190.0,100.2 L 220.0,100.2 L 250.0,100.2 L 280.0,100.2",
+        "M 650.2,210.2 L 670.0,210.2 L 690.0,210.2 L 710.0,210.2 L 730.0,210.2 L 750.0,210.2",
+        "M 380.0,180.0 L 400.0,185.0 L 430.0,195.0 L 460.0,205.0 L 490.0,215.0 L 520.0,225.0"
       ];
       setSavedPaths(defaultRoutes);
       localStorage.setItem("world-map-ship-routes", JSON.stringify(defaultRoutes));
