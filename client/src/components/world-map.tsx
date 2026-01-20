@@ -363,6 +363,38 @@ export function WorldMap() {
                     <rect x="-11" y="-1" width="1" height="2" fill="#333333" />
                   </g>
                 )}
+                
+                {/* Navigation Lights for Dark Mode */}
+                {isDarkMode && (
+                  <g>
+                    <animateMotion 
+                      dur="40s" 
+                      repeatCount="indefinite" 
+                      rotate="auto"
+                      begin={`${i * 10}s`}
+                    >
+                      <mpath href={`#saved-path-${i}`} />
+                    </animateMotion>
+                    
+                    {/* Masthead/Front White Light */}
+                    <circle cx="15" cy="0" r="1.2" fill="#ffffff">
+                      <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                    
+                    {/* Starboard Green Light (Right) */}
+                    <circle cx="-2" cy="4" r="1" fill="#10b981">
+                      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" />
+                    </circle>
+                    
+                    {/* Port Red Light (Left) */}
+                    <circle cx="-2" cy="-4" r="1" fill="#ef4444">
+                      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" />
+                    </circle>
+                    
+                    {/* Stern White Light (Back) */}
+                    <circle cx="-13" cy="0" r="0.8" fill="#ffffff" opacity="0.6" />
+                  </g>
+                )}
               </g>
             </g>
           ))}
