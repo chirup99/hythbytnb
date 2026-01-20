@@ -205,7 +205,7 @@ export function WorldMap() {
         style={{ backgroundColor: isDarkMode ? "#1a1a1a" : "#e3f2fd" }}
       >
         {/* Drawing Tools Overlay */}
-        <div className="absolute top-2 right-2 z-50 flex gap-2">
+        <div className="absolute top-2 right-2 z-50 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           {isDrawing ? (
             <>
               {allPaths.length > 0 && (
