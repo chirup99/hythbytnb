@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { 
   Search, 
@@ -284,19 +284,26 @@ function PostCard({ post }: { post: SocialPost }) {
       )}
       <CardContent className="p-4">
         <div className="flex gap-3">
-          {/* Avatar */}
           <div className="flex-shrink-0">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold text-lg ${
-              post.author.username === 'Daily_News_Profile' 
-                ? 'bg-gradient-to-br from-orange-400 to-red-500' 
-                : 'bg-gradient-to-br from-blue-400 to-purple-500'
-            }`}>
-              {post.author.username === 'Daily_News_Profile' ? (
-                <Newspaper className="h-6 w-6" />
-              ) : (
-                post.author.displayName.charAt(0)
-              )}
-            </div>
+            <Avatar className="w-12 h-12">
+              <AvatarImage 
+                src={post.author.username === 'Daily_News_Profile' ? undefined : post.author.avatar} 
+                alt={post.author.displayName}
+                fetchPriority="high"
+                loading="eager"
+              />
+              <AvatarFallback className={`w-12 h-12 flex items-center justify-center text-white font-semibold text-lg ${
+                post.author.username === 'Daily_News_Profile' 
+                  ? 'bg-gradient-to-br from-orange-400 to-red-500' 
+                  : 'bg-gradient-to-br from-blue-400 to-purple-500'
+              }`}>
+                {post.author.username === 'Daily_News_Profile' ? (
+                  <Newspaper className="h-6 w-6" />
+                ) : (
+                  post.author.displayName.charAt(0)
+                )}
+              </AvatarFallback>
+            </Avatar>
           </div>
 
           {/* Content */}

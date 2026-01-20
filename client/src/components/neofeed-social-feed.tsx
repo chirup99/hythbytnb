@@ -368,9 +368,12 @@ function InlineCommentSection({ post, isVisible, onClose, onCommentAdded }: { po
                 <div key={existingComment.id} className="relative group" data-testid={`comment-${existingComment.id}`}>
                   <div className="flex items-start gap-3 px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg transition-colors">
                     <Avatar className="w-8 h-8 flex-shrink-0">
-                      {existingComment.authorAvatar ? (
-                        <AvatarImage src={existingComment.authorAvatar} alt={existingComment.authorDisplayName} />
-                      ) : null}
+                      <AvatarImage 
+                        src={existingComment.authorAvatar} 
+                        alt={existingComment.authorDisplayName} 
+                        fetchPriority="high"
+                        loading="eager"
+                      />
                       <AvatarFallback className="text-xs bg-gradient-to-br from-blue-500 to-purple-500 text-white">
                         {existingComment.authorDisplayName?.[0]?.toUpperCase() || existingComment.authorUsername?.[0]?.toUpperCase() || 'U'}
                       </AvatarFallback>
@@ -473,9 +476,12 @@ function InlineCommentSection({ post, isVisible, onClose, onCommentAdded }: { po
                       data-testid={`mention-suggestion-${user.username}`}
                     >
                       <Avatar className="w-8 h-8">
-                        {user.avatar ? (
-                          <AvatarImage src={user.avatar} alt={user.displayName} />
-                        ) : null}
+                        <AvatarImage 
+                          src={user.avatar} 
+                          alt={user.displayName} 
+                          fetchPriority="high"
+                          loading="eager"
+                        />
                         <AvatarFallback className="text-xs bg-gradient-to-br from-purple-500 to-pink-500 text-white">
                           {user.displayName?.[0]?.toUpperCase() || user.username?.[0]?.toUpperCase()}
                         </AvatarFallback>
