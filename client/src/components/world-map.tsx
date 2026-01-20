@@ -271,31 +271,31 @@ export function WorldMap() {
                 opacity="0.4" 
               />
               <g>
-                {/* Ship Wake/Waves */}
-                <circle r="6" fill="#ffffff" opacity="0.3">
+                {/* Ship Wake/Waves - Larger for bigger ship */}
+                <circle r="12" fill="#ffffff" opacity="0.2">
                   <animateMotion
-                    dur="15s"
+                    dur="40s"
                     repeatCount="indefinite"
                     rotate="auto"
                   >
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
                 </circle>
-                <circle r="10" fill="#ffffff" opacity="0.1">
+                <circle r="20" fill="#ffffff" opacity="0.1">
                   <animateMotion
-                    dur="15s"
+                    dur="40s"
                     repeatCount="indefinite"
                     rotate="auto"
                   >
                     <mpath href={`#saved-path-${i}`} />
                   </animateMotion>
-                  <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" />
+                  <animate attributeName="r" values="16;24;16" dur="3s" repeatCount="indefinite" />
                 </circle>
 
-                {/* Container Ship - More visible and detailed */}
-                <g>
+                {/* Container Ship - Bigger and slower */}
+                <g transform="scale(1.8)">
                   <animateMotion
-                    dur="15s"
+                    dur="40s"
                     repeatCount="indefinite"
                     rotate="auto"
                   >
@@ -312,7 +312,7 @@ export function WorldMap() {
                   {/* Deck/Containers area */}
                   <rect x="-6" y="-3" width="12" height="6" fill="#334155" />
                   
-                  {/* Colored Containers (based on image) */}
+                  {/* Colored Containers */}
                   <rect x="-5" y="-2" width="2" height="2" fill="#ef4444" />
                   <rect x="-3" y="-2" width="2" height="2" fill="#facc15" />
                   <rect x="-1" y="-2" width="2" height="2" fill="#3b82f6" />
