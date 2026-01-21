@@ -278,48 +278,7 @@ export function WorldMap() {
             )}
           </Button>
           {isDrawing ? (
-            !isMobile && (
-              <>
-                {allPaths.length > 0 && (
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    onClick={saveDrawing}
-                    className="h-8 w-8 text-primary"
-                    title="Save Route"
-                    disabled={savedPaths.length >= 5}
-                    data-testid="button-save-route"
-                  >
-                    <Save className="h-4 w-4" />
-                  </Button>
-                )}
-                {(allPaths.length > 0 || savedPaths.length > 0) && (
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    onClick={resetDrawing}
-                    className="h-8 w-8 text-destructive"
-                    title="Delete All"
-                    data-testid="button-reset-drawing"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                )}
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  onClick={() => {
-                    setAllPaths([]);
-                    setIsDrawing(false);
-                  }}
-                  className="h-8 w-8"
-                  title="Cancel"
-                  data-testid="button-cancel-draw"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </>
-            )
+            null // Removed old desktop controls that were here
           ) : (
             <Button
               size="icon"
@@ -782,9 +741,9 @@ export function WorldMap() {
           })()}
         </div>
 
-        {/* Mobile Drawing Controls - Repositioned to bottom right */}
-        {isMobile && isDrawing && (
-          <div className="absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[60]">
+        {/* Drawing Controls - Repositioned to bottom right for both mobile and desktop */}
+        {isDrawing && (
+          <div className={`absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[60] ${isMobile ? "" : "bg-black/20 p-2 rounded-xl backdrop-blur-sm border border-white/5"}`}>
             {allPaths.length > 0 && (
               <Button
                 size="icon"
