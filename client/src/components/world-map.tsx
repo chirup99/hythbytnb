@@ -727,7 +727,7 @@ export function WorldMap() {
       >
         <div className="flex items-center gap-6 bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.4)]">
           {/* Radar Unit */}
-          <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 flex items-center justify-center shadow-2xl flex-shrink-0">
+          <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 flex items-center justify-center shadow-2xl flex-shrink-0 overflow-hidden">
             {/* Center Ship Silhouette - Crud Oil Tanker Shape */}
             <div 
               className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none transition-transform duration-300 ease-out"
@@ -837,7 +837,7 @@ export function WorldMap() {
           </div>
 
           {/* Data Readout Panel - Relocated to the right */}
-          <div className="text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-start gap-1.5 w-[160px] flex-shrink-0">
+          <div className="text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-start gap-1.5 w-[160px] flex-shrink-0 overflow-hidden">
             <div className="flex items-center gap-2">
               <span className="opacity-50 text-[8px]">Status:</span>
               <span className="text-green-400 animate-pulse">Online</span>
