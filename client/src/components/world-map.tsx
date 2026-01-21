@@ -255,9 +255,11 @@ export function WorldMap() {
       >
         {/* Drawing Tools Overlay */}
         <div
-          className={`absolute z-50 flex gap-2 transition-opacity duration-300 ${
+          className={`absolute z-50 flex gap-2 transition-all duration-300 ${
             isMobile
-              ? "bottom-2 right-2 opacity-0 group-hover:opacity-100 group-active:opacity-100"
+              ? isDrawing 
+                ? "bottom-2 right-2 opacity-0 pointer-events-none" // Hide original location when drawing on mobile
+                : "bottom-2 right-2 opacity-0 group-hover:opacity-100 group-active:opacity-100"
               : "top-2 right-2 opacity-0 group-hover:opacity-100"
           }`}
         >
@@ -276,46 +278,48 @@ export function WorldMap() {
             )}
           </Button>
           {isDrawing ? (
-            <>
-              {allPaths.length > 0 && (
+            !isMobile && (
+              <>
+                {allPaths.length > 0 && (
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    onClick={saveDrawing}
+                    className="h-8 w-8 text-primary"
+                    title="Save Route"
+                    disabled={savedPaths.length >= 5}
+                    data-testid="button-save-route"
+                  >
+                    <Save className="h-4 w-4" />
+                  </Button>
+                )}
+                {(allPaths.length > 0 || savedPaths.length > 0) && (
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    onClick={resetDrawing}
+                    className="h-8 w-8 text-destructive"
+                    title="Delete All"
+                    data-testid="button-reset-drawing"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
                 <Button
                   size="icon"
                   variant="secondary"
-                  onClick={saveDrawing}
-                  className="h-8 w-8 text-primary"
-                  title="Save Route"
-                  disabled={savedPaths.length >= 5}
-                  data-testid="button-save-route"
+                  onClick={() => {
+                    setAllPaths([]);
+                    setIsDrawing(false);
+                  }}
+                  className="h-8 w-8"
+                  title="Cancel"
+                  data-testid="button-cancel-draw"
                 >
-                  <Save className="h-4 w-4" />
+                  <X className="h-4 w-4" />
                 </Button>
-              )}
-              {(allPaths.length > 0 || savedPaths.length > 0) && (
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  onClick={resetDrawing}
-                  className="h-8 w-8 text-destructive"
-                  title="Delete All"
-                  data-testid="button-reset-drawing"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              )}
-              <Button
-                size="icon"
-                variant="secondary"
-                onClick={() => {
-                  setAllPaths([]);
-                  setIsDrawing(false);
-                }}
-                className="h-8 w-8"
-                title="Cancel"
-                data-testid="button-cancel-draw"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </>
+              </>
+            )
           ) : (
             <Button
               size="icon"
@@ -777,6 +781,47 @@ export function WorldMap() {
             return combined || 'Standby';
           })()}
         </div>
+
+        {/* Mobile Drawing Controls - Repositioned below radar */}
+        {isMobile && isDrawing && (
+          <div className="flex gap-4 mt-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            {allPaths.length > 0 && (
+              <Button
+                size="icon"
+                variant="secondary"
+                onClick={saveDrawing}
+                className="h-10 w-10 text-primary bg-background/80"
+                title="Save Route"
+                disabled={savedPaths.length >= 5}
+              >
+                <Save className="h-5 w-5" />
+              </Button>
+            )}
+            {(allPaths.length > 0 || savedPaths.length > 0) && (
+              <Button
+                size="icon"
+                variant="secondary"
+                onClick={resetDrawing}
+                className="h-10 w-10 text-destructive bg-background/80"
+                title="Delete All"
+              >
+                <Trash2 className="h-5 w-5" />
+              </Button>
+            )}
+            <Button
+              size="icon"
+              variant="secondary"
+              onClick={() => {
+                setAllPaths([]);
+                setIsDrawing(false);
+              }}
+              className="h-10 w-10 bg-background/80"
+              title="Cancel"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Trading hours indicator with live market data */}
