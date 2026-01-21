@@ -48,4 +48,3 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 7. Add world map and ship dots to radar - Integrated a miniature world map and tiny moving ship dots into the radar display in world-map.tsx.
 [x] 8. Zoom radar world map - Adjusted the radar SVG viewBox to zoom in on the India/Asia region for better visibility.
 [x] 9. Fix radar dashboard width - Locked the data readout panel width to prevent layout shifts during drawing.
-[x] 10. Update drawing trigger icon - Replaced the pencil icon with an Eye icon as requested.
