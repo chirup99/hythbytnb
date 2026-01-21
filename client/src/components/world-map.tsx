@@ -719,8 +719,13 @@ export function WorldMap() {
           <span className={`absolute right-1 text-[10px] font-bold ${isDarkMode ? "text-green-500/60" : "text-green-600/80"}`}>E</span>
 
           {/* Radar Sweep Animation - Enhanced with 360 degree glow */}
-          <div className={`absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/20 animate-[spin_3s_linear_infinite] ${isDarkMode ? "" : "opacity-60"}`} />
-          <div className={`absolute inset-0 rounded-full border-r border-t border-green-500/40 animate-[spin_3s_linear_infinite] ${isDarkMode ? "" : "opacity-80"}`} />
+          <div className={`absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/30 animate-[spin_3s_linear_infinite] ${isDarkMode ? "" : "opacity-100 mix-blend-multiply"}`} />
+          <div className={`absolute inset-0 rounded-full border-r-2 border-t-2 border-green-600/60 animate-[spin_3s_linear_infinite] ${isDarkMode ? "border-green-500/40" : ""}`} />
+
+          {/* Secondary sweep for extra intensity in light mode */}
+          {!isDarkMode && (
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-600/40 animate-[spin_3s_linear_infinite] opacity-100" />
+          )}
 
           {/* Moving Green Signal - Enhanced with double glow and pulse */}
           <div 
