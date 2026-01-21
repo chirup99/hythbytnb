@@ -765,18 +765,18 @@ export function WorldMap() {
             <div className="absolute inset-0 rounded-full border border-green-500/20" />
 
             {/* Radar World Map & Static Ships - Visual Only */}
-            <div className="absolute inset-0 rounded-full overflow-hidden opacity-30 pointer-events-none p-2">
-              <svg viewBox="0 0 1045.2 458" className="w-full h-full fill-green-500/40">
+            <div className="absolute inset-0 rounded-full overflow-hidden opacity-30 pointer-events-none p-1">
+              <svg viewBox="550 200 150 150" className="w-full h-full fill-green-500/40">
                 {worldMapDots.map(([cx, cy], i) => (
-                  <circle key={`radar-dot-${i}`} cx={cx} cy={cy} r="2" />
+                  <circle key={`radar-dot-${i}`} cx={cx} cy={cy} r="1.5" />
                 ))}
-                {/* Random tiny ship dots */}
-                {[...Array(15)].map((_, i) => (
+                {/* Random tiny ship dots - Concentrated in the zoomed area */}
+                {[...Array(10)].map((_, i) => (
                   <circle
                     key={`radar-ship-${i}`}
-                    cx={200 + Math.random() * 600}
-                    cy={100 + Math.random() * 250}
-                    r="1.5"
+                    cx={560 + Math.random() * 130}
+                    cy={210 + Math.random() * 130}
+                    r="1.2"
                     className="fill-green-300"
                   >
                     <animate
@@ -790,7 +790,7 @@ export function WorldMap() {
                       attributeName="transform"
                       type="translate"
                       from="0 0"
-                      to={`${(Math.random() - 0.5) * 10} ${(Math.random() - 0.5) * 10}`}
+                      to={`${(Math.random() - 0.5) * 5} ${(Math.random() - 0.5) * 5}`}
                       dur="120s"
                       repeatCount="indefinite"
                     />
