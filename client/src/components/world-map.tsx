@@ -90,6 +90,8 @@ export function WorldMap() {
   const isDarkMode = theme === "dark";
   const [isMobile, setIsMobile] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [lastPoint, setLastPoint] = useState<{ x: number; y: number } | null>(null);
+  const [direction, setDirection] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [currentPath, setCurrentPath] = useState<string>("");
   const [allPaths, setAllPaths] = useState<string[]>([]);
   const [savedPaths, setSavedPaths] = useState<string[]>([]);
@@ -177,6 +179,16 @@ export function WorldMap() {
     const x = (clientX - CTM.e) / CTM.a;
     const y = (clientY - CTM.f) / CTM.d;
 
+    if (lastPoint) {
+      const dx = x - lastPoint.x;
+      const dy = y - lastPoint.y;
+      const magnitude = Math.sqrt(dx * dx + dy * dy);
+      if (magnitude > 1) {
+        setDirection({ x: dx / magnitude, y: dy / magnitude });
+      }
+    }
+    setLastPoint({ x, y });
+
     setCurrentPath((prev) => `${prev} L ${x.toFixed(1)},${y.toFixed(1)}`);
   };
 
@@ -184,6 +196,8 @@ export function WorldMap() {
     if (!isDrawing || !currentPath) return;
     setAllPaths((prev) => [...prev, currentPath]);
     setCurrentPath("");
+    setLastPoint(null);
+    setDirection({ x: 0, y: 0 });
   };
 
   const saveDrawing = () => {
@@ -726,6 +740,36 @@ export function WorldMap() {
         </svg>
 
         {/* Market Region Indicators */}
+      </div>
+
+      {/* Navigation Radar System - Only visible when drawing */}
+      <div className={`flex flex-col items-center justify-center transition-all duration-500 ${isDrawing ? "h-32 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}>
+        <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/40 flex items-center justify-center">
+          {/* Radar Circles */}
+          <div className="absolute inset-0 rounded-full border border-green-500/20 m-4" />
+          <div className="absolute inset-0 rounded-full border border-green-500/10 m-8" />
+          
+          {/* Directional Labels */}
+          <span className="absolute top-1 text-[10px] font-bold text-green-500/60">N</span>
+          <span className="absolute bottom-1 text-[10px] font-bold text-green-500/60">S</span>
+          <span className="absolute left-1 text-[10px] font-bold text-green-500/60">W</span>
+          <span className="absolute right-1 text-[10px] font-bold text-green-500/60">E</span>
+
+          {/* Radar Sweep Animation */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/10 animate-[spin_4s_linear_infinite]" />
+
+          {/* Moving Green Signal */}
+          <div 
+            className="w-3 h-3 bg-green-500 rounded-full shadow-[0_0_10px_#22c55e] transition-transform duration-150 ease-out"
+            style={{ 
+              transform: `translate(${direction.x * 30}px, ${direction.y * 30}px)`,
+              opacity: direction.x !== 0 || direction.y !== 0 ? 1 : 0.3
+            }}
+          />
+        </div>
+        <div className="mt-2 text-[10px] font-mono text-green-500/80 uppercase tracking-widest">
+          Nav System: {direction.y < -0.3 ? 'N' : direction.y > 0.3 ? 'S' : ''}{direction.x < -0.3 ? 'W' : direction.x > 0.3 ? 'E' : '' || 'Standby'}
+        </div>
       </div>
 
       {/* Trading hours indicator with live market data */}
