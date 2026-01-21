@@ -782,19 +782,19 @@ export function WorldMap() {
           })()}
         </div>
 
-        {/* Mobile Drawing Controls - Repositioned below radar */}
+        {/* Mobile Drawing Controls - Repositioned to bottom right */}
         {isMobile && isDrawing && (
-          <div className="flex gap-4 mt-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[60]">
             {allPaths.length > 0 && (
               <Button
                 size="icon"
                 variant="secondary"
                 onClick={saveDrawing}
-                className="h-10 w-10 text-primary bg-background/80"
+                className="h-11 w-11 text-primary bg-background/90 shadow-lg border border-primary/20"
                 title="Save Route"
                 disabled={savedPaths.length >= 5}
               >
-                <Save className="h-5 w-5" />
+                <Save className="h-6 w-6" />
               </Button>
             )}
             {(allPaths.length > 0 || savedPaths.length > 0) && (
@@ -802,10 +802,10 @@ export function WorldMap() {
                 size="icon"
                 variant="secondary"
                 onClick={resetDrawing}
-                className="h-10 w-10 text-destructive bg-background/80"
+                className="h-11 w-11 text-destructive bg-background/90 shadow-lg border border-destructive/20"
                 title="Delete All"
               >
-                <Trash2 className="h-5 w-5" />
+                <Trash2 className="h-6 w-6" />
               </Button>
             )}
             <Button
@@ -815,10 +815,10 @@ export function WorldMap() {
                 setAllPaths([]);
                 setIsDrawing(false);
               }}
-              className="h-10 w-10 bg-background/80"
+              className="h-11 w-11 bg-background/90 shadow-lg border border-foreground/10"
               title="Cancel"
             >
-              <X className="h-5 w-5" />
+              <X className="h-6 w-6" />
             </Button>
           </div>
         )}
