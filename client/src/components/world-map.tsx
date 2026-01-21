@@ -707,25 +707,20 @@ export function WorldMap() {
 
       {/* Navigation Radar System - Only visible when drawing */}
       <div className={`flex flex-col items-center justify-center transition-all duration-500 ${isDrawing ? "h-32 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}>
-        <div className={`relative w-24 h-24 rounded-full border-2 border-green-500/30 flex items-center justify-center ${isDarkMode ? "bg-black/40" : "bg-white/40 shadow-inner"}`}>
+        <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 backdrop-blur-sm flex items-center justify-center shadow-2xl">
           {/* Radar Circles */}
           <div className="absolute inset-0 rounded-full border border-green-500/20 m-4" />
           <div className="absolute inset-0 rounded-full border border-green-500/10 m-8" />
           
           {/* Directional Labels */}
-          <span className={`absolute top-1 text-[10px] font-bold ${isDarkMode ? "text-green-500/60" : "text-green-600/80"}`}>N</span>
-          <span className={`absolute bottom-1 text-[10px] font-bold ${isDarkMode ? "text-green-500/60" : "text-green-600/80"}`}>S</span>
-          <span className={`absolute left-1 text-[10px] font-bold ${isDarkMode ? "text-green-500/60" : "text-green-600/80"}`}>W</span>
-          <span className={`absolute right-1 text-[10px] font-bold ${isDarkMode ? "text-green-500/60" : "text-green-600/80"}`}>E</span>
+          <span className="absolute top-1 text-[10px] font-bold text-green-500/80">N</span>
+          <span className="absolute bottom-1 text-[10px] font-bold text-green-500/80">S</span>
+          <span className="absolute left-1 text-[10px] font-bold text-green-500/80">W</span>
+          <span className="absolute right-1 text-[10px] font-bold text-green-500/80">E</span>
 
           {/* Radar Sweep Animation - Enhanced with 360 degree glow */}
-          <div className={`absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/30 animate-[spin_3s_linear_infinite] ${isDarkMode ? "" : "opacity-100 mix-blend-multiply"}`} />
-          <div className={`absolute inset-0 rounded-full border-r-2 border-t-2 border-green-600/60 animate-[spin_3s_linear_infinite] ${isDarkMode ? "border-green-500/40" : ""}`} />
-
-          {/* Secondary sweep for extra intensity in light mode */}
-          {!isDarkMode && (
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-600/40 animate-[spin_3s_linear_infinite] opacity-100" />
-          )}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/30 animate-[spin_3s_linear_infinite]" />
+          <div className="absolute inset-0 rounded-full border-r-2 border-t-2 border-green-500/60 animate-[spin_3s_linear_infinite]" />
 
           {/* Moving Green Signal - Enhanced with double glow and pulse */}
           <div 
@@ -739,16 +734,16 @@ export function WorldMap() {
             
             {/* Inner Signal Core */}
             <div 
-              className={`w-2.5 h-2.5 bg-green-500 rounded-full shadow-[0_0_15px_#22c55e] transition-all duration-300 ${
+              className={`w-2.5 h-2.5 bg-green-400 rounded-full shadow-[0_0_15px_#4ade80] transition-all duration-300 ${
                 direction.x !== 0 || direction.y !== 0 ? 'scale-110 opacity-100' : 'scale-75 opacity-40'
-              } ${isDarkMode ? "" : "border border-green-600"}`}
+              }`}
             />
             
             {/* Radar "Blip" trailing effect (visual only) */}
             <div className={`absolute w-1 h-1 bg-green-500/40 rounded-full transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? 'scale-[3]' : 'scale-0'}`} />
           </div>
         </div>
-        <div className={`mt-2 text-[10px] font-mono uppercase tracking-widest ${isDarkMode ? "text-green-500/80" : "text-green-700 font-bold"}`}>
+        <div className="mt-2 text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest">
           Nav System: {(() => {
             const n = direction.y < -0.3 ? 'N' : '';
             const s = direction.y > 0.3 ? 'S' : '';
