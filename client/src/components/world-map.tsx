@@ -724,7 +724,7 @@ export function WorldMap() {
         <div className="flex items-center gap-6 bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.4)]">
           {/* Radar Unit */}
           <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 flex items-center justify-center shadow-2xl flex-shrink-0">
-            {/* Center Ship Silhouette - Inspired by Phontech SR 8300 MKII */}
+            {/* Center Ship Silhouette - Crude Oil Tanker Style */}
             <div 
               className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none transition-transform duration-300 ease-out"
               style={{ 
@@ -735,7 +735,14 @@ export function WorldMap() {
               }}
             >
               <svg viewBox="0 0 24 24" className="w-10 h-10 fill-green-500">
-                <path d="M 12,2 C 12,2 6,8 6,14 C 6,18 8,22 12,22 C 16,22 18,18 18,14 C 18,8 12,2 12,2 Z M 12,4 C 12,4 16,9 16,14 C 16,17 14.5,20 12,20 C 9.5,20 8,17 8,14 C 8,9 12,4 12,4 Z" />
+                {/* Tanker Hull */}
+                <path d="M 6,4 C 6,2 18,2 18,4 L 18,20 C 18,22 6,22 6,20 Z" />
+                {/* Tanker Bridge/Aft Section */}
+                <rect x="7" y="16" width="10" height="4" fill="black" opacity="0.4" />
+                {/* Tanker Piping/Deck Details */}
+                <rect x="11.5" y="6" width="1" height="8" fill="black" opacity="0.3" />
+                <rect x="8" y="8" width="8" height="0.5" fill="black" opacity="0.3" />
+                <rect x="8" y="11" width="8" height="0.5" fill="black" opacity="0.3" />
               </svg>
             </div>
             
