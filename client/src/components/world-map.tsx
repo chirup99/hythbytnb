@@ -706,59 +706,72 @@ export function WorldMap() {
       </div>
 
       {/* Navigation Radar System - Only visible when drawing */}
-      <div className={`flex flex-col items-center justify-center transition-all duration-500 ${isDrawing ? "h-32 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}>
-        <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 backdrop-blur-sm flex items-center justify-center shadow-2xl">
-          {/* Radar Circles */}
-          <div className="absolute inset-0 rounded-full border border-green-500/20 m-4" />
-          <div className="absolute inset-0 rounded-full border border-green-500/10 m-8" />
-          
-          {/* Directional Labels */}
-          <span className="absolute top-1 text-[10px] font-bold text-green-500/80">N</span>
-          <span className="absolute bottom-1 text-[10px] font-bold text-green-500/80">S</span>
-          <span className="absolute left-1 text-[10px] font-bold text-green-500/80">W</span>
-          <span className="absolute right-1 text-[10px] font-bold text-green-500/80">E</span>
-
-          {/* Radar Sweep Animation - Enhanced with 360 degree glow */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/30 animate-[spin_3s_linear_infinite]" />
-          <div className="absolute inset-0 rounded-full border-r-2 border-t-2 border-green-500/60 animate-[spin_3s_linear_infinite]" />
-
-          {/* Moving Green Signal - Enhanced with double glow and pulse */}
-          <div 
-            className="absolute w-4 h-4 transition-transform duration-150 ease-out flex items-center justify-center"
-            style={{ 
-              transform: `translate(${direction.x * 32}px, ${direction.y * 32}px)`,
-            }}
-          >
-            {/* Outer Glow Ring */}
-            <div className={`absolute inset-0 bg-green-500/30 rounded-full blur-[6px] animate-pulse ${direction.x !== 0 || direction.y !== 0 ? 'opacity-100' : 'opacity-0'}`} />
+      <div className={`flex items-center justify-center transition-all duration-500 overflow-visible ${isDrawing ? "h-32 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}>
+        <div className="flex items-center gap-6 bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.4)]">
+          {/* Radar Unit */}
+          <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 flex items-center justify-center shadow-2xl flex-shrink-0">
+            {/* Radar Circles */}
+            <div className="absolute inset-0 rounded-full border border-green-500/20 m-4" />
+            <div className="absolute inset-0 rounded-full border border-green-500/10 m-8" />
             
-            {/* Inner Signal Core */}
+            {/* Directional Labels */}
+            <span className="absolute top-1 text-[10px] font-bold text-green-500/80">N</span>
+            <span className="absolute bottom-1 text-[10px] font-bold text-green-500/80">S</span>
+            <span className="absolute left-1 text-[10px] font-bold text-green-500/80">W</span>
+            <span className="absolute right-1 text-[10px] font-bold text-green-500/80">E</span>
+
+            {/* Radar Sweep Animation - Enhanced with 360 degree glow */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/30 animate-[spin_3s_linear_infinite]" />
+            <div className="absolute inset-0 rounded-full border-r-2 border-t-2 border-green-500/60 animate-[spin_3s_linear_infinite]" />
+
+            {/* Moving Green Signal - Enhanced with double glow and pulse */}
             <div 
-              className={`w-2.5 h-2.5 bg-green-400 rounded-full shadow-[0_0_15px_#4ade80] transition-all duration-300 ${
-                direction.x !== 0 || direction.y !== 0 ? 'scale-110 opacity-100' : 'scale-75 opacity-40'
-              }`}
-            />
-            
-            {/* Radar "Blip" trailing effect (visual only) */}
-            <div className={`absolute w-1 h-1 bg-green-500/40 rounded-full transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? 'scale-[3]' : 'scale-0'}`} />
-          </div>
-        </div>
-        <div className="mt-2 text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-center gap-1">
-          <div>
-            Nav System: {(() => {
-              const n = direction.y < -0.3 ? 'N' : '';
-              const s = direction.y > 0.3 ? 'S' : '';
-              const w = direction.x < -0.3 ? 'W' : '';
-              const e = direction.x > 0.3 ? 'E' : '';
-              const combined = n + s + w + e;
-              return combined || 'Standby';
-            })()}
-          </div>
-          {currentPath && (
-            <div className="text-[8px] opacity-70 max-w-[200px] truncate normal-case font-normal text-green-400/80">
-              {currentPath}
+              className="absolute w-4 h-4 transition-transform duration-150 ease-out flex items-center justify-center"
+              style={{ 
+                transform: `translate(${direction.x * 32}px, ${direction.y * 32}px)`,
+              }}
+            >
+              {/* Outer Glow Ring */}
+              <div className={`absolute inset-0 bg-green-500/30 rounded-full blur-[6px] animate-pulse ${direction.x !== 0 || direction.y !== 0 ? 'opacity-100' : 'opacity-0'}`} />
+              
+              {/* Inner Signal Core */}
+              <div 
+                className={`w-2.5 h-2.5 bg-green-400 rounded-full shadow-[0_0_15px_#4ade80] transition-all duration-300 ${
+                  direction.x !== 0 || direction.y !== 0 ? 'scale-110 opacity-100' : 'scale-75 opacity-40'
+                }`}
+              />
+              
+              {/* Radar "Blip" trailing effect (visual only) */}
+              <div className={`absolute w-1 h-1 bg-green-500/40 rounded-full transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? 'scale-[3]' : 'scale-0'}`} />
             </div>
-          )}
+          </div>
+
+          {/* Data Readout Panel - Relocated to the right */}
+          <div className="text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-start gap-1.5 min-w-[140px]">
+            <div className="flex items-center gap-2">
+              <span className="opacity-50 text-[8px]">Status:</span>
+              <span className="text-green-400 animate-pulse">Online</span>
+            </div>
+            <div>
+              <span className="opacity-50 text-[8px] mr-2">Heading:</span>
+              {(() => {
+                const n = direction.y < -0.3 ? 'N' : '';
+                const s = direction.y > 0.3 ? 'S' : '';
+                const w = direction.x < -0.3 ? 'W' : '';
+                const e = direction.x > 0.3 ? 'E' : '';
+                const combined = n + s + w + e;
+                return combined || 'Standby';
+              })()}
+            </div>
+            {currentPath && (
+              <div className="mt-1">
+                <div className="opacity-50 text-[8px] mb-0.5">Vector Path:</div>
+                <div className="text-[8px] opacity-70 max-w-[180px] break-all normal-case font-normal text-green-400/80 leading-tight">
+                  {currentPath}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Drawing Controls - Repositioned to bottom right for both mobile and desktop */}
