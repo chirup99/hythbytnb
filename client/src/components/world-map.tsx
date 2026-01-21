@@ -743,15 +743,22 @@ export function WorldMap() {
             <div className={`absolute w-1 h-1 bg-green-500/40 rounded-full transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? 'scale-[3]' : 'scale-0'}`} />
           </div>
         </div>
-        <div className="mt-2 text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest">
-          Nav System: {(() => {
-            const n = direction.y < -0.3 ? 'N' : '';
-            const s = direction.y > 0.3 ? 'S' : '';
-            const w = direction.x < -0.3 ? 'W' : '';
-            const e = direction.x > 0.3 ? 'E' : '';
-            const combined = n + s + w + e;
-            return combined || 'Standby';
-          })()}
+        <div className="mt-2 text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-center gap-1">
+          <div>
+            Nav System: {(() => {
+              const n = direction.y < -0.3 ? 'N' : '';
+              const s = direction.y > 0.3 ? 'S' : '';
+              const w = direction.x < -0.3 ? 'W' : '';
+              const e = direction.x > 0.3 ? 'E' : '';
+              const combined = n + s + w + e;
+              return combined || 'Standby';
+            })()}
+          </div>
+          {currentPath && (
+            <div className="text-[8px] opacity-70 max-w-[200px] truncate normal-case font-normal text-green-400/80">
+              {currentPath}
+            </div>
+          )}
         </div>
 
         {/* Drawing Controls - Repositioned to bottom right for both mobile and desktop */}
