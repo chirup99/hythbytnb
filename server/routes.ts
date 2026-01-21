@@ -14,6 +14,10 @@ import { desc, sql, eq } from "drizzle-orm";
 // REMOVED: Fyers API dependent imports - commented out to fix startup
 // import { intradayAnalyzer } from "./intraday-market-session";
 import { awsDynamoDBService } from './aws-dynamodb-service';
+// ... other imports ...
+
+// OPTIMIZATION: Move heavy service initializations inside request handlers or use lazy loading if possible
+// For now, ensure we aren't doing heavy synchronous work on the main loop.
 // import { IntradayPatternDetector } from "./intraday-patterns";
 // import { Enhanced4CandleProcessor } from "./enhanced-four-candle-processor";
 // import { oneMinuteAnalyzer } from "./one-minute-timestamp-analyzer";
