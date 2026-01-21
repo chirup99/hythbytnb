@@ -724,6 +724,13 @@ export function WorldMap() {
         <div className="flex items-center gap-6 bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.4)]">
           {/* Radar Unit */}
           <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 flex items-center justify-center shadow-2xl flex-shrink-0">
+            {/* Center Ship Silhouette - Inspired by Phontech SR 8300 MKII */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
+              <svg viewBox="0 0 24 24" className="w-10 h-10 fill-green-500">
+                <path d="M 12,2 C 12,2 6,8 6,14 C 6,18 8,22 12,22 C 16,22 18,18 18,14 C 18,8 12,2 12,2 Z M 12,4 C 12,4 16,9 16,14 C 16,17 14.5,20 12,20 C 9.5,20 8,17 8,14 C 8,9 12,4 12,4 Z" />
+              </svg>
+            </div>
+            
             {/* Radar Circles */}
             <div className="absolute inset-0 rounded-full border border-green-500/20 m-4" />
             <div className="absolute inset-0 rounded-full border border-green-500/10 m-8" />
