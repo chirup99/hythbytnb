@@ -764,6 +764,41 @@ export function WorldMap() {
             </div>
             <div className="absolute inset-0 rounded-full border border-green-500/20" />
 
+            {/* Radar World Map & Static Ships - Visual Only */}
+            <div className="absolute inset-0 rounded-full overflow-hidden opacity-30 pointer-events-none p-2">
+              <svg viewBox="0 0 1045.2 458" className="w-full h-full fill-green-500/40">
+                {worldMapDots.map(([cx, cy], i) => (
+                  <circle key={`radar-dot-${i}`} cx={cx} cy={cy} r="2" />
+                ))}
+                {/* Random tiny ship dots */}
+                {[...Array(15)].map((_, i) => (
+                  <circle
+                    key={`radar-ship-${i}`}
+                    cx={200 + Math.random() * 600}
+                    cy={100 + Math.random() * 250}
+                    r="1.5"
+                    className="fill-green-300"
+                  >
+                    <animate
+                      attributeName="opacity"
+                      values="0.2;1;0.2"
+                      dur={`${3 + Math.random() * 5}s`}
+                      repeatCount="indefinite"
+                      begin={`${Math.random() * 5}s`}
+                    />
+                    <animateTransform
+                      attributeName="transform"
+                      type="translate"
+                      from="0 0"
+                      to={`${(Math.random() - 0.5) * 10} ${(Math.random() - 0.5) * 10}`}
+                      dur="120s"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                ))}
+              </svg>
+            </div>
+
             {/* Moving Green Signal - Enhanced with double glow and pulse */}
             <div
               className="absolute w-4 h-4 transition-transform duration-150 ease-out flex items-center justify-center"
