@@ -724,7 +724,7 @@ export function WorldMap() {
         <div className="flex items-center gap-6 bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.4)]">
           {/* Radar Unit */}
           <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 flex items-center justify-center shadow-2xl flex-shrink-0">
-            {/* Center Ship Silhouette - Inspired by Phontech SR 8300 MKII */}
+            {/* Center Ship Silhouette - Crud Oil Tanker Shape */}
             <div 
               className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none transition-transform duration-300 ease-out"
               style={{ 
@@ -734,8 +734,13 @@ export function WorldMap() {
                 })()}deg)`
               }}
             >
-              <svg viewBox="0 0 24 24" className="w-10 h-10 fill-green-500">
-                <path d="M 12,2 C 12,2 6,8 6,14 C 6,18 8,22 12,22 C 16,22 18,18 18,14 C 18,8 12,2 12,2 Z M 12,4 C 12,4 16,9 16,14 C 16,17 14.5,20 12,20 C 9.5,20 8,17 8,14 C 8,9 12,4 12,4 Z" />
+              <svg viewBox="0 0 32 32" className="w-12 h-12 fill-green-500">
+                {/* Long flat hull of a tanker */}
+                <path d="M 16,4 L 16,4 C 18,6 20,8 20,12 L 20,24 C 20,26 18,28 16,28 L 16,28 C 14,28 12,26 12,24 L 12,12 C 12,8 14,6 16,4 Z" />
+                {/* Bridge/Cabin section at the back (aft) */}
+                <rect x="13" y="22" width="6" height="4" rx="0.5" className="fill-green-600" />
+                {/* Small details/piping on deck */}
+                <rect x="15.5" y="8" width="1" height="12" rx="0.2" className="fill-green-400/60" />
               </svg>
             </div>
             
