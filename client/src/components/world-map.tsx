@@ -772,7 +772,7 @@ export function WorldMap() {
             {(currentPath || lastDrawnPath) && (
               <div className="mt-1 w-full flex-1 min-h-0 flex flex-col">
                 <div className="opacity-50 text-[8px] mb-0.5">Vector Path:</div>
-                <div className="text-[8px] opacity-70 max-w-[180px] break-all normal-case font-normal text-green-400/80 leading-tight overflow-y-auto max-h-[40px] pr-1 scrollbar-thin scrollbar-thumb-green-500/20">
+                <div className="text-[8px] opacity-70 max-w-[180px] break-all normal-case font-normal text-green-400/80 leading-tight overflow-y-auto max-h-[40px] pr-1 scrollbar-none [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-green-500/40 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
                   {currentPath || lastDrawnPath}
                 </div>
               </div>
