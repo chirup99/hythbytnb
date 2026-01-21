@@ -718,17 +718,30 @@ export function WorldMap() {
           <span className="absolute left-1 text-[10px] font-bold text-green-500/60">W</span>
           <span className="absolute right-1 text-[10px] font-bold text-green-500/60">E</span>
 
-          {/* Radar Sweep Animation */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/10 animate-[spin_4s_linear_infinite]" />
+          {/* Radar Sweep Animation - Enhanced with 360 degree glow */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/20 animate-[spin_3s_linear_infinite]" />
+          <div className="absolute inset-0 rounded-full border-r border-t border-green-500/40 animate-[spin_3s_linear_infinite]" />
 
-          {/* Moving Green Signal */}
+          {/* Moving Green Signal - Enhanced with double glow and pulse */}
           <div 
-            className="w-3 h-3 bg-green-500 rounded-full shadow-[0_0_10px_#22c55e] transition-transform duration-150 ease-out"
+            className="absolute w-4 h-4 transition-transform duration-150 ease-out flex items-center justify-center"
             style={{ 
-              transform: `translate(${direction.x * 30}px, ${direction.y * 30}px)`,
-              opacity: direction.x !== 0 || direction.y !== 0 ? 1 : 0.3
+              transform: `translate(${direction.x * 32}px, ${direction.y * 32}px)`,
             }}
-          />
+          >
+            {/* Outer Glow Ring */}
+            <div className={`absolute inset-0 bg-green-500/30 rounded-full blur-[6px] animate-pulse ${direction.x !== 0 || direction.y !== 0 ? 'opacity-100' : 'opacity-0'}`} />
+            
+            {/* Inner Signal Core */}
+            <div 
+              className={`w-2.5 h-2.5 bg-green-400 rounded-full shadow-[0_0_15px_#4ade80] transition-all duration-300 ${
+                direction.x !== 0 || direction.y !== 0 ? 'scale-110 opacity-100' : 'scale-75 opacity-40'
+              }`}
+            />
+            
+            {/* Radar "Blip" trailing effect (visual only) */}
+            <div className={`absolute w-1 h-1 bg-green-500/40 rounded-full transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? 'scale-[3]' : 'scale-0'}`} />
+          </div>
         </div>
         <div className="mt-2 text-[10px] font-mono text-green-500/80 uppercase tracking-widest">
           Nav System: {(() => {
