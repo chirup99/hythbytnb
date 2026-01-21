@@ -100,10 +100,9 @@ export function WorldMap() {
     // Default routes defined in UI code
     const defaultRoutes = [
       "M 240.5,230.2 L 350.4,220.5 L 430.2,180.4 L 480.5,230.6 L 550.2,250.4 L 630.5,285.2 L 720.4,310.5 L 795.8,285.2",
+      
       "M 630.5,285.2 L 680.4,320.5 L 740.2,350.6 L 795.8,380.2",
       "M 740.2,230.6 L 780.4,250.5 L 820.2,280.4 L 860.4,310.2",
-      "M 150.2,180.5 L 220.4,210.2 L 300.5,240.6 L 380.2,260.4 L 460.5,280.2 L 540.4,260.5",
-      "M 550.2,400.5 L 600.4,380.2 L 660.5,350.6 L 720.2,330.4 L 780.5,310.2"
     ];
 
     // Load saved paths from localStorage on mount
@@ -730,7 +729,7 @@ export function WorldMap() {
       </div>
 
       {/* Trading hours indicator with live market data */}
-      <div className="flex justify-center gap-3 mt-3 flex-wrap">
+      <div className={`flex justify-center gap-3 mt-3 flex-wrap transition-opacity duration-300 ${isDrawing ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
         {marketRegions.map((region) => {
           const market = marketData?.[region.name as keyof typeof marketData];
           const color = market
