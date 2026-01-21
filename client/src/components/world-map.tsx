@@ -285,11 +285,7 @@ export function WorldMap() {
               title={showShips ? "Hide Ships" : "Show Ships"}
               data-testid="button-toggle-ships"
             >
-              {showShips ? (
-                <Eye className="h-4 w-4 text-foreground/70" />
-              ) : (
-                <EyeOff className="h-4 w-4 text-foreground/70" />
-              )}
+              <Eye className="h-4 w-4 text-foreground/70" />
             </Button>
             {isDrawing ? null : ( // Removed old desktop controls that were here
               <Button
@@ -300,11 +296,7 @@ export function WorldMap() {
                 title="Start Drawing"
                 data-testid="button-toggle-draw"
               >
-                <svg viewBox="0 0 32 32" className="w-5 h-5 fill-foreground/70">
-                  <path d="M 16,4 L 16,4 C 18,6 20,8 20,12 L 20,24 C 20,26 18,28 16,28 L 16,28 C 14,28 12,26 12,24 L 12,12 C 12,8 14,6 16,4 Z" />
-                  <rect x="13" y="22" width="6" height="4" rx="0.5" />
-                  <rect x="15.5" y="8" width="1" height="12" rx="0.2" opacity="0.6" />
-                </svg>
+                <Eye className="h-4 w-4 text-foreground/70" />
               </Button>
             )}
           </div>
