@@ -93,6 +93,7 @@ export function WorldMap() {
   const [lastPoint, setLastPoint] = useState<{ x: number; y: number } | null>(null);
   const [direction, setDirection] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [currentPath, setCurrentPath] = useState<string>("");
+  const [lastDrawnPath, setLastDrawnPath] = useState<string>("");
   const [allPaths, setAllPaths] = useState<string[]>([]);
   const [savedPaths, setSavedPaths] = useState<string[]>([]);
   const [showShips, setShowShips] = useState(true);
@@ -189,12 +190,17 @@ export function WorldMap() {
     }
     setLastPoint({ x, y });
 
-    setCurrentPath((prev) => `${prev} L ${x.toFixed(1)},${y.toFixed(1)}`);
+    setCurrentPath((prev) => {
+      const newPath = `${prev} L ${x.toFixed(1)},${y.toFixed(1)}`;
+      setLastDrawnPath(newPath);
+      return newPath;
+    });
   };
 
   const handleMouseUp = () => {
     if (!isDrawing || !currentPath) return;
     setAllPaths((prev) => [...prev, currentPath]);
+    setLastDrawnPath(currentPath);
     setCurrentPath("");
     setLastPoint(null);
     setDirection({ x: 0, y: 0 });
@@ -760,14 +766,14 @@ export function WorldMap() {
                 const w = direction.x < -0.3 ? 'W' : '';
                 const e = direction.x > 0.3 ? 'E' : '';
                 const combined = n + s + w + e;
-                return combined || 'Standby';
+                return combined || (lastDrawnPath ? 'Locked' : 'Standby');
               })()}
             </div>
-            {currentPath && (
+            {(currentPath || lastDrawnPath) && (
               <div className="mt-1">
                 <div className="opacity-50 text-[8px] mb-0.5">Vector Path:</div>
                 <div className="text-[8px] opacity-70 max-w-[180px] break-all normal-case font-normal text-green-400/80 leading-tight">
-                  {currentPath}
+                  {currentPath || lastDrawnPath}
                 </div>
               </div>
             )}
