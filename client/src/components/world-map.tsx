@@ -743,8 +743,8 @@ export function WorldMap() {
             <div className={`absolute w-1 h-1 bg-green-500/40 rounded-full transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? 'scale-[3]' : 'scale-0'}`} />
           </div>
         </div>
-        <div className="mt-2 text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-center gap-1">
-          <div>
+        <div className="mt-2 text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-center gap-1.5 w-full">
+          <div className="border-b border-green-500/20 pb-1 w-full text-center">
             Nav System: {(() => {
               const n = direction.y < -0.3 ? 'N' : '';
               const s = direction.y > 0.3 ? 'S' : '';
@@ -754,11 +754,35 @@ export function WorldMap() {
               return combined || 'Standby';
             })()}
           </div>
-          {currentPath && (
-            <div className="text-[8px] opacity-70 max-w-[200px] truncate normal-case font-normal text-green-400/80">
-              {currentPath}
-            </div>
-          )}
+          
+          <div className="flex flex-col gap-1 w-full max-h-[120px] overflow-y-auto px-2">
+            {savedPaths.map((path, idx) => (
+              <div key={idx} className="flex items-center gap-2 text-[8px] normal-case font-normal text-green-400/80">
+                <span className="shrink-0">
+                  {idx % 3 === 0 ? (
+                    <div className="w-3 h-2 bg-[#991b1b] rounded-sm relative" title="Container Ship">
+                      <div className="absolute top-0 right-0 w-1 h-1 bg-white/40" />
+                    </div>
+                  ) : (
+                    <div className="w-3 h-1.5 bg-[#1f2937] rounded-full border border-gray-500/30" title="Oil Tanker" />
+                  )}
+                </span>
+                <span className="truncate opacity-60">R{idx + 1}: {path}</span>
+              </div>
+            ))}
+            {currentPath && (
+              <div className="flex items-center gap-2 text-[8px] normal-case font-normal text-green-300">
+                <span className="animate-pulse shrink-0">
+                  {(savedPaths.length) % 3 === 0 ? (
+                    <div className="w-3 h-2 bg-[#991b1b] rounded-sm" />
+                  ) : (
+                    <div className="w-3 h-1.5 bg-[#1f2937] rounded-full border border-gray-500/30" />
+                  )}
+                </span>
+                <span className="truncate">LIVE: {currentPath}</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Drawing Controls - Repositioned to bottom right for both mobile and desktop */}
