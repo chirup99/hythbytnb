@@ -90,8 +90,13 @@ export function WorldMap() {
   const isDarkMode = theme === "dark";
   const [isMobile, setIsMobile] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [lastPoint, setLastPoint] = useState<{ x: number; y: number } | null>(null);
-  const [direction, setDirection] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [lastPoint, setLastPoint] = useState<{ x: number; y: number } | null>(
+    null,
+  );
+  const [direction, setDirection] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
   const [currentPath, setCurrentPath] = useState<string>("");
   const [lastDrawnPath, setLastDrawnPath] = useState<string>("");
   const [allPaths, setAllPaths] = useState<string[]>([]);
@@ -102,11 +107,13 @@ export function WorldMap() {
   useEffect(() => {
     // Default routes defined in UI code
     const defaultRoutes = [
-      "M 587.6,256.1 L 587.6,256.1 L 587.6,263.0 L 587.6,265.3 L 587.6,267.5 L 589.9,267.5 L 599.0,269.8 L 599.0,269.8 L 603.6,269.8 L 603.6,269.8 L 605.9,272.1 L 608.2,274.4 L 608.2,276.7 L 608.2,279.0 L 608.2,285.8 L 608.2,290.4 L 608.2,290.4 L 615.0,295.0 L 619.6,295.0 L 621.9,295.0 L 621.9,297.3 L 624.2,299.6 L 624.2,299.6 L 626.5,301.8 L 628.8,304.1 L 628.8,304.1 L 628.8,304.1 L 631.1,308.7 L 633.3,311.0 L 635.6,315.6 L 637.9,315.6 L 642.5,320.1 L 644.8,322.4 L 647.1,322.4",
-      "M 715.7,211.7 L 715.7,211.7 L 724.8,214.0 L 729.4,214.0 L 729.4,218.6 L 729.4,220.9 L 729.4,223.2 L 729.4,225.5 L 729.4,225.5 L 729.4,225.5 L 729.4,230.0 L 727.1,236.9 L 724.8,239.2 L 722.5,241.5 L 720.2,241.5 L 713.4,243.8 L 711.1,243.8 L 708.8,246.1 L 708.8,250.6 L 711.1,262.1 L 711.1,264.3 L 711.1,271.2 L 704.2,275.8 L 701.9,280.4 L 701.9,282.6 L 704.2,284.9 L 704.2,284.9 L 704.2,294.1 L 704.2,296.4 L 701.9,298.6 L 697.4,300.9 L 697.4,303.2 L 695.1,303.2 L 692.8,305.5",
-      "M 221.7,213.1 L 221.7,213.1 L 226.3,210.8 L 244.6,201.7 L 251.5,197.1 L 258.3,192.5 L 260.6,190.3 L 262.9,188.0 L 265.2,185.7 L 267.5,183.4 L 276.6,178.8 L 278.9,178.8 L 292.6,176.5 L 304.1,176.5 L 306.3,176.5 L 310.9,181.1 L 313.2,183.4 L 313.2,183.4 L 320.1,183.4 L 322.3,178.8 L 326.9,178.8 L 329.2,174.2 L 331.5,172.0 L 340.6,165.1 L 342.9,162.8 L 352.1,153.7 L 354.4,142.2 L 358.9,130.8 L 358.9,128.5 L 361.2,126.2 L 363.5,119.4",
-      "M 557.9,242.4 L 555.6,260.7 L 553.3,276.7 L 544.2,276.7 L 532.7,276.7 L 525.9,272.1 L 516.7,260.7 L 512.1,256.1 L 509.9,253.8 L 500.7,249.3 L 493.8,244.7 L 489.3,244.7 L 487.0,242.4 L 484.7,240.1 L 466.4,221.8 L 457.3,210.4 L 445.8,210.4 L 429.8,203.5 L 423.0,201.2 L 418.4,201.2 L 413.8,201.2 L 411.5,198.9 L 409.2,196.7 L 404.7,194.4 L 400.1,194.4 L 393.2,194.4 L 384.1,194.4 L 381.8,194.4 L 379.5,194.4 L 374.9,194.4 L 368.1,198.9 L 358.9,201.2",
-      "M 221.7,217.2 L 221.7,217.2 L 224.0,217.2 L 242.3,217.2 L 253.7,217.2 L 267.5,215.0 L 276.6,210.4 L 288.0,205.8 L 292.6,205.8 L 292.6,205.8 L 294.9,205.8 L 297.2,208.1 L 304.1,212.7 L 304.1,215.0 L 304.1,219.5 L 306.3,219.5 L 310.9,231.0 L 313.2,240.1 L 313.2,253.8 L 313.2,256.1 L 313.2,263.0 L 313.2,263.0 L 313.2,263.0 L 322.3,263.0 L 333.8,263.0 L 336.1,267.5 L 342.9,267.5 L 345.2,269.8 L 349.8,274.4 L 358.9,285.8 L 363.5,292.7 L 368.1,301.8 L 374.9,306.4 L 381.8,311.0",
+      "M 587.6,256.1 L 587.6,256.1 L 587.6,263.0 L 587.6,265.3 L 587.6,267.5 L 589.9,267.5 L 599.0,269.8 L 599.0,269.8 L 603.6,269.8 L 603.6,269.8 L 605.9,272.1 L 608.2,274.4 L 608.2,276.7 L 608.2,279.0 L 608.2,285.8 L 608.2,290.4 L 608.2,290.4 L 615.0,295.0 L 619.6,295.0 L 621.9,295.0 L 621.9,297.3 L 624.2,299.6 L 624.2,299.6 L 626.5,301.8 L 628.8,304.1 L 628.8,304.1 L 628.8,304.1 L 631.1,308.7 L 633.3,311.0 L 635.6,315.6 L 637.9,315.6 L 642.5,320.1 L 644.8,322.4 L 647.1,322.4 L 647.1,324.7 L 651.6,324.7 L 653.9,327.0 L 653.9,327.0 L 656.2,327.0 L 658.5,329.3 L 660.8,329.3 L 660.8,327.0",
+      "M 715.7,211.7 L 715.7,211.7 L 724.8,214.0 L 729.4,214.0 L 729.4,218.6 L 729.4,220.9 L 729.4,223.2 L 729.4,225.5 L 729.4,225.5 L 729.4,225.5 L 729.4,230.0 L 727.1,236.9 L 724.8,239.2 L 722.5,241.5 L 720.2,241.5 L 713.4,243.8 L 711.1,243.8 L 708.8,246.1 L 708.8,250.6 L 711.1,262.1 L 711.1,264.3 L 711.1,271.2 L 704.2,275.8 L 701.9,280.4 L 701.9,282.6 L 704.2,284.9 L 704.2,284.9 L 704.2,294.1 L 704.2,296.4 L 701.9,298.6 L 697.4,300.9 L 697.4,303.2 L 695.1,303.2 L 692.8,305.5 L 692.8,307.8 L 692.8,307.8 L 688.2,312.4 L 685.9,312.4 L 685.9,312.4 L 683.6,314.7 L 681.4,314.7",
+      "M 221.7,213.1 L 221.7,213.1 L 226.3,210.8 L 244.6,201.7 L 251.5,197.1 L 258.3,192.5 L 260.6,190.3 L 262.9,188.0 L 265.2,185.7 L 267.5,183.4 L 276.6,178.8 L 278.9,178.8 L 292.6,176.5 L 304.1,176.5 L 306.3,176.5 L 310.9,181.1 L 313.2,183.4 L 313.2,183.4 L 320.1,183.4 L 322.3,178.8 L 326.9,178.8 L 329.2,174.2 L 331.5,172.0 L 340.6,165.1 L 342.9,162.8 L 352.1,153.7 L 354.4,142.2 L 358.9,130.8 L 358.9,128.5 L 361.2,126.2 L 363.5,119.4 L 363.5,119.4 L 368.1,114.8 L 368.1,112.5 L 370.4,101.1 L 372.7,89.6 L 374.9,85.1 L 384.1,82.8 L 386.4,89.6 L 386.4,103.4 L 386.4,105.6 L 386.4,110.2 L 388.7,110.2 L 395.5,117.1 L 402.4,119.4 L 404.7,123.9 L 407.0,123.9 L 407.0,126.2 L 411.5,130.8",
+
+      "M 557.9,242.4 L 555.6,260.7 L 553.3,276.7 L 544.2,276.7 L 532.7,276.7 L 525.9,272.1 L 516.7,260.7 L 512.1,256.1 L 509.9,253.8 L 500.7,249.3 L 493.8,244.7 L 489.3,244.7 L 487.0,242.4 L 484.7,240.1 L 466.4,221.8 L 457.3,210.4 L 445.8,210.4 L 429.8,203.5 L 423.0,201.2 L 418.4,201.2 L 413.8,201.2 L 411.5,198.9 L 409.2,196.7 L 404.7,194.4 L 400.1,194.4 L 400.1,194.4 L 393.2,194.4 L 384.1,194.4 L 381.8,194.4 L 379.5,194.4 L 374.9,194.4 L 368.1,198.9 L 358.9,201.2 L 358.9,201.2 L 356.6,203.5 L 352.1,203.5 L 345.2,203.5 L 345.2,205.8 L 342.9,205.8 L 340.6,205.8 L 338.4,205.8 L 338.4,203.5 L 338.4,201.2 L 338.4,198.9 L 338.4,194.4 L 342.9,189.8 L 345.2,187.5 L 347.5,187.5 L 358.9,180.7 L 370.4,171.5 L 372.7,169.2 L 379.5,162.4 L 379.5,160.1 L 379.5,150.9",
+
+      "M 221.7,217.2 L 221.7,217.2 L 224.0,217.2 L 242.3,217.2 L 253.7,217.2 L 267.5,215.0 L 276.6,210.4 L 288.0,205.8 L 292.6,205.8 L 292.6,205.8 L 294.9,205.8 L 297.2,208.1 L 304.1,212.7 L 304.1,215.0 L 304.1,219.5 L 306.3,219.5 L 310.9,231.0 L 313.2,240.1 L 313.2,253.8 L 313.2,256.1 L 313.2,263.0 L 313.2,263.0 L 313.2,263.0 L 322.3,263.0 L 333.8,263.0 L 336.1,267.5 L 342.9,267.5 L 345.2,269.8 L 349.8,274.4 L 358.9,285.8 L 363.5,292.7 L 368.1,301.8 L 374.9,306.4 L 381.8,311.0 L 386.4,317.9 L 388.7,317.9 L 395.5,322.4 L 402.4,329.3 L 409.2,338.4 L 413.8,347.6 L 416.1,349.9 L 418.4,352.2 L 420.7,359.0 L 423.0,365.9 L 427.5,370.4 L 429.8,370.4 L 436.7,372.7 L 441.3,377.3 L 443.5,377.3 L 445.8,381.9 L 450.4,384.2 L 452.7,384.2 L 459.5,384.2 L 464.1,384.2 L 471.0,384.2 L 475.6,379.6 L 482.4,365.9 L 482.4,359.0 L 482.4,359.0 L 491.6,354.4 L 493.8,354.4 L 496.1,354.4 L 498.4,354.4 L 500.7,354.4 L 503.0,354.4 L 505.3,352.2 L 507.6,352.2 L 512.1,349.9 L 516.7,345.3 L 516.7,343.0 L 519.0,340.7 L 519.0,338.4 L 519.0,336.1 L 519.0,336.1 L 519.0,333.9 L 521.3,333.9 L 521.3,331.6 L 521.3,329.3",
     ];
 
     // Load saved paths from localStorage on mount
@@ -264,7 +271,7 @@ export function WorldMap() {
         <div
           className={`absolute z-50 flex gap-2 transition-all duration-300 ${
             isMobile
-              ? isDrawing 
+              ? isDrawing
                 ? "bottom-2 right-2 opacity-0 pointer-events-none" // Hide original location when drawing on mobile
                 : "bottom-2 right-2 opacity-0 group-hover:opacity-100 group-active:opacity-100"
               : "top-2 right-2 opacity-0 group-hover:opacity-100"
@@ -284,9 +291,7 @@ export function WorldMap() {
               <EyeOff className="h-4 w-4 text-foreground/70" />
             )}
           </Button>
-          {isDrawing ? (
-            null // Removed old desktop controls that were here
-          ) : (
+          {isDrawing ? null : ( // Removed old desktop controls that were here
             <Button
               size="icon"
               variant="secondary"
@@ -713,43 +718,59 @@ export function WorldMap() {
       </div>
 
       {/* Navigation Radar System - Only visible when drawing */}
-      <div className={`flex items-center justify-center transition-all duration-500 overflow-visible ${isDrawing ? "h-32 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}>
+      <div
+        className={`flex items-center justify-center transition-all duration-500 overflow-visible ${isDrawing ? "h-32 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}
+      >
         <div className="flex items-center gap-6 bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.4)]">
           {/* Radar Unit */}
           <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 flex items-center justify-center shadow-2xl flex-shrink-0">
             {/* Radar Circles */}
             <div className="absolute inset-0 rounded-full border border-green-500/20 m-4" />
             <div className="absolute inset-0 rounded-full border border-green-500/10 m-8" />
-            
+
             {/* Directional Labels */}
-            <span className="absolute top-1 text-[10px] font-bold text-green-500/80">N</span>
-            <span className="absolute bottom-1 text-[10px] font-bold text-green-500/80">S</span>
-            <span className="absolute left-1 text-[10px] font-bold text-green-500/80">W</span>
-            <span className="absolute right-1 text-[10px] font-bold text-green-500/80">E</span>
+            <span className="absolute top-1 text-[10px] font-bold text-green-500/80">
+              N
+            </span>
+            <span className="absolute bottom-1 text-[10px] font-bold text-green-500/80">
+              S
+            </span>
+            <span className="absolute left-1 text-[10px] font-bold text-green-500/80">
+              W
+            </span>
+            <span className="absolute right-1 text-[10px] font-bold text-green-500/80">
+              E
+            </span>
 
             {/* Radar Sweep Animation - Enhanced with 360 degree glow */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/30 animate-[spin_3s_linear_infinite]" />
             <div className="absolute inset-0 rounded-full border-r-2 border-t-2 border-green-500/60 animate-[spin_3s_linear_infinite]" />
 
             {/* Moving Green Signal - Enhanced with double glow and pulse */}
-            <div 
+            <div
               className="absolute w-4 h-4 transition-transform duration-150 ease-out flex items-center justify-center"
-              style={{ 
+              style={{
                 transform: `translate(${direction.x * 32}px, ${direction.y * 32}px)`,
               }}
             >
               {/* Outer Glow Ring */}
-              <div className={`absolute inset-0 bg-green-500/30 rounded-full blur-[6px] animate-pulse ${direction.x !== 0 || direction.y !== 0 ? 'opacity-100' : 'opacity-0'}`} />
-              
+              <div
+                className={`absolute inset-0 bg-green-500/30 rounded-full blur-[6px] animate-pulse ${direction.x !== 0 || direction.y !== 0 ? "opacity-100" : "opacity-0"}`}
+              />
+
               {/* Inner Signal Core */}
-              <div 
+              <div
                 className={`w-2.5 h-2.5 bg-green-400 rounded-full shadow-[0_0_15px_#4ade80] transition-all duration-300 ${
-                  direction.x !== 0 || direction.y !== 0 ? 'scale-110 opacity-100' : 'scale-75 opacity-40'
+                  direction.x !== 0 || direction.y !== 0
+                    ? "scale-110 opacity-100"
+                    : "scale-75 opacity-40"
                 }`}
               />
-              
+
               {/* Radar "Blip" trailing effect (visual only) */}
-              <div className={`absolute w-1 h-1 bg-green-500/40 rounded-full transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? 'scale-[3]' : 'scale-0'}`} />
+              <div
+                className={`absolute w-1 h-1 bg-green-500/40 rounded-full transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? "scale-[3]" : "scale-0"}`}
+              />
             </div>
           </div>
 
@@ -762,17 +783,25 @@ export function WorldMap() {
             <div>
               <span className="opacity-50 text-[8px] mr-2">Heading:</span>
               {(() => {
-                const n = direction.y < -0.3 ? 'N' : '';
-                const s = direction.y > 0.3 ? 'S' : '';
-                const w = direction.x < -0.3 ? 'W' : '';
-                const e = direction.x > 0.3 ? 'E' : '';
+                const n = direction.y < -0.3 ? "N" : "";
+                const s = direction.y > 0.3 ? "S" : "";
+                const w = direction.x < -0.3 ? "W" : "";
+                const e = direction.x > 0.3 ? "E" : "";
                 const combined = n + s + w + e;
-                return combined || (lastDrawnPath ? 'Locked' : 'Standby');
+                return combined || (lastDrawnPath ? "Locked" : "Standby");
               })()}
             </div>
             {(currentPath || lastDrawnPath) && (
               <div className="mt-1 w-full flex-1 min-h-0 flex flex-col">
-                <div className="opacity-50 text-[8px] mb-0.5">Vector Path:</div>
+                <div className="flex items-center gap-1.5 opacity-50 text-[8px] mb-0.5">
+                  <div className="flex items-center">
+                    <svg viewBox="0 0 24 24" className="w-3 h-3 fill-green-500/80">
+                      <path d="M 2,16 C 2,14 20,14 22,18 C 20,22 2,22 2,20 Z" />
+                      <rect x="4" y="10" width="12" height="6" />
+                    </svg>
+                  </div>
+                  <span>Vector Path:</span>
+                </div>
                 <div className="text-[8px] opacity-70 max-w-[180px] break-all normal-case font-normal text-green-400/80 leading-tight overflow-y-auto max-h-[40px] pr-1 scrollbar-thin scrollbar-thumb-green-500/20">
                   {currentPath || lastDrawnPath}
                 </div>
@@ -783,7 +812,9 @@ export function WorldMap() {
 
         {/* Drawing Controls - Repositioned to bottom right for both mobile and desktop */}
         {isDrawing && (
-          <div className={`absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[60] ${isMobile ? "" : "bg-black/20 p-2 rounded-xl backdrop-blur-sm border border-white/5"}`}>
+          <div
+            className={`absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[60] ${isMobile ? "" : "bg-black/20 p-2 rounded-xl backdrop-blur-sm border border-white/5"}`}
+          >
             {allPaths.length > 0 && (
               <Button
                 size="icon"
@@ -824,7 +855,9 @@ export function WorldMap() {
       </div>
 
       {/* Trading hours indicator with live market data */}
-      <div className={`flex justify-center gap-3 mt-3 flex-wrap transition-opacity duration-300 ${isDrawing ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+      <div
+        className={`flex justify-center gap-3 mt-3 flex-wrap transition-opacity duration-300 ${isDrawing ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+      >
         {marketRegions.map((region) => {
           const market = marketData?.[region.name as keyof typeof marketData];
           const color = market
