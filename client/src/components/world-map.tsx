@@ -724,9 +724,9 @@ export function WorldMap() {
         <div className="flex items-center gap-6 bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.4)]">
           {/* Radar Unit */}
           <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-black/60 flex items-center justify-center shadow-2xl flex-shrink-0">
-            {/* Center Ship Silhouette - Crude Oil Tanker Style */}
+            {/* Center Ship Silhouette - Container Ship Style from reference */}
             <div 
-              className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none transition-transform duration-300 ease-out"
+              className="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none transition-transform duration-300 ease-out scale-[1.2]"
               style={{ 
                 transform: `rotate(${(() => {
                   if (direction.x === 0 && direction.y === 0) return 0;
@@ -734,15 +734,24 @@ export function WorldMap() {
                 })()}deg)`
               }}
             >
-              <svg viewBox="0 0 24 24" className="w-10 h-10 fill-green-500">
-                {/* Tanker Hull */}
-                <path d="M 6,4 C 6,2 18,2 18,4 L 18,20 C 18,22 6,22 6,20 Z" />
-                {/* Tanker Bridge/Aft Section */}
-                <rect x="7" y="16" width="10" height="4" fill="black" opacity="0.4" />
-                {/* Tanker Piping/Deck Details */}
-                <rect x="11.5" y="6" width="1" height="8" fill="black" opacity="0.3" />
-                <rect x="8" y="8" width="8" height="0.5" fill="black" opacity="0.3" />
-                <rect x="8" y="11" width="8" height="0.5" fill="black" opacity="0.3" />
+              <svg viewBox="0 0 24 24" className="w-12 h-12">
+                {/* Red Hull */}
+                <path d="M 12,2 L 18,6 L 18,18 C 18,20 16,22 12,22 C 8,22 6,20 6,18 L 6,6 L 12,2 Z" fill="#ef4444" />
+                
+                {/* Container Stacks - Grid of colors */}
+                <g transform="translate(8, 7)">
+                  <rect x="0" y="0" width="3.5" height="3.5" fill="#3b82f6" rx="0.5" />
+                  <rect x="4.5" y="0" width="3.5" height="3.5" fill="#eab308" rx="0.5" />
+                  <rect x="0" y="4.5" width="3.5" height="3.5" fill="#ef4444" rx="0.5" />
+                  <rect x="4.5" y="4.5" width="3.5" height="3.5" fill="#3b82f6" rx="0.5" />
+                </g>
+
+                {/* Bridge/Cabin - White section at rear */}
+                <path d="M 7,16 L 17,16 L 17,21 L 7,21 Z" fill="#ffffff" />
+                <rect x="10" y="17" width="4" height="3" fill="#333333" rx="0.5" />
+                
+                {/* Masthead detail */}
+                <circle cx="12" cy="3" r="1" fill="#ffffff" />
               </svg>
             </div>
             
