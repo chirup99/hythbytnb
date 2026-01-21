@@ -833,7 +833,7 @@ export function WorldMap() {
           </div>
 
           {/* Data Readout Panel - Relocated to the right */}
-          <div className="text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-start gap-1.5 min-w-[140px]">
+          <div className="text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-start gap-1.5 w-[160px] flex-shrink-0">
             <div className="flex items-center gap-2">
               <span className="opacity-50 text-[8px]">Status:</span>
               <span className="text-green-400 animate-pulse">Online</span>
