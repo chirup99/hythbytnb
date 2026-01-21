@@ -768,7 +768,14 @@ export function WorldMap() {
           />
         </div>
         <div className="mt-2 text-[10px] font-mono text-green-500/80 uppercase tracking-widest">
-          Nav System: {direction.y < -0.3 ? 'N' : direction.y > 0.3 ? 'S' : ''}{direction.x < -0.3 ? 'W' : direction.x > 0.3 ? 'E' : '' || 'Standby'}
+          Nav System: {(() => {
+            const n = direction.y < -0.3 ? 'N' : '';
+            const s = direction.y > 0.3 ? 'S' : '';
+            const w = direction.x < -0.3 ? 'W' : '';
+            const e = direction.x > 0.3 ? 'E' : '';
+            const combined = n + s + w + e;
+            return combined || 'Standby';
+          })()}
         </div>
       </div>
 
