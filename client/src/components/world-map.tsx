@@ -757,9 +757,12 @@ export function WorldMap() {
               E
             </span>
 
-            {/* Radar Sweep Animation - Enhanced with 360 degree glow */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-green-500/30 animate-[spin_3s_linear_infinite]" />
-            <div className="absolute inset-0 rounded-full border-r-2 border-t-2 border-green-500/60 animate-[spin_3s_linear_infinite]" />
+            {/* Radar Sweep Animation - Enhanced with 360 degree glow and line indicator */}
+            <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent_0%,rgba(34,197,94,0.3)_100%)] animate-[spin_3s_linear_infinite]" />
+            <div className="absolute inset-0 rounded-full animate-[spin_3s_linear_infinite]">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-1/2 bg-gradient-to-t from-transparent to-green-400 shadow-[0_0_12px_#4ade80]" />
+            </div>
+            <div className="absolute inset-0 rounded-full border border-green-500/20" />
 
             {/* Moving Green Signal - Enhanced with double glow and pulse */}
             <div
@@ -770,21 +773,21 @@ export function WorldMap() {
             >
               {/* Outer Glow Ring */}
               <div
-                className={`absolute inset-0 bg-green-500/30 rounded-full blur-[6px] animate-pulse ${direction.x !== 0 || direction.y !== 0 ? "opacity-100" : "opacity-0"}`}
+                className={`absolute inset-0 bg-green-400/40 rounded-full blur-[8px] animate-pulse ${direction.x !== 0 || direction.y !== 0 ? "opacity-100" : "opacity-0"}`}
               />
 
               {/* Inner Signal Core */}
               <div
-                className={`w-2.5 h-2.5 bg-green-400 rounded-full shadow-[0_0_15px_#4ade80] transition-all duration-300 ${
+                className={`w-3 h-3 bg-green-400 rounded-full shadow-[0_0_20px_#4ade80,0_0_35px_rgba(74,222,128,0.5)] transition-all duration-300 ${
                   direction.x !== 0 || direction.y !== 0
-                    ? "scale-110 opacity-100"
+                    ? "scale-125 opacity-100"
                     : "scale-75 opacity-40"
                 }`}
               />
 
-              {/* Radar "Blip" trailing effect (visual only) */}
+            {/* Radar "Blip" trailing effect (visual only) */}
               <div
-                className={`absolute w-1 h-1 bg-green-500/40 rounded-full transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? "scale-[3]" : "scale-0"}`}
+                className={`absolute w-1.5 h-1.5 bg-green-400/60 rounded-full blur-[2px] transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? "scale-[4] opacity-40" : "scale-0"}`}
               />
             </div>
           </div>
