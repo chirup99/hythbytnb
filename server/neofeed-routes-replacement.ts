@@ -1357,6 +1357,8 @@ export function registerNeoFeedAwsRoutes(app: any) {
       res.status(500).json({ error: 'Failed to sync authentication' });
     }
   });
+  // Check username availability in neofeed-user-profiles
+  app.get('/api/users/check-username/:username', async (req: any, res: any) => {
     try {
       const { username } = req.params;
       if (!username) return res.status(400).json({ error: 'Username is required' });
