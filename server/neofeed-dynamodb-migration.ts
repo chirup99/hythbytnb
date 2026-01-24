@@ -696,6 +696,108 @@ export async function createOrUpdateUserProfile(userId: string, profileData: any
     console.log(`💾 Saving item to DynamoDB for ${userId}:`, JSON.stringify(item));
     await docClient.send(new PutCommand({ TableName: TABLES.USER_PROFILES, Item: item }));
     
+    // Propagate profile picture and display name updates to other tables
+    const propUpdates = [];
+    if (profileData.profilePicUrl) {
+      propUpdates.push({ field: 'authorAvatar', value: profileData.profilePicUrl });
+    }
+    if (profileData.displayName) {
+      propUpdates.push({ field: 'authorDisplayName', value: profileData.displayName });
+    }
+
+    if (propUpdates.length > 0) {
+      const username = profileData.username || existingProfile?.username;
+      if (username) {
+        const normalizedUsername = username.toLowerCase();
+        const tablesToSync = [
+          { name: TABLES.USER_POSTS, field: 'authorUsername' },
+          { name: TABLES.COMMENTS, field: 'authorUsername' },
+          { name: TABLES.AUDIO_POSTS, field: 'authorUsername' },
+          { name: TABLES.BANNERS, field: 'authorUsername' }
+        ];
+
+        for (const tableConfig of tablesToSync) {
+          try {
+            const scanResult = await docClient.send(new ScanCommand({
+              TableName: tableConfig.name,
+              FilterExpression: `#usrField = :username`,
+              ExpressionAttributeNames: { '#usrField': tableConfig.field },
+              ExpressionAttributeValues: { ':username': normalizedUsername }
+            }));
+
+            if (scanResult.Items && scanResult.Items.length > 0) {
+              for (const record of scanResult.Items) {
+                const updateExpressions: string[] = [];
+                const expressionNames: Record<string, string> = { '#updatedAt': 'updatedAt' };
+                const expressionValues: Record<string, any> = { ':now': timestamp };
+
+                propUpdates.forEach((upd, idx) => {
+                  updateExpressions.push(`#attr${idx} = :val${idx}`);
+                  expressionNames[`#attr${idx}`] = upd.field;
+                  expressionValues[`:val${idx}`] = upd.value;
+                });
+
+                await docClient.send(new UpdateCommand({
+                  TableName: tableConfig.name,
+                  Key: { pk: record.pk, sk: record.sk },
+                  UpdateExpression: `SET ${updateExpressions.join(', ')}, #updatedAt = :now`,
+                  ExpressionAttributeNames: expressionNames,
+                  ExpressionAttributeValues: expressionValues
+                }));
+              }
+            }
+          } catch (err) {
+            console.error(`⚠️ Failed to sync profile to ${tableConfig.name}:`, err);
+          }
+        }
+
+        // Also update FOLLOWS table
+        try {
+          const followerResult = await docClient.send(new ScanCommand({
+            TableName: TABLES.FOLLOWS,
+            FilterExpression: 'followerUsername = :username',
+            ExpressionAttributeValues: { ':username': normalizedUsername }
+          }));
+          for (const record of (followerResult.Items || [])) {
+            const upds: string[] = [];
+            const vals: any = {};
+            if (profileData.profilePicUrl) { upds.push('followerAvatar = :avatar'); vals[':avatar'] = profileData.profilePicUrl; }
+            if (profileData.displayName) { upds.push('followerDisplayName = :name'); vals[':name'] = profileData.displayName; }
+            if (upds.length > 0) {
+              await docClient.send(new UpdateCommand({
+                TableName: TABLES.FOLLOWS,
+                Key: { pk: record.pk, sk: record.sk },
+                UpdateExpression: `SET ${upds.join(', ')}`,
+                ExpressionAttributeValues: vals
+              }));
+            }
+          }
+
+          const followingResult = await docClient.send(new ScanCommand({
+            TableName: TABLES.FOLLOWS,
+            FilterExpression: 'followingUsername = :username',
+            ExpressionAttributeValues: { ':username': normalizedUsername }
+          }));
+          for (const record of (followingResult.Items || [])) {
+            const upds: string[] = [];
+            const vals: any = {};
+            if (profileData.profilePicUrl) { upds.push('followingAvatar = :avatar'); vals[':avatar'] = profileData.profilePicUrl; }
+            if (profileData.displayName) { upds.push('followingDisplayName = :name'); vals[':name'] = profileData.displayName; }
+            if (upds.length > 0) {
+              await docClient.send(new UpdateCommand({
+                TableName: TABLES.FOLLOWS,
+                Key: { pk: record.pk, sk: record.sk },
+                UpdateExpression: `SET ${upds.join(', ')}`,
+                ExpressionAttributeValues: vals
+              }));
+            }
+          }
+        } catch (err) {
+          console.error(`⚠️ Failed to sync profile to FOLLOWS table:`, err);
+        }
+      }
+    }
+    
     // Also update username mapping for lookup by username
     // Use the merged username to ensure mapping stays up to date
     const finalUsername = profileData.username || existingProfile?.username;
