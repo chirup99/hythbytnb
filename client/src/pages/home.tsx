@@ -1963,7 +1963,6 @@ export default function Home() {
   const [isProfileActive, setIsProfileActive] = useState(false);
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [showAdminDashboardDialog, setShowAdminDashboardDialog] = useState(false);
-  const [adminDashboardTab, setAdminDashboardTab] = useState<"bugs-list" | "bugs-fixed" | "influencers">("bugs-list");
   const [showReportBugDialog, setShowReportBugDialog] = useState(false);
   const [reportBugTab, setReportBugTab] = useState<"social-feed" | "journal" | "others">("social-feed");
   const [reportBugTitle, setReportBugTitle] = useState("");
@@ -15990,74 +15989,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 Admin Dashboard
               </DialogTitle>
             </div>
-            {/* Admin Dashboard Tab Switcher */}
-            <div className="flex gap-2 p-4 border-b border-gray-100 dark:border-gray-800">
-              <button
-                onClick={() => setAdminDashboardTab("bugs-list")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  adminDashboardTab === "bugs-list"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                }`}
-              >
-                <Bug className="h-4 w-4" />
-                Bugs List
-              </button>
-              <button
-                onClick={() => setAdminDashboardTab("bugs-fixed")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  adminDashboardTab === "bugs-fixed"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                }`}
-              >
-                <CheckCircle2 className="h-4 w-4" />
-                Bugs Fixed
-              </button>
-              <button
-                onClick={() => setAdminDashboardTab("influencers")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  adminDashboardTab === "influencers"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                }`}
-              >
-                <Users className="h-4 w-4" />
-                Influencers
-              </button>
-            </div>
-
             <div className="p-8 text-center space-y-4">
-              {adminDashboardTab === "bugs-list" && (
-                <div className="space-y-2">
-                  <Bug className="h-12 w-12 text-red-500 mx-auto" />
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Bugs List</h3>
-                  <p className="text-slate-600 dark:text-slate-400">View and manage reported issues.</p>
-                </div>
-              )}
-              {adminDashboardTab === "bugs-fixed" && (
-                <div className="space-y-2">
-                  <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto" />
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Bugs Fixed</h3>
-                  <p className="text-slate-600 dark:text-slate-400">Review resolved bugs and improvements.</p>
-                </div>
-              )}
-              {adminDashboardTab === "influencers" && (
-                <div className="space-y-2">
-                  <Users className="h-12 w-12 text-blue-500 mx-auto" />
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Influencers</h3>
-                  <p className="text-slate-600 dark:text-slate-400">Manage influencer accounts and permissions.</p>
-                </div>
-              )}
+              <Activity className="h-12 w-12 text-blue-500 mx-auto" />
+              <p className="text-slate-600 dark:text-slate-400">
+                Welcome to the Admin Dashboard. This area is currently under development.
+              </p>
               <Button 
                 onClick={() => setShowAdminDashboardDialog(false)}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-4"
-              >
-                Close
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              >                Close
               </Button>
             </div>
           </DialogContent>
         </Dialog>
+{/* Report Bug Dialog */}
         <Dialog open={showReportBugDialog} onOpenChange={setShowReportBugDialog}>
           <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-0 overflow-hidden">
             {/* Header */}
