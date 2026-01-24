@@ -1343,7 +1343,7 @@ export function registerNeoFeedAwsRoutes(app: any) {
         
         console.log(`✨ [Auth Sync] Creating initial profile for ${finalUserId} (username: ${username}, displayName: ${finalDisplayName})`);
         await createOrUpdateUserProfile(finalUserId, {
-          username,
+          username: '', // Leave empty per user request to avoid non-unique placeholders
           displayName: finalDisplayName,
           email: searchEmail,
           createdAt: new Date().toISOString()
