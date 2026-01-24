@@ -710,14 +710,15 @@ export async function createOrUpdateUserProfile(userId: string, profileData: any
       if (username) {
         const normalizedUsername = username.toLowerCase();
         const tablesToSync = [
-          { name: TABLES.USER_POSTS, field: 'authorUsername' },
-          { name: TABLES.COMMENTS, field: 'authorUsername' },
-          { name: TABLES.AUDIO_POSTS, field: 'authorUsername' },
-          { name: TABLES.BANNERS, field: 'authorUsername' }
+          { name: TABLES.USER_POSTS, field: 'authorUsername', avatarField: 'authorAvatar', nameField: 'authorDisplayName' },
+          { name: TABLES.COMMENTS, field: 'authorUsername', avatarField: 'authorAvatar', nameField: 'authorDisplayName' },
+          { name: TABLES.AUDIO_POSTS, field: 'authorUsername', avatarField: 'authorAvatar', nameField: 'authorDisplayName' },
+          { name: TABLES.BANNERS, field: 'authorUsername', avatarField: 'authorAvatar', nameField: 'authorDisplayName' }
         ];
 
         for (const tableConfig of tablesToSync) {
           try {
+            console.log(`🔄 Syncing profile to ${tableConfig.name} for user ${normalizedUsername}...`);
             const scanResult = await docClient.send(new ScanCommand({
               TableName: tableConfig.name,
               FilterExpression: `#usrField = :username`,
@@ -726,28 +727,40 @@ export async function createOrUpdateUserProfile(userId: string, profileData: any
             }));
 
             if (scanResult.Items && scanResult.Items.length > 0) {
+              console.log(`📝 Found ${scanResult.Items.length} items to update in ${tableConfig.name}`);
               for (const record of scanResult.Items) {
                 const updateExpressions: string[] = [];
                 const expressionNames: Record<string, string> = { '#updatedAt': 'updatedAt' };
                 const expressionValues: Record<string, any> = { ':now': timestamp };
 
-                propUpdates.forEach((upd, idx) => {
-                  updateExpressions.push(`#attr${idx} = :val${idx}`);
-                  expressionNames[`#attr${idx}`] = upd.field;
-                  expressionValues[`:val${idx}`] = upd.value;
-                });
+                let valCounter = 0;
+                if (profileData.profilePicUrl) {
+                  updateExpressions.push(`#attr${valCounter} = :val${valCounter}`);
+                  expressionNames[`#attr${valCounter}`] = tableConfig.avatarField;
+                  expressionValues[`:val${valCounter}`] = profileData.profilePicUrl;
+                  valCounter++;
+                }
+                if (profileData.displayName) {
+                  updateExpressions.push(`#attr${valCounter} = :val${valCounter}`);
+                  expressionNames[`#attr${valCounter}`] = tableConfig.nameField;
+                  expressionValues[`:val${valCounter}`] = profileData.displayName;
+                  valCounter++;
+                }
 
-                await docClient.send(new UpdateCommand({
-                  TableName: tableConfig.name,
-                  Key: { pk: record.pk, sk: record.sk },
-                  UpdateExpression: `SET ${updateExpressions.join(', ')}, #updatedAt = :now`,
-                  ExpressionAttributeNames: expressionNames,
-                  ExpressionAttributeValues: expressionValues
-                }));
+                if (updateExpressions.length > 0) {
+                  await docClient.send(new UpdateCommand({
+                    TableName: tableConfig.name,
+                    Key: { pk: record.pk, sk: record.sk },
+                    UpdateExpression: `SET ${updateExpressions.join(', ')}, #updatedAt = :now`,
+                    ExpressionAttributeNames: expressionNames,
+                    ExpressionAttributeValues: expressionValues
+                  }));
+                }
               }
+              console.log(`✅ Successfully synced ${tableConfig.name}`);
             }
           } catch (err) {
-            console.error(`⚠️ Failed to sync profile to ${tableConfig.name}:`, err);
+            console.error(`❌ Failed to sync profile to ${tableConfig.name}:`, err);
           }
         }
 
