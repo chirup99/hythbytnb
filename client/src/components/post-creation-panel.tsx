@@ -443,7 +443,7 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
                   <X className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                 ) : (
                   <Radio className={`h-4 w-4 ${
-                    viewMode === 'audio'
+                    (viewMode as string) === 'audio'
                       ? 'text-purple-600 dark:text-purple-400'
                       : 'text-gray-600 dark:text-gray-400'
                   }`} />
