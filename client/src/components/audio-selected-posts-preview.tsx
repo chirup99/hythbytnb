@@ -60,7 +60,13 @@ export function AudioSelectedPostsPreview({ snippets, onTap, onDeactivate }: Aud
   return (
     <div 
       className="fixed bottom-24 right-4 z-40 cursor-pointer transition-all duration-300 md:bottom-4"
-      onClick={onTap}
+      onClick={() => {
+        if (hasNoSnippets) {
+          onDeactivate();
+        } else {
+          onTap();
+        }
+      }}
       data-testid="audio-selected-preview"
     >
       <div className="relative w-16 h-20" style={{ perspective: '1000px' }}>
@@ -68,10 +74,6 @@ export function AudioSelectedPostsPreview({ snippets, onTap, onDeactivate }: Aud
         {hasNoSnippets ? (
           <div 
             className="absolute inset-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center hover:scale-105 transition-all"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDeactivate();
-            }}
           >
             <div className="flex flex-col items-center gap-1">
               <X className="w-6 h-6 text-red-500" />
