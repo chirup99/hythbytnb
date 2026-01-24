@@ -16003,7 +16003,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   }`}
                   data-testid="button-admin-tab-health"
                 >
-                  <Activity className="h-4 w-4" />
+                  <Bug className="h-4 w-4" />
                   <span>Bugs list</span>
                   {adminTab === "health" && (
                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] text-white ml-1">2</span>
