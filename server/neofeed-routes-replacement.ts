@@ -1279,12 +1279,8 @@ export function registerNeoFeedAwsRoutes(app: any) {
 
       if (searchEmail) {
         try {
-          // Normalize Gmail addresses for identity resolution
-          let normalizedSearchEmail = searchEmail;
-          if (normalizedSearchEmail.endsWith('@gmail.com')) {
-            const [local, domain] = normalizedSearchEmail.split('@');
-            normalizedSearchEmail = local.replace(/\./g, '') + '@' + domain;
-          }
+          // Exactly match the email as provided (no Gmail normalization per user request)
+          const normalizedSearchEmail = searchEmail;
 
           const { GetCommand, PutCommand } = await import('@aws-sdk/lib-dynamodb');
           const { docClient } = await import('./neofeed-dynamodb-migration');
