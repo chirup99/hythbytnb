@@ -439,11 +439,15 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
                 }`}
                 data-testid="button-toggle-audio"
               >
-                <Radio className={`h-4 w-4 ${
-                  viewMode === 'audio'
-                    ? 'text-purple-600 dark:text-purple-400'
-                    : 'text-gray-600 dark:text-gray-400'
-                }`} />
+                {viewMode === 'audio' ? (
+                  <X className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                ) : (
+                  <Radio className={`h-4 w-4 ${
+                    viewMode === 'audio'
+                      ? 'text-purple-600 dark:text-purple-400'
+                      : 'text-gray-600 dark:text-gray-400'
+                  }`} />
+                )}
               </Button>
             )}
           </div>
