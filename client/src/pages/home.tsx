@@ -1963,6 +1963,7 @@ export default function Home() {
   const [isProfileActive, setIsProfileActive] = useState(false);
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [showAdminDashboardDialog, setShowAdminDashboardDialog] = useState(false);
+  const [adminTab, setAdminTab] = useState("health");
   const [showReportBugDialog, setShowReportBugDialog] = useState(false);
   const [reportBugTab, setReportBugTab] = useState<"social-feed" | "journal" | "others">("social-feed");
   const [reportBugTitle, setReportBugTitle] = useState("");
@@ -15981,7 +15982,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                     {/* Tutor Vertical Sidebar - Slides from right */}
 {/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">                                          <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Mini-cast                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                Explore interactive trading lessons and personalized guidance with Mini-cast.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
-        {/* Admin Dashboard Dialog */}
+                {/* Admin Dashboard Dialog */}
         <Dialog open={showAdminDashboardDialog} onOpenChange={setShowAdminDashboardDialog}>
           <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-0 overflow-hidden">
             <div className="p-4 border-b border-gray-200 dark:border-gray-700">
@@ -15989,10 +15990,56 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 Admin Dashboard
               </DialogTitle>
             </div>
+
+            {/* Admin Tab Switcher */}
+            <div className="flex justify-center p-4 border-b border-gray-100 dark:border-gray-800">
+              <div className="flex bg-gray-100 dark:bg-gray-800/50 p-1 rounded-xl w-full max-w-[400px]">
+                <button
+                  onClick={() => setAdminTab("health")}
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    adminTab === "health"
+                      ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
+                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  }`}
+                  data-testid="button-admin-tab-health"
+                >
+                  <Activity className="h-4 w-4" />
+                  <span>Health</span>
+                  {adminTab === "health" && (
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] text-white ml-1">2</span>
+                  )}
+                </button>
+                <button
+                  onClick={() => setAdminTab("activity")}
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    adminTab === "activity"
+                      ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
+                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  }`}
+                  data-testid="button-admin-tab-activity"
+                >
+                  <TrendingUp className="h-4 w-4" />
+                  <span>Activity</span>
+                </button>
+                <button
+                  onClick={() => setAdminTab("settings")}
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    adminTab === "settings"
+                      ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
+                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  }`}
+                  data-testid="button-admin-tab-settings"
+                >
+                  <Settings className="h-4 w-4" />
+                  <span>Settings</span>
+                </button>
+              </div>
+            </div>
+
             <div className="p-8 text-center space-y-4">
               <Activity className="h-12 w-12 text-blue-500 mx-auto" />
               <p className="text-slate-600 dark:text-slate-400">
-                Welcome to the Admin Dashboard. This area is currently under development.
+                Welcome to the Admin Dashboard (${adminTab}). This area is currently under development.
               </p>
               <Button 
                 onClick={() => setShowAdminDashboardDialog(false)}
