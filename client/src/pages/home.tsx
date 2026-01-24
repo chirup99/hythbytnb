@@ -1963,6 +1963,10 @@ export default function Home() {
   const [isProfileActive, setIsProfileActive] = useState(false);
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [showReportBugDialog, setShowReportBugDialog] = useState(false);
+  const [reportBugTab, setReportBugTab] = useState<"social-feed" | "journal" | "others">("social-feed");
+  const [reportBugTitle, setReportBugTitle] = useState("");
+  const [reportBugDescription, setReportBugDescription] = useState("");
+  const [reportBugImage, setReportBugImage] = useState<File | null>(null);
 
   const handleUpdateProfile = async (updates: any) => {
     try {
@@ -15976,7 +15980,137 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                     {/* Tutor Vertical Sidebar - Slides from right */}
 {/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">                                          <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Mini-cast                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                Explore interactive trading lessons and personalized guidance with Mini-cast.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
-{/* Report Bug Dialog */}        <Dialog open={showReportBugDialog} onOpenChange={setShowReportBugDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-6">            <DialogHeader>              <DialogTitle className="text-xl font-bold text-slate-900 dark:text-white">                Report Bug              </DialogTitle>            </DialogHeader>            <div className="py-4">            </div>            <DialogFooter>              <Button                 onClick={() => setShowReportBugDialog(false)}                className="w-full"                data-testid="button-close-report-bug"              >                Close              </Button>            </DialogFooter>          </DialogContent>        </Dialog>
+{/* Report Bug Dialog */}
+        <Dialog open={showReportBugDialog} onOpenChange={setShowReportBugDialog}>
+          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-0 overflow-hidden">
+            {/* Header */}
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+              <DialogTitle className="text-xl font-bold text-slate-900 dark:text-white">
+                Report Bug
+              </DialogTitle>
+            </div>
+            
+            {/* Tab Switcher */}
+            <div className="flex gap-2 p-4 border-b border-gray-100 dark:border-gray-800">
+              <button
+                onClick={() => setReportBugTab("social-feed")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  reportBugTab === "social-feed"
+                    ? "bg-teal-500 text-white"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                }`}
+                data-testid="tab-social-feed"
+              >
+                <Users className="h-4 w-4" />
+                Social Feed
+              </button>
+              <button
+                onClick={() => setReportBugTab("journal")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  reportBugTab === "journal"
+                    ? "bg-teal-500 text-white"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                }`}
+                data-testid="tab-journal"
+              >
+                <BookOpen className="h-4 w-4" />
+                Journal
+              </button>
+              <button
+                onClick={() => setReportBugTab("others")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  reportBugTab === "others"
+                    ? "bg-teal-500 text-white"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                }`}
+                data-testid="tab-others"
+              >
+                <Settings className="h-4 w-4" />
+                Others
+              </button>
+            </div>
+            
+            {/* Form Content */}
+            <div className="p-4 space-y-4">
+              {/* Title Input */}
+              <Input
+                placeholder="Title"
+                value={reportBugTitle}
+                onChange={(e) => setReportBugTitle(e.target.value)}
+                className="w-full bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-xl"
+                data-testid="input-report-bug-title"
+              />
+              
+              {/* Description Textarea */}
+              <Textarea
+                placeholder="Describe the bug in detail..."
+                value={reportBugDescription}
+                onChange={(e) => setReportBugDescription(e.target.value)}
+                className="w-full min-h-[100px] bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-xl resize-none"
+                data-testid="input-report-bug-description"
+              />
+              
+              {/* Image Upload Area */}
+              <div
+                className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer hover:border-teal-400 dark:hover:border-teal-500 transition-colors"
+                onClick={() => document.getElementById('report-bug-image-input')?.click()}
+              >
+                <input
+                  id="report-bug-image-input"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) setReportBugImage(file);
+                  }}
+                  data-testid="input-report-bug-image"
+                />
+                <Upload className="h-6 w-6 mx-auto text-teal-500 mb-2" />
+                {reportBugImage ? (
+                  <p className="text-sm text-teal-600 dark:text-teal-400 font-medium">{reportBugImage.name}</p>
+                ) : (
+                  <>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload or drag and drop image here</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Files Supported: PNG, JPG (max 5mb)</p>
+                  </>
+                )}
+              </div>
+            </div>
+            
+            {/* Footer Buttons */}
+            <div className="flex justify-end gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowReportBugDialog(false);
+                  setReportBugTitle("");
+                  setReportBugDescription("");
+                  setReportBugImage(null);
+                  setReportBugTab("social-feed");
+                }}
+                className="px-6"
+                data-testid="button-cancel-report-bug"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  console.log("Report submitted:", { tab: reportBugTab, title: reportBugTitle, description: reportBugDescription, image: reportBugImage });
+                  setShowReportBugDialog(false);
+                  setReportBugTitle("");
+                  setReportBugDescription("");
+                  setReportBugImage(null);
+                  setReportBugTab("social-feed");
+                }}
+                className="px-6 bg-teal-500 hover:bg-teal-600 text-white"
+                data-testid="button-submit-report-bug"
+              >
+                Report
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
                     {showTutorOverlay && (
                       <>
                         {/* Backdrop */}
