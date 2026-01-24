@@ -701,6 +701,23 @@ export async function createOrUpdateUserProfile(userId: string, profileData: any
     const finalUsername = profileData.username || existingProfile?.username;
     if (finalUsername) {
       const normalizedUsername = finalUsername.toLowerCase();
+      
+      // If the username has changed, delete the old mapping
+      if (existingProfile?.username && existingProfile.username.toLowerCase() !== normalizedUsername) {
+        try {
+          await docClient.send(new DeleteCommand({
+            TableName: TABLES.USER_PROFILES,
+            Key: {
+              pk: `USERNAME#${existingProfile.username.toLowerCase()}`,
+              sk: 'MAPPING'
+            }
+          }));
+          console.log(`🗑️ Old username mapping deleted: ${existingProfile.username.toLowerCase()}`);
+        } catch (delError) {
+          console.error(`⚠️ Failed to delete old username mapping for ${existingProfile.username}:`, delError);
+        }
+      }
+
       await docClient.send(new PutCommand({
         TableName: TABLES.USER_PROFILES,
         Item: {

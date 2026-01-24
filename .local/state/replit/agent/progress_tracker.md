@@ -73,9 +73,7 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ---
 
-## IMPORT SESSION (Jan 24, 2026 - Session 3)
+## IMPORT SESSION (Jan 24, 2026 - Session 4)
 
-[x] 1. Install the required packages - Re-installed dotenv package (was missing from dependencies)
-[x] 2. Restart the workflow - Server running on port 5000 with webview output
-[x] 3. Verify the project is working - All services initialized: Angel One auto-connected (P176266), WebSocket streaming live market data (BANKNIFTY, SENSEX, GOLD), DynamoDB tables ready, NeoFeed tables ready, NLP Agent with 25+ intents, Gemini AI configured, Cognito JWT Verifier ready
-[x] 4. Import completed - Application fully operational and ready for use
+[x] 1. Fix profile update logic - Updated `createOrUpdateUserProfile` in `server/neofeed-dynamodb-migration.ts` to properly handle username changes by deleting the old username mapping in DynamoDB when a new username is set. This prevents orphaned records and ensures the "new username" replaces the old one correctly.
+[x] 2. Restarted the application to apply backend changes.
