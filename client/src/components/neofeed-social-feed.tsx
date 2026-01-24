@@ -3945,8 +3945,12 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
-  // Audio mode for text selection
-  const { selectedTextSnippets } = useAudioMode();
+  const { isAudioMode, setIsAudioMode, selectedTextSnippets, clearSelection } = useAudioMode();
+  
+  const handleDeactivateAudio = () => {
+    setIsAudioMode(false);
+    clearSelection();
+  };
   
   // Handle scroll to hide/show app bar and bottom navigation
   useEffect(() => {
@@ -4457,7 +4461,7 @@ function NeoFeedSocialFeedComponent({ onBackClick }: { onBackClick?: () => void 
         <AudioSelectedPostsPreview
           snippets={selectedTextSnippets}
           onTap={() => setShowMobileAudioMinicast(true)}
-          onDeactivate={() => setIsAudioMode(false)}
+          onDeactivate={handleDeactivateAudio}
         />
       </div>
 
