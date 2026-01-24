@@ -16056,7 +16056,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 Close
               </Button>
             </div>
-{/* Report Bug Dialog */}
+          </DialogContent>
+        </Dialog>
         <Dialog open={showReportBugDialog} onOpenChange={setShowReportBugDialog}>
           <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-0 overflow-hidden">
             {/* Header */}
