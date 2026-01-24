@@ -70,3 +70,4 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 4. Import completed - Application fully operational and ready for use
 [x] 5. Audio MiniCast UI Update - Changed the toggle button to use an X icon when the audio creation mode is active for better clarity.
 [x] 6. Audio Selected Preview Fix - Fixed an issue where tapping the empty card/close button in the audio selected posts preview didn't properly deactivate the audio mode. Added a global click handler to the preview component to ensure deactivation works consistently.
+[x] 7. Audio Dual-Button Interface - Implemented a dual-button UI for the audio preview. Now features a dedicated "Tape" button (when posts are selected) and a separate "Close" card to deactivate the audio mode, providing clear and distinct actions for the user.
