@@ -1254,9 +1254,109 @@ export function registerNeoFeedAwsRoutes(app: any) {
     }
   });
 
-  // Get current user's votes for filtering Likes tab
-  // Check username availability in neofeed-user-profiles
-  app.get('/api/users/check-username/:username', async (req: any, res: any) => {
+  app.post('/api/auth/cognito', async (req: any, res: any) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      const token = authHeader.split(' ')[1];
+      const cognitoUser = await verifyCognitoToken(token);
+      
+      if (!cognitoUser) {
+        return res.status(401).json({ error: 'Invalid token' });
+      }
+
+      const { email, name: displayName } = req.body;
+      const searchEmail = (email || cognitoUser.email || '').toLowerCase();
+      
+      console.log(`👤 [Auth Sync] Cognito sub: ${cognitoUser.sub}, Email: ${searchEmail}`);
+      
+      // Step 1: Identity Resolution - Check if email is already linked to a userId
+      let finalUserId = cognitoUser.sub;
+      let accountLinked = false;
+
+      if (searchEmail) {
+        try {
+          // Normalize Gmail addresses for identity resolution
+          let normalizedSearchEmail = searchEmail;
+          if (normalizedSearchEmail.endsWith('@gmail.com')) {
+            const [local, domain] = normalizedSearchEmail.split('@');
+            normalizedSearchEmail = local.replace(/\./g, '') + '@' + domain;
+          }
+
+          const { GetCommand, PutCommand } = await import('@aws-sdk/lib-dynamodb');
+          const { docClient } = await import('./neofeed-dynamodb-migration');
+
+          // Check for existing link in USER_PROFILES using Email as key
+          // This allows multiple login methods (Password, Google) to map to same profile
+          const emailLinkResult = await docClient.send(new GetCommand({
+            TableName: TABLES.USER_PROFILES,
+            Key: {
+              pk: `USER_EMAIL#${normalizedSearchEmail}`,
+              sk: 'IDENTITY_LINK'
+            }
+          }));
+
+          if (emailLinkResult.Item && emailLinkResult.Item.userId) {
+            finalUserId = emailLinkResult.Item.userId;
+            accountLinked = true;
+            console.log(`🔗 [Auth Sync] Account linked via email! ${cognitoUser.sub} -> ${finalUserId}`);
+            
+            // Create a mapping from this specific Cognito sub to the canonical userId
+            // This speeds up future identity resolution in middleware
+            await docClient.send(new PutCommand({
+              TableName: TABLES.USER_PROFILES,
+              Item: {
+                pk: `USER#${cognitoUser.sub}`,
+                sk: 'IDENTITY_MAPPING',
+                canonicalUserId: finalUserId,
+                linkedAt: new Date().toISOString()
+              }
+            }));
+          } else {
+            // No link exists, create one for this email
+            await docClient.send(new PutCommand({
+              TableName: TABLES.USER_PROFILES,
+              Item: {
+                pk: `USER_EMAIL#${normalizedSearchEmail}`,
+                sk: 'IDENTITY_LINK',
+                userId: finalUserId,
+                createdAt: new Date().toISOString()
+              }
+            }));
+            console.log(`📝 [Auth Sync] Created new identity link for email: ${normalizedSearchEmail}`);
+          }
+        } catch (linkError) {
+          console.warn('⚠️ [Auth Sync] Identity resolution failed:', linkError);
+        }
+      }
+
+      // Step 2: Ensure profile exists for the canonical userId
+      const existingProfile = await getUserProfile(finalUserId);
+      
+      if (!existingProfile) {
+        const username = searchEmail.split('@')[0];
+        console.log(`✨ [Auth Sync] Creating initial profile for ${finalUserId} (username: ${username})`);
+        await createOrUpdateUserProfile(finalUserId, {
+          username,
+          displayName: displayName || username,
+          email: searchEmail,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      res.json({ 
+        success: true, 
+        userId: finalUserId,
+        accountLinked
+      });
+    } catch (error: any) {
+      console.error('❌ [Auth Sync] Error:', error);
+      res.status(500).json({ error: 'Failed to sync authentication' });
+    }
+  });
     try {
       const { username } = req.params;
       if (!username) return res.status(400).json({ error: 'Username is required' });
