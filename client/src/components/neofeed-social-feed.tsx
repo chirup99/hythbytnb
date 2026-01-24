@@ -1505,7 +1505,15 @@ function ProfileHeader() {
         profileData={profileData}
         onSuccess={() => {
           setShowEditProfile(false);
-          window.location.reload();
+          // Invalidate all relevant social feed queries to refresh UI data
+          queryClient.invalidateQueries({ queryKey: ['/api/user/profile'] });
+          queryClient.invalidateQueries({ queryKey: ['/api/social-posts'] });
+          queryClient.invalidateQueries({ queryKey: ['/api/social-posts/news'] });
+          queryClient.invalidateQueries({ queryKey: ['/api/social-posts/audio'] });
+          // Force a small delay then reload to ensure DynamoDB eventual consistency has a chance
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         }}
       />
 
