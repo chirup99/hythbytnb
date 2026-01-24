@@ -1268,7 +1268,7 @@ export function registerNeoFeedAwsRoutes(app: any) {
         return res.status(401).json({ error: 'Invalid token' });
       }
 
-      const { email, name: displayName } = req.body;
+      const { email, name: displayName, displayName: userDisplayName } = req.body;
       const searchEmail = (email || cognitoUser.email || '').toLowerCase();
       
       console.log(`👤 [Auth Sync] Cognito sub: ${cognitoUser.sub}, Email: ${searchEmail}`);
@@ -1337,13 +1337,22 @@ export function registerNeoFeedAwsRoutes(app: any) {
       const existingProfile = await getUserProfile(finalUserId);
       
       if (!existingProfile) {
+        // Use provided display name or fall back to username from email
         const username = searchEmail.split('@')[0];
-        console.log(`✨ [Auth Sync] Creating initial profile for ${finalUserId} (username: ${username})`);
+        const finalDisplayName = displayName || userDisplayName || username;
+        
+        console.log(`✨ [Auth Sync] Creating initial profile for ${finalUserId} (username: ${username}, displayName: ${finalDisplayName})`);
         await createOrUpdateUserProfile(finalUserId, {
           username,
-          displayName: displayName || username,
+          displayName: finalDisplayName,
           email: searchEmail,
           createdAt: new Date().toISOString()
+        });
+      } else if (displayName && !existingProfile.displayName) {
+        // Update display name if it was missing but is now provided (e.g., first social login)
+        console.log(`📝 [Auth Sync] Updating missing display name for ${finalUserId}: ${displayName}`);
+        await createOrUpdateUserProfile(finalUserId, {
+          displayName: displayName
         });
       }
 
