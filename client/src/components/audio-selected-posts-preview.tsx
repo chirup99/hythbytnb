@@ -74,6 +74,10 @@ export function AudioSelectedPostsPreview({ snippets, onTap, onDeactivate }: Aud
         {hasNoSnippets ? (
           <div 
             className="absolute inset-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center hover:scale-105 transition-all"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDeactivate();
+            }}
           >
             <div className="flex flex-col items-center gap-1">
               <X className="w-6 h-6 text-red-500" />
