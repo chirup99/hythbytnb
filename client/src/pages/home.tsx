@@ -15993,45 +15993,37 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
             {/* Admin Tab Switcher */}
             <div className="flex justify-center px-6 pb-6">
-              <div className="flex bg-slate-100/80 dark:bg-slate-800/40 p-1 rounded-2xl w-full">
+              <div className="flex bg-[#0a0f1d] p-1.5 rounded-xl w-full border border-slate-800/50 shadow-inner">
                 <button
                   onClick={() => setAdminTab("bugs-list")}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    adminTab === "bugs-list"
-                      ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
-                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                  }`}
-                  data-testid="button-admin-tab-health"
+                  className={`relative flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all ${ adminTab === "bugs-list" ? "text-blue-400" : "text-slate-400 hover:text-slate-300" }`}
+                  data-testid="button-admin-tab-bugs-list"
                 >
-                  <Bug className="h-4 w-4" />
                   <span>Bugs list</span>
-                  {adminTab === "health" && (
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] text-white ml-1">2</span>
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[11px] font-bold text-white ml-1 shadow-[0_0_10px_rgba(37,99,235,0.4)]">2</span>
+                  {adminTab === "bugs-list" && (
+                    <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
                   )}
                 </button>
                 <button
                   onClick={() => setAdminTab("bugs-fixed")}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    adminTab === "bugs-fixed"
-                      ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
-                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                  }`}
-                  data-testid="button-admin-tab-activity"
+                  className={`relative flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all ${ adminTab === "bugs-fixed" ? "text-blue-400" : "text-slate-400 hover:text-slate-300" }`}
+                  data-testid="button-admin-tab-bugs-fixed"
                 >
-                  <TrendingUp className="h-4 w-4" />
                   <span>Bugs fixed</span>
+                  {adminTab === "bugs-fixed" && (
+                    <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+                  )}
                 </button>
                 <button
                   onClick={() => setAdminTab("influencer")}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    adminTab === "influencer"
-                      ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
-                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                  }`}
-                  data-testid="button-admin-tab-settings"
+                  className={`relative flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all ${ adminTab === "influencer" ? "text-blue-400" : "text-slate-400 hover:text-slate-300" }`}
+                  data-testid="button-admin-tab-influencer"
                 >
-                  <Users className="h-4 w-4" />
                   <span>Influencer</span>
+                  {adminTab === "influencer" && (
+                    <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+                  )}
                 </button>
               </div>
             </div>
