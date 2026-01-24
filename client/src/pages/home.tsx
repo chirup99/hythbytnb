@@ -15984,16 +15984,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 {/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">                                          <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Mini-cast                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                Explore interactive trading lessons and personalized guidance with Mini-cast.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
                 {/* Admin Dashboard Dialog */}
         <Dialog open={showAdminDashboardDialog} onOpenChange={setShowAdminDashboardDialog}>
-          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-0 overflow-hidden">
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-              <DialogTitle className="text-xl font-bold text-slate-900 dark:text-white">
+          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-xl rounded-3xl p-0 overflow-hidden">
+            <div className="p-6 text-center">
+              <DialogTitle className="text-lg font-semibold text-slate-800 dark:text-slate-100 tracking-tight">
                 Admin Dashboard
               </DialogTitle>
             </div>
 
             {/* Admin Tab Switcher */}
-            <div className="flex justify-center p-4 border-b border-gray-100 dark:border-gray-800">
-              <div className="flex bg-gray-100 dark:bg-gray-800/50 p-1 rounded-xl w-full max-w-[400px]">
+            <div className="flex justify-center px-6 pb-6">
+              <div className="flex bg-slate-100/80 dark:bg-slate-800/40 p-1 rounded-2xl w-full">
                 <button
                   onClick={() => setAdminTab("bugs-list")}
                   className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -16036,15 +16036,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               </div>
             </div>
 
-            <div className="p-8 text-center space-y-4">
-              <Activity className="h-12 w-12 text-blue-500 mx-auto" />
+            <div className="px-8 pb-8 text-center space-y-4">
+              <div className="mx-auto w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center mb-2"><Activity className="h-6 w-6 text-slate-400 dark:text-slate-500" /></div>
               <p className="text-slate-600 dark:text-slate-400">
                 Welcome to the Admin Dashboard (${adminTab}). This area is currently under development.
               </p>
               <Button 
+                variant="ghost"
                 onClick={() => setShowAdminDashboardDialog(false)}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              >                Close
+                className="w-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl font-medium"
+              >
+                Dismiss
               </Button>
             </div>
           </DialogContent>
