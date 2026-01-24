@@ -701,20 +701,108 @@ export async function createOrUpdateUserProfile(userId: string, profileData: any
     const finalUsername = profileData.username || existingProfile?.username;
     if (finalUsername) {
       const normalizedUsername = finalUsername.toLowerCase();
+      const oldUsername = existingProfile?.username ? existingProfile.username.toLowerCase() : null;
       
-      // If the username has changed, delete the old mapping
-      if (existingProfile?.username && existingProfile.username.toLowerCase() !== normalizedUsername) {
+      // If the username has changed, delete the old mapping and update all linked tables
+      if (oldUsername && oldUsername !== normalizedUsername) {
         try {
+          console.log(`🔄 Username changed from ${oldUsername} to ${normalizedUsername}. Cascading updates...`);
+          
+          // 1. Delete the old username mapping
           await docClient.send(new DeleteCommand({
             TableName: TABLES.USER_PROFILES,
             Key: {
-              pk: `USERNAME#${existingProfile.username.toLowerCase()}`,
+              pk: `USERNAME#${oldUsername}`,
               sk: 'MAPPING'
             }
           }));
-          console.log(`🗑️ Old username mapping deleted: ${existingProfile.username.toLowerCase()}`);
+          console.log(`🗑️ Old username mapping deleted: ${oldUsername}`);
+
+          // 2. Cascade updates to all linked tables
+          const tablesToUpdate = [
+            { name: TABLES.USER_POSTS, field: 'authorUsername' },
+            { name: TABLES.LIKES, field: 'userId' },
+            { name: TABLES.DOWNTRENDS, field: 'userId' },
+            { name: TABLES.RETWEETS, field: 'userId' },
+            { name: TABLES.COMMENTS, field: 'authorUsername' },
+            { name: TABLES.AUDIO_POSTS, field: 'authorUsername' },
+            { name: TABLES.BANNERS, field: 'authorUsername' }
+          ];
+
+          for (const tableConfig of tablesToUpdate) {
+            try {
+              // Note: For large datasets, this should be done via GSI and BatchWriteItem or a background job.
+              // For now, we use a scan and update for simplicity, assuming reasonable data volume.
+              const scanResult = await docClient.send(new ScanCommand({
+                TableName: tableConfig.name,
+                FilterExpression: `#field = :oldUsername`,
+                ExpressionAttributeNames: { '#field': tableConfig.field },
+                ExpressionAttributeValues: { ':oldUsername': oldUsername }
+              }));
+
+              if (scanResult.Items && scanResult.Items.length > 0) {
+                console.log(`📝 Updating ${scanResult.Items.length} items in ${tableConfig.name}...`);
+                for (const item of scanResult.Items) {
+                  await docClient.send(new UpdateCommand({
+                    TableName: tableConfig.name,
+                    Key: { pk: item.pk, sk: item.sk },
+                    UpdateExpression: `SET #field = :newUsername, updatedAt = :now`,
+                    ExpressionAttributeNames: { '#field': tableConfig.field },
+                    ExpressionAttributeValues: { 
+                      ':newUsername': normalizedUsername,
+                      ':now': timestamp
+                    }
+                  }));
+                }
+              }
+            } catch (tableError) {
+              console.error(`⚠️ Failed to update items in ${tableConfig.name}:`, tableError);
+            }
+          }
+
+          // 3. Update FOLLOWS table (both follower and following fields)
+          try {
+            // Update where user is follower
+            const followerResult = await docClient.send(new ScanCommand({
+              TableName: TABLES.FOLLOWS,
+              FilterExpression: 'followerUsername = :oldUsername',
+              ExpressionAttributeValues: { ':oldUsername': oldUsername }
+            }));
+            for (const item of (followerResult.Items || [])) {
+              await docClient.send(new UpdateCommand({
+                TableName: TABLES.FOLLOWS,
+                Key: { pk: item.pk, sk: item.sk },
+                UpdateExpression: 'SET followerUsername = :newUsername, followId = :newFollowId',
+                ExpressionAttributeValues: { 
+                  ':newUsername': normalizedUsername,
+                  ':newFollowId': `${normalizedUsername}_${item.followingUsername}`
+                }
+              }));
+            }
+
+            // Update where user is being followed
+            const followingResult = await docClient.send(new ScanCommand({
+              TableName: TABLES.FOLLOWS,
+              FilterExpression: 'followingUsername = :oldUsername',
+              ExpressionAttributeValues: { ':oldUsername': oldUsername }
+            }));
+            for (const item of (followingResult.Items || [])) {
+              await docClient.send(new UpdateCommand({
+                TableName: TABLES.FOLLOWS,
+                Key: { pk: item.pk, sk: item.sk },
+                UpdateExpression: 'SET followingUsername = :newUsername, followId = :newFollowId',
+                ExpressionAttributeValues: { 
+                  ':newUsername': normalizedUsername,
+                  ':newFollowId': `${item.followerUsername}_${normalizedUsername}`
+                }
+              }));
+            }
+          } catch (followError) {
+            console.error(`⚠️ Failed to update follows for ${oldUsername}:`, followError);
+          }
+
         } catch (delError) {
-          console.error(`⚠️ Failed to delete old username mapping for ${existingProfile.username}:`, delError);
+          console.error(`⚠️ Failed to delete old username mapping or cascade updates for ${oldUsername}:`, delError);
         }
       }
 
