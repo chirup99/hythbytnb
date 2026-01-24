@@ -13750,7 +13750,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
                                     data-testid="nav-admin-dashboard"
                                   >
-                                    <Activity className="h-4 w-4" />
+                                    <Bug className="h-4 w-4" />
                                     <span>Admin -dashboard</span>
                                   </button>
                                   <button
@@ -15449,7 +15449,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         }
                       >
                         <div className="flex items-center gap-2">
-                          <TrendingUp className="h-4 w-4" />
+                          <CheckCircle2 className="h-4 w-4" />
                           <span>IPO Updates</span>
                         </div>
                       </Button> */}
@@ -15995,43 +15995,43 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             <div className="flex justify-center p-4 border-b border-gray-100 dark:border-gray-800">
               <div className="flex bg-gray-100 dark:bg-gray-800/50 p-1 rounded-xl w-full max-w-[400px]">
                 <button
-                  onClick={() => setAdminTab("health")}
+                  onClick={() => setAdminTab("bugs-list")}
                   className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    adminTab === "health"
+                    adminTab === "bugs-list"
                       ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
                       : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                   }`}
                   data-testid="button-admin-tab-health"
                 >
                   <Activity className="h-4 w-4" />
-                  <span>Health</span>
+                  <span>Bugs list</span>
                   {adminTab === "health" && (
                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] text-white ml-1">2</span>
                   )}
                 </button>
                 <button
-                  onClick={() => setAdminTab("activity")}
+                  onClick={() => setAdminTab("bugs-fixed")}
                   className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    adminTab === "activity"
+                    adminTab === "bugs-fixed"
                       ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
                       : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                   }`}
                   data-testid="button-admin-tab-activity"
                 >
                   <TrendingUp className="h-4 w-4" />
-                  <span>Activity</span>
+                  <span>Bugs fixed</span>
                 </button>
                 <button
-                  onClick={() => setAdminTab("settings")}
+                  onClick={() => setAdminTab("influencer")}
                   className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    adminTab === "settings"
+                    adminTab === "influencer"
                       ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
                       : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                   }`}
                   data-testid="button-admin-tab-settings"
                 >
-                  <Settings className="h-4 w-4" />
-                  <span>Settings</span>
+                  <Users className="h-4 w-4" />
+                  <span>Influencer</span>
                 </button>
               </div>
             </div>
