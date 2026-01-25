@@ -2,6 +2,16 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import axios from "axios";
+import multer from "multer";
+
+// Configure multer for memory storage (files stored in memory as Buffer)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB max file size
+    files: 5 // Max 5 files
+  }
+});
 import crypto from "crypto";
 import { storage } from "./storage";
 import { angelOneApi } from "./angel-one-api";
