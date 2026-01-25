@@ -1971,6 +1971,49 @@ export default function Home() {
   const [reportBugFiles, setReportBugFiles] = useState<File[]>([]);
   const [reportBugSubmitting, setReportBugSubmitting] = useState(false);
 
+  const handleReportBug = async () => {
+    if (!reportBugTitle || !reportBugDescription || reportBugSubmitting) return;
+
+    setReportBugSubmitting(true);
+    try {
+      const response = await fetch("/api/report-bug", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token") || ""}`
+        },
+        body: JSON.stringify({
+          title: reportBugTitle,
+          description: reportBugDescription,
+          tab: reportBugTab,
+          imageUrls: [] 
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to submit bug report");
+
+      toast({
+        title: "Success",
+        description: "Bug report submitted successfully. Thank you!",
+      });
+
+      setShowReportBugDialog(false);
+      setReportBugTitle("");
+      setReportBugDescription("");
+      setReportBugFiles([]);
+      setReportBugTab("social-feed");
+    } catch (error) {
+      console.error("Error submitting bug report:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit bug report. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setReportBugSubmitting(false);
+    }
+  };
+
   const handleUpdateProfile = async (updates: any) => {
     try {
       const token = await getCognitoToken();
@@ -16257,6 +16300,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 Cancel
               </Button>
               <Button
+                onClick={handleReportBug}
+                disabled={reportBugSubmitting || !reportBugTitle || !reportBugDescription}
                 data-testid="button-submit-report-bug"
               >
                 {reportBugSubmitting ? "Submitting..." : "Report"}

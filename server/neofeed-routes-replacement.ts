@@ -34,6 +34,7 @@ import {
   getFollowersList,
   getFollowingList,
   getAllRepostsForFeed,
+  createBugReport,
   TABLES 
 } from './neofeed-dynamodb-migration';
 
@@ -104,6 +105,26 @@ async function enrichPostWithRealCounts(post: any): Promise<any> {
 
 export function registerNeoFeedAwsRoutes(app: any) {
   console.log('🔷 Registering NeoFeed AWS DynamoDB routes...');
+
+  app.post('/api/report-bug', async (req: any, res: any) => {
+    try {
+      const user = await getAuthenticatedUser(req);
+      const { title, description, tab, imageUrls } = req.body;
+      const bugData = {
+        userId: user?.userId || 'anonymous',
+        username: user?.username || 'anonymous',
+        title,
+        description,
+        tab,
+        imageUrls: imageUrls || []
+      };
+      const result = await createBugReport(bugData);
+      res.json(result);
+    } catch (error) {
+      console.error('❌ Error submitting bug report:', error);
+      res.status(500).json({ error: 'Failed to submit bug report' });
+    }
+  });
 
   // Admin endpoint to check and clean up duplicate likes (Twitter-style: 1 like per user per post)
   app.get('/api/admin/check-likes', async (req: any, res: any) => {
