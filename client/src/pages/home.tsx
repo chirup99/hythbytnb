@@ -16098,9 +16098,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               {adminTab === "admin-access" ? (
                 <div className="p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between px-1">
-                      <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Authorized Access</h4>
-                      <Badge variant="outline" className="text-[9px] h-4 border-slate-200 dark:border-slate-800">1 Total</Badge>
+                    <div className="flex items-center gap-4 px-1">
+                      <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Authorized Access</h4>
+                      <div className="flex-1 max-w-xs relative group">
+                      <Badge variant="outline" className="text-[9px] h-4 border-slate-200 dark:border-slate-800 whitespace-nowrap">1 Total</Badge>
+                        <Input 
+                          placeholder="Search admins..." 
+                          className="h-8 pl-9 bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-800 rounded-lg text-[11px] focus-visible:ring-1 focus-visible:ring-blue-500/50 transition-all"
+                          data-testid="input-admin-search"
+                        />
+                      </div>
                     </div>
                     <div className="flex items-center justify-between p-3.5 bg-slate-50/50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800/50">
                       <div className="flex items-center gap-3">
