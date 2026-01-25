@@ -16098,33 +16098,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               {adminTab === "admin-access" ? (
                 <div className="p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-2 px-1">
+                    <div className="flex items-center justify-between gap-4 px-1 w-full">
                       <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Authorized Access</h4>
-                      <div className="flex-1 flex justify-center">
-                        <div className="relative group">
+                      <div className="flex-1">
+                        <div className="relative group w-full">
                           <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
                           <Input 
-                            className="h-6 w-[180px] pl-6 bg-slate-50/50 dark:bg-slate-800/50 border-none rounded-md text-[10px] focus-visible:ring-1 focus-visible:ring-blue-500/30 transition-all"
-                            className="h-6 w-[120px] pl-6 bg-slate-50/50 dark:bg-slate-800/50 border-none rounded-md text-[10px] focus-visible:ring-1 focus-visible:ring-blue-500/30 transition-all"
+                            placeholder="Search accounts..." 
+                            className="h-7 w-full pl-7 bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 rounded-lg text-[11px] focus-visible:ring-1 focus-visible:ring-blue-500/30 transition-all"
                             data-testid="input-admin-search"
                           />
                         </div>
                       </div>
-                      <Badge variant="outline" className="text-[9px] h-3.5 px-1.5 border-slate-200 dark:border-slate-800 whitespace-nowrap">1 Total</Badge>
+                      <Badge variant="outline" className="text-[9px] h-4 px-2 border-slate-200 dark:border-slate-800 whitespace-nowrap bg-slate-50/50 dark:bg-slate-800/50">1 Total</Badge>
                     </div>
-                    <div className="flex items-center justify-between p-3.5 bg-slate-50/50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800/50">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-[11px] font-bold text-blue-600">CP</div>
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-200">chiranjeevi.perala99@gmail.com</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                        <span className="text-[10px] font-semibold text-green-600 dark:text-green-400">ACTIVE</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
                 <div className="px-8 pb-8 text-center space-y-4 pt-12">
                   <div className="mx-auto w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center mb-2"><Activity className="h-6 w-6 text-slate-400 dark:text-slate-500" /></div>
                   <p className="text-slate-600 dark:text-slate-400">Welcome to the Admin Dashboard ({adminTab}). This area is currently under development.</p>
