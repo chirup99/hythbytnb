@@ -1968,7 +1968,8 @@ export default function Home() {
   const [reportBugTab, setReportBugTab] = useState<"social-feed" | "journal" | "others">("social-feed");
   const [reportBugTitle, setReportBugTitle] = useState("");
   const [reportBugDescription, setReportBugDescription] = useState("");
-  const [reportBugImage, setReportBugImage] = useState<File | null>(null);
+  const [reportBugFiles, setReportBugFiles] = useState<File[]>([]);
+  const [reportBugSubmitting, setReportBugSubmitting] = useState(false);
 
   const handleUpdateProfile = async (updates: any) => {
     try {
@@ -16113,29 +16114,58 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 data-testid="input-report-bug-description"
               />
               
-              {/* Image Upload Area */}
+              {/* Multi-File Upload Area */}
               <div
                 className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer hover:border-teal-400 dark:hover:border-teal-500 transition-colors"
-                onClick={() => document.getElementById('report-bug-image-input')?.click()}
+                onClick={() => document.getElementById('report-bug-file-input')?.click()}
               >
                 <input
-                  id="report-bug-image-input"
+                  id="report-bug-file-input"
                   type="file"
-                  accept="image/*"
+                  accept="image/*,video/*"
+                  multiple
                   className="hidden"
                   onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) setReportBugImage(file);
+                    const files = Array.from(e.target.files || []);
+                    const maxSize = 10 * 1024 * 1024; // 10MB
+                    const validFiles = files.filter(file => {
+                      if (file.size > maxSize) {
+                        alert(`File "${file.name}" exceeds 10MB limit`);
+                        return false;
+                      }
+                      return true;
+                    });
+                    const totalFiles = [...reportBugFiles, ...validFiles].slice(0, 5);
+                    setReportBugFiles(totalFiles);
                   }}
-                  data-testid="input-report-bug-image"
+                  data-testid="input-report-bug-files"
                 />
                 <Upload className="h-6 w-6 mx-auto text-teal-500 mb-2" />
-                {reportBugImage ? (
-                  <p className="text-sm text-teal-600 dark:text-teal-400 font-medium">{reportBugImage.name}</p>
+                {reportBugFiles.length > 0 ? (
+                  <div className="space-y-2">
+                    <p className="text-sm text-teal-600 dark:text-teal-400 font-medium">
+                      {reportBugFiles.length} file(s) selected
+                    </p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {reportBugFiles.map((file, index) => (
+                        <div 
+                          key={index} 
+                          className="flex items-center gap-1 bg-teal-100 dark:bg-teal-900 px-2 py-1 rounded-lg text-xs"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setReportBugFiles(reportBugFiles.filter((_, i) => i !== index));
+                          }}
+                        >
+                          <span className="text-teal-700 dark:text-teal-300 max-w-[100px] truncate">{file.name}</span>
+                          <X className="h-3 w-3 text-teal-700 dark:text-teal-300 cursor-pointer hover:text-red-500" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 ) : (
                   <>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload or drag and drop image here</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Files Supported: PNG, JPG (max 5mb)</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload or drag and drop files here</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Images & Videos (max 10MB each, up to 5 files)</p>
                   </>
                 )}
               </div>
@@ -16149,27 +16179,89 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   setShowReportBugDialog(false);
                   setReportBugTitle("");
                   setReportBugDescription("");
-                  setReportBugImage(null);
+                  setReportBugFiles([]);
                   setReportBugTab("social-feed");
                 }}
                 className="px-6"
+                disabled={reportBugSubmitting}
                 data-testid="button-cancel-report-bug"
               >
                 Cancel
               </Button>
               <Button
-                onClick={() => {
-                  console.log("Report submitted:", { tab: reportBugTab, title: reportBugTitle, description: reportBugDescription, image: reportBugImage });
-                  setShowReportBugDialog(false);
-                  setReportBugTitle("");
-                  setReportBugDescription("");
-                  setReportBugImage(null);
-                  setReportBugTab("social-feed");
+                onClick={async () => {
+                  if (!reportBugTitle.trim() || !reportBugDescription.trim()) {
+                    alert("Please fill in both title and description");
+                    return;
+                  }
+                  
+                  setReportBugSubmitting(true);
+                  try {
+                    let mediaUrls: string[] = [];
+                    
+                    // Upload files if any
+                    if (reportBugFiles.length > 0) {
+                      const formData = new FormData();
+                      reportBugFiles.forEach(file => formData.append('files', file));
+                      
+                      const uploadResponse = await fetch('/api/bug-reports/upload-media', {
+                        method: 'POST',
+                        body: formData
+                      });
+                      
+                      if (!uploadResponse.ok) {
+                        const error = await uploadResponse.json();
+                        throw new Error(error.error || 'Failed to upload files');
+                      }
+                      
+                      const uploadResult = await uploadResponse.json();
+                      mediaUrls = uploadResult.urls || [];
+                    }
+                    
+                    // Map tab to bugLocate value
+                    const bugLocateMap: Record<string, string> = {
+                      'social-feed': 'social_feed',
+                      'journal': 'journal',
+                      'others': 'others'
+                    };
+                    
+                    // Submit bug report
+                    const reportResponse = await fetch('/api/bug-reports', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        username: userProfile?.username || 'anonymous',
+                        emailId: userProfile?.email || 'unknown@example.com',
+                        bugLocate: bugLocateMap[reportBugTab] || 'others',
+                        title: reportBugTitle,
+                        description: reportBugDescription,
+                        bugMedia: mediaUrls
+                      })
+                    });
+                    
+                    if (!reportResponse.ok) {
+                      const error = await reportResponse.json();
+                      throw new Error(error.error || 'Failed to submit report');
+                    }
+                    
+                    alert("Bug report submitted successfully! Thank you for your feedback.");
+                    setShowReportBugDialog(false);
+                    setReportBugTitle("");
+                    setReportBugDescription("");
+                    setReportBugFiles([]);
+                    setReportBugTab("social-feed");
+                  } catch (error: any) {
+                    console.error("Error submitting bug report:", error);
+                    alert("Failed to submit bug report: " + error.message);
+                  } finally {
+                    setReportBugSubmitting(false);
+                  }
                 }}
                 className="px-6 bg-teal-500 hover:bg-teal-600 text-white"
+                disabled={reportBugSubmitting}
                 data-testid="button-submit-report-bug"
               >
-                Report
+                {reportBugSubmitting ? "Submitting..." : "Report"}
               </Button>
             </div>
           </DialogContent>
