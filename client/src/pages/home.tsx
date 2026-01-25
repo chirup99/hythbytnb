@@ -1909,6 +1909,55 @@ const getFullApiUrl = (path: string): string => {
   return `${API_BASE_URL}${path}`;
 };
 
+interface FilePreviewProps {
+  file: File;
+  onRemove: () => void;
+}
+
+const FilePreview = ({ file, onRemove }: FilePreviewProps) => {
+  const [url, setUrl] = React.useState<string>("");
+  const isImage = file.type.startsWith("image/");
+  const isVideo = file.type.startsWith("video/");
+
+  React.useEffect(() => {
+    const u = URL.createObjectURL(file);
+    setUrl(u);
+    return () => URL.revokeObjectURL(u);
+  }, [file]);
+
+  if (!url) return null;
+
+  return (
+    <div className="relative group w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+      {isImage ? (
+        <img src={url} alt={file.name} className="w-full h-full object-cover" />
+      ) : isVideo ? (
+        <video src={url} className="w-full h-full object-cover" preload="metadata" muted playsInline />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center">
+          <Upload className="h-6 w-6 text-gray-400" />
+        </div>
+      )}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove();
+        }}
+        className="absolute top-1 right-1 p-1 bg-black/50 hover:bg-red-500 text-white rounded-full transition-colors opacity-0 group-hover:opacity-100 z-10"
+      >
+        <X className="h-3 w-3" />
+      </button>
+      {isVideo && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="bg-black/30 rounded-full p-1">
+            <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[6px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 export default function Home() {
   const [activeVoiceProfileId, setActiveVoiceProfileId] = useState<string>(() => { if (typeof window !== 'undefined') { return localStorage.getItem('activeVoiceProfileId') || 'ravi'; } return 'ravi'; });
 
@@ -16143,113 +16192,21 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   
                   if (pastedFiles.length > 0) {
                     const totalFiles = [...reportBugFiles, ...pastedFiles].slice(0, 5);
-                    setReportBugFiles(totalFiles);
-                  }
-                }}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  const files = Array.from(e.dataTransfer?.files || []);
-                  const maxSize = 10 * 1024 * 1024;
-                  const validFiles = files.filter(file => {
-                    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-                      return false;
-                    }
-                    if (file.size > maxSize) {
-                      alert(`File "${file.name}" exceeds 10MB limit`);
-                      return false;
-                    }
-                    return true;
-                  });
-                  const totalFiles = [...reportBugFiles, ...validFiles].slice(0, 5);
-                  setReportBugFiles(totalFiles);
-                }}
-                data-testid="dropzone-report-bug-files"
-              >
-                <input
-                  id="report-bug-file-input"
-                  type="file"
-                  accept="image/*,video/*"
-                  multiple
-                  className="hidden"
-                  onChange={(e) => {
-                    const files = Array.from(e.target.files || []);
-                    const maxSize = 10 * 1024 * 1024; // 10MB
-                    const validFiles = files.filter(file => {
-                      if (file.size > maxSize) {
-                        alert(`File "${file.name}" exceeds 10MB limit`);
-                        return false;
-                      }
-                      return true;
-                    });
-                    const totalFiles = [...reportBugFiles, ...validFiles].slice(0, 5);
-                    setReportBugFiles(totalFiles);
-                  }}
-                  data-testid="input-report-bug-files"
-                />
-                <Upload className="h-6 w-6 mx-auto text-teal-500 mb-2" />
                 {reportBugFiles.length > 0 ? (
                   <div className="space-y-4">
                     <div className="flex flex-wrap gap-3 justify-center">
-                      {reportBugFiles.map((file, index) => {
-                        const isImage = file.type.startsWith("image/");
-                        const isVideo = file.type.startsWith("video/");
-                        const previewUrl = URL.createObjectURL(file);
-                        
-                        return (
-                          <div 
-                            key={index} 
-                            className="relative group w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700"
-                          >
-                            {isImage ? (
-                              <img 
-                                src={previewUrl} 
-                                alt={file.name} 
-                                className="w-full h-full object-cover"
-                              />
-                            ) : isVideo ? (
-                              <video 
-                                src={previewUrl} 
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <Upload className="h-6 w-6 text-gray-400" />
-                              </div>
-                            )}
-                            
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                URL.revokeObjectURL(previewUrl);
-                                setReportBugFiles(reportBugFiles.filter((_, i) => i !== index));
-                              }}
-                              className="absolute top-1 right-1 p-1 bg-black/50 hover:bg-red-500 text-white rounded-full transition-colors opacity-0 group-hover:opacity-100"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                            
-                            {isVideo && (
-                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <div className="bg-black/30 rounded-full p-1">
-                                  <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[6px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
+                      {reportBugFiles.map((file, index) => (
+                        <FilePreview 
+                          key={`${file.name}-${index}`} 
+                          file={file} 
+                          onRemove={() => setReportBugFiles(reportBugFiles.filter((_, i) => i !== index))}
+                        />
+                      ))}
                     </div>
                     <p className="text-xs text-gray-400 dark:text-gray-500 font-medium">
                       {reportBugFiles.length} of 5 files selected
                     </p>
                   </div>
-                ) : (
                 ) : (
                   <>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload, drag & drop, or paste (Ctrl+V)</p>
@@ -24705,47 +24662,3 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-800 shadow-lg">
                         <div className="text-[11px] text-gray-600 dark:text-gray-400 uppercase font-semibold mb-3">Loss Tags</div>
                         {lossTags.length > 0 ? (
-                          <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-md p-3 space-y-2 max-h-32 overflow-y-auto">
-                            {lossTags.map(({ tag, lossAmount }) => (
-                              <div
-                                key={tag}
-                                className="flex items-center justify-start px-2.5 py-1.5 bg-red-100 dark:bg-red-900/50 border border-red-300 dark:border-red-700 rounded-md"
-                                data-testid={`tag-loss-${tag}`}
-                              >
-                                <span className="text-[12px] font-medium text-red-800 dark:text-red-300 capitalize truncate">{tag}</span>
-                                <span className="text-[11px] font-bold text-red-600 dark:text-red-400 ml-2 flex-shrink-0">-₹{lossAmount.toLocaleString('en-IN')}</span>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="text-[12px] text-gray-500 dark:text-gray-400 italic py-3">No loss tags</div>
-                        )}
-                      </div>
-                    </>
-                  );
-                })()}
-              </div>
-
-              {/* Promotional Section */}
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 rounded-lg p-4 border border-purple-200 dark:border-purple-800 mt-4">
-                <div className="space-y-2">
-                  <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-xs font-bold">★</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">Advanced Trading Journal</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Tracks emotional decisions • Works on all brokers • NSE, Crypto, Commodity, Forex</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </DialogContent>
-        </Dialog>
-
-      </div>
-    </div>
-  );
-}
