@@ -16039,7 +16039,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             </div>
 
             {/* Admin Tab Switcher */}
-            <div className="flex justify-center px-6 pb-6">
+            <div className="flex justify-center px-6 pt-[0px] pb-[0px]">
               <div className="flex bg-[#0a0f1d] p-1.5 rounded-xl w-full border border-slate-800/50 shadow-inner pt-[0px] pb-[0px] pl-[0px] pr-[0px]">
                 <button
                   onClick={() => setAdminTab("bugs-list")}
