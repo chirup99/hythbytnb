@@ -22,7 +22,8 @@ export const TABLES = {
   USER_PROFILES: 'neofeed-user-profiles',
   AUDIO_POSTS: 'neofeed-audio-posts',
   BANNERS: 'neofeed-banners',
-  FOLLOWS: 'neofeed-follows'
+  FOLLOWS: 'neofeed-follows',
+  REPORT_BUGS: 'neofeed-report-bugs'
 };
 
 async function tableExists(tableName: string): Promise<boolean> {
@@ -1436,5 +1437,129 @@ export async function getCommentsMentioningUser(username: string): Promise<any[]
   } catch (error) {
     console.error('❌ Error fetching mention comments:', error);
     return [];
+  }
+}
+
+// ==================== REPORT BUG FUNCTIONS ====================
+
+export interface BugReport {
+  bugId: string;
+  username: string;
+  emailId: string;
+  reportDate: string;
+  bugLocate: 'social_feed' | 'journal' | 'others';
+  title: string;
+  description: string;
+  bugMedia: string[];
+  status: 'pending' | 'in_progress' | 'resolved' | 'closed';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function createBugReport(reportData: {
+  username: string;
+  emailId: string;
+  bugLocate: 'social_feed' | 'journal' | 'others';
+  title: string;
+  description: string;
+  bugMedia?: string[];
+}): Promise<BugReport> {
+  try {
+    const bugId = nanoid();
+    const timestamp = new Date().toISOString();
+    
+    const item: BugReport = {
+      bugId,
+      username: reportData.username,
+      emailId: reportData.emailId,
+      reportDate: timestamp,
+      bugLocate: reportData.bugLocate,
+      title: reportData.title,
+      description: reportData.description,
+      bugMedia: reportData.bugMedia || [],
+      status: 'pending',
+      createdAt: timestamp,
+      updatedAt: timestamp
+    };
+
+    await docClient.send(new PutCommand({
+      TableName: TABLES.REPORT_BUGS,
+      Item: {
+        pk: `bug#${bugId}`,
+        sk: timestamp,
+        ...item
+      }
+    }));
+    
+    console.log(`✅ Bug report created: ${bugId}`);
+    return item;
+  } catch (error) {
+    console.error('❌ Error creating bug report:', error);
+    throw error;
+  }
+}
+
+export async function getBugReportsByUser(username: string): Promise<BugReport[]> {
+  try {
+    const result = await docClient.send(new ScanCommand({
+      TableName: TABLES.REPORT_BUGS,
+      FilterExpression: 'username = :username',
+      ExpressionAttributeValues: { ':username': username }
+    }));
+    
+    return (result.Items || []).sort((a: any, b: any) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    ) as BugReport[];
+  } catch (error) {
+    console.error('❌ Error fetching bug reports:', error);
+    return [];
+  }
+}
+
+export async function getAllBugReports(): Promise<BugReport[]> {
+  try {
+    const result = await docClient.send(new ScanCommand({
+      TableName: TABLES.REPORT_BUGS
+    }));
+    
+    return (result.Items || []).sort((a: any, b: any) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    ) as BugReport[];
+  } catch (error) {
+    console.error('❌ Error fetching all bug reports:', error);
+    return [];
+  }
+}
+
+export async function updateBugReportStatus(
+  bugId: string, 
+  status: 'pending' | 'in_progress' | 'resolved' | 'closed'
+): Promise<boolean> {
+  try {
+    const result = await docClient.send(new ScanCommand({
+      TableName: TABLES.REPORT_BUGS,
+      FilterExpression: 'bugId = :bugId',
+      ExpressionAttributeValues: { ':bugId': bugId }
+    }));
+    
+    if (result.Items && result.Items.length > 0) {
+      const bug = result.Items[0];
+      await docClient.send(new UpdateCommand({
+        TableName: TABLES.REPORT_BUGS,
+        Key: { pk: bug.pk, sk: bug.sk },
+        UpdateExpression: 'SET #status = :status, updatedAt = :updatedAt',
+        ExpressionAttributeNames: { '#status': 'status' },
+        ExpressionAttributeValues: {
+          ':status': status,
+          ':updatedAt': new Date().toISOString()
+        }
+      }));
+      console.log(`✅ Bug report ${bugId} status updated to: ${status}`);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('❌ Error updating bug report status:', error);
+    return false;
   }
 }
