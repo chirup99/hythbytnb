@@ -139,3 +139,4 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 2. Restart the workflow - Server running on port 5000 with webview output
 [x] 3. Verify the project is working - All services initialized: Angel One auto-connected (P176266), JWT tokens generating, WebSocket streaming live market data (BANKNIFTY, SENSEX, GOLD), AWS DynamoDB ready, NeoFeed tables ready, NLP Agent with 25+ intents, Gemini AI configured, Cognito JWT Verifier ready
 [x] 4. Import completed - Application fully operational and ready for use
+[x] 5. Report Bug Dialog X Icon Always Visible - Fixed the X close icon on file preview thumbnails to always be visible instead of only showing on hover. Increased background opacity from 50% to 70% for better visibility.

@@ -16218,7 +16218,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               e.stopPropagation();
                               setReportBugFiles(reportBugFiles.filter((_, i) => i !== index));
                             }}
-                            className="absolute top-0.5 right-0.5 bg-black/50 hover:bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                            className="absolute top-0.5 right-0.5 bg-black/70 hover:bg-red-500 text-white rounded-full p-0.5 transition-colors z-10"
                           >
                             <X className="h-3 w-3" />
                           </button>
