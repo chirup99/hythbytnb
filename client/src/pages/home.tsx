@@ -16094,41 +16094,25 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </button>
               </div>
             </div>
-
             <div className="flex-1 overflow-y-auto custom-thin-scrollbar min-h-[400px]">
               {adminTab === "admin-access" ? (
-                <div className="p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <div className="flex items-center justify-between p-6 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm">
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
-                          <Activity className="h-6 w-6 text-blue-500" />
-                        </div>
-                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-slate-900">
-                          <div className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75" />
-                        </div>
-                      </div>
-                      <div className="text-left">
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Admin Access System</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">Monitoring authorized access points</p>
-                      </div>
+                <div className="p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between px-1">
+                      <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Authorized Access</h4>
+                      <Badge variant="outline" className="text-[9px] h-4 border-slate-200 dark:border-slate-800">1 Total</Badge>
                     </div>
-                    <Badge variant="outline" className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-200 dark:border-green-900/50 px-3 py-1">
-                      System Active
-                    </Badge>
-                  </div>
-                  <div className="p-6 rounded-2xl bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 text-left">
-                    <div className="flex gap-4">
-                      <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                      <div className="space-y-1">
-                        <p className="text-sm font-bold text-amber-800 dark:text-amber-200">Security Protocol</p>
-                        <p className="text-sm text-amber-700/80 dark:text-amber-400/80 leading-relaxed">
-                          Only the listed email address is granted permission to override the "Coming Soon" status of the Trading Master dashboard. All other users will see a development placeholder.
-                        </p>
+                    <div className="flex items-center justify-between p-3.5 bg-slate-50/50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800/50">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-[11px] font-bold text-blue-600">CP</div>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-200">chiranjeevi.perala99@gmail.com</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                        <span className="text-[10px] font-semibold text-green-600 dark:text-green-400">ACTIVE</span>
                       </div>
                     </div>
                   </div>
-                  <Button variant="ghost" onClick={() => setShowAdminDashboardDialog(false)} className="w-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl font-medium" data-testid="button-close-admin-access">Close Dashboard</Button>
                 </div>
               ) : (
                 <div className="px-8 pb-8 text-center space-y-4 pt-12">
