@@ -16218,21 +16218,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       mediaUrls = uploadResult.urls || [];
                     }
                     
-                    // Map tab to bugLocate value
-                    const bugLocateMap: Record<string, string> = {
-                      'social-feed': 'social_feed',
-                      'journal': 'journal',
-                      'others': 'others'
-                    };
-                    
-                    // Submit bug report
+                    // Submit bug report - bugLocate uses the selected tab directly
                     const reportResponse = await fetch('/api/bug-reports', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({
                         username: userProfile?.username || 'anonymous',
                         emailId: userProfile?.email || 'unknown@example.com',
-                        bugLocate: bugLocateMap[reportBugTab] || 'others',
+                        bugLocate: reportBugTab, // Dynamic: uses selected tab name directly
                         title: reportBugTitle,
                         description: reportBugDescription,
                         bugMedia: mediaUrls
