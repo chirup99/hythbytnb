@@ -16117,35 +16117,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       System Active
                     </Badge>
                   </div>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between px-2">
-                      <h4 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider">Trading Master Access</h4>
-                      <span className="text-[11px] font-medium text-slate-400">1 AUTHORIZED USER</span>
-                    </div>
-                    <div className="group relative overflow-hidden bg-white dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 text-left">
-                      <div className="flex items-center justify-between relative z-10">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/20">
-                            CP
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-slate-900 dark:text-white">chiranjeevi.perala99@gmail.com</p>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <Badge variant="secondary" className="text-[10px] h-4 px-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-none">
-                                Super Admin
-                              </Badge>
-                              <span className="text-[10px] text-slate-400">Full Trading Permissions</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-                          <span className="text-xs font-medium text-blue-500">Live Access</span>
-                        </div>
-                      </div>
-                      <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-colors duration-500" />
-                    </div>
-                  </div>
                   <div className="p-6 rounded-2xl bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 text-left">
                     <div className="flex gap-4">
                       <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
