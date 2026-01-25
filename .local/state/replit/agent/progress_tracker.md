@@ -123,4 +123,3 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 2. Restart the workflow - Server running on port 5000 with webview output
 [x] 3. Verify the project is working - All services initialized: Angel One auto-connecting (P176266), AWS DynamoDB ready, NeoFeed tables ready, NLP Agent with 25+ intents, Gemini AI configured, Cognito JWT Verifier ready
 [x] 4. Import completed - Application fully operational and ready for use
-[x] 5. Enhanced Report Bug dialog media preview - Replaced text labels with image and video previews, added X close icon for removal, and added play indicator for videos.
