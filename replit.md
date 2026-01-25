@@ -51,6 +51,7 @@ Preferred communication style: Simple, everyday language.
 - `neofeed-follows`: Follower/following relationships (pk: followerId, sk: followingId)
 - `neofeed-audio-posts`: Audio minicast posts
 - `neofeed-banners`: Feed banner content
+- `neofeed-report-bugs`: Bug report submissions with media attachments (S3 storage)
 
 **API Endpoints**:
 - Follow: `POST /api/users/:username/follow` (requires currentUsername in body)
@@ -60,6 +61,8 @@ Preferred communication style: Simple, everyday language.
 - Like/Unlike: `POST/DELETE /api/social-posts/:id/like` (requires userId in body)
 - Repost: `POST/DELETE /api/social-posts/:id/repost` (requires userId in body)
 - Comment: `POST /api/social-posts/:id/comment`
+- Report Bug: `POST /api/bug-reports` (submit bug report)
+- Bug Media Upload: `POST /api/bug-reports/upload-media` (upload up to 5 files, 10MB each)
 
 ## Key Architectural Patterns
 
