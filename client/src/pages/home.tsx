@@ -16191,13 +16191,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   }}
                   data-testid="input-report-bug-files"
                 />
-                <Upload className="h-6 w-6 mx-auto text-teal-500 mb-2" />
+                
                 {reportBugFiles.length > 0 ? (
-                  <div className="space-y-2">
-                    <p className="text-sm text-teal-600 dark:text-teal-400 font-medium">
-                      {reportBugFiles.length} file(s) selected
-                    </p>
-                    <div className="flex flex-wrap gap-2 justify-center">
+                  <div className="relative w-full h-full min-h-[140px] flex flex-col items-center justify-center p-2">
+                    <div className="flex flex-wrap gap-2 justify-center pb-8">
                       {reportBugFiles.map((file, index) => (
                         <div 
                           key={index} 
@@ -16228,12 +16225,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         </div>
                       ))}
                     </div>
+                    <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-gray-100/80 dark:bg-slate-800/80 backdrop-blur-sm rounded text-[10px] font-bold text-teal-600 dark:text-teal-400 border border-teal-200 dark:border-teal-800 shadow-sm">
+                      {reportBugFiles.length}/5
+                    </div>
                   </div>
                 ) : (
-                  <>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload, drag & drop, or paste (Ctrl+V)</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Images & Videos (max 10MB each, up to 5 files)</p>
-                  </>
+                  <div className="flex flex-col items-center justify-center py-8">
+                    <Upload className="h-8 w-8 text-teal-500 mb-2 opacity-80" />
+                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Click to upload, drag & drop, or paste</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Images & Videos (max 10MB, up to 5 files)</p>
+                  </div>
                 )}
               </div>
             </div>
@@ -16256,69 +16257,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 Cancel
               </Button>
               <Button
-                onClick={async () => {
-                  if (!reportBugTitle.trim() || !reportBugDescription.trim()) {
-                    alert("Please fill in both title and description");
-                    return;
-                  }
-                  
-                  setReportBugSubmitting(true);
-                  try {
-                    let mediaUrls: string[] = [];
-                    
-                    // Upload files if any
-                    if (reportBugFiles.length > 0) {
-                      const formData = new FormData();
-                      reportBugFiles.forEach(file => formData.append('files', file));
-                      
-                      const uploadResponse = await fetch('/api/bug-reports/upload-media', {
-                        method: 'POST',
-                        body: formData
-                      });
-                      
-                      if (!uploadResponse.ok) {
-                        const error = await uploadResponse.json();
-                        throw new Error(error.error || 'Failed to upload files');
-                      }
-                      
-                      const uploadResult = await uploadResponse.json();
-                      mediaUrls = uploadResult.urls || [];
-                    }
-                    
-                    // Submit bug report - bugLocate uses the selected tab directly
-                    const reportResponse = await fetch('/api/bug-reports', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        username: userProfile?.username || 'anonymous',
-                        emailId: userProfile?.email || 'unknown@example.com',
-                        bugLocate: reportBugTab, // Dynamic: uses selected tab name directly
-                        title: reportBugTitle,
-                        description: reportBugDescription,
-                        bugMedia: mediaUrls
-                      })
-                    });
-                    
-                    if (!reportResponse.ok) {
-                      const error = await reportResponse.json();
-                      throw new Error(error.error || 'Failed to submit report');
-                    }
-                    
-                    alert("Bug report submitted successfully! Thank you for your feedback.");
-                    setShowReportBugDialog(false);
-                    setReportBugTitle("");
-                    setReportBugDescription("");
-                    setReportBugFiles([]);
-                    setReportBugTab("social-feed");
-                  } catch (error: any) {
-                    console.error("Error submitting bug report:", error);
-                    alert("Failed to submit bug report: " + error.message);
-                  } finally {
-                    setReportBugSubmitting(false);
-                  }
-                }}
-                className="px-6 bg-teal-500 hover:bg-teal-600 text-white"
-                disabled={reportBugSubmitting}
                 data-testid="button-submit-report-bug"
               >
                 {reportBugSubmitting ? "Submitting..." : "Report"}
