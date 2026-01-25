@@ -16112,12 +16112,22 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       </div>
                       <Badge variant="outline" className="text-[9px] h-4 px-2 border-slate-200 dark:border-slate-800 whitespace-nowrap bg-slate-50/50 dark:bg-slate-800/50">1 Total</Badge>
                     </div>
+                  </div>
+                </div>
+              ) : (
                 <div className="px-8 pb-8 text-center space-y-4 pt-12">
                   <div className="mx-auto w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center mb-2"><Activity className="h-6 w-6 text-slate-400 dark:text-slate-500" /></div>
                   <p className="text-slate-600 dark:text-slate-400">Welcome to the Admin Dashboard ({adminTab}). This area is currently under development.</p>
                   <Button variant="ghost" onClick={() => setShowAdminDashboardDialog(false)} className="w-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl font-medium">Dismiss</Button>
                 </div>
               )}
+
+
+
+
+
+
+
             </div>
           </DialogContent>
         </Dialog>
