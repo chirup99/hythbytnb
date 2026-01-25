@@ -16116,7 +16116,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               
               {/* Multi-File Upload Area */}
               <div
-                className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer hover:border-teal-400 dark:hover:border-teal-500 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-400"
+                className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer hover:border-teal-400 dark:hover:border-teal-500 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-400 pl-[0px] pr-[0px] pt-[0px] pb-[0px]"
                 onClick={() => document.getElementById('report-bug-file-input')?.click()}
                 tabIndex={0}
                 onPaste={(e) => {
