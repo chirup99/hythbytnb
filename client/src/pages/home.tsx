@@ -16116,8 +16116,59 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               
               {/* Multi-File Upload Area */}
               <div
-                className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer hover:border-teal-400 dark:hover:border-teal-500 transition-colors"
+                className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer hover:border-teal-400 dark:hover:border-teal-500 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-400"
                 onClick={() => document.getElementById('report-bug-file-input')?.click()}
+                tabIndex={0}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const clipboardItems = e.clipboardData?.items;
+                  if (!clipboardItems) return;
+                  
+                  const pastedFiles: File[] = [];
+                  const maxSize = 10 * 1024 * 1024;
+                  
+                  for (let i = 0; i < clipboardItems.length; i++) {
+                    const item = clipboardItems[i];
+                    if (item.type.startsWith('image/') || item.type.startsWith('video/')) {
+                      const file = item.getAsFile();
+                      if (file) {
+                        if (file.size > maxSize) {
+                          alert(`Pasted file exceeds 10MB limit`);
+                        } else {
+                          pastedFiles.push(file);
+                        }
+                      }
+                    }
+                  }
+                  
+                  if (pastedFiles.length > 0) {
+                    const totalFiles = [...reportBugFiles, ...pastedFiles].slice(0, 5);
+                    setReportBugFiles(totalFiles);
+                  }
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const files = Array.from(e.dataTransfer?.files || []);
+                  const maxSize = 10 * 1024 * 1024;
+                  const validFiles = files.filter(file => {
+                    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+                      return false;
+                    }
+                    if (file.size > maxSize) {
+                      alert(`File "${file.name}" exceeds 10MB limit`);
+                      return false;
+                    }
+                    return true;
+                  });
+                  const totalFiles = [...reportBugFiles, ...validFiles].slice(0, 5);
+                  setReportBugFiles(totalFiles);
+                }}
+                data-testid="dropzone-report-bug-files"
               >
                 <input
                   id="report-bug-file-input"
@@ -16164,7 +16215,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   </div>
                 ) : (
                   <>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload or drag and drop files here</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload, drag & drop, or paste (Ctrl+V)</p>
                     <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Images & Videos (max 10MB each, up to 5 files)</p>
                   </>
                 )}
