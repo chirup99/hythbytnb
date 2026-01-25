@@ -16104,7 +16104,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <div className="relative group">
                           <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
                           <Input 
-                            placeholder="Search..." 
+                            className="h-6 w-[180px] pl-6 bg-slate-50/50 dark:bg-slate-800/50 border-none rounded-md text-[10px] focus-visible:ring-1 focus-visible:ring-blue-500/30 transition-all"
                             className="h-6 w-[120px] pl-6 bg-slate-50/50 dark:bg-slate-800/50 border-none rounded-md text-[10px] focus-visible:ring-1 focus-visible:ring-blue-500/30 transition-all"
                             data-testid="input-admin-search"
                           />
