@@ -16031,7 +16031,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 {/* Admin Dashboard Dialog */}
         <Dialog open={showAdminDashboardDialog} onOpenChange={setShowAdminDashboardDialog}>
           <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-xl rounded-3xl p-0 overflow-hidden">
-            <div className="p-6 text-center">
+            <div className="p-6 text-center pt-[0px] pb-[0px] pl-[0px] pr-[0px]">
               <DialogTitle className="text-lg font-semibold text-slate-800 dark:text-slate-100 tracking-tight">
                 Admin Dashboard
               </DialogTitle>
