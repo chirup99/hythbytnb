@@ -16203,7 +16203,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           key={index} 
                           className="relative group w-16 h-16 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-800"
                         >
-                          {file.type.startsWith("image/") ? (
+                          {file.type.startsWith('image/') ? (
                             <img 
                               src={URL.createObjectURL(file)} 
                               alt={file.name}
@@ -16228,6 +16228,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         </div>
                       ))}
                     </div>
+                  </div>
                 ) : (
                   <>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload, drag & drop, or paste (Ctrl+V)</p>
@@ -16255,69 +16256,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 Cancel
               </Button>
               <Button
-                onClick={async () => {
-                  if (!reportBugTitle.trim() || !reportBugDescription.trim()) {
-                    alert("Please fill in both title and description");
-                    return;
-                  }
-                  
-                  setReportBugSubmitting(true);
-                  try {
-                    let mediaUrls: string[] = [];
-                    
-                    // Upload files if any
-                    if (reportBugFiles.length > 0) {
-                      const formData = new FormData();
-                      reportBugFiles.forEach(file => formData.append('files', file));
-                      
-                      const uploadResponse = await fetch('/api/bug-reports/upload-media', {
-                        method: 'POST',
-                        body: formData
-                      });
-                      
-                      if (!uploadResponse.ok) {
-                        const error = await uploadResponse.json();
-                        throw new Error(error.error || 'Failed to upload files');
-                      }
-                      
-                      const uploadResult = await uploadResponse.json();
-                      mediaUrls = uploadResult.urls || [];
-                    }
-                    
-                    // Submit bug report - bugLocate uses the selected tab directly
-                    const reportResponse = await fetch('/api/bug-reports', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        username: userProfile?.username || 'anonymous',
-                        emailId: userProfile?.email || 'unknown@example.com',
-                        bugLocate: reportBugTab, // Dynamic: uses selected tab name directly
-                        title: reportBugTitle,
-                        description: reportBugDescription,
-                        bugMedia: mediaUrls
-                      })
-                    });
-                    
-                    if (!reportResponse.ok) {
-                      const error = await reportResponse.json();
-                      throw new Error(error.error || 'Failed to submit report');
-                    }
-                    
-                    alert("Bug report submitted successfully! Thank you for your feedback.");
-                    setShowReportBugDialog(false);
-                    setReportBugTitle("");
-                    setReportBugDescription("");
-                    setReportBugFiles([]);
-                    setReportBugTab("social-feed");
-                  } catch (error: any) {
-                    console.error("Error submitting bug report:", error);
-                    alert("Failed to submit bug report: " + error.message);
-                  } finally {
-                    setReportBugSubmitting(false);
-                  }
-                }}
-                className="px-6 bg-teal-500 hover:bg-teal-600 text-white"
-                disabled={reportBugSubmitting}
                 data-testid="button-submit-report-bug"
               >
                 {reportBugSubmitting ? "Submitting..." : "Report"}
