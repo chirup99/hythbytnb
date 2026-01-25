@@ -16096,7 +16096,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             </div>
             <div className="flex-1 overflow-y-auto custom-thin-scrollbar min-h-[400px]">
               {adminTab === "admin-access" ? (
-                <div className="p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className="p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between px-1">
                       <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Authorized Access</h4>
