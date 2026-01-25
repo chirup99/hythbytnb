@@ -34,7 +34,6 @@ import {
   getFollowersList,
   getFollowingList,
   getAllRepostsForFeed,
-  createReportBug,
   TABLES 
 } from './neofeed-dynamodb-migration';
 
@@ -457,24 +456,6 @@ export function registerNeoFeedAwsRoutes(app: any) {
     } catch (error: any) {
       console.error('❌ Error fetching posts from AWS:', error);
       res.status(500).json({ error: 'Failed to fetch posts' });
-    }
-  });
-
-  app.post('/api/report-bug', async (req: any, res: any) => {
-    try {
-      const user = await getAuthenticatedUser(req);
-      const bugData = {
-        ...req.body,
-        userId: user?.userId || 'anonymous',
-        username: user?.username || 'anonymous',
-        displayName: user?.displayName || 'Anonymous'
-      };
-      
-      const createdBug = await createReportBug(bugData);
-      res.json(createdBug);
-    } catch (error: any) {
-      console.error('❌ Error reporting bug:', error);
-      res.status(500).json({ error: 'Failed to report bug' });
     }
   });
 
