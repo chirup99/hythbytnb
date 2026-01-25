@@ -16193,12 +16193,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 />
                 
                 {reportBugFiles.length > 0 ? (
-                  <div className="relative w-full h-full min-h-[140px] flex flex-col items-center justify-center p-2">
-                    <div className="flex flex-wrap gap-2 justify-center pb-8">
+                  <div className="relative w-full min-h-[100px] p-2">
+                    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
                       {reportBugFiles.map((file, index) => (
                         <div 
                           key={index} 
-                          className="relative group w-16 h-16 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-800"
+                          className="relative flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-800"
                         >
                           {file.type.startsWith('image/') ? (
                             <img 
