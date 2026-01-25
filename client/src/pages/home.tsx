@@ -16030,7 +16030,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 {/* Coming Soon Dialog for AI Tutor */}        <Dialog open={showComingSoonDialog} onOpenChange={setShowComingSoonDialog}>          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-none shadow-2xl rounded-2xl p-0 overflow-hidden">            <div className="relative p-8 text-center space-y-6">                                          <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">                <Activity className="h-10 w-10 text-white" />              </div>                            <div className="space-y-2">                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">                  Mini-cast                </h2>                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400">                  Coming Soon!                </p>              </div>                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">                Explore interactive trading lessons and personalized guidance with Mini-cast.              </p>                            <Button                 onClick={() => setShowComingSoonDialog(false)}                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all active:scale-95"              >                Got It              </Button>            </div>          </DialogContent>        </Dialog>
                 {/* Admin Dashboard Dialog */}
         <Dialog open={showAdminDashboardDialog} onOpenChange={setShowAdminDashboardDialog}>
-          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-xl rounded-3xl p-0 overflow-hidden">
+          <DialogContent className="sm:max-w-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-xl rounded-3xl p-0 overflow-hidden">
             <div className="p-6 text-center pt-[0px] pb-[0px] pl-[0px] pr-[0px]">
               <DialogTitle className="text-lg font-semibold text-slate-800 dark:text-slate-100 tracking-tight">
                 Admin Dashboard
@@ -16068,6 +16068,26 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 >
                   <span>Influencer</span>
                   {adminTab === "influencer" && (
+                    <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+                  )}
+                </button>
+                <button
+                  onClick={() => setAdminTab("banner-ads")}
+                  className={`relative flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all ${ adminTab === "banner-ads" ? "text-blue-400" : "text-slate-400 hover:text-slate-300" }`}
+                  data-testid="button-admin-tab-banner-ads"
+                >
+                  <span>Banner Ads</span>
+                  {adminTab === "banner-ads" && (
+                    <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+                  )}
+                </button>
+                <button
+                  onClick={() => setAdminTab("admin-access")}
+                  className={`relative flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all ${ adminTab === "admin-access" ? "text-blue-400" : "text-slate-400 hover:text-slate-300" }`}
+                  data-testid="button-admin-tab-admin-access"
+                >
+                  <span>Admin Access</span>
+                  {adminTab === "admin-access" && (
                     <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
                   )}
                 </button>
