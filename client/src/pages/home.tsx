@@ -16193,26 +16193,63 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 />
                 <Upload className="h-6 w-6 mx-auto text-teal-500 mb-2" />
                 {reportBugFiles.length > 0 ? (
-                  <div className="space-y-2">
-                    <p className="text-sm text-teal-600 dark:text-teal-400 font-medium">
-                      {reportBugFiles.length} file(s) selected
-                    </p>
-                    <div className="flex flex-wrap gap-2 justify-center">
-                      {reportBugFiles.map((file, index) => (
-                        <div 
-                          key={index} 
-                          className="flex items-center gap-1 bg-teal-100 dark:bg-teal-900 px-2 py-1 rounded-lg text-xs"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setReportBugFiles(reportBugFiles.filter((_, i) => i !== index));
-                          }}
-                        >
-                          <span className="text-teal-700 dark:text-teal-300 max-w-[100px] truncate">{file.name}</span>
-                          <X className="h-3 w-3 text-teal-700 dark:text-teal-300 cursor-pointer hover:text-red-500" />
-                        </div>
-                      ))}
+                  <div className="space-y-4">
+                    <div className="flex flex-wrap gap-3 justify-center">
+                      {reportBugFiles.map((file, index) => {
+                        const isImage = file.type.startsWith("image/");
+                        const isVideo = file.type.startsWith("video/");
+                        const previewUrl = URL.createObjectURL(file);
+                        
+                        return (
+                          <div 
+                            key={index} 
+                            className="relative group w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700"
+                          >
+                            {isImage ? (
+                              <img 
+                                src={previewUrl} 
+                                alt={file.name} 
+                                className="w-full h-full object-cover"
+                              />
+                            ) : isVideo ? (
+                              <video 
+                                src={previewUrl} 
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center">
+                                <Upload className="h-6 w-6 text-gray-400" />
+                              </div>
+                            )}
+                            
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                URL.revokeObjectURL(previewUrl);
+                                setReportBugFiles(reportBugFiles.filter((_, i) => i !== index));
+                              }}
+                              className="absolute top-1 right-1 p-1 bg-black/50 hover:bg-red-500 text-white rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                            
+                            {isVideo && (
+                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div className="bg-black/30 rounded-full p-1">
+                                  <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[6px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 font-medium">
+                      {reportBugFiles.length} of 5 files selected
+                    </p>
                   </div>
+                ) : (
                 ) : (
                   <>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload, drag & drop, or paste (Ctrl+V)</p>
