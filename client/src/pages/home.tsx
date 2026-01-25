@@ -1972,6 +1972,7 @@ export default function Home() {
   const [reportBugSubmitting, setReportBugSubmitting] = useState(false);
 
   const handleReportBug = async () => {
+    const token = await getCognitoToken();
     if (!reportBugTitle || !reportBugDescription || reportBugSubmitting) return;
 
     setReportBugSubmitting(true);
@@ -1980,7 +1981,7 @@ export default function Home() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token") || ""}`
+          "Authorization": `Bearer ${token || ""}`
         },
         body: JSON.stringify({
           title: reportBugTitle,
@@ -2017,6 +2018,7 @@ export default function Home() {
   const handleUpdateProfile = async (updates: any) => {
     try {
       const token = await getCognitoToken();
+    console.log("🐞 [DEBUG] Token for bug report:", token ? "Found" : "Missing");
       const response = await fetch("/api/user/profile", {
         method: "PATCH",
         headers: {

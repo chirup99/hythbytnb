@@ -106,23 +106,27 @@ async function enrichPostWithRealCounts(post: any): Promise<any> {
 export function registerNeoFeedAwsRoutes(app: any) {
   console.log('🔷 Registering NeoFeed AWS DynamoDB routes...');
 
+  // Bug report route
   app.post('/api/report-bug', async (req: any, res: any) => {
     try {
       const user = await getAuthenticatedUser(req);
       const { title, description, tab, imageUrls } = req.body;
+      
       const bugData = {
-        userId: user?.userId || 'anonymous',
-        username: user?.username || 'anonymous',
+        username: user?.username || "anonymous",
+        emailId: user?.username || "anonymous",
+        bugLocate: tab === "social-feed" ? "social_feed" : (tab === "journal" ? "journal" : "others"),
         title,
         description,
-        tab,
-        imageUrls: imageUrls || []
+        bugMedia: imageUrls || []
       };
+      
+      console.log("🐞 [DEBUG] Submitting bug report:", bugData);
       const result = await createBugReport(bugData);
       res.json(result);
     } catch (error) {
-      console.error('❌ Error submitting bug report:', error);
-      res.status(500).json({ error: 'Failed to submit bug report' });
+      console.error("❌ Error submitting bug report:", error);
+      res.status(500).json({ error: "Failed to submit bug report" });
     }
   });
 

@@ -42,5 +42,5 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 [x] 1. Install the required packages - Installed dotenv package (was missing from dependencies)
 [x] 2. Restart the workflow - Server running on port 5000 with webview output
 [x] 3. Verify the project is working - All services initialized: Angel One auto-connected (P176266), JWT tokens generating, WebSocket streaming live market data (BANKNIFTY, SENSEX, GOLD), AWS DynamoDB ready, NeoFeed tables ready, NLP Agent with 25+ intents, Gemini AI configured, Cognito JWT Verifier ready
-[x] 4. Report Bug Submission Fix - Implemented missing `handleReportBug` logic in frontend and added `/api/report-bug` backend endpoint.
+[x] 4. Report Bug Submission & Mapping Fix - Corrected "bug locate" column mapping in DynamoDB and fixed the anonymous username issue by integrating `getCognitoToken()` for secure authentication.
 [x] 5. Import completed - Application fully operational and ready for use
