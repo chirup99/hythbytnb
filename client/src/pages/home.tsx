@@ -16098,16 +16098,24 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               {adminTab === "admin-access" ? (
                 <div className="p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
                   <div className="space-y-3">
-                    <div className="flex items-center gap-4 px-1">
-                      <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Authorized Access</h4>
-                      <div className="flex-1 max-w-xs relative group">
-                      <Badge variant="outline" className="text-[9px] h-4 border-slate-200 dark:border-slate-800 whitespace-nowrap">1 Total</Badge>
-                        <Input 
-                          placeholder="Search admins..." 
-                          className="h-8 pl-9 bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-800 rounded-lg text-[11px] focus-visible:ring-1 focus-visible:ring-blue-500/50 transition-all"
-                          data-testid="input-admin-search"
-                        />
+                    <div className="flex items-center justify-between gap-2 px-1">
+                      <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Authorized Access</h4>
+                      <div className="flex-1 flex justify-center">
+                        <div className="relative group">
+                          <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+                          <Input 
+                            placeholder="Search..." 
+                            className="h-6 w-[120px] pl-6 bg-slate-50/50 dark:bg-slate-800/50 border-none rounded-md text-[10px] focus-visible:ring-1 focus-visible:ring-blue-500/30 transition-all"
+                            data-testid="input-admin-search"
+                          />
+                        </div>
                       </div>
+                      <Badge variant="outline" className="text-[9px] h-3.5 px-1.5 border-slate-200 dark:border-slate-800 whitespace-nowrap">1 Total</Badge>
+                    </div>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="text-[9px] h-3.5 px-1.5 border-slate-200 dark:border-slate-800 whitespace-nowrap">1 Total</Badge>
+                    </div>
                     </div>
                     <div className="flex items-center justify-between p-3.5 bg-slate-50/50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800/50">
                       <div className="flex items-center gap-3">
