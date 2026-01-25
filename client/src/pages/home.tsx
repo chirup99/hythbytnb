@@ -16113,6 +16113,34 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       <Badge variant="outline" className="text-[9px] h-4 px-2 border-slate-200 dark:border-slate-800 whitespace-nowrap bg-slate-50/50 dark:bg-slate-800/50">1 Total</Badge>
                     </div>
                   </div>
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center justify-between p-3 bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/50 rounded-xl hover:border-blue-500/30 transition-all duration-300">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                            <span className="text-[10px] font-bold text-blue-500">CP</span>
+                          </div>
+                          <span className="text-[11px] font-medium text-slate-700 dark:text-slate-200">chiranjeevi.perala99@gmail.com</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                          <span className="text-[9px] font-bold text-green-500 uppercase tracking-widest">Active</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center justify-between p-3 bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/50 rounded-xl hover:border-blue-500/30 transition-all duration-300">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                            <span className="text-[10px] font-bold text-blue-500">CP</span>
+                          </div>
+                          <span className="text-[11px] font-medium text-slate-700 dark:text-slate-200">chiranjeevi.perala99@gmail.com</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                          <span className="text-[9px] font-bold text-green-500 uppercase tracking-widest">Active</span>
+                        </div>
+                      </div>
+                    </div>
                 </div>
               ) : (
                 <div className="px-8 pb-8 text-center space-y-4 pt-12">
