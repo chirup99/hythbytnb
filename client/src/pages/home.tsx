@@ -77,7 +77,7 @@ import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmai
 
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, LineSeries, HistogramSeries, IPriceLine, createSeriesMarkers } from 'lightweight-charts';
 
-import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle, Activity, Search, Plus } from "lucide-react";
+import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle, Activity } from "lucide-react";
 
 import { parseBrokerTrades, ParseError } from "@/utils/trade-parser";
 
@@ -177,6 +177,7 @@ import {
   MessageCircle,
   BookOpen,
   Home as HomeIcon,
+  Search,
   Code,
   PenTool,
   Target,
@@ -1964,7 +1965,6 @@ export default function Home() {
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [showAdminDashboardDialog, setShowAdminDashboardDialog] = useState(false);
   const [adminTab, setAdminTab] = useState("health");
-  const [adminSearchQuery, setAdminSearchQuery] = useState("");
   const [showReportBugDialog, setShowReportBugDialog] = useState(false);
   const [reportBugTab, setReportBugTab] = useState<"social-feed" | "journal" | "others">("social-feed");
   const [reportBugTitle, setReportBugTitle] = useState("");
@@ -16095,63 +16095,31 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               </div>
             </div>
             <div className="flex-1 overflow-y-auto custom-thin-scrollbar min-h-[400px]">
+              {adminTab === "admin-access" ? (
                 <div className="p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between px-1 gap-2">
-                      <div className="flex items-center gap-2">
-                        <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Authorized Access</h4>
-                        <Badge variant="outline" className="text-[9px] h-4 border-slate-200 dark:border-slate-800">1 Total</Badge>
-                      </div>
-                      <div className="flex items-center gap-1.5 flex-1 max-w-[220px]">
-                        <div className="relative flex-1">
-                          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-400" />
-                          <Input
-                            placeholder="Search or add email..."
-                            value={adminSearchQuery}
-                            onChange={(e) => setAdminSearchQuery(e.target.value)}
-                            className="h-8 pl-8 text-[10px] bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-800 rounded-lg focus:ring-1 focus:ring-blue-500"
-                          />
-                        </div>
-                        <Button 
-                          size="icon" 
-                          variant="ghost" 
-                          className="h-8 w-8 rounded-lg hover:bg-blue-500/10 hover:text-blue-500"
-                          onClick={() => {
-                            if (adminSearchQuery && adminSearchQuery.includes('@')) {
-                              toast({ title: "Admin Added", description: `${adminSearchQuery} has been granted access.` });
-                              setAdminSearchQuery("");
-                            }
-                          }}
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between px-1">
+                      <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Authorized Access</h4>
+                      <Badge variant="outline" className="text-[9px] h-4 border-slate-200 dark:border-slate-800">1 Total</Badge>
                     </div>
-                    <div className="space-y-3">
-                      {[
-                        { email: "chiranjeevi.perala99@gmail.com", initial: "CP" }
-                      ].filter(user => 
-                        user.email.toLowerCase().includes(adminSearchQuery.toLowerCase())
-                      ).map((user, idx) => (
-                        <div key={idx} className="flex items-center justify-between p-3.5 bg-slate-50/50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800/50 hover:border-blue-500/30 transition-colors">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-[11px] font-bold text-blue-600">{user.initial}</div>
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{user.email}</span>
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                            <span className="text-[10px] font-semibold text-green-600 dark:text-green-400">ACTIVE</span>
-                          </div>
-                        </div>
-                      ))}
+                    <div className="flex items-center justify-between p-3.5 bg-slate-50/50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800/50">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-[11px] font-bold text-blue-600">CP</div>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-200">chiranjeevi.perala99@gmail.com</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                        <span className="text-[10px] font-semibold text-green-600 dark:text-green-400">ACTIVE</span>
+                      </div>
                     </div>
                   </div>
-                </div>
                 </div>
               ) : (
                 <div className="px-8 pb-8 text-center space-y-4 pt-12">
                   <div className="mx-auto w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center mb-2"><Activity className="h-6 w-6 text-slate-400 dark:text-slate-500" /></div>
                   <p className="text-slate-600 dark:text-slate-400">Welcome to the Admin Dashboard ({adminTab}). This area is currently under development.</p>
+                  <Button variant="ghost" onClick={() => setShowAdminDashboardDialog(false)} className="w-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl font-medium">Dismiss</Button>
+                </div>
               )}
             </div>
           </DialogContent>
