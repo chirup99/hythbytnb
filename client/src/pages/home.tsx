@@ -16098,7 +16098,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               {adminTab === "admin-access" ? (
                 <div className="p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-4 px-1 w-full">
+                    <div className="flex items-center justify-between gap-4 px-1 w-full pt-[1px] pb-[1px]">
                       <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Authorized Access</h4>
                       <div className="flex-1">
                         <div className="relative group w-full">
