@@ -16112,11 +16112,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       </div>
                       <Badge variant="outline" className="text-[9px] h-3.5 px-1.5 border-slate-200 dark:border-slate-800 whitespace-nowrap">1 Total</Badge>
                     </div>
-                        </div>
-                      </div>
-                      <Badge variant="outline" className="text-[9px] h-3.5 px-1.5 border-slate-200 dark:border-slate-800 whitespace-nowrap">1 Total</Badge>
-                    </div>
-                    </div>
                     <div className="flex items-center justify-between p-3.5 bg-slate-50/50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800/50">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-[11px] font-bold text-blue-600">CP</div>
