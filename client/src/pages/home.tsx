@@ -16201,18 +16201,33 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       {reportBugFiles.map((file, index) => (
                         <div 
                           key={index} 
-                          className="flex items-center gap-1 bg-teal-100 dark:bg-teal-900 px-2 py-1 rounded-lg text-xs"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setReportBugFiles(reportBugFiles.filter((_, i) => i !== index));
-                          }}
+                          className="relative group w-16 h-16 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-800"
                         >
-                          <span className="text-teal-700 dark:text-teal-300 max-w-[100px] truncate">{file.name}</span>
-                          <X className="h-3 w-3 text-teal-700 dark:text-teal-300 cursor-pointer hover:text-red-500" />
+                          {file.type.startsWith("image/") ? (
+                            <img 
+                              src={URL.createObjectURL(file)} 
+                              alt={file.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-teal-50 dark:bg-teal-900/30">
+                              <Upload className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+                              <span className="text-[8px] text-teal-700 dark:text-teal-300 px-1 truncate w-full text-center">{file.name}</span>
+                            </div>
+                          )}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setReportBugFiles(reportBugFiles.filter((_, i) => i !== index));
+                            }}
+                            className="absolute top-0.5 right-0.5 bg-black/50 hover:bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
                         </div>
                       ))}
                     </div>
-                  </div>
                 ) : (
                   <>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload, drag & drop, or paste (Ctrl+V)</p>
