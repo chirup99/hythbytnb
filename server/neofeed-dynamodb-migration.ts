@@ -676,6 +676,29 @@ export async function getFinanceNews(limit = 20) {
   }
 }
 
+export async function createReportBug(bugData: any) {
+  try {
+    const bugId = nanoid();
+    const timestamp = new Date().toISOString();
+    
+    const item = {
+      pk: `bug#${bugId}`,
+      sk: timestamp,
+      id: bugId,
+      ...bugData,
+      createdAt: timestamp,
+      status: 'new'
+    };
+
+    await docClient.send(new PutCommand({ TableName: TABLES.REPORT_BUGS, Item: item }));
+    console.log(`✅ Bug report created: ${bugId}`);
+    return item;
+  } catch (error) {
+    console.error('❌ Error creating bug report:', error);
+    throw error;
+  }
+}
+
 export async function createOrUpdateUserProfile(userId: string, profileData: any) {
   try {
     const timestamp = new Date().toISOString();
