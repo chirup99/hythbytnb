@@ -9148,6 +9148,191 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ==================== REPORT BUG ENDPOINTS ====================
+
+  // Upload bug media files to S3
+  app.post('/api/bug-reports/upload-media', upload.array('files', 5), async (req: any, res) => {
+    try {
+      console.log('📤 [BUG-REPORT] Uploading media files...');
+      
+      const files = req.files;
+      if (!files || files.length === 0) {
+        return res.status(400).json({ error: 'No files provided' });
+      }
+
+      // Validate file count
+      if (files.length > 5) {
+        return res.status(400).json({ error: 'Maximum 5 files allowed' });
+      }
+
+      // Validate file sizes (10MB max per file)
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      for (const file of files) {
+        if (file.size > maxSize) {
+          return res.status(400).json({ 
+            error: `File ${file.originalname} exceeds 10MB limit` 
+          });
+        }
+      }
+
+      const { S3Client, PutObjectCommand } = await import('@aws-sdk/client-s3');
+      
+      const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
+      const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+      const awsRegion = process.env.AWS_REGION || 'eu-north-1';
+      const bucketName = process.env.AWS_S3_BUCKET || 'neofeed-profile-images';
+
+      if (!awsAccessKeyId || !awsSecretAccessKey) {
+        console.log('❌ AWS credentials not configured for S3 upload');
+        return res.status(500).json({ error: 'AWS credentials not configured' });
+      }
+
+      const s3Client = new S3Client({
+        region: awsRegion,
+        credentials: {
+          accessKeyId: awsAccessKeyId,
+          secretAccessKey: awsSecretAccessKey
+        }
+      });
+
+      const uploadedUrls: string[] = [];
+
+      for (const file of files) {
+        const timestamp = Date.now();
+        const randomId = Math.random().toString(36).substring(2, 8);
+        const fileExtension = file.originalname?.split('.').pop() || 'jpg';
+        const key = `bug-reports/${timestamp}-${randomId}.${fileExtension}`;
+
+        const uploadCommand = new PutObjectCommand({
+          Bucket: bucketName,
+          Key: key,
+          Body: file.buffer,
+          ContentType: file.mimetype || 'application/octet-stream'
+        });
+
+        console.log(`📤 Uploading bug media to S3: ${key}`);
+        await s3Client.send(uploadCommand);
+        
+        const publicUrl = `https://${bucketName}.s3.${awsRegion}.amazonaws.com/${key}`;
+        uploadedUrls.push(publicUrl);
+        console.log(`✅ Bug media uploaded: ${publicUrl}`);
+      }
+
+      res.json({ 
+        success: true, 
+        urls: uploadedUrls,
+        message: `${uploadedUrls.length} file(s) uploaded successfully`
+      });
+    } catch (error: any) {
+      console.error('❌ Error uploading bug media:', error);
+      res.status(500).json({ error: error.message || 'Failed to upload media' });
+    }
+  });
+
+  // Submit bug report
+  app.post('/api/bug-reports', async (req, res) => {
+    try {
+      console.log('🐛 [BUG-REPORT] Creating new bug report...');
+      
+      const { username, emailId, bugLocate, title, description, bugMedia } = req.body;
+
+      // Validate required fields
+      if (!username || !emailId || !bugLocate || !title || !description) {
+        return res.status(400).json({ 
+          error: 'Missing required fields: username, emailId, bugLocate, title, description' 
+        });
+      }
+
+      // Validate bugLocate value
+      const validLocations = ['social_feed', 'journal', 'others'];
+      if (!validLocations.includes(bugLocate)) {
+        return res.status(400).json({ 
+          error: 'Invalid bugLocate. Must be: social_feed, journal, or others' 
+        });
+      }
+
+      // Validate bugMedia array
+      if (bugMedia && !Array.isArray(bugMedia)) {
+        return res.status(400).json({ error: 'bugMedia must be an array of URLs' });
+      }
+
+      if (bugMedia && bugMedia.length > 5) {
+        return res.status(400).json({ error: 'Maximum 5 media files allowed' });
+      }
+
+      const { createBugReport } = await import('./neofeed-dynamodb-migration');
+      
+      const report = await createBugReport({
+        username,
+        emailId,
+        bugLocate,
+        title,
+        description,
+        bugMedia: bugMedia || []
+      });
+
+      console.log(`✅ Bug report created: ${report.bugId}`);
+      res.json({ success: true, report });
+    } catch (error: any) {
+      console.error('❌ Error creating bug report:', error);
+      res.status(500).json({ error: error.message || 'Failed to create bug report' });
+    }
+  });
+
+  // Get bug reports for a user
+  app.get('/api/bug-reports/user/:username', async (req, res) => {
+    try {
+      const { username } = req.params;
+      const { getBugReportsByUser } = await import('./neofeed-dynamodb-migration');
+      const reports = await getBugReportsByUser(username);
+      res.json(reports);
+    } catch (error: any) {
+      console.error('❌ Error fetching user bug reports:', error);
+      res.status(500).json({ error: error.message || 'Failed to fetch bug reports' });
+    }
+  });
+
+  // Get all bug reports (admin)
+  app.get('/api/bug-reports', async (req, res) => {
+    try {
+      const { getAllBugReports } = await import('./neofeed-dynamodb-migration');
+      const reports = await getAllBugReports();
+      res.json(reports);
+    } catch (error: any) {
+      console.error('❌ Error fetching all bug reports:', error);
+      res.status(500).json({ error: error.message || 'Failed to fetch bug reports' });
+    }
+  });
+
+  // Update bug report status (admin)
+  app.patch('/api/bug-reports/:bugId/status', async (req, res) => {
+    try {
+      const { bugId } = req.params;
+      const { status } = req.body;
+
+      const validStatuses = ['pending', 'in_progress', 'resolved', 'closed'];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({ 
+          error: 'Invalid status. Must be: pending, in_progress, resolved, or closed' 
+        });
+      }
+
+      const { updateBugReportStatus } = await import('./neofeed-dynamodb-migration');
+      const success = await updateBugReportStatus(bugId, status);
+      
+      if (success) {
+        res.json({ success: true, message: `Bug report status updated to: ${status}` });
+      } else {
+        res.status(404).json({ error: 'Bug report not found' });
+      }
+    } catch (error: any) {
+      console.error('❌ Error updating bug report status:', error);
+      res.status(500).json({ error: error.message || 'Failed to update status' });
+    }
+  });
+
+  // ==================== END REPORT BUG ENDPOINTS ====================
+
   // FOLLOW USER
   app.post('/api/users/:username/follow-pg', async (req, res) => {
     try {
