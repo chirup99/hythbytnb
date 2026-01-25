@@ -16094,18 +16094,77 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               </div>
             </div>
 
-            <div className="px-8 pb-8 text-center space-y-4">
-              <div className="mx-auto w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center mb-2"><Activity className="h-6 w-6 text-slate-400 dark:text-slate-500" /></div>
-              <p className="text-slate-600 dark:text-slate-400">
-                Welcome to the Admin Dashboard (${adminTab}). This area is currently under development.
-              </p>
-              <Button 
-                variant="ghost"
-                onClick={() => setShowAdminDashboardDialog(false)}
-                className="w-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl font-medium"
-              >
-                Dismiss
-              </Button>
+            <div className="flex-1 overflow-y-auto custom-thin-scrollbar min-h-[400px]">
+              {adminTab === "admin-access" ? (
+                <div className="p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <div className="flex items-center justify-between p-6 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm">
+                    <div className="flex items-center gap-4">
+                      <div className="relative">
+                        <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+                          <Activity className="h-6 w-6 text-blue-500" />
+                        </div>
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-slate-900">
+                          <div className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75" />
+                        </div>
+                      </div>
+                      <div className="text-left">
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Admin Access System</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Monitoring authorized access points</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-200 dark:border-green-900/50 px-3 py-1">
+                      System Active
+                    </Badge>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between px-2">
+                      <h4 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider">Trading Master Access</h4>
+                      <span className="text-[11px] font-medium text-slate-400">1 AUTHORIZED USER</span>
+                    </div>
+                    <div className="group relative overflow-hidden bg-white dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 text-left">
+                      <div className="flex items-center justify-between relative z-10">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/20">
+                            CP
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-slate-900 dark:text-white">chiranjeevi.perala99@gmail.com</p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <Badge variant="secondary" className="text-[10px] h-4 px-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-none">
+                                Super Admin
+                              </Badge>
+                              <span className="text-[10px] text-slate-400">Full Trading Permissions</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+                          <span className="text-xs font-medium text-blue-500">Live Access</span>
+                        </div>
+                      </div>
+                      <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-colors duration-500" />
+                    </div>
+                  </div>
+                  <div className="p-6 rounded-2xl bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 text-left">
+                    <div className="flex gap-4">
+                      <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <p className="text-sm font-bold text-amber-800 dark:text-amber-200">Security Protocol</p>
+                        <p className="text-sm text-amber-700/80 dark:text-amber-400/80 leading-relaxed">
+                          Only the listed email address is granted permission to override the "Coming Soon" status of the Trading Master dashboard. All other users will see a development placeholder.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <Button variant="ghost" onClick={() => setShowAdminDashboardDialog(false)} className="w-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl font-medium" data-testid="button-close-admin-access">Close Dashboard</Button>
+                </div>
+              ) : (
+                <div className="px-8 pb-8 text-center space-y-4 pt-12">
+                  <div className="mx-auto w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center mb-2"><Activity className="h-6 w-6 text-slate-400 dark:text-slate-500" /></div>
+                  <p className="text-slate-600 dark:text-slate-400">Welcome to the Admin Dashboard ({adminTab}). This area is currently under development.</p>
+                  <Button variant="ghost" onClick={() => setShowAdminDashboardDialog(false)} className="w-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl font-medium">Dismiss</Button>
+                </div>
+              )}
             </div>
           </DialogContent>
         </Dialog>
