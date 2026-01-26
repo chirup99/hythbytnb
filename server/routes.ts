@@ -4916,7 +4916,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const { DynamoDBClient, ScanCommand, PutItemCommand, GetItemCommand } = await import('@aws-sdk/client-dynamodb');
         
         const dynamoClient = new DynamoDBClient({
-          region: process.env.AWS_REGION || 'eu-north-1',
+          region: process.env.AWS_REGION || 'ap-south-2',
           credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -5101,7 +5101,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { CognitoIdentityProviderClient, ConfirmSignUpCommand } = await import('@aws-sdk/client-cognito-identity-provider');
       
       const cognitoClient = new CognitoIdentityProviderClient({
-        region: process.env.AWS_REGION || 'eu-north-1',
+        region: process.env.AWS_REGION || 'ap-south-2',
         credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -5188,8 +5188,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ForgotPasswordCommand 
       } = await import('@aws-sdk/client-cognito-identity-provider');
       
-      const region = process.env.AWS_COGNITO_REGION || process.env.AWS_REGION || 'eu-north-1';
-      const userPoolId = process.env.AWS_COGNITO_USER_POOL_ID || 'eu-north-1_rXrrnI6cZ';
+      const region = process.env.AWS_COGNITO_REGION || process.env.AWS_REGION || 'ap-south-2';
+      const userPoolId = process.env.AWS_COGNITO_USER_POOL_ID || 'ap-south-2_4JgM44kdM';
       const clientId = process.env.AWS_COGNITO_APP_CLIENT_ID;
       
       const cognitoClient = new CognitoIdentityProviderClient({
@@ -5285,7 +5285,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // 1. Check for identity mapping FIRST
       const { DynamoDBClient, GetItemCommand } = await import('@aws-sdk/client-dynamodb');
       const dynamoClientForMapping = new DynamoDBClient({
-        region: process.env.AWS_REGION || 'eu-north-1',
+        region: process.env.AWS_REGION || 'ap-south-2',
         credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -5560,7 +5560,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'eu-north-1';
+      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {
         console.log('❌ AWS credentials not configured');
@@ -5723,7 +5723,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'eu-north-1';
+      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {
         console.log('❌ AWS credentials not configured');
@@ -5911,7 +5911,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'eu-north-1';
+      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {
         // If AWS not configured, assume username is available
@@ -7632,7 +7632,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'eu-north-1';
+      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
       const bucketName = process.env.AWS_S3_BUCKET || 'neofeed-profile-images';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {
@@ -9189,7 +9189,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'eu-north-1';
+      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
       const bucketName = process.env.AWS_S3_BUCKET || 'neofeed-profile-images';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {

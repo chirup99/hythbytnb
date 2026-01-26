@@ -33,7 +33,7 @@ export class BrokerFormatsLibrary {
   private getClient(): DynamoDBDocumentClient {
     if (!this.client) {
       const dynamoClient = new DynamoDBClient({
-        region: process.env.AWS_REGION || 'eu-north-1',
+        region: process.env.AWS_REGION || 'ap-south-2',
         credentials: {
           accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',

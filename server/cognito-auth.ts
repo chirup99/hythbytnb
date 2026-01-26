@@ -11,7 +11,7 @@ let verifier: ReturnType<typeof CognitoJwtVerifier.create> | null = null;
 export function initializeCognitoVerifier() {
   const userPoolId = process.env.AWS_COGNITO_USER_POOL_ID;
   const clientId = process.env.AWS_COGNITO_APP_CLIENT_ID;
-  const region = process.env.AWS_COGNITO_REGION || process.env.AWS_REGION || 'eu-north-1';
+  const region = process.env.AWS_COGNITO_REGION || process.env.AWS_REGION || 'ap-south-2';
   
   if (!userPoolId || !clientId) {
     console.warn('⚠️ AWS Cognito credentials not configured for backend verification');
@@ -95,7 +95,7 @@ let dynamoClientForAuth: DynamoDBClient | null = null;
 function getDynamoAuthClient() {
   if (!dynamoClientForAuth) {
     dynamoClientForAuth = new DynamoDBClient({
-      region: process.env.AWS_REGION || 'eu-north-1',
+      region: process.env.AWS_REGION || 'ap-south-2',
       credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -166,7 +166,7 @@ export async function authenticateRequest(authHeader: string | undefined): Promi
 // Admin function to reset password directly (bypasses email verification)
 export async function adminResetPassword(email: string, newPassword: string): Promise<{ success: boolean; message: string }> {
   const userPoolId = process.env.AWS_COGNITO_USER_POOL_ID;
-  const region = process.env.AWS_COGNITO_REGION || process.env.AWS_REGION || 'eu-north-1';
+  const region = process.env.AWS_COGNITO_REGION || process.env.AWS_REGION || 'ap-south-2';
   
   if (!userPoolId) {
     return { success: false, message: 'Cognito User Pool not configured' };

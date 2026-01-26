@@ -41,7 +41,7 @@ Preferred communication style: Simple, everyday language.
 
 ## NeoFeed AWS Migration (Complete)
 
-**Primary Data Source**: AWS DynamoDB (eu-north-1 region)
+**Primary Data Source**: AWS DynamoDB (ap-south-2 Hyderabad region)
 **Tables**:
 - `neofeed-user-posts`: Social feed posts with author info, content, media
 - `neofeed-likes`: Track user likes (pk: postId, sk: userId)
