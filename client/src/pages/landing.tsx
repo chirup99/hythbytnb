@@ -599,7 +599,7 @@ export default function Landing() {
       </div>
 
       <div className="max-w-md w-full space-y-4">
-        <div className="text-center mb-2">
+        <div className="text-center mb-2 pl-6">
           <h2 className="text-2xl font-bold text-white mb-1">Get Early Access</h2>
           <p className="text-gray-400 text-xs mb-2">Perala: Your Advanced Trading Journal & Performance Analysis Hub.</p>
           <div className="flex justify-center gap-4 text-[10px] text-gray-500">
