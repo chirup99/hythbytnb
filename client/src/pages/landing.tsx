@@ -682,30 +682,30 @@ export default function Landing() {
                   </div>
 
                   {/* Magic Bar (Purple Bar) - Positioned immediately below heatmap */}
-                  <div className="bg-purple-600/95 rounded-md py-1 px-2 relative overflow-hidden shadow-[0_0_15px_rgba(147,51,234,0.3)] mt-1">
+                  <div className="bg-purple-600/95 rounded-sm py-[2px] px-2 relative overflow-hidden shadow-[0_0_8px_rgba(147,51,234,0.25)] mt-1">
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
-                    <div className="grid grid-cols-5 gap-0.5 relative">
-                      <div className="flex flex-col items-center justify-center border-r border-white/10">
-                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">P&L</span>
-                        <span className="text-[6px] text-white font-bold">+₹83.5K</span>
+                    <div className="grid grid-cols-5 gap-0 relative">
+                      <div className="flex flex-col items-center justify-center border-r border-white/10 py-[1px]">
+                        <span className="text-[3px] text-purple-100/70 uppercase font-medium leading-none mb-[1px]">P&L</span>
+                        <span className="text-[5px] text-white font-bold leading-none">+₹83.5K</span>
                       </div>
-                      <div className="flex flex-col items-center justify-center border-r border-white/10">
-                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">Trend</span>
-                        <div className="w-4 h-1.5 bg-white/20 rounded-[1px] relative overflow-hidden">
+                      <div className="flex flex-col items-center justify-center border-r border-white/10 py-[1px]">
+                        <span className="text-[3px] text-purple-100/70 uppercase font-medium leading-none mb-[1px]">Trend</span>
+                        <div className="w-3.5 h-[3px] bg-white/20 rounded-[0.5px] relative overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
                         </div>
                       </div>
-                      <div className="flex flex-col items-center justify-center border-r border-white/10">
-                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">FOMO</span>
-                        <span className="text-[6px] text-white font-bold">4</span>
+                      <div className="flex flex-col items-center justify-center border-r border-white/10 py-[1px]">
+                        <span className="text-[3px] text-purple-100/70 uppercase font-medium leading-none mb-[1px]">FOMO</span>
+                        <span className="text-[5px] text-white font-bold leading-none">4</span>
                       </div>
-                      <div className="flex flex-col items-center justify-center border-r border-white/10">
-                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">Win%</span>
-                        <span className="text-[6px] text-white font-bold">30%</span>
+                      <div className="flex flex-col items-center justify-center border-r border-white/10 py-[1px]">
+                        <span className="text-[3px] text-purple-100/70 uppercase font-medium leading-none mb-[1px]">Win%</span>
+                        <span className="text-[5px] text-white font-bold leading-none">30%</span>
                       </div>
-                      <div className="flex flex-col items-center justify-center">
-                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">Streak</span>
-                        <span className="text-[6px] text-white font-bold">3</span>
+                      <div className="flex flex-col items-center justify-center py-[1px]">
+                        <span className="text-[3px] text-purple-100/70 uppercase font-medium leading-none mb-[1px]">Streak</span>
+                        <span className="text-[5px] text-white font-bold leading-none">3</span>
                       </div>
                     </div>
                   </div>
