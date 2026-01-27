@@ -621,9 +621,9 @@ export default function Landing() {
                 <div className="text-[7px] text-gray-500 font-mono tracking-tighter">TRADE_BOOK_v2.0</div>
               </div>
               
-              <div className="p-2 space-y-1.5 relative h-full flex flex-col">
+              <div className="p-2 space-y-1 relative h-full flex flex-col">
                 {/* Real-style Heatmap Calendar Demo with Animation */}
-                <div className="space-y-1 flex-1 overflow-hidden">
+                <div className="space-y-1 flex-1 overflow-hidden relative">
                   <div className="flex justify-between items-center px-1">
                     <div className="flex items-center gap-1">
                       <div className="w-1 h-1 rounded-full bg-green-500" />
@@ -641,6 +641,7 @@ export default function Landing() {
                     </div>
                   </div>
                   
+                  {/* Heatmap Grid */}
                   <div className="relative h-16 overflow-hidden bg-gray-950/30 rounded border border-gray-800/50 p-1">
                     <div className="flex gap-1 animate-marquee whitespace-nowrap">
                       {Array.from({ length: 12 }).map((_, monthIdx) => (
@@ -659,16 +660,32 @@ export default function Landing() {
                                 'bg-red-500/20 border-red-500/10 rounded-full',
                                 'bg-red-500/60 border-red-500/30 rounded-full'
                               ];
+                              // Add IDs to some specific dots for line targeting
+                              const isTarget = (monthIdx === 2 && dayIdx === 15) || (monthIdx === 4 && dayIdx === 10) || (monthIdx === 7 && dayIdx === 20);
                               return (
                                 <div 
                                   key={dayIdx} 
-                                  className={`w-1.5 h-1.5 border ${colors[weight]} transition-colors duration-300 hover:scale-125 cursor-pointer`}
+                                  className={`w-1.5 h-1.5 border ${colors[weight]} transition-colors duration-300 hover:scale-125 cursor-pointer relative ${isTarget ? 'ring-1 ring-purple-500/50' : ''}`}
                                 />
                               );
                             })}
                           </div>
                         </div>
                       ))}
+                    </div>
+
+                    {/* Magic Lines SVG Overlay */}
+                    <svg className="absolute inset-0 pointer-events-none w-full h-full opacity-0 animate-fade-in [animation-delay:2s] [animation-fill-mode:forwards]">
+                      <path d="M 140 80 Q 100 50 60 30" fill="none" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="0.5" strokeDasharray="2,2" className="animate-draw-line" />
+                      <path d="M 140 80 Q 140 40 160 25" fill="none" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="0.5" strokeDasharray="2,2" className="animate-draw-line" />
+                      <path d="M 140 80 Q 200 60 240 35" fill="none" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="0.5" strokeDasharray="2,2" className="animate-draw-line" />
+                    </svg>
+
+                    {/* Flash Text Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="px-3 py-1 bg-purple-600/90 rounded-full text-[8px] font-bold text-white tracking-widest opacity-0 animate-flash-text">
+                        OVER TRADING DETECTED
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -683,29 +700,32 @@ export default function Landing() {
                    </div>
                 </div>
 
-                {/* Performance Metrics Bar */}
-                <div className="grid grid-cols-5 gap-1 pt-1 border-t border-gray-800/50">
-                  <div className="flex flex-col items-center justify-center">
-                    <span className="text-[4px] text-gray-500 uppercase">P&L</span>
-                    <span className="text-[6px] text-green-400 font-bold">+₹83.5K</span>
-                  </div>
-                  <div className="flex flex-col items-center justify-center border-l border-gray-800/50">
-                    <span className="text-[4px] text-gray-500 uppercase">Win%</span>
-                    <span className="text-[6px] text-white font-bold">30%</span>
-                  </div>
-                  <div className="flex flex-col items-center justify-center border-l border-gray-800/50">
-                    <span className="text-[4px] text-gray-500 uppercase">FOMO</span>
-                    <span className="text-[6px] text-red-400 font-bold">4</span>
-                  </div>
-                  <div className="flex flex-col items-center justify-center border-l border-gray-800/50">
-                    <span className="text-[4px] text-gray-500 uppercase">Trend</span>
-                    <div className="w-4 h-2 bg-purple-500/20 rounded-[1px] relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/40 to-transparent animate-shimmer" />
+                {/* Magic Bar (Purple Bar) */}
+                <div className="bg-purple-600/95 rounded-lg py-1.5 px-2 relative overflow-hidden shadow-[0_0_15px_rgba(147,51,234,0.3)]">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                  <div className="grid grid-cols-5 gap-0.5 relative">
+                    <div className="flex flex-col items-center justify-center border-r border-white/10">
+                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">P&L</span>
+                      <span className="text-[6px] text-white font-bold">+₹83.5K</span>
                     </div>
-                  </div>
-                  <div className="flex flex-col items-center justify-center border-l border-gray-800/50">
-                    <span className="text-[4px] text-gray-500 uppercase">Streak</span>
-                    <span className="text-[6px] text-orange-400 font-bold">3</span>
+                    <div className="flex flex-col items-center justify-center border-r border-white/10">
+                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">Trend</span>
+                      <div className="w-4 h-1.5 bg-white/20 rounded-[1px] relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center justify-center border-r border-white/10">
+                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">FOMO</span>
+                      <span className="text-[6px] text-white font-bold">4</span>
+                    </div>
+                    <div className="flex flex-col items-center justify-center border-r border-white/10">
+                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">Win%</span>
+                      <span className="text-[6px] text-white font-bold">30%</span>
+                    </div>
+                    <div className="flex flex-col items-center justify-center">
+                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">Streak</span>
+                      <span className="text-[6px] text-white font-bold">3</span>
+                    </div>
                   </div>
                 </div>
               </div>

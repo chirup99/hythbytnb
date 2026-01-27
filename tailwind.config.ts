@@ -71,6 +71,18 @@ export default {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' },
         },
+        "flash-text": {
+          '0%, 100%': { opacity: '0', transform: 'scale(0.8)' },
+          '10%, 90%': { opacity: '1', transform: 'scale(1)' },
+        },
+        "draw-line": {
+          '0%': { strokeDashoffset: '100' },
+          '100%': { strokeDashoffset: '0' },
+        },
+        "fade-in": {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
         "accordion-down": {
           from: {
             height: "0",
@@ -91,6 +103,9 @@ export default {
       animation: {
         marquee: "marquee 20s linear infinite",
         shimmer: "shimmer 2s linear infinite",
+        "flash-text": "flash-text 3s ease-in-out infinite",
+        "draw-line": "draw-line 2s ease-out forwards",
+        "fade-in": "fade-in 0.5s ease-out forwards",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
