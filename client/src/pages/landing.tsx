@@ -607,46 +607,44 @@ export default function Landing() {
       </div>
 
       <div className="max-w-md w-full space-y-4">
-        <div className="text-center relative min-h-[120px] flex flex-col items-center justify-center p-0 m-0">
+        <div className="text-center relative flex flex-col items-center justify-center p-0 m-0">
           {/* Tradebook Preview - Always visible or transitions in */}
-          <div className={`transition-all duration-700 transform ${showAccessInfo ? 'opacity-0 scale-95 absolute' : 'opacity-100 scale-100'} p-0 m-0`}>
-            <div className="flex justify-center p-0 m-0">
-              <div className="w-[320px] h-[180px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group p-0 m-0">
-                <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent p-0 m-0" />
-                <div className="p-3 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
-                  <div className="flex gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-red-500/50" />
-                    <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
-                    <div className="w-2 h-2 rounded-full bg-green-500/50" />
-                  </div>
-                  <div className="text-[8px] text-gray-500 font-mono tracking-tighter">TRADE_BOOK_v2.0</div>
+          <div className={`${showAccessInfo ? 'hidden' : 'block'} w-full flex justify-center p-0 m-0`}>
+            <div className="w-[320px] h-[180px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent" />
+              <div className="p-3 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
+                <div className="flex gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-red-500/50" />
+                  <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
+                  <div className="w-2 h-2 rounded-full bg-green-500/50" />
                 </div>
-                <div className="p-3 space-y-2">
-                  <div className="grid grid-cols-4 gap-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="h-6 rounded bg-gray-800/50 border border-gray-700/30 animate-pulse" />
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="h-12 rounded bg-gray-800/40 border border-gray-700/20" />
-                    ))}
-                  </div>
-                  <div className="h-16 rounded bg-purple-500/5 border border-purple-500/10 flex items-center justify-center">
-                    <div className="flex gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.3s]" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.15s]" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce" />
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute inset-x-0 bottom-0 h-1 bg-purple-500/20" />
+                <div className="text-[8px] text-gray-500 font-mono tracking-tighter">TRADE_BOOK_v2.0</div>
               </div>
+              <div className="p-3 space-y-2">
+                <div className="grid grid-cols-4 gap-2">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="h-6 rounded bg-gray-800/50 border border-gray-700/30 animate-pulse" />
+                  ))}
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-12 rounded bg-gray-800/40 border border-gray-700/20" />
+                  ))}
+                </div>
+                <div className="h-16 rounded bg-purple-500/5 border border-purple-500/10 flex items-center justify-center">
+                  <div className="flex gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.3s]" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.15s]" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce" />
+                  </div>
+                </div>
+              </div>
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-purple-500/20" />
             </div>
           </div>
           
           {/* Access Info - Hides after 1 second */}
-          <div className={`transition-all duration-500 ${!showAccessInfo ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'} p-0 m-0`}>
+          <div className={`${!showAccessInfo ? 'hidden' : 'block'} p-0 m-0`}>
             <h2 className="text-2xl font-bold text-white mb-1">Get Early Access</h2>
             <p className="text-gray-400 text-xs mb-2">Perala: Your Advanced Trading Journal & Performance Analysis Hub.</p>
             <div className="flex justify-center gap-4 text-[10px] text-gray-500">
@@ -662,7 +660,7 @@ export default function Landing() {
           </div>
         </div>
 
-        <div className="bg-gray-900/50 p-6 rounded-2xl border border-gray-800/50 backdrop-blur-sm mt-0 p-0">
+        <div className="bg-gray-900/50 p-6 rounded-2xl border border-gray-800/50 backdrop-blur-sm m-0">
           <div className="space-y-4">
             {isSignupVerification ? (
               <>
