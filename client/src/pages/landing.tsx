@@ -576,17 +576,19 @@ export default function Landing() {
     <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4 py-6">
       <div className="text-center mb-8 relative inline-block">
         <link rel="preload" as="image" href="/logo.png" />
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <img src="/logo.png" alt="Perala Logo" className="w-12 h-12 rounded-lg" fetchPriority="high" loading="eager" />
-          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tighter">PERALA</h1>
-        </div>
-        <div className="flex items-center justify-center gap-2 text-[10px] text-gray-500 font-medium tracking-widest uppercase">
-          <span>rethink . reinvest .</span>
-          <svg width="16" height="8" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-500 ml-1">
-            <path d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            <path d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            <path d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
+        <div className="flex items-end justify-center gap-3">
+          <div className="flex items-center gap-3 mb-2">
+            <img src="/logo.png" alt="Perala Logo" className="w-12 h-12 rounded-lg" fetchPriority="high" loading="eager" />
+            <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tighter">PERALA</h1>
+          </div>
+          <div className="flex items-center gap-1.5 text-[9px] text-gray-500 font-medium tracking-widest uppercase mb-2">
+            <span>rethink . reinvest .</span>
+            <svg width="14" height="7" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-500">
+              <path d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </div>
         </div>
       </div>
 
