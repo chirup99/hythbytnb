@@ -100,6 +100,13 @@ export default function Landing() {
     );
   };
 
+  const carouselSlides = [
+    { title: "Weekly Recap", value: "+₹1,24,850", color: "text-green-400" },
+    { title: "Win Rate", value: "67%", color: "text-blue-400" },
+    { title: "Avg RR", value: "1:2.4", color: "text-purple-400" },
+    { title: "Profit Factor", value: "2.1", color: "text-orange-400" }
+  ];
+
   useEffect(() => {
     if (showJournalCarousel && !showPerformanceWindow) {
       const interval = setInterval(() => {
@@ -107,7 +114,7 @@ export default function Landing() {
       }, 600);
       return () => clearInterval(interval);
     }
-  }, [showJournalCarousel, showPerformanceWindow]);
+  }, [showJournalCarousel, showPerformanceWindow, carouselSlides.length]);
   const [name, setName] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
