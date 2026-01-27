@@ -81,7 +81,7 @@ export default function Landing() {
         // Reset sequence state
         setTypedNote("");
         setShowTagsDropdown(false);
-      }, 5000 + (fullNote.length * 30));
+      }, 4000 + (fullNote.length * 30));
       return () => clearTimeout(resetTimer);
     }
   }, [showTradingNotes]);
