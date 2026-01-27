@@ -660,7 +660,6 @@ export default function Landing() {
                                 'bg-red-500/20 border-red-500/10 rounded-full',
                                 'bg-red-500/60 border-red-500/30 rounded-full'
                               ];
-                              // Add IDs to some specific dots for line targeting
                               const isTarget = (monthIdx === 2 && dayIdx === 15) || (monthIdx === 4 && dayIdx === 10) || (monthIdx === 7 && dayIdx === 20);
                               return (
                                 <div 
@@ -681,9 +680,38 @@ export default function Landing() {
                       <path d="M 140 80 Q 200 60 240 35" fill="none" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="0.5" strokeDasharray="2,2" className="animate-draw-line" />
                     </svg>
                   </div>
+
+                  {/* Magic Bar (Purple Bar) - Positioned immediately below heatmap */}
+                  <div className="bg-purple-600/95 rounded-lg py-1.5 px-2 relative overflow-hidden shadow-[0_0_15px_rgba(147,51,234,0.3)] mt-1">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                    <div className="grid grid-cols-5 gap-0.5 relative">
+                      <div className="flex flex-col items-center justify-center border-r border-white/10">
+                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">P&L</span>
+                        <span className="text-[6px] text-white font-bold">+₹83.5K</span>
+                      </div>
+                      <div className="flex flex-col items-center justify-center border-r border-white/10">
+                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">Trend</span>
+                        <div className="w-4 h-1.5 bg-white/20 rounded-[1px] relative overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-center justify-center border-r border-white/10">
+                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">FOMO</span>
+                        <span className="text-[6px] text-white font-bold">4</span>
+                      </div>
+                      <div className="flex flex-col items-center justify-center border-r border-white/10">
+                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">Win%</span>
+                        <span className="text-[6px] text-white font-bold">30%</span>
+                      </div>
+                      <div className="flex flex-col items-center justify-center">
+                        <span className="text-[4px] text-purple-100/70 uppercase font-medium">Streak</span>
+                        <span className="text-[6px] text-white font-bold">3</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex justify-between items-center px-1 py-0.5 border-t border-gray-800/50">
+                <div className="flex justify-between items-center px-1 py-0.5 border-t border-gray-800/50 mt-auto">
                    <div className="flex items-center gap-1">
                      <div className="w-0.5 h-3 bg-purple-500 rounded-full" />
                      <span className="text-[6px] text-white font-medium">Jan 27, 2026</span>
@@ -691,35 +719,6 @@ export default function Landing() {
                    <div className="text-[6px] text-purple-400 font-bold tracking-tighter animate-pulse">
                      AUTO-SYNC ACTIVE
                    </div>
-                </div>
-
-                {/* Magic Bar (Purple Bar) */}
-                <div className="bg-purple-600/95 rounded-lg py-1.5 px-2 relative overflow-hidden shadow-[0_0_15px_rgba(147,51,234,0.3)]">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
-                  <div className="grid grid-cols-5 gap-0.5 relative">
-                    <div className="flex flex-col items-center justify-center border-r border-white/10">
-                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">P&L</span>
-                      <span className="text-[6px] text-white font-bold">+₹83.5K</span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center border-r border-white/10">
-                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">Trend</span>
-                      <div className="w-4 h-1.5 bg-white/20 rounded-[1px] relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-center justify-center border-r border-white/10">
-                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">FOMO</span>
-                      <span className="text-[6px] text-white font-bold">4</span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center border-r border-white/10">
-                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">Win%</span>
-                      <span className="text-[6px] text-white font-bold">30%</span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center">
-                      <span className="text-[4px] text-purple-100/70 uppercase font-medium">Streak</span>
-                      <span className="text-[6px] text-white font-bold">3</span>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div className="absolute inset-x-0 bottom-0 h-1 bg-purple-500/20" />
