@@ -682,7 +682,7 @@ export default function Landing() {
                   </div>
 
                   {/* Magic Bar (Purple Bar) - Positioned immediately below heatmap */}
-                  <div className="bg-purple-600/95 rounded-lg py-1.5 px-2 relative overflow-hidden shadow-[0_0_15px_rgba(147,51,234,0.3)] mt-1">
+                  <div className="bg-purple-600/95 rounded-md py-1 px-2 relative overflow-hidden shadow-[0_0_15px_rgba(147,51,234,0.3)] mt-1">
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
                     <div className="grid grid-cols-5 gap-0.5 relative">
                       <div className="flex flex-col items-center justify-center border-r border-white/10">
