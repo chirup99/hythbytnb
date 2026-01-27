@@ -607,12 +607,12 @@ export default function Landing() {
       </div>
 
       <div className="max-w-md w-full space-y-4">
-        <div className="text-center pl-6 relative min-h-[120px] flex flex-col items-center justify-center">
+        <div className="text-center relative min-h-[120px] flex flex-col items-center justify-center p-0 m-0">
           {/* Tradebook Preview - Always visible or transitions in */}
-          <div className={`transition-all duration-700 transform ${showAccessInfo ? 'opacity-0 scale-95 absolute' : 'opacity-100 scale-100'}`}>
-            <div className="flex justify-center">
-              <div className="w-[320px] h-[180px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent" />
+          <div className={`transition-all duration-700 transform ${showAccessInfo ? 'opacity-0 scale-95 absolute' : 'opacity-100 scale-100'} p-0 m-0`}>
+            <div className="flex justify-center p-0 m-0">
+              <div className="w-[320px] h-[180px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group p-0 m-0">
+                <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent p-0 m-0" />
                 <div className="p-3 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
                   <div className="flex gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-red-500/50" />
@@ -646,7 +646,7 @@ export default function Landing() {
           </div>
           
           {/* Access Info - Hides after 1 second */}
-          <div className={`transition-all duration-500 ${!showAccessInfo ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+          <div className={`transition-all duration-500 ${!showAccessInfo ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'} p-0 m-0`}>
             <h2 className="text-2xl font-bold text-white mb-1">Get Early Access</h2>
             <p className="text-gray-400 text-xs mb-2">Perala: Your Advanced Trading Journal & Performance Analysis Hub.</p>
             <div className="flex justify-center gap-4 text-[10px] text-gray-500">
@@ -662,7 +662,7 @@ export default function Landing() {
           </div>
         </div>
 
-        <div className="bg-gray-900/50 p-6 rounded-2xl border border-gray-800/50 backdrop-blur-sm">
+        <div className="bg-gray-900/50 p-6 rounded-2xl border border-gray-800/50 backdrop-blur-sm mt-0 p-0">
           <div className="space-y-4">
             {isSignupVerification ? (
               <>
