@@ -66,11 +66,11 @@ export default function Landing() {
   }, []);
 
   useEffect(() => {
-    const notesTimer = setTimeout(() => {
+    const heatmapTimer = setTimeout(() => {
       setShowPerformanceTrend(false);
       setShowTradingNotes(true);
     }, 12000);
-    return () => clearTimeout(notesTimer);
+    return () => clearTimeout(heatmapTimer);
   }, []);
 
   useEffect(() => {
