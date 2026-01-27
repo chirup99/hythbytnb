@@ -53,7 +53,7 @@ export default function Landing() {
     const performanceTimer = setTimeout(() => {
       setShowJournalCarousel(false);
       setShowPerformanceWindow(true);
-    }, 3000);
+    }, 6000);
     return () => clearTimeout(performanceTimer);
   }, []);
 
@@ -61,7 +61,7 @@ export default function Landing() {
     const trendTimer = setTimeout(() => {
       setShowPerformanceWindow(false);
       setShowPerformanceTrend(true);
-    }, 6000);
+    }, 9000);
     return () => clearTimeout(trendTimer);
   }, []);
 
@@ -69,7 +69,7 @@ export default function Landing() {
     const notesTimer = setTimeout(() => {
       setShowPerformanceTrend(false);
       setShowTradingNotes(true);
-    }, 9000);
+    }, 12000);
     return () => clearTimeout(notesTimer);
   }, []);
 
