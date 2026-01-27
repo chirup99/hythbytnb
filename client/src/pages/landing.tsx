@@ -582,12 +582,18 @@ export default function Landing() {
             <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tighter">PERALA</h1>
           </div>
           <div className="flex items-center gap-1.5 text-[9px] text-gray-500 font-medium tracking-widest uppercase mt-1 w-full justify-end pl-[0px] pr-[0px]">
-            <span>rethink & reinvest</span>
-            <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-500">
-              <path d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              <path d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              <path d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <span>rethink . reinvest .</span>
+            <div className="relative inline-flex items-center ml-1">
+              <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-500">
+                <path d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              {/* Broken flying piece */}
+              <div className="absolute -top-1.5 -right-1 rotate-12">
+                <div className="w-1.5 h-3 bg-purple-400 rounded-full opacity-80 animate-pulse shadow-[0_0_8px_rgba(192,132,252,0.6)]" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
