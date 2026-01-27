@@ -1,49 +1,46 @@
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "wouter";
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 p-8 flex items-center justify-center">
-      <Card className="max-w-3xl w-full bg-gray-900 border-gray-800">
-        <CardContent className="p-8 space-y-6">
-          <h1 className="text-3xl font-bold border-b border-gray-800 pb-4">Privacy Policy</h1>
+    <div className="min-h-screen bg-black text-gray-100 p-4 sm:p-8 flex items-center justify-center">
+      <Card className="max-w-3xl w-full bg-black border-none shadow-none">
+        <CardContent className="p-0 space-y-8">
+          <h1 className="text-4xl font-bold text-white">Privacy Policy</h1>
           
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold">1. Introduction</h2>
-            <p className="text-gray-400">
-              Perala is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our application.
+            <h2 className="text-2xl font-bold text-white">Introduction</h2>
+            <p className="text-gray-400 leading-relaxed">
+              At Perala, we are committed to protecting your privacy and providing you with a safe trading analysis experience. This Privacy Policy explains how we collect, use, and safeguard your data when you use our platform.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold">2. Information Collection</h2>
-            <p className="text-gray-400">
-              We collect information you provide directly to us when you create an account, such as your email address and profile information via Google or Cognito authentication.
+            <h2 className="text-2xl font-bold text-white">Data Collection</h2>
+            <p className="text-gray-400 leading-relaxed">
+              We collect information that you provide directly to us when you create an account, such as your name and email address. If you choose to link your trading accounts, we may access market data and trade history to provide analysis, but we do not store your brokerage passwords.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold">3. Use of Information</h2>
-            <p className="text-gray-400">
-              We use the information we collect to provide, maintain, and improve our services, including personalizing your experience and communicating with you about your account.
+            <h2 className="text-2xl font-bold text-white">Purpose of the App</h2>
+            <p className="text-gray-400 leading-relaxed">
+              Perala is a trading journal and analysis platform designed to help traders track their performance, analyze trading patterns, and improve their strategies through data-driven insights.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold">4. Data Sharing</h2>
-            <p className="text-gray-400">
-              We do not share your personal information with third parties except as necessary to provide our services or as required by law.
-            </p>
-          </section>
-
-          <section className="space-y-4 border-t border-gray-800 pt-6">
-            <p className="text-sm text-gray-500">
-              Last updated: January 27, 2026
+            <h2 className="text-2xl font-bold text-white">Data Protection</h2>
+            <p className="text-gray-400 leading-relaxed">
+              We implement industry-standard security measures to protect your personal information from unauthorized access, disclosure, or alteration. Your data is stored securely using AWS infrastructure.
             </p>
           </section>
           
-          <div className="pt-4">
-            <a href="/" className="text-indigo-400 hover:text-indigo-300 underline">Back to Home</a>
+          <div className="pt-8">
+            <Link href="/landing" className="text-purple-500 hover:text-purple-400 transition-colors">
+              Back to Login
+            </Link>
           </div>
         </CardContent>
       </Card>
