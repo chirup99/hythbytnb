@@ -591,7 +591,7 @@ export default function Landing() {
               </svg>
               {/* Broken flying piece */}
               <div className="absolute -top-[5px] -right-[4px] -rotate-[15deg]">
-                <div className="w-[6px] h-[2.5px] bg-purple-500/80 rounded-full shadow-[0_0_6px_rgba(168,85,247,0.4)]" />
+                <div className="w-[6px] h-[2.5px] bg-purple-500/80 rounded-full shadow-[0_0_6px_rgba(168,85,247,0.4)] mt-[5px] mb-[5px]" />
               </div>
             </div>
           </div>
