@@ -155,6 +155,15 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 ---
 
+## UI UPDATE (Jan 27, 2026 - Session 16)
+
+[x] 1. Install the required packages - Installed dotenv package successfully
+[x] 2. Restart the workflow - Server running on port 5000 with webview output
+[x] 3. Remove curved carousel from landing preview box - Removed the Journal Tab Carousel Overlay with curved stacked cards and curved line decoration
+[x] 4. Verify changes - Application running successfully
+
+---
+
 ## IMPORT SESSION (Jan 27, 2026 - Session 16)
 
 [x] 1. Install the required packages - Installed dotenv package successfully
