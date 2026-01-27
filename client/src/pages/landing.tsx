@@ -66,12 +66,25 @@ export default function Landing() {
   }, []);
 
   useEffect(() => {
-    const heatmapTimer = setTimeout(() => {
+    const notesTimer = setTimeout(() => {
       setShowPerformanceTrend(false);
       setShowTradingNotes(true);
     }, 12000);
-    return () => clearTimeout(heatmapTimer);
+    return () => clearTimeout(notesTimer);
   }, []);
+
+  useEffect(() => {
+    if (showTradingNotes) {
+      const resetTimer = setTimeout(() => {
+        setShowTradingNotes(false);
+        setShowAccessInfo(true);
+        // Reset sequence state
+        setTypedNote("");
+        setShowTagsDropdown(false);
+      }, 5000 + (fullNote.length * 30));
+      return () => clearTimeout(resetTimer);
+    }
+  }, [showTradingNotes]);
 
   useEffect(() => {
     if (showTradingNotes) {
