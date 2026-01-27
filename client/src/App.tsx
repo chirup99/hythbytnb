@@ -35,6 +35,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Dashboard from "@/pages/home";
 import Landing from "@/pages/landing";
+import PrivacyPolicy from "@/pages/privacy";
 import NotFound from "@/pages/not-found";
 import PublicHeatmap from "@/pages/public-heatmap";
 import SharedReport from "@/pages/shared-report";
@@ -314,7 +315,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                 data-testid="button-profile-menu-toggle"
               >
                 <Avatar className="w-10 h-10 rounded-lg border border-white/10">
-                  <AvatarImage src={currentUser?.profilePicUrl} />
+                  <AvatarImage src={currentUser?.profilePicUrl || undefined} />
                   <AvatarFallback className="bg-gradient-to-br from-purple-500 to-blue-500 text-white font-semibold text-sm rounded-lg">
                     {currentUserDisplayName.charAt(0).toUpperCase()}
                   </AvatarFallback>
@@ -445,6 +446,7 @@ function Router() {
       <Route path="/shared/:reportId" component={SharedReport} />
       <Route path="/market-news" component={MarketNews} />
       <Route path="/zerodha-debug" component={ZerodhaDebug} />
+      <Route path="/privacy" component={PrivacyPolicy} />
       <Route component={NotFound} />
     </Switch>
   );

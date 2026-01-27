@@ -595,7 +595,7 @@ export default function Landing() {
       <div className="max-w-md w-full space-y-4">
         <div className="text-center mb-2">
           <h2 className="text-2xl font-bold text-white mb-1">Get Early Access</h2>
-          <p className="text-gray-400 text-xs mb-2">Perala: Your Advanced Trading Journal & Performance Analysis Hub</p>
+          <p className="text-gray-400 text-xs mb-2">Perala: Your Advanced Trading Journal & Performance Analysis Hub. Perala helps traders track their daily trades, analyze performance with AI insights, and manage their trading discipline systematically.</p>
           <div className="flex justify-center gap-4 text-[10px] text-gray-500">
             <div className="flex items-center gap-1">
               <div className="w-1 h-1 bg-green-500 rounded-full" />
@@ -872,7 +872,7 @@ export default function Landing() {
         </div>
 
         <div className="flex justify-center gap-4 text-[9px] text-gray-700 border-t border-gray-900 pt-4">
-          <button className="hover:text-gray-500">Privacy Policy</button>
+          <a href="/privacy" className="hover:text-gray-500">Privacy Policy</a>
           <span>© 2026 Perala</span>
         </div>
       </div>
