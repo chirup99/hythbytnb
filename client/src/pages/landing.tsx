@@ -576,12 +576,12 @@ export default function Landing() {
     <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4 py-6">
       <div className="text-center mb-8 relative inline-block">
         <link rel="preload" as="image" href="/logo.png" />
-        <div className="flex items-end justify-center gap-3">
-          <div className="flex items-center gap-3 mb-2">
+        <div className="flex flex-col items-center">
+          <div className="flex items-center gap-3">
             <img src="/logo.png" alt="Perala Logo" className="w-12 h-12 rounded-lg" fetchPriority="high" loading="eager" />
             <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tighter">PERALA</h1>
           </div>
-          <div className="flex items-center gap-1.5 text-[9px] text-gray-500 font-medium tracking-widest uppercase mb-2">
+          <div className="flex items-center gap-1.5 text-[9px] text-gray-500 font-medium tracking-widest uppercase mt-1 w-full justify-end pr-2">
             <span>rethink . reinvest .</span>
             <svg width="14" height="7" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-500">
               <path d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
