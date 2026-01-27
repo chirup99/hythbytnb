@@ -22,12 +22,20 @@ export default function Landing() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showAccessInfo, setShowAccessInfo] = useState(true);
+  const [showPerformanceWindow, setShowPerformanceWindow] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowAccessInfo(false);
     }, 1000);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const performanceTimer = setTimeout(() => {
+      setShowPerformanceWindow(true);
+    }, 4000);
+    return () => clearTimeout(performanceTimer);
   }, []);
   const [name, setName] = useState("");
   const [otp, setOtp] = useState("");
@@ -719,6 +727,92 @@ export default function Landing() {
                    <div className="text-[6px] text-purple-400 font-bold tracking-tighter animate-pulse">
                      AUTO-SYNC ACTIVE
                    </div>
+                </div>
+
+                {/* Performance Window - Loss Making Analysis Overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br from-red-600 via-red-500 to-red-400 rounded-lg transition-all duration-500 ${showPerformanceWindow ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
+                  <div className="p-2 h-full flex flex-col">
+                    {/* Header */}
+                    <div className="flex items-center gap-1 mb-1.5">
+                      <svg className="w-2.5 h-2.5 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M3 3v18h18M7 16l4-4 4 4 6-6" />
+                      </svg>
+                      <div>
+                        <span className="text-[7px] text-white font-bold">Loss Making Analysis</span>
+                        <p className="text-[4px] text-white/70">Identify and fix problematic patterns</p>
+                      </div>
+                    </div>
+
+                    {/* Stats Row */}
+                    <div className="grid grid-cols-4 gap-1 mb-1.5">
+                      <div className="bg-white/10 rounded p-1">
+                        <span className="text-[8px] text-white font-bold block">6</span>
+                        <span className="text-[4px] text-white/70">Losing Days</span>
+                      </div>
+                      <div className="bg-white/10 rounded p-1">
+                        <span className="text-[8px] text-white font-bold block">4</span>
+                        <span className="text-[4px] text-white/70">Emotional Days</span>
+                      </div>
+                      <div className="bg-white/10 rounded p-1">
+                        <span className="text-[8px] text-white font-bold block">34</span>
+                        <span className="text-[4px] text-white/70">Impulsive Trades</span>
+                      </div>
+                      <div className="bg-white/10 rounded p-1">
+                        <span className="text-[8px] text-white font-bold block">40%</span>
+                        <span className="text-[4px] text-white/70">Loss Rate</span>
+                      </div>
+                    </div>
+
+                    {/* Most Problematic Tags */}
+                    <div className="flex items-center gap-1 mb-1">
+                      <span className="text-[5px]">⚠️</span>
+                      <span className="text-[5px] text-white/90 font-semibold">Most Problematic Tags</span>
+                    </div>
+
+                    {/* Tag Cards Grid */}
+                    <div className="grid grid-cols-2 gap-1 flex-1">
+                      <div className="bg-white/15 rounded p-1 border border-white/10">
+                        <div className="flex items-center gap-0.5 mb-0.5">
+                          <div className="w-1.5 h-1.5 rounded-full bg-white/30 flex items-center justify-center">
+                            <span className="text-[3px]">!</span>
+                          </div>
+                          <span className="text-[5px] text-white font-bold">OVERTRADING</span>
+                        </div>
+                        <p className="text-[3.5px] text-white/60">Avg Loss: ₹13930 • 100% loss rate</p>
+                        <p className="text-[3px] text-white/50 mt-0.5">Total: ₹41,788 across 3 days</p>
+                      </div>
+                      <div className="bg-white/15 rounded p-1 border border-white/10">
+                        <div className="flex items-center gap-0.5 mb-0.5">
+                          <div className="w-1.5 h-1.5 rounded-full bg-white/30 flex items-center justify-center">
+                            <span className="text-[3px]">!</span>
+                          </div>
+                          <span className="text-[5px] text-white font-bold">INDICATOR BASED</span>
+                        </div>
+                        <p className="text-[3.5px] text-white/60">Avg Loss: ₹12408 • 100% loss rate</p>
+                        <p className="text-[3px] text-white/50 mt-0.5">Total: ₹24,816 across 2 days</p>
+                      </div>
+                      <div className="bg-white/15 rounded p-1 border border-white/10">
+                        <div className="flex items-center gap-0.5 mb-0.5">
+                          <div className="w-1.5 h-1.5 rounded-full bg-white/30 flex items-center justify-center">
+                            <span className="text-[3px]">!</span>
+                          </div>
+                          <span className="text-[5px] text-white font-bold">FOMO</span>
+                        </div>
+                        <p className="text-[3.5px] text-white/60">Avg Loss: ₹5102 • 100% loss rate</p>
+                        <p className="text-[3px] text-white/50 mt-0.5">Total: ₹20,408 across 4 days</p>
+                      </div>
+                      <div className="bg-white/15 rounded p-1 border border-white/10">
+                        <div className="flex items-center gap-0.5 mb-0.5">
+                          <div className="w-1.5 h-1.5 rounded-full bg-white/30 flex items-center justify-center">
+                            <span className="text-[3px]">!</span>
+                          </div>
+                          <span className="text-[5px] text-white font-bold">BLIND TRADES</span>
+                        </div>
+                        <p className="text-[3.5px] text-white/60">Avg Loss: ₹12408 • 100% loss rate</p>
+                        <p className="text-[3px] text-white/50 mt-0.5">Total: ₹12,408 across 1 day</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="absolute inset-x-0 bottom-0 h-1 bg-purple-500/20" />

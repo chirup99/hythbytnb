@@ -146,14 +146,9 @@ ANGEL_ONE_TOTP_SECRET=your_totp_secret
 
 [x] 1. Install the required packages - Installed dotenv package successfully
 [x] 2. Restart the workflow - Server running on port 5000
-[x] 3. Verify the project is working - All services initialized:
-    - Angel One auto-connected (P176266)
-    - JWT tokens generating successfully
-    - WebSocket streaming live market data (BANKNIFTY: 58732.6, SENSEX: 81479.22, GOLD: 43525.87)
-    - AWS DynamoDB ready (Region: ap-south-2, Table: tradebook-heatmaps)
-    - NeoFeed tables (11 tables ready)
-    - NLP Agent (25+ intents), Gemini AI configured
-    - AWS Cognito JWT Verifier ready
-    - Dhan API Key OAuth Manager initialized
-    - Upstox OAuth Manager initialized
-[x] 4. Import completed - Application fully operational and ready for use
+[x] 3. Verify the project is working - All services initialized, Angel One auto-connected
+[x] 4. Added Performance Window feature - Loss Making Analysis overlay appears after 3 seconds on landing page preview
+    - Shows 6 Losing Days, 4 Emotional Days, 34 Impulsive Trades, 40% Loss Rate
+    - Displays problematic tags: OVERTRADING, INDICATOR BASED, FOMO, BLIND TRADES
+    - Red gradient background matching user's design reference
+[x] 5. Import completed - Application fully operational and ready for use
