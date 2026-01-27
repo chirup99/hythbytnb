@@ -774,9 +774,9 @@ export default function Landing() {
 
                     {/* Magic Lines SVG Overlay */}
                     <svg className="absolute inset-0 pointer-events-none w-full h-full opacity-0 animate-fade-in [animation-delay:2s] [animation-fill-mode:forwards]">
-                      <path d="M 140 80 Q 100 50 60 30" fill="none" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="0.5" strokeDasharray="2,2" className="animate-draw-line" />
-                      <path d="M 140 80 Q 140 40 160 25" fill="none" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="0.5" strokeDasharray="2,2" className="animate-draw-line" />
-                      <path d="M 140 80 Q 200 60 240 35" fill="none" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="0.5" strokeDasharray="2,2" className="animate-draw-line" />
+                      <path d="M 140 80 Q 100 50 60 30" fill="none" stroke="rgba(168, 85, 247, 0.7)" strokeWidth="1.2" strokeDasharray="2,2" className="animate-draw-line" />
+                      <path d="M 140 80 Q 140 40 160 25" fill="none" stroke="rgba(168, 85, 247, 0.7)" strokeWidth="1.2" strokeDasharray="2,2" className="animate-draw-line" />
+                      <path d="M 140 80 Q 200 60 240 35" fill="none" stroke="rgba(168, 85, 247, 0.7)" strokeWidth="1.2" strokeDasharray="2,2" className="animate-draw-line" />
                     </svg>
                   </div>
 
