@@ -669,15 +669,15 @@ export default function Landing() {
                   <p className="text-gray-400 text-sm">Enter the 6-digit code sent to <strong>{email}</strong></p>
                 </div>
                 <div className="space-y-4">
-                  <Input
-                    type="text"
-                    placeholder="Enter verification code"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                    maxLength={6}
-                    className="bg-gray-950 border-gray-800 text-white placeholder-gray-400 h-11 rounded-xl text-center text-lg tracking-widest"
-                    data-testid="input-signup-otp"
-                  />
+                          <Input
+                            type="text"
+                            placeholder="Enter verification code"
+                            value={otp}
+                            onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                            maxLength={6}
+                            className="bg-gray-950 border-gray-800 text-white placeholder-gray-400 h-11 rounded-xl text-center text-lg tracking-widest"
+                            data-testid="input-signup-otp"
+                          />
                   <Button
                     onClick={handleSignupVerification}
                     disabled={otp.length < 6 || isEmailLoading}
@@ -710,15 +710,15 @@ export default function Landing() {
                   <p className="text-gray-400 text-sm">Enter your email for a verification code</p>
                 </div>
                 <div className="space-y-3">
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={isOtpSent}
-                    className="bg-gray-950 border-gray-800 text-white placeholder-gray-400 h-11 rounded-xl disabled:opacity-50"
-                    data-testid="input-forgot-email"
-                  />
+                            <Input
+                              type="email"
+                              placeholder="Email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              disabled={isOtpSent}
+                              className="bg-gray-950 border-gray-800 text-white placeholder-gray-400 h-11 rounded-xl disabled:opacity-50"
+                              data-testid="input-forgot-email"
+                            />
                   {cooldownSeconds > 0 && (
                     <div className="p-3 bg-orange-900/30 border border-orange-700 rounded-lg text-center">
                       <p className="text-orange-400 text-xs">
@@ -741,15 +741,15 @@ export default function Landing() {
                       <div className="p-2 bg-green-900/30 border border-green-700 rounded-lg text-center">
                         <p className="text-green-400 text-xs">Code sent to your email</p>
                       </div>
-                      <Input
-                        type="text"
-                        placeholder="6-digit verification code"
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                        maxLength={6}
-                        className="bg-gray-950 border-gray-800 text-white placeholder-gray-400 h-11 rounded-xl text-center text-lg tracking-widest"
-                        data-testid="input-otp"
-                      />
+                              <Input
+                                type="text"
+                                placeholder="6-digit verification code"
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                                maxLength={6}
+                                className="bg-gray-950 border-gray-800 text-white placeholder-gray-400 h-11 rounded-xl text-center text-lg tracking-widest"
+                                data-testid="input-otp"
+                              />
                       <div className="relative">
                         <Input
                           type={showNewPassword ? "text" : "password"}
@@ -835,29 +835,29 @@ export default function Landing() {
                 </div>
 
                 <div className="space-y-3">
-                  {!isLogin && (
-                    <Input
-                      placeholder="Name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="bg-gray-950 border-gray-800 h-11 rounded-xl"
-                    />
-                  )}
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="bg-gray-950 border-gray-800 h-11 rounded-xl"
-                  />
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="bg-gray-950 border-gray-800 h-11 rounded-xl pr-10"
-                    />
+                          {!isLogin && (
+                            <Input
+                              placeholder="Name"
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
+                              className="bg-gray-950 border-gray-800 text-white placeholder-gray-400 h-11 rounded-xl"
+                            />
+                          )}
+                          <Input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="bg-gray-950 border-gray-800 text-white placeholder-gray-400 h-11 rounded-xl"
+                          />
+                          <div className="relative">
+                            <Input
+                              type={showPassword ? "text" : "password"}
+                              placeholder="Password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              className="bg-gray-950 border-gray-800 text-white placeholder-gray-400 h-11 rounded-xl pr-10"
+                            />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
