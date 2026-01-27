@@ -21,6 +21,14 @@ export default function Landing() {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showAccessInfo, setShowAccessInfo] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAccessInfo(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
   const [name, setName] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -599,17 +607,57 @@ export default function Landing() {
       </div>
 
       <div className="max-w-md w-full space-y-4">
-        <div className="text-center mb-2 pl-6">
-          <h2 className="text-2xl font-bold text-white mb-1">Get Early Access</h2>
-          <p className="text-gray-400 text-xs mb-2">Perala: Your Advanced Trading Journal & Performance Analysis Hub.</p>
-          <div className="flex justify-center gap-4 text-[10px] text-gray-500">
-            <div className="flex items-center gap-1">
-              <div className="w-1 h-1 bg-green-500 rounded-full" />
-              <span>Daily Trade Tracking</span>
+        <div className="text-center mb-6 pl-6 relative min-h-[120px] flex flex-col items-center justify-center">
+          {/* Tradebook Preview - Always visible or transitions in */}
+          <div className={`transition-all duration-700 transform ${showAccessInfo ? 'opacity-0 scale-95 absolute' : 'opacity-100 scale-100'}`}>
+            <div className="flex justify-center mb-4">
+              <div className="w-[320px] h-[180px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent" />
+                <div className="p-3 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
+                  <div className="flex gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-red-500/50" />
+                    <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
+                    <div className="w-2 h-2 rounded-full bg-green-500/50" />
+                  </div>
+                  <div className="text-[8px] text-gray-500 font-mono tracking-tighter">TRADE_BOOK_v2.0</div>
+                </div>
+                <div className="p-3 space-y-2">
+                  <div className="grid grid-cols-4 gap-2">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="h-6 rounded bg-gray-800/50 border border-gray-700/30 animate-pulse" />
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="h-12 rounded bg-gray-800/40 border border-gray-700/20" />
+                    ))}
+                  </div>
+                  <div className="h-16 rounded bg-purple-500/5 border border-purple-500/10 flex items-center justify-center">
+                    <div className="flex gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.3s]" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.15s]" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce" />
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 h-1 bg-purple-500/20" />
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-1 h-1 bg-green-500 rounded-full" />
-              <span>AI Performance Analysis</span>
+          </div>
+          
+          {/* Access Info - Hides after 1 second */}
+          <div className={`transition-all duration-500 ${!showAccessInfo ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+            <h2 className="text-2xl font-bold text-white mb-1">Get Early Access</h2>
+            <p className="text-gray-400 text-xs mb-2">Perala: Your Advanced Trading Journal & Performance Analysis Hub.</p>
+            <div className="flex justify-center gap-4 text-[10px] text-gray-500">
+              <div className="flex items-center gap-1">
+                <div className="w-1 h-1 bg-green-500 rounded-full" />
+                <span>Daily Trade Tracking</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-1 h-1 bg-green-500 rounded-full" />
+                <span>AI Performance Analysis</span>
+              </div>
             </div>
           </div>
         </div>
