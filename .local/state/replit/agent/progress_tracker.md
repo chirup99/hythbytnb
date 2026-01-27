@@ -11,3 +11,10 @@
 [x] 2. Restart the workflow and verify functionality - Server running on port 5000, Angel One auto-connected with TOTP (634808).
 [x] 3. Landing page heatmap preview - Updated logic to auto-advance the preview cycle (Performance Window -> Performance Trend -> Trading Notes) after 3 second intervals.
 [x] 4. Inform user and mark import as completed - Ready for building.
+
+---
+
+## UI UPDATE (Jan 27, 2026 - Session 20)
+
+[x] 1. Fixed Typing Behavior - The "Get Early Access" text now remains visible while the user is typing (email, password, or name), and the journal preview box correctly hides to maintain UI clarity during authentication.
+[x] 2. Resolved Variable Conflict - Fixed duplicate declaration of `name` state variable in `landing.tsx`.

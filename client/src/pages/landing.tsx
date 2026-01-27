@@ -19,8 +19,10 @@ import {
 export default function Landing() {
   const [isLogin, setIsLogin] = useState(true);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const isTyping = email.length > 0 || password.length > 0 || name.length > 0;
   const [showAccessInfo, setShowAccessInfo] = useState(true);
   const [showJournalCarousel, setShowJournalCarousel] = useState(false);
   const [showPerformanceWindow, setShowPerformanceWindow] = useState(false);
@@ -115,7 +117,6 @@ export default function Landing() {
       return () => clearInterval(interval);
     }
   }, [showJournalCarousel, showPerformanceWindow, carouselSlides.length]);
-  const [name, setName] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -694,8 +695,8 @@ export default function Landing() {
 
       <div className="max-w-md w-full space-y-4">
         <div className="text-center relative flex flex-col items-center justify-center p-0 m-0 overflow-hidden">
-          {/* Tradebook Preview - Always visible or transitions in */}
-          <div className={`${showAccessInfo ? 'h-0 opacity-0 pointer-events-none' : 'h-auto opacity-100'} w-full flex justify-center p-0 m-0 transition-all duration-700 ease-in-out transform ${showAccessInfo ? 'translate-y-4 scale-95' : 'translate-y-0 scale-100'}`}>
+          {/* Journal Tab Preview Area */}
+          <div className={`${(isTyping || !showAccessInfo) ? 'h-auto opacity-100' : 'h-0 opacity-0 pointer-events-none'} w-full flex justify-center p-0 m-0 transition-all duration-700 ease-in-out transform ${(isTyping || !showAccessInfo) ? 'translate-y-0 scale-100' : 'translate-y-4 scale-95'}`}>
             <div className="w-[280px] h-[160px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent" />
               <div className="p-2 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
@@ -1037,8 +1038,8 @@ export default function Landing() {
             </div>
           </div>
           
-          {/* Access Info - Hides after 1 second */}
-          <div className={`${!showAccessInfo ? 'h-0 opacity-0 pointer-events-none' : 'h-auto opacity-100'} p-0 m-0 transition-all duration-500 ease-in-out transform ${!showAccessInfo ? '-translate-y-4 scale-95' : 'translate-y-0 scale-100'}`}>
+          {/* Access Info - Hides after 1 second or when typing */}
+          <div className={`${(showAccessInfo && !isTyping) ? 'h-auto opacity-100' : 'h-0 opacity-0 pointer-events-none'} p-0 m-0 transition-all duration-500 ease-in-out transform ${(showAccessInfo && !isTyping) ? 'translate-y-0 scale-100' : '-translate-y-4 scale-95'}`}>
             <h2 className="text-2xl font-bold text-white mb-1">Get Early Access</h2>
             <p className="text-gray-400 text-xs mb-2">Perala: Your Advanced Trading Journal & Performance Analysis Hub.</p>
             <div className="flex justify-center gap-4 text-[10px] text-gray-500">
