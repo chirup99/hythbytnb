@@ -680,13 +680,6 @@ export default function Landing() {
                       <path d="M 140 80 Q 140 40 160 25" fill="none" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="0.5" strokeDasharray="2,2" className="animate-draw-line" />
                       <path d="M 140 80 Q 200 60 240 35" fill="none" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="0.5" strokeDasharray="2,2" className="animate-draw-line" />
                     </svg>
-
-                    {/* Flash Text Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="px-3 py-1 bg-purple-600/90 rounded-full text-[8px] font-bold text-white tracking-widest opacity-0 animate-flash-text">
-                        OVER TRADING DETECTED
-                      </div>
-                    </div>
                   </div>
                 </div>
 
