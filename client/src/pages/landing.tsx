@@ -590,7 +590,7 @@ export default function Landing() {
                 <path d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
               {/* Broken flying piece */}
-              <div className="absolute -top-[3px] -right-[4px] rotate-[32deg]">
+              <div className="absolute -top-[5px] -right-[4px] -rotate-[15deg]">
                 <div className="w-[6px] h-[2.5px] bg-purple-500/80 rounded-full shadow-[0_0_6px_rgba(168,85,247,0.4)]" />
               </div>
             </div>
