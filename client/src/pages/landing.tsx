@@ -25,6 +25,8 @@ export default function Landing() {
   const [showJournalCarousel, setShowJournalCarousel] = useState(false);
   const [showPerformanceWindow, setShowPerformanceWindow] = useState(false);
   const [showPerformanceTrend, setShowPerformanceTrend] = useState(false);
+  const [showTradingNotes, setShowTradingNotes] = useState(false);
+  const [typedNote, setTypedNote] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   const carouselSlides = [
@@ -34,6 +36,8 @@ export default function Landing() {
     { title: "Trade Journal", subtitle: "Daily entries", icon: "journal" },
     { title: "Performance Stats", subtitle: "P&L tracking", icon: "stats" },
   ];
+
+  const fullNote = "Identified high-risk FOMO entry at 58400. Psychological pressure led to overtrading - 12 unnecessary scalp attempts. Net impact: -₹42k. Need to adhere to 3-trade daily limit and indicator-only confirmations.";
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -53,7 +57,7 @@ export default function Landing() {
     const performanceTimer = setTimeout(() => {
       setShowJournalCarousel(false);
       setShowPerformanceWindow(true);
-    }, 3000);
+    }, 6000);
     return () => clearTimeout(performanceTimer);
   }, []);
 
@@ -61,9 +65,29 @@ export default function Landing() {
     const trendTimer = setTimeout(() => {
       setShowPerformanceWindow(false);
       setShowPerformanceTrend(true);
-    }, 6000);
+    }, 9000);
     return () => clearTimeout(trendTimer);
   }, []);
+
+  useEffect(() => {
+    const notesTimer = setTimeout(() => {
+      setShowPerformanceTrend(false);
+      setShowTradingNotes(true);
+    }, 12000);
+    return () => clearTimeout(notesTimer);
+  }, []);
+
+  useEffect(() => {
+    if (showTradingNotes) {
+      let i = 0;
+      const interval = setInterval(() => {
+        setTypedNote(fullNote.slice(0, i));
+        i++;
+        if (i > fullNote.length) clearInterval(interval);
+      }, 30);
+      return () => clearInterval(interval);
+    }
+  }, [showTradingNotes]);
 
   useEffect(() => {
     if (showJournalCarousel && !showPerformanceWindow) {
@@ -918,6 +942,58 @@ export default function Landing() {
                         <span className="text-[5px] text-gray-500">Win Rate:</span>
                         <span className="text-[6px] text-white font-bold">67%</span>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Trading Notes - Typing Animation Overlay */}
+                <div className={`absolute inset-0 bg-[#0f172a] rounded-lg transition-all duration-500 ${showTradingNotes ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
+                  <div className="p-2 h-full flex flex-col">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-1.5 border-b border-gray-800 pb-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-[7px] text-white font-bold tracking-tight uppercase">Trading Notes</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="p-0.5 rounded bg-purple-500/20">
+                          <svg className="w-2 h-2 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <path d="M4 6h16M4 12h16M4 18h7" />
+                          </svg>
+                        </div>
+                        <div className="p-0.5 rounded hover:bg-white/5">
+                          <svg className="w-2 h-2 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Note Content Area */}
+                    <div className="flex-1 bg-gray-950/40 rounded p-1.5 border border-gray-800/50 relative overflow-hidden group">
+                      <div className="text-[6.5px] text-gray-300 leading-relaxed font-mono">
+                        {typedNote}
+                        <span className="inline-block w-1 h-2.5 bg-purple-500 ml-0.5 animate-pulse" />
+                      </div>
+                      
+                      {/* Floating Tags Animation */}
+                      <div className="absolute bottom-1 right-1 flex gap-1">
+                        <div className={`px-1.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-[4px] text-red-400 font-bold tracking-widest uppercase transition-all duration-700 ${typedNote.length > 20 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+                          FOMO
+                        </div>
+                        <div className={`px-1.5 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-[4px] text-orange-400 font-bold tracking-widest uppercase transition-all duration-700 delay-300 ${typedNote.length > 50 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+                          OVERTRADING
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Summary Footer */}
+                    <div className="mt-1.5 flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <div className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />
+                        <span className="text-[5px] text-gray-500">Loss: ₹41,788</span>
+                      </div>
+                      <span className="text-[5px] text-purple-400/80 font-bold italic">Auto-analyzed by Gemini AI</span>
                     </div>
                   </div>
                 </div>
