@@ -627,17 +627,17 @@ export default function Landing() {
                   <div className="flex justify-between items-center px-1">
                     <div className="flex items-center gap-1">
                       <div className="w-1 h-1 rounded-full bg-green-500" />
-                      <span className="text-[6px] text-gray-400 uppercase font-bold tracking-wider">Activity Heatmap</span>
+                      <span className="text-[6px] text-gray-400 uppercase font-bold tracking-wider">P&L Calendar</span>
                     </div>
                     <div className="flex gap-1 items-center">
-                      <span className="text-[5px] text-gray-600">Less</span>
+                      <span className="text-[5px] text-gray-600">Loss</span>
                       <div className="flex gap-0.5">
-                        <div className="w-1 h-1 rounded-sm bg-gray-800" />
-                        <div className="w-1 h-1 rounded-sm bg-green-900" />
-                        <div className="w-1 h-1 rounded-sm bg-green-700" />
-                        <div className="w-1 h-1 rounded-sm bg-green-500" />
+                        <div className="w-1 h-1 rounded-full bg-red-500/40" />
+                        <div className="w-1 h-1 rounded-full bg-red-500/20" />
+                        <div className="w-1 h-1 rounded-full bg-green-500/20" />
+                        <div className="w-1 h-1 rounded-full bg-green-500/40" />
                       </div>
-                      <span className="text-[5px] text-gray-600">More</span>
+                      <span className="text-[5px] text-gray-600">Profit</span>
                     </div>
                   </div>
                   
@@ -653,16 +653,16 @@ export default function Landing() {
                               const weights = [0, 0, 0, 1, 1, 2, 3, 4, 0, 0, 1, 2, 0, 0, 3, 0];
                               const weight = weights[(monthIdx * 35 + dayIdx) % weights.length];
                               const colors = [
-                                'bg-gray-800/40 border-gray-800/10',
-                                'bg-green-900/40 border-green-900/20',
-                                'bg-green-700/40 border-green-700/20',
-                                'bg-green-500/40 border-green-500/20',
-                                'bg-red-500/40 border-red-500/20'
+                                'bg-gray-800/20 border-gray-800/10 rounded-full',
+                                'bg-green-900/40 border-green-900/20 rounded-full',
+                                'bg-green-500/40 border-green-500/20 rounded-full',
+                                'bg-red-500/20 border-red-500/10 rounded-full',
+                                'bg-red-500/60 border-red-500/30 rounded-full'
                               ];
                               return (
                                 <div 
                                   key={dayIdx} 
-                                  className={`w-1.5 h-1.5 rounded-[1px] border ${colors[weight]} transition-colors duration-300 hover:scale-125 cursor-pointer`}
+                                  className={`w-1.5 h-1.5 border ${colors[weight]} transition-colors duration-300 hover:scale-125 cursor-pointer`}
                                 />
                               );
                             })}
