@@ -63,6 +63,14 @@ export default {
         },
       },
       keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
         "accordion-down": {
           from: {
             height: "0",
@@ -81,6 +89,8 @@ export default {
         },
       },
       animation: {
+        marquee: "marquee 20s linear infinite",
+        shimmer: "shimmer 2s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },

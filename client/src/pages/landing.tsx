@@ -621,58 +621,91 @@ export default function Landing() {
                 <div className="text-[7px] text-gray-500 font-mono tracking-tighter">TRADE_BOOK_v2.0</div>
               </div>
               
-              <div className="p-2 space-y-2">
-                {/* Real-style Heatmap Calendar Demo */}
-                <div className="space-y-1">
+              <div className="p-2 space-y-1.5 relative h-full flex flex-col">
+                {/* Real-style Heatmap Calendar Demo with Animation */}
+                <div className="space-y-1 flex-1 overflow-hidden">
                   <div className="flex justify-between items-center px-1">
-                    <span className="text-[6px] text-gray-500 uppercase font-bold tracking-wider">Trading Journal Heatmap</span>
-                    <div className="flex gap-1">
-                      <div className="w-1 h-1 rounded-full bg-green-500/40" />
-                      <div className="w-1 h-1 rounded-full bg-red-500/40" />
+                    <div className="flex items-center gap-1">
+                      <div className="w-1 h-1 rounded-full bg-green-500" />
+                      <span className="text-[6px] text-gray-400 uppercase font-bold tracking-wider">Activity Heatmap</span>
+                    </div>
+                    <div className="flex gap-1 items-center">
+                      <span className="text-[5px] text-gray-600">Less</span>
+                      <div className="flex gap-0.5">
+                        <div className="w-1 h-1 rounded-sm bg-gray-800" />
+                        <div className="w-1 h-1 rounded-sm bg-green-900" />
+                        <div className="w-1 h-1 rounded-sm bg-green-700" />
+                        <div className="w-1 h-1 rounded-sm bg-green-500" />
+                      </div>
+                      <span className="text-[5px] text-gray-600">More</span>
                     </div>
                   </div>
-                  <div className="grid grid-cols-7 gap-1">
-                    {Array.from({ length: 21 }).map((_, i) => {
-                      const intensities = [
-                        'bg-gray-800/40 border-gray-700/20',
-                        'bg-green-500/20 border-green-500/10',
-                        'bg-green-500/40 border-green-500/20',
-                        'bg-red-500/20 border-red-500/10',
-                        'bg-red-500/40 border-red-500/20'
-                      ];
-                      const style = intensities[i % intensities.length];
-                      return (
-                        <div key={i} className={`h-3 rounded-sm border ${style} transition-all duration-500 hover:scale-110`} />
-                      );
-                    })}
+                  
+                  <div className="relative h-16 overflow-hidden bg-gray-950/30 rounded border border-gray-800/50 p-1">
+                    <div className="flex gap-1 animate-marquee whitespace-nowrap">
+                      {Array.from({ length: 12 }).map((_, monthIdx) => (
+                        <div key={monthIdx} className="flex flex-col gap-0.5 min-w-fit">
+                          <span className="text-[5px] text-gray-600 mb-0.5 text-center">
+                            {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][monthIdx]}
+                          </span>
+                          <div className="grid grid-rows-7 grid-flow-col gap-0.5">
+                            {Array.from({ length: 35 }).map((_, dayIdx) => {
+                              const weights = [0, 0, 0, 1, 1, 2, 3, 4, 0, 0, 1, 2, 0, 0, 3, 0];
+                              const weight = weights[(monthIdx * 35 + dayIdx) % weights.length];
+                              const colors = [
+                                'bg-gray-800/40 border-gray-800/10',
+                                'bg-green-900/40 border-green-900/20',
+                                'bg-green-700/40 border-green-700/20',
+                                'bg-green-500/40 border-green-500/20',
+                                'bg-red-500/40 border-red-500/20'
+                              ];
+                              return (
+                                <div 
+                                  key={dayIdx} 
+                                  className={`w-1.5 h-1.5 rounded-[1px] border ${colors[weight]} transition-colors duration-300 hover:scale-125 cursor-pointer`}
+                                />
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
+                </div>
+
+                <div className="flex justify-between items-center px-1 py-0.5 border-t border-gray-800/50">
+                   <div className="flex items-center gap-1">
+                     <div className="w-0.5 h-3 bg-purple-500 rounded-full" />
+                     <span className="text-[6px] text-white font-medium">Jan 27, 2026</span>
+                   </div>
+                   <div className="text-[6px] text-purple-400 font-bold tracking-tighter animate-pulse">
+                     AUTO-SYNC ACTIVE
+                   </div>
                 </div>
 
                 {/* Performance Metrics Bar */}
-                <div className="grid grid-cols-3 gap-1.5">
-                  <div className="h-8 rounded bg-gray-800/40 border border-gray-700/20 flex flex-col items-center justify-center p-1">
-                    <span className="text-[5px] text-gray-500 uppercase">P&L</span>
-                    <span className="text-[7px] text-green-400 font-bold">+₹83.5K</span>
+                <div className="grid grid-cols-5 gap-1 pt-1 border-t border-gray-800/50">
+                  <div className="flex flex-col items-center justify-center">
+                    <span className="text-[4px] text-gray-500 uppercase">P&L</span>
+                    <span className="text-[6px] text-green-400 font-bold">+₹83.5K</span>
                   </div>
-                  <div className="h-8 rounded bg-gray-800/40 border border-gray-700/20 flex flex-col items-center justify-center p-1">
-                    <span className="text-[5px] text-gray-500 uppercase">Win%</span>
-                    <span className="text-[7px] text-purple-400 font-bold">64%</span>
+                  <div className="flex flex-col items-center justify-center border-l border-gray-800/50">
+                    <span className="text-[4px] text-gray-500 uppercase">Win%</span>
+                    <span className="text-[6px] text-white font-bold">30%</span>
                   </div>
-                  <div className="h-8 rounded bg-gray-800/40 border border-gray-700/20 flex flex-col items-center justify-center p-1">
-                    <span className="text-[5px] text-gray-500 uppercase">Streak</span>
-                    <span className="text-[7px] text-orange-400 font-bold">5</span>
+                  <div className="flex flex-col items-center justify-center border-l border-gray-800/50">
+                    <span className="text-[4px] text-gray-500 uppercase">FOMO</span>
+                    <span className="text-[6px] text-red-400 font-bold">4</span>
                   </div>
-                </div>
-
-                {/* Bottom Status Bar */}
-                <div className="h-6 rounded bg-purple-500/5 border border-purple-500/10 flex items-center justify-between px-2">
-                  <div className="flex gap-1 items-center">
-                    <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-[5px] text-gray-400">Live Analytics</span>
+                  <div className="flex flex-col items-center justify-center border-l border-gray-800/50">
+                    <span className="text-[4px] text-gray-500 uppercase">Trend</span>
+                    <div className="w-4 h-2 bg-purple-500/20 rounded-[1px] relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/40 to-transparent animate-shimmer" />
+                    </div>
                   </div>
-                  <div className="flex gap-1">
-                    <div className="w-1 h-1 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.3s]" />
-                    <div className="w-1 h-1 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.15s]" />
+                  <div className="flex flex-col items-center justify-center border-l border-gray-800/50">
+                    <span className="text-[4px] text-gray-500 uppercase">Streak</span>
+                    <span className="text-[6px] text-orange-400 font-bold">3</span>
                   </div>
                 </div>
               </div>
