@@ -607,10 +607,10 @@ export default function Landing() {
       </div>
 
       <div className="max-w-md w-full space-y-4">
-        <div className="text-center mb-6 pl-6 relative min-h-[120px] flex flex-col items-center justify-center">
+        <div className="text-center pl-6 relative min-h-[120px] flex flex-col items-center justify-center">
           {/* Tradebook Preview - Always visible or transitions in */}
           <div className={`transition-all duration-700 transform ${showAccessInfo ? 'opacity-0 scale-95 absolute' : 'opacity-100 scale-100'}`}>
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center">
               <div className="w-[320px] h-[180px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent" />
                 <div className="p-3 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
