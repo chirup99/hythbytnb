@@ -24,6 +24,7 @@ export default function Landing() {
   const [showAccessInfo, setShowAccessInfo] = useState(true);
   const [showJournalCarousel, setShowJournalCarousel] = useState(false);
   const [showPerformanceWindow, setShowPerformanceWindow] = useState(false);
+  const [showPerformanceTrend, setShowPerformanceTrend] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   const carouselSlides = [
@@ -52,8 +53,16 @@ export default function Landing() {
     const performanceTimer = setTimeout(() => {
       setShowJournalCarousel(false);
       setShowPerformanceWindow(true);
-    }, 6000);
+    }, 3000);
     return () => clearTimeout(performanceTimer);
+  }, []);
+
+  useEffect(() => {
+    const trendTimer = setTimeout(() => {
+      setShowPerformanceWindow(false);
+      setShowPerformanceTrend(true);
+    }, 6000);
+    return () => clearTimeout(trendTimer);
   }, []);
 
   useEffect(() => {
@@ -837,6 +846,77 @@ export default function Landing() {
                         </div>
                         <p className="text-[3.5px] text-white/60">Avg Loss: ₹12408 • 100% loss rate</p>
                         <p className="text-[3px] text-white/50 mt-0.5">Total: ₹12,408 across 1 day</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Performance Trend - Chart Display Overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-lg transition-all duration-500 ${showPerformanceTrend ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
+                  <div className="p-2 h-full flex flex-col">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[7px] text-white font-bold">Performance Trend</span>
+                      <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                        <span className="text-[5px] text-green-400">Profitable</span>
+                      </div>
+                    </div>
+
+                    {/* Y-Axis Labels and Chart Area */}
+                    <div className="flex-1 flex relative">
+                      {/* Y-Axis */}
+                      <div className="flex flex-col justify-between text-[4px] text-gray-500 pr-1 py-1">
+                        <span>80K</span>
+                        <span>32K</span>
+                        <span>7K</span>
+                        <span>-18K</span>
+                      </div>
+                      
+                      {/* Chart */}
+                      <div className="flex-1 relative bg-gray-800/30 rounded border border-gray-700/50">
+                        {/* Grid Lines */}
+                        <div className="absolute inset-0 flex flex-col justify-between py-2">
+                          <div className="border-t border-gray-700/30 w-full" />
+                          <div className="border-t border-gray-700/30 w-full" />
+                          <div className="border-t border-gray-700/30 w-full" />
+                          <div className="border-t border-gray-700/30 w-full" />
+                        </div>
+                        
+                        {/* Performance Line Chart SVG */}
+                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 80" preserveAspectRatio="none">
+                          {/* Area Fill */}
+                          <defs>
+                            <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                              <stop offset="0%" stopColor="rgba(34, 197, 94, 0.3)" />
+                              <stop offset="100%" stopColor="rgba(34, 197, 94, 0)" />
+                            </linearGradient>
+                          </defs>
+                          <path 
+                            d="M 0 55 Q 15 50 25 48 T 50 52 T 75 45 T 100 50 T 125 48 T 150 45 T 175 35 T 200 10 L 200 80 L 0 80 Z" 
+                            fill="url(#areaGradient)"
+                          />
+                          {/* Line */}
+                          <path 
+                            d="M 0 55 Q 15 50 25 48 T 50 52 T 75 45 T 100 50 T 125 48 T 150 45 T 175 35 T 200 10" 
+                            fill="none" 
+                            stroke="white" 
+                            strokeWidth="2"
+                            className="animate-draw-line"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Bottom Stats */}
+                    <div className="flex justify-between mt-1 pt-1 border-t border-gray-700/50">
+                      <div className="flex items-center gap-1">
+                        <span className="text-[5px] text-gray-500">Total P&L:</span>
+                        <span className="text-[6px] text-green-400 font-bold">+₹1,24,850</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-[5px] text-gray-500">Win Rate:</span>
+                        <span className="text-[6px] text-white font-bold">67%</span>
                       </div>
                     </div>
                   </div>
