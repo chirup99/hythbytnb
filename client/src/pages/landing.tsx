@@ -581,15 +581,13 @@ export default function Landing() {
             <img src="/logo.png" alt="Perala Logo" className="w-12 h-12 rounded-lg" fetchPriority="high" loading="eager" />
             <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tighter">PERALA</h1>
           </div>
-          <div className="flex items-center gap-1.5 text-[9px] text-gray-500 font-medium tracking-widest uppercase mt-1 w-full justify-end pr-1">
+          <div className="flex items-center gap-1.5 text-[9px] text-gray-500 font-medium tracking-widest uppercase mt-1 w-full justify-end pl-[0px] pr-[0px]">
             <span>rethink . reinvest .</span>
-            <div className="flex items-center">
-              <svg width="18" height="9" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-500 overflow-visible">
-                <path d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                <path d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                <path d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
-            </div>
+            <svg width="14" height="7" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-500">
+              <path d="M11 5.2C10.2 4 9 3 7.5 3C4.5 3 3 4.5 3 6C3 7.5 4.5 9 7.5 9C10.5 9 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M12 6C12 6 13.5 9 16.5 9C19.5 9 21 7.5 21 6C21 5.6 20.9 5.2 20.7 4.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M17.8 3.3C17.4 3.1 16.9 3 16.5 3C13.5 3 12 6 12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
           </div>
         </div>
       </div>
