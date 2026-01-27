@@ -610,36 +610,36 @@ export default function Landing() {
         <div className="text-center relative flex flex-col items-center justify-center p-0 m-0 overflow-hidden">
           {/* Tradebook Preview - Always visible or transitions in */}
           <div className={`${showAccessInfo ? 'h-0 opacity-0 pointer-events-none' : 'h-auto opacity-100'} w-full flex justify-center p-0 m-0 transition-all duration-700 ease-in-out transform ${showAccessInfo ? 'translate-y-4 scale-95' : 'translate-y-0 scale-100'}`}>
-            <div className="w-[320px] h-[180px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
+            <div className="w-[180px] h-[100px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent" />
-              <div className="p-3 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
-                <div className="flex gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-red-500/50" />
-                  <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
-                  <div className="w-2 h-2 rounded-full bg-green-500/50" />
+              <div className="p-1.5 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
+                <div className="flex gap-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
                 </div>
-                <div className="text-[8px] text-gray-500 font-mono tracking-tighter">TRADE_BOOK_v2.0</div>
+                <div className="text-[6px] text-gray-500 font-mono tracking-tighter">TRADE_BOOK_v2.0</div>
               </div>
-              <div className="p-3 space-y-2">
-                <div className="grid grid-cols-4 gap-2">
+              <div className="p-2 space-y-1">
+                <div className="grid grid-cols-4 gap-1">
                   {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="h-6 rounded bg-gray-800/50 border border-gray-700/30 animate-pulse" />
+                    <div key={i} className="h-3 rounded bg-gray-800/50 border border-gray-700/30 animate-pulse" />
                   ))}
                 </div>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-1">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-12 rounded bg-gray-800/40 border border-gray-700/20" />
+                    <div key={i} className="h-6 rounded bg-gray-800/40 border border-gray-700/20" />
                   ))}
                 </div>
-                <div className="h-16 rounded bg-purple-500/5 border border-purple-500/10 flex items-center justify-center">
-                  <div className="flex gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.3s]" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.15s]" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40 animate-bounce" />
+                <div className="h-8 rounded bg-purple-500/5 border border-purple-500/10 flex items-center justify-center">
+                  <div className="flex gap-1.5">
+                    <div className="w-1 h-1 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.3s]" />
+                    <div className="w-1 h-1 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.15s]" />
+                    <div className="w-1 h-1 rounded-full bg-purple-500/40 animate-bounce" />
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-x-0 bottom-0 h-1 bg-purple-500/20" />
+              <div className="absolute inset-x-0 bottom-0 h-0.5 bg-purple-500/20" />
             </div>
           </div>
           
