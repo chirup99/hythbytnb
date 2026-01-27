@@ -621,14 +621,16 @@ export default function Landing() {
           </div>
         </span>
       </div>
-      <div className="max-w-xl w-full space-y-6">
+      <div className="max-w-xl w-full space-y-4">
         <div className="text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">Get Early Access</h2>
-          <p className="text-gray-400 text-lg mb-2">Daily Trade Tracking</p>
-          <p className="text-gray-400 text-lg mb-6">AI Performance Analysis</p>
-          <p className="text-gray-500 text-sm">View detailed P&L and trading statistics</p>
+          <h2 className="text-3xl font-bold text-white mb-2">Get Early Access</h2>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mb-4">
+            <p className="text-gray-400 text-base">Daily Trade Tracking</p>
+            <p className="text-gray-400 text-base">AI Performance Analysis</p>
+          </div>
+          <p className="text-gray-500 text-xs">View detailed P&L and trading statistics</p>
         </div>
-        <div className="w-full max-w-md mx-auto space-y-4">
+        <div className="w-full max-w-sm mx-auto space-y-4">
           {isSignupVerification ? (
             <>
               <div className="text-center mb-4">
