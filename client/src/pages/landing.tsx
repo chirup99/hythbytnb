@@ -26,16 +26,12 @@ export default function Landing() {
   const [showPerformanceWindow, setShowPerformanceWindow] = useState(false);
   const [showPerformanceTrend, setShowPerformanceTrend] = useState(false);
   const [showTradingNotes, setShowTradingNotes] = useState(false);
+  const [showTagsDropdown, setShowTagsDropdown] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>(["FOMO", "OVERTRADING"]);
   const [typedNote, setTypedNote] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
 
-  const carouselSlides = [
-    { title: "Strategy Chart", subtitle: "Visual trade analysis", icon: "chart" },
-    { title: "Market News", subtitle: "Real-time updates", icon: "news" },
-    { title: "Technical Analysis", subtitle: "Pattern detection", icon: "tech" },
-    { title: "Trade Journal", subtitle: "Daily entries", icon: "journal" },
-    { title: "Performance Stats", subtitle: "P&L tracking", icon: "stats" },
-  ];
+  const availableTags = ["FOMO", "OVERTRADING", "GREEDY", "FEAR", "SCALPING", "INTRADAY"];
 
   const fullNote = "Identified high-risk FOMO entry at 58400. Psychological pressure led to overtrading - 12 unnecessary scalp attempts. Net impact: -₹42k. Need to adhere to 3-trade daily limit and indicator-only confirmations.";
 
@@ -85,9 +81,24 @@ export default function Landing() {
         i++;
         if (i > fullNote.length) clearInterval(interval);
       }, 30);
-      return () => clearInterval(interval);
+      
+      // Auto-open tags dropdown after typing finishes
+      const dropdownTimer = setTimeout(() => {
+        setShowTagsDropdown(true);
+      }, (fullNote.length * 30) + 500);
+
+      return () => {
+        clearInterval(interval);
+        clearTimeout(dropdownTimer);
+      };
     }
   }, [showTradingNotes]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    );
+  };
 
   useEffect(() => {
     if (showJournalCarousel && !showPerformanceWindow) {
@@ -950,21 +961,48 @@ export default function Landing() {
                 <div className={`absolute inset-0 bg-[#0f172a] rounded-lg transition-all duration-500 ${showTradingNotes ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
                   <div className="p-2 h-full flex flex-col">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-1.5 border-b border-gray-800 pb-1">
-                      <div className="flex items-center gap-1">
-                        <span className="text-[7px] text-white font-bold tracking-tight uppercase">Trading Notes</span>
+                    <div className="flex items-center justify-between mb-1.5 border-b border-gray-800 pb-1 relative">
+                      <div className="flex items-center gap-1.5 overflow-hidden">
+                        <span className="text-[7px] text-white font-bold tracking-tight uppercase whitespace-nowrap">Trading Notes</span>
+                        {/* Top Tags Display */}
+                        <div className="flex gap-0.5 ml-1 animate-in fade-in slide-in-from-left-2 duration-500">
+                          {selectedTags.map(tag => (
+                            <span key={tag} className="px-1 py-[1px] rounded-full bg-purple-500/20 border border-purple-500/30 text-[3.5px] text-purple-300 font-bold uppercase tracking-tighter animate-in zoom-in-95">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <div className="p-0.5 rounded bg-purple-500/20">
-                          <svg className="w-2 h-2 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <button 
+                          onClick={() => setShowTagsDropdown(!showTagsDropdown)}
+                          className={`p-0.5 rounded transition-all duration-300 ${showTagsDropdown ? 'bg-purple-600 shadow-[0_0_8px_rgba(147,51,234,0.4)]' : 'bg-purple-500/20 hover:bg-purple-500/40'}`}
+                        >
+                          <svg className={`w-2 h-2 ${showTagsDropdown ? 'text-white' : 'text-purple-400'} transition-transform duration-300 ${showTagsDropdown ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M4 6h16M4 12h16M4 18h7" />
                           </svg>
-                        </div>
-                        <div className="p-0.5 rounded hover:bg-white/5">
+                        </button>
+                        <div className="p-0.5 rounded hover:bg-white/5 cursor-pointer">
                           <svg className="w-2 h-2 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                           </svg>
+                        </div>
+                      </div>
+
+                      {/* Tags Dropdown Menu */}
+                      <div className={`absolute top-full right-0 mt-1 w-32 bg-gray-900 border border-gray-800 rounded-md shadow-2xl z-50 p-1 transition-all duration-300 transform origin-top-right ${showTagsDropdown ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-90 -translate-y-2 pointer-events-none'}`}>
+                        <div className="text-[5px] text-gray-500 mb-1 px-1 font-bold uppercase tracking-widest">Select Tags</div>
+                        <div className="grid grid-cols-2 gap-0.5">
+                          {availableTags.map(tag => (
+                            <button
+                              key={tag}
+                              onClick={() => toggleTag(tag)}
+                              className={`px-1 py-0.5 rounded text-[4.5px] font-medium text-left transition-all duration-200 ${selectedTags.includes(tag) ? 'bg-purple-600 text-white font-bold' : 'hover:bg-gray-800 text-gray-400'}`}
+                            >
+                              {tag}
+                            </button>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -974,16 +1012,6 @@ export default function Landing() {
                       <div className="text-[6.5px] text-gray-300 leading-relaxed font-mono">
                         {typedNote}
                         <span className="inline-block w-1 h-2.5 bg-purple-500 ml-0.5 animate-pulse" />
-                      </div>
-                      
-                      {/* Floating Tags Animation */}
-                      <div className="absolute bottom-1 right-1 flex gap-1">
-                        <div className={`px-1.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-[4px] text-red-400 font-bold tracking-widest uppercase transition-all duration-700 ${typedNote.length > 20 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
-                          FOMO
-                        </div>
-                        <div className={`px-1.5 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-[4px] text-orange-400 font-bold tracking-widest uppercase transition-all duration-700 delay-300 ${typedNote.length > 50 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
-                          OVERTRADING
-                        </div>
                       </div>
                     </div>
                     
