@@ -610,7 +610,7 @@ export default function Landing() {
         <div className="text-center relative flex flex-col items-center justify-center p-0 m-0 overflow-hidden">
           {/* Tradebook Preview - Always visible or transitions in */}
           <div className={`${showAccessInfo ? 'h-0 opacity-0 pointer-events-none' : 'h-auto opacity-100'} w-full flex justify-center p-0 m-0 transition-all duration-700 ease-in-out transform ${showAccessInfo ? 'translate-y-4 scale-95' : 'translate-y-0 scale-100'}`}>
-            <div className="w-[240px] h-[140px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
+            <div className="w-[280px] h-[160px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent" />
               <div className="p-2 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
                 <div className="flex gap-1.5">
@@ -620,22 +620,59 @@ export default function Landing() {
                 </div>
                 <div className="text-[7px] text-gray-500 font-mono tracking-tighter">TRADE_BOOK_v2.0</div>
               </div>
-              <div className="p-2.5 space-y-1.5">
-                <div className="grid grid-cols-4 gap-1.5">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="h-4 rounded bg-gray-800/50 border border-gray-700/30 animate-pulse" />
-                  ))}
+              
+              <div className="p-2 space-y-2">
+                {/* Real-style Heatmap Calendar Demo */}
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center px-1">
+                    <span className="text-[6px] text-gray-500 uppercase font-bold tracking-wider">Trading Journal Heatmap</span>
+                    <div className="flex gap-1">
+                      <div className="w-1 h-1 rounded-full bg-green-500/40" />
+                      <div className="w-1 h-1 rounded-full bg-red-500/40" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-7 gap-1">
+                    {Array.from({ length: 21 }).map((_, i) => {
+                      const intensities = [
+                        'bg-gray-800/40 border-gray-700/20',
+                        'bg-green-500/20 border-green-500/10',
+                        'bg-green-500/40 border-green-500/20',
+                        'bg-red-500/20 border-red-500/10',
+                        'bg-red-500/40 border-red-500/20'
+                      ];
+                      const style = intensities[i % intensities.length];
+                      return (
+                        <div key={i} className={`h-3 rounded-sm border ${style} transition-all duration-500 hover:scale-110`} />
+                      );
+                    })}
+                  </div>
                 </div>
+
+                {/* Performance Metrics Bar */}
                 <div className="grid grid-cols-3 gap-1.5">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-9 rounded bg-gray-800/40 border border-gray-700/20" />
-                  ))}
+                  <div className="h-8 rounded bg-gray-800/40 border border-gray-700/20 flex flex-col items-center justify-center p-1">
+                    <span className="text-[5px] text-gray-500 uppercase">P&L</span>
+                    <span className="text-[7px] text-green-400 font-bold">+₹83.5K</span>
+                  </div>
+                  <div className="h-8 rounded bg-gray-800/40 border border-gray-700/20 flex flex-col items-center justify-center p-1">
+                    <span className="text-[5px] text-gray-500 uppercase">Win%</span>
+                    <span className="text-[7px] text-purple-400 font-bold">64%</span>
+                  </div>
+                  <div className="h-8 rounded bg-gray-800/40 border border-gray-700/20 flex flex-col items-center justify-center p-1">
+                    <span className="text-[5px] text-gray-500 uppercase">Streak</span>
+                    <span className="text-[7px] text-orange-400 font-bold">5</span>
+                  </div>
                 </div>
-                <div className="h-12 rounded bg-purple-500/5 border border-purple-500/10 flex items-center justify-center">
-                  <div className="flex gap-1.5">
+
+                {/* Bottom Status Bar */}
+                <div className="h-6 rounded bg-purple-500/5 border border-purple-500/10 flex items-center justify-between px-2">
+                  <div className="flex gap-1 items-center">
+                    <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
+                    <span className="text-[5px] text-gray-400">Live Analytics</span>
+                  </div>
+                  <div className="flex gap-1">
                     <div className="w-1 h-1 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.3s]" />
                     <div className="w-1 h-1 rounded-full bg-purple-500/40 animate-bounce [animation-delay:-0.15s]" />
-                    <div className="w-1 h-1 rounded-full bg-purple-500/40 animate-bounce" />
                   </div>
                 </div>
               </div>
