@@ -16161,7 +16161,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   data-testid="button-admin-tab-bugs-list"
                 >
                   <span>Bugs list</span>
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[11px] font-bold text-white ml-1 shadow-[0_0_10px_rgba(37,99,235,0.4)]">2</span>
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[11px] font-bold text-white ml-1 shadow-[0_0_10px_rgba(37,99,235,0.4)]">{adminBugReports.length}</span>
                   {adminTab === "bugs-list" && (
                     <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
                   )}
