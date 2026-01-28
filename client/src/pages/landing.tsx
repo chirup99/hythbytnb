@@ -7,6 +7,7 @@ import {
   cognitoSignIn, 
   cognitoSignUp, 
   cognitoSignInWithGoogle,
+  cognitoResendSignupCode,
   handleCognitoCallback,
   getCognitoToken,
   initializeCognito,
