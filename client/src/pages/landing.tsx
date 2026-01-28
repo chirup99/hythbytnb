@@ -959,6 +959,25 @@ export default function Landing() {
                                 0%, 20% { fill: #ef4444; } /* Red for initial dip */
                                 40%, 100% { fill: #4ade80; } /* Green for recovery and growth */
                               }
+                              @keyframes valueCycle {
+                                0% { content: "-₹1.2k"; opacity: 1; }
+                                15% { content: "-₹2.8k"; opacity: 1; }
+                                30% { content: "+₹0.5k"; opacity: 1; }
+                                45% { content: "+₹1.8k"; opacity: 1; }
+                                60% { content: "+₹2.4k"; opacity: 1; }
+                                75% { content: "+₹3.6k"; opacity: 1; }
+                                90% { content: "+₹4.2k"; opacity: 1; }
+                                100% { content: "+₹4.2k"; opacity: 0; }
+                              }
+                              /* Alternative for SVG text: multiple elements with synchronized opacity */
+                              @keyframes showVal1 { 0%, 14% { opacity: 1; } 15%, 100% { opacity: 0; } }
+                              @keyframes showVal2 { 0%, 14% { opacity: 0; } 15%, 29% { opacity: 1; } 30%, 100% { opacity: 0; } }
+                              @keyframes showVal3 { 0%, 29% { opacity: 0; } 30%, 44% { opacity: 1; } 45%, 100% { opacity: 0; } }
+                              @keyframes showVal4 { 0%, 44% { opacity: 0; } 45%, 59% { opacity: 1; } 60%, 100% { opacity: 0; } }
+                              @keyframes showVal5 { 0%, 59% { opacity: 0; } 60%, 74% { opacity: 1; } 75%, 100% { opacity: 0; } }
+                              @keyframes showVal6 { 0%, 74% { opacity: 0; } 75%, 89% { opacity: 1; } 90%, 100% { opacity: 0; } }
+                              @keyframes showVal7 { 0%, 89% { opacity: 0; } 90%, 98% { opacity: 1; } 99%, 100% { opacity: 0; } }
+
                               .animate-draw-line {
                                 stroke-dasharray: 600;
                                 stroke-dashoffset: 600;
@@ -972,6 +991,13 @@ export default function Landing() {
                               .animate-pl-text {
                                 animation: colorChange 3s linear infinite;
                               }
+                              .val-1 { animation: showVal1 3s step-end infinite; }
+                              .val-2 { animation: showVal2 3s step-end infinite; }
+                              .val-3 { animation: showVal3 3s step-end infinite; }
+                              .val-4 { animation: showVal4 3s step-end infinite; }
+                              .val-5 { animation: showVal5 3s step-end infinite; }
+                              .val-6 { animation: showVal6 3s step-end infinite; }
+                              .val-7 { animation: showVal7 3s step-end infinite; }
                             `}</style>
                           </defs>
                           <path 
@@ -992,7 +1018,15 @@ export default function Landing() {
                             <circle r="3" fill="white" className="shadow-lg" style={{ filter: 'drop-shadow(0 0 4px rgba(34, 197, 94, 0.8))' }} />
                             <g transform="translate(5, -10)">
                               <rect x="0" y="0" width="25" height="10" rx="2" fill="rgba(0,0,0,0.8)" />
-                              <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="animate-pl-text">+₹4.2k</text>
+                              <g className="animate-pl-text">
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-1">-₹1.2k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-2">-₹2.8k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-3">+₹0.5k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-4">+₹1.8k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-5">+₹2.4k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-6">+₹3.6k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-7">+₹4.2k</text>
+                              </g>
                             </g>
                           </g>
                         </svg>
