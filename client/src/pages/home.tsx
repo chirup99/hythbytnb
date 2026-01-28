@@ -1979,6 +1979,7 @@ export default function Home() {
   const [adminBugReports, setAdminBugReports] = useState<Array<{ bugId: string; title: string; reportDate: string; bugLocate: string; status: string; username: string; }>>([]); 
   const [loadingBugReports, setLoadingBugReports] = useState(false);
   const [expandedBugId, setExpandedBugId] = useState<string | null>(null);
+  const [bugListFilter, setBugListFilter] = useState<'all' | 'critical' | 'repeated' | 'priority'>('all');
   
   // Primary owner email - only this user can manage admin access
   const PRIMARY_OWNER_EMAIL = "chiranjeevi.perala99@gmail.com";
@@ -16307,20 +16308,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Smart Bug Analysis</span>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
-                        <div className="group p-2 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer">
+                        <div onClick={() => setBugListFilter(bugListFilter === 'critical' ? 'all' : 'critical')} className={`group p-2 rounded-lg transition-all cursor-pointer \${bugListFilter === 'critical' ? 'bg-red-100 dark:bg-red-900/40 border-2 border-red-400 dark:border-red-500' : 'bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600'}`} data-testid="filter-critical">
                           <div className="flex items-center gap-1.5 mb-1">
-                            <AlertTriangle className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Critical</span>
+                            <AlertTriangle className={`h-3 w-3 \${bugListFilter === 'critical' ? 'text-red-500 dark:text-red-400' : 'text-slate-500 dark:text-slate-400'}`} />
+                            <span className={`text-[10px] font-medium uppercase tracking-wider \${bugListFilter === 'critical' ? 'text-red-500 dark:text-red-400' : 'text-slate-500 dark:text-slate-400'}`}>Critical</span>
                           </div>
                           <div className="text-base font-bold text-slate-700 dark:text-slate-200">
                             {adminBugReports.filter(b => b.title?.toLowerCase().includes('error') || b.title?.toLowerCase().includes('crash') || b.title?.toLowerCase().includes('broken') || b.description?.toLowerCase().includes('critical')).length}
                           </div>
                           <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">Errors & crashes</p>
                         </div>
-                        <div className="group p-2 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer">
+                        <div onClick={() => setBugListFilter(bugListFilter === 'repeated' ? 'all' : 'repeated')} className={`group p-2 rounded-lg transition-all cursor-pointer \${bugListFilter === 'repeated' ? 'bg-yellow-100 dark:bg-yellow-900/40 border-2 border-yellow-400 dark:border-yellow-500' : 'bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600'}`} data-testid="filter-repeated">
                           <div className="flex items-center gap-1.5 mb-1">
-                            <RefreshCw className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Repeated</span>
+                            <RefreshCw className={`h-3 w-3 \${bugListFilter === 'repeated' ? 'text-yellow-500 dark:text-yellow-400' : 'text-slate-500 dark:text-slate-400'}`} />
+                            <span className={`text-[10px] font-medium uppercase tracking-wider \${bugListFilter === 'repeated' ? 'text-yellow-500 dark:text-yellow-400' : 'text-slate-500 dark:text-slate-400'}`}>Repeated</span>
                           </div>
                           <div className="text-base font-bold text-slate-700 dark:text-slate-200">
                             {(() => {
@@ -16332,10 +16333,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </div>
                           <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">Similar reports</p>
                         </div>
-                        <div className="group p-2 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer">
+                        <div onClick={() => setBugListFilter(bugListFilter === 'priority' ? 'all' : 'priority')} className={`group p-2 rounded-lg transition-all cursor-pointer \${bugListFilter === 'priority' ? 'bg-blue-100 dark:bg-blue-900/40 border-2 border-blue-400 dark:border-blue-500' : 'bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600'}`} data-testid="filter-priority">
                           <div className="flex items-center gap-1.5 mb-1">
-                            <Target className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Priority</span>
+                            <Target className={`h-3 w-3 \${bugListFilter === 'priority' ? 'text-blue-500 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`} />
+                            <span className={`text-[10px] font-medium uppercase tracking-wider \${bugListFilter === 'priority' ? 'text-blue-500 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`}>Priority</span>
                           </div>
                           <div className="text-base font-bold text-slate-700 dark:text-slate-200">
                             {adminBugReports.filter(b => b.status === 'pending' && (b.title?.toLowerCase().includes('not working') || b.title?.toLowerCase().includes('not loading') || b.title?.toLowerCase().includes('issue'))).length}
@@ -16386,6 +16387,28 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       )}
                     </div>
                   )}
+                  {bugListFilter !== 'all' && (
+                    <div className="flex items-center justify-between py-2 px-3 mb-2 rounded-lg bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-slate-500 dark:text-slate-400">Filtering by:</span>
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded ${
+                          bugListFilter === 'critical' ? 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400' :
+                          bugListFilter === 'repeated' ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 dark:text-yellow-400' :
+                          'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400'
+                        }`}>
+                          {bugListFilter.charAt(0).toUpperCase() + bugListFilter.slice(1)}
+                        </span>
+                      </div>
+                      <button 
+                        onClick={() => setBugListFilter('all')} 
+                        className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 flex items-center gap-1"
+                        data-testid="clear-bug-filter"
+                      >
+                        <X className="h-3 w-3" />
+                        Clear
+                      </button>
+                    </div>
+                  )}
                   {loadingBugReports ? (
                     <div className="flex items-center justify-center py-6">
                       <div className="animate-spin rounded-full h-5 w-5 border-2 border-slate-300 dark:border-slate-600 border-t-blue-500"></div>
@@ -16396,7 +16419,32 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     </div>
                   ) : (
                     <div className="space-y-1 max-h-[380px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
+                      {(() => {
+                        const getFilteredBugs = () => {
+                          if (bugListFilter === 'critical') {
+                            return adminBugReports.filter(b => 
+                              b.title?.toLowerCase().includes('error') || 
+                              b.title?.toLowerCase().includes('crash') || 
+                              b.title?.toLowerCase().includes('broken') || 
+                              b.description?.toLowerCase().includes('critical')
+                            );
+                          }
+                          if (bugListFilter === 'repeated') {
+                            const titles = adminBugReports.map(b => b.title?.toLowerCase().split(' ').slice(0, 2).join(' '));
+                            const counts: Record<string, number> = {};
+                            titles.forEach(t => { if (t) counts[t] = (counts[t] || 0) + 1; });
+                            const repeatedPrefixes = Object.entries(counts).filter(([_, c]) => c > 1).map(([t]) => t);
+                            return adminBugReports.filter(b => {
+                              const prefix = b.title?.toLowerCase().split(' ').slice(0, 2).join(' ');
+                              return repeatedPrefixes.includes(prefix || '');
+                            });
+                          }
+                          if (bugListFilter === 'priority') {
+                            return adminBugReports.filter(b => b.status === 'pending');
+                          }
+                          return adminBugReports;
+                        };
+                        return getFilteredBugs().map((bug, index) => (
                         <div
                           key={bug.bugId || index}
                           className="group"
@@ -16445,7 +16493,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                           )}
                         </div>
-                      ))}
+                      ));
+                      })()}
                     </div>
                   )}
                 </div>
