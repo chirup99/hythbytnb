@@ -16306,7 +16306,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           onClick={() => setBugFilter("all")}
                           className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-blue-500 transition-colors"
                         >
-                          Clear Filter
+                          Clear Filter: {bugFilter}
                         </button>
                       )}
                     </div>
@@ -16450,7 +16450,36 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           return 0;
                         })
                         .map((bug, index) => (
+                          <div
+                            key={bug.bugId || index}
+                            className="group"
+                            data-testid={`bug-item-${index}`}
                           >
+                  ) : (
+                    <div className="space-y-1 max-h-[380px] overflow-y-auto custom-thin-scrollbar">
+                      {adminBugReports
+                        .filter(bug => {
+                          if (bugFilter === "all") return true;
+                          if (bugFilter === "critical") return bug.title?.toLowerCase().includes('error') || bug.title?.toLowerCase().includes('crash') || bug.title?.toLowerCase().includes('broken') || bug.description?.toLowerCase().includes('critical');
+                          if (bugFilter === "repeated") {
+                            const titles = adminBugReports.map(b => b.title?.toLowerCase().split(' ').slice(0, 2).join(' '));
+                            const counts: Record<string, number> = {};
+                            titles.forEach(t => { if (t) counts[t] = (counts[t] || 0) + 1; });
+                            const t = bug.title?.toLowerCase().split(' ').slice(0, 2).join(' ');
+                            return t && counts[t] > 1;
+                          }
+                          if (bugFilter === "priority") return bug.status === 'pending' && (bug.title?.toLowerCase().includes('not working') || bug.title?.toLowerCase().includes('not loading') || bug.title?.toLowerCase().includes('issue'));
+                          return true;
+                        })
+                        .sort((a, b) => {
+                          const isCriticalA = a.title?.toLowerCase().includes('error') || a.title?.toLowerCase().includes('crash') || a.title?.toLowerCase().includes('broken') || a.description?.toLowerCase().includes('critical');
+                          const isCriticalB = b.title?.toLowerCase().includes('error') || b.title?.toLowerCase().includes('crash') || b.title?.toLowerCase().includes('broken') || b.description?.toLowerCase().includes('critical');
+                          if (isCriticalA && !isCriticalB) return -1;
+                          if (!isCriticalA && isCriticalB) return 1;
+                          return 0;
+                        })
+                        .map((bug, index) => (
+                          <div key={bug.bugId || index} className="group" data-testid={`bug-item-${index}`}><button onClick={() => setExpandedBugId(expandedBugId === bug.bugId ? null : bug.bugId)} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-left">
                             <ChevronRight className={`h-3 w-3 text-slate-400 transition-transform ${expandedBugId === bug.bugId ? 'rotate-90' : ''}`} />
                             <span className="flex-1 text-xs font-medium text-slate-700 dark:text-slate-200 truncate">{bug.title}</span>
                             <span className={`text-[10px] px-1.5 py-0.5 rounded ${bug.status === 'pending' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' : bug.status === 'in_progress' ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-slate-500/10 text-slate-500'}`}>
