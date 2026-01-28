@@ -879,45 +879,7 @@ function SwipeableCardStack({
                       <RotateCcw className="w-4 h-4 animate-spin" />
                     ) : isTop && isPlaying ? (
                       <Pause className="w-4 h-4" />
-                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                    ) : (
                       <Play className="w-4 h-4" />
                     )}
                     <span>
@@ -1560,45 +1522,7 @@ function HistoricalDataSection() {
                               ></div>
                             </div>
                           </div>
-                        ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                        ) : (
                           <span className="text-xs text-gray-400">-</span>
                         )}
                       </TableCell>
@@ -1768,45 +1692,7 @@ function MicroAnimationsDemoPage() {
                     <Activity className="h-4 w-4 mr-2 animate-spin" />
                     Executing...
                   </>
-                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                ) : (
                   <>
                     <Play className="h-4 w-4 mr-2" />
                     Execute {tradeType.toUpperCase()} Order
@@ -13013,45 +12899,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <div className="animate-spin w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
                           <p className="text-slate-500 dark:text-slate-400 text-sm">Generating trending podcasts...</p>
                         </div>
-                      ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                      ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
                           {trendingPodcasts.slice(0, 10).map((podcast, index) => (
                             <div 
@@ -13488,45 +13336,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               alt="Mumbai Fintech Festival" 
                               className="w-full h-full object-cover rounded-lg border border-white/20"
                             />
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <div className="w-full h-full bg-gradient-to-br from-purple-400/30 to-blue-600/30 rounded-lg border border-white/20 flex items-center justify-center relative overflow-hidden">
                               <div className="text-white/70 text-[8px] font-medium">BUSINESS</div>
                             </div>
@@ -13573,45 +13383,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               alt="Nasscom Product Conclave Bangalore" 
                               className="w-full h-full object-cover rounded-lg border border-white/20"
                             />
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <div className="w-full h-full bg-gradient-to-br from-emerald-400/30 to-cyan-600/30 rounded-lg border border-white/20 flex items-center justify-center relative overflow-hidden">
                               <div className="text-white/70 text-[8px] font-medium">STARTUP</div>
                             </div>
@@ -13657,45 +13429,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               alt="India AI Summit Mumbai" 
                               className="w-full h-full object-cover rounded-lg border border-white/20"
                             />
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <div className="w-full h-full bg-gradient-to-br from-fuchsia-400/30 to-violet-600/30 rounded-lg border border-white/20 flex items-center justify-center relative overflow-hidden">
                               <div className="text-white/70 text-[8px] font-medium">AI TECH</div>
                             </div>
@@ -13960,45 +13694,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       </button>
                                     </div>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.username || "Not available"}</span>
                                     <button
@@ -14025,45 +13721,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       </button>
                                     </div>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.displayName && currentUser.displayName !== "Not available" ? currentUser.displayName : ""}</span>
                                     <button onClick={(e) => { e.stopPropagation(); setNewDisplayName(currentUser?.displayName || ""); setIsEditingDisplayName(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
@@ -14106,45 +13764,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <CheckCircle className="h-4 w-4 text-green-400" />
                                     </button>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.dob ? currentUser.dob.split("-").reverse().join("-") : "empty"}</span>
                                     <button onClick={(e) => { e.stopPropagation(); setNewDob(currentUser?.dob || ""); setIsEditingDob(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
@@ -14182,45 +13802,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <CheckCircle className="h-4 w-4 text-green-400" />
                                     </button>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <div className="flex items-center gap-2 group">
                                     <span className="text-white font-medium">{currentUser?.location && currentUser.location !== "empty" ? currentUser.location : ""}</span>
                                     <button onClick={(e) => { e.stopPropagation(); setNewLocation(currentUser?.location || ""); setIsEditingLocation(true); }} className="p-1 hover:bg-white/10 rounded-md transition-all opacity-0 group-hover:opacity-100"><Pencil className="h-3 w-3 text-blue-400" /></button>
@@ -14283,45 +13865,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 ${isSelected ? "border-blue-500 ring-2 ring-blue-500/50" : "border-transparent"} active:scale-95 overflow-hidden bg-gray-700 shadow-lg`}>
                                               {profile.isAdd ? (
                                                 <Plus className="h-5 w-5 text-gray-400" />
-                                              ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                              ) : (
                                                 <img src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />
                                               )}
                                             </div>
@@ -14377,45 +13921,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <Sun className="h-4 w-4" />
                                         <span>light mode</span>
                                       </>
-                                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                    ) : (
                                       <>
                                         <Moon className="h-4 w-4" />
                                         <span>dark mode</span>
@@ -14516,87 +14022,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             Hey {currentUser?.displayName || currentUser?.username || "Trader"}
                           </h1>
                         </div>
-                      ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                      ) : (
                         <div className="flex items-center justify-center gap-2">
                           {animatedStocks[currentStockIndex].isProfit ? (
                             <TrendingUp className="h-4 w-4 text-green-400" />
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <TrendingDown className="h-4 w-4 text-red-400" />
                           )}
                           <span className={`text-sm font-semibold ${animatedStocks[currentStockIndex].isProfit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
@@ -14650,45 +14080,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         >
                           {isSearchLoading ? (
                             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <Bot className="h-4 w-4" />
                           )}
                         </Button>
@@ -14722,45 +14114,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             >
                               {isSearchLoading ? (
                                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                              ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                              ) : (
                                 <Bot className="h-4 w-4" />
                               )}
                             </Button>
@@ -14802,45 +14156,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         Trading Challenge
                                       </h3>
                                       </>
-                                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                    ) : (
                                       <>
                       <Bot className="h-4 w-4 text-blue-400" />
                       <h3 className="text-lg font-medium text-gray-100">
@@ -15102,45 +14418,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       <p className="text-gray-400 text-xs line-clamp-3">{item.summary}</p>
                                                     </div>
                                                   ))
-                                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                                ) : (
                                                   <div className="text-center py-8">
                                                     <p className="text-gray-400 text-sm">No news available</p>
                                                   </div>
@@ -15512,45 +14790,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       </div>
                                                     </div>
                                                   ))
-                                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                                ) : (
                                                   <div className="text-center py-8 text-gray-500">
                                                     <Newspaper className="h-8 w-8 mx-auto mb-2 opacity-50" />
                                                     <p className="text-sm">No news available for {cleanSymbolForNews}</p>
@@ -15723,45 +14963,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           </div>
                                                         )}
                                                       </>
-                                                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                                    ) : (
                                                       <div className="text-center py-4 text-gray-500 text-xs">
                                                         No quarterly data available
                                                       </div>
@@ -16315,45 +15517,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <div className="flex items-center justify-center gap-1">
                             {isWatchlistLoading ? (
                               <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                            ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                            ) : (
                               <Eye className="h-3 w-3" />
                             )}
                             <span>Watchlist</span>
@@ -16495,45 +15659,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             >
                               {isSearchLoading ? (
                                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                              ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                              ) : (
                                 <Bot className="h-4 w-4" />
                               )}
                             </Button>
@@ -16581,45 +15707,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <div className="flex items-center justify-center gap-1">
                                   {isWatchlistLoading ? (
                                     <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                  ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                  ) : (
                                     <Eye className="h-3 w-3" />
                                   )}
                                   <span>Watchlist</span>
@@ -16705,45 +15793,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           Trade Challenge
                                         </h3>
                                       </>
-                                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                    ) : (
                                       <>
                                         <Bot className="h-4 w-4 text-blue-400" />
                                         <h3 className="text-xs font-medium text-gray-100">
@@ -17200,45 +16250,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
                                   <span className="text-[9px] font-bold text-green-500 uppercase tracking-widest">Active</span>
                                 </>
-                              ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                              ) : (
                                 <>
                                   <Badge variant="outline" className={`text-[8px] h-5 px-2 ${user.role === "admin" ? "border-purple-300 text-purple-500 bg-purple-50 dark:bg-purple-900/20" : "border-blue-300 text-blue-500 bg-blue-50 dark:bg-blue-900/20"}`}>
                                     {user.role === "admin" ? "Admin" : "Developer"}
@@ -17485,45 +16497,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               alt={file.name}
                               className="w-full h-full object-cover"
                             />
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center bg-teal-50 dark:bg-teal-900/30">
                               <Upload className="h-4 w-4 text-teal-600 dark:text-teal-400" />
                               <span className="text-[8px] text-teal-700 dark:text-teal-300 px-1 truncate w-full text-center">{file.name}</span>
@@ -17546,45 +16520,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       {reportBugFiles.length}/5
                     </div>
                   </div>
-                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                ) : (
                   <div className="flex flex-col items-center justify-center py-8">
                     <Upload className="h-8 w-8 text-teal-500 mb-2 opacity-80" />
                     <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Click to upload, drag & drop, or paste</p>
@@ -18275,45 +17211,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   Or type to search more instruments...
                                                 </div>
                                               </>
-                                            ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                            ) : (
                                               /* Show search suggestions for Commodity and F&O */
                                               <div className="px-3 py-3 space-y-3">
                                                 <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -18810,45 +17708,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   >
                                     {journalChartLoading ? (
                                       <div className="w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                    ) : (
                                       <RefreshCw className="w-3.5 h-3.5" />
                                     )}
                                   </Button>
@@ -18891,45 +17751,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                                   {journalChartMode === 'search' ? (
                                     <span>Manual: {selectedJournalSymbol.replace('NSE:', '').replace('-INDEX', '').replace('-EQ', '') || 'Select symbol'}</span>
-                                  ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                  ) : (
                                     <span>Date: {heatmapSelectedDate || 'Select date'} | {
                                       (() => {
                                         const sym = heatmapSelectedSymbol.replace('NSE:', '').replace('-INDEX', '').replace('-EQ', '');
@@ -19646,45 +18468,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <Check className="w-3 h-3" />
                                     </Button>
                                   </>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <Button
                                     size="sm"
                                     variant="ghost"
@@ -19708,45 +18492,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 className="flex-1 w-full p-2 text-xs border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 data-testid="textarea-notes"
                               />
-                            ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                            ) : (
                               <div className="flex-1 w-full p-2 text-xs border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-white overflow-y-auto custom-thin-scrollbar">
                                 {/* Display daily factors inline when they exist */}
                                 {selectedDailyFactors.length > 0 && (
@@ -19828,131 +18574,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           </div>
                                         ))}
                                       </div>
-                                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                    ) : (
                                       <p className="text-gray-500 italic text-center text-xs mt-4">No news found.</p>
                                     )}
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <>
                                     {notesContent ? (
                                       <pre className="font-sans text-xs overflow-y-auto flex-1 whitespace-pre">
                                         {notesContent}
                                       </pre>
-                                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                    ) : (
                                       <p className="text-gray-500 dark:text-gray-400 italic">
                                         No trading notes yet. Click Edit to add your
                                         first note.
@@ -20058,45 +18690,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </Button>
                           {showMobileTradeHistory ? (
                             <ChevronUp className="h-5 w-5 text-slate-500 dark:text-slate-400" />
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <ChevronDown className="h-5 w-5 text-slate-500 dark:text-slate-400" />
                           )}
                         </div>
@@ -20156,45 +18750,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         No data yet
                                       </td>
                                     </tr>
-                                  ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                  ) : (
                                     tradeHistoryData.map((trade, index) => (
                                       <tr key={index} className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                                         <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.time}</td>
@@ -20398,45 +18954,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         : "Select a date to view trades"}
                                   </td>
                                 </tr>
-                              ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                              ) : (
                                 tradeHistoryData.map((trade, index) => (
                                   <tr
                                     key={index}
@@ -20562,45 +19080,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <X className="h-4 w-4" />
                               </Button>
                             </div>
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <Button
                               onClick={handleZerodhaConnect}
                               variant="outline"
@@ -20640,45 +19120,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <X className="h-4 w-4" />
                               </Button>
                             </div>
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <Button
                               variant="outline"
                               className={`w-full h-10 ${
@@ -20718,45 +19160,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <X className="h-4 w-4" />
                               </Button>
                             </div>
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <Button
                               variant="outline"
                               className={`w-full h-10 ${
@@ -20796,45 +19200,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <X className="h-4 w-4" />
                               </Button>
                             </div>
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <Button
                               onClick={handleDhanConnect}
                               variant="outline"
@@ -21085,45 +19451,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 fetchHeatmapChartData(symbol, date);
                               }}
                             />
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <PersonalHeatmap
                               userId={getUserId()}
                               onDateSelect={handleDateSelect}
@@ -22003,45 +20331,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 );
                               })()}
                             </div>
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <div className="flex items-center justify-center h-48 text-slate-500 dark:text-slate-400">
                               <div className="text-center">
                                 <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-50" />
@@ -22111,45 +20401,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                   ))}
                               </div>
-                            ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                            ) : (
                               <div className="flex items-center justify-center h-32 text-slate-500 dark:text-slate-400">
                                 <div className="text-center">
                                   <Tag className="w-8 h-8 mx-auto mb-2 opacity-50" />
@@ -22473,45 +20725,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           </div>
                                         </div>
                                       ))
-                                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                    ) : (
                                       <div className="col-span-2 text-center py-8">
                                         <div className="text-4xl mb-2">🎉</div>
                                         <p className="font-medium">
@@ -22828,45 +21042,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               </div>
                                             </div>
                                           ))
-                                      ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                      ) : (
                                         <div className="text-center py-6">
                                           <div className="text-3xl mb-2">
                                             📊
@@ -23194,45 +21370,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                     <span className="font-medium text-xs">{buildModeData.displayValues.time}</span>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <button
                                     onClick={() => {
                                       const textarea = importDataTextareaRef.current;
@@ -23316,45 +21454,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                     <span className="font-medium text-xs">{buildModeData.displayValues.order}</span>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <button
                                     onClick={() => {
                                       const textarea = importDataTextareaRef.current;
@@ -23438,45 +21538,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                     <span className="font-medium text-xs">{buildModeData.displayValues.symbol}</span>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <button
                                     onClick={() => {
                                       const textarea = importDataTextareaRef.current;
@@ -23560,45 +21622,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                     <span className="font-medium text-xs">{buildModeData.displayValues.type}</span>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <button
                                     onClick={() => {
                                       const textarea = importDataTextareaRef.current;
@@ -23682,45 +21706,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                     <span className="font-medium text-xs">{buildModeData.displayValues.qty}</span>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <button
                                     onClick={() => {
                                       const textarea = importDataTextareaRef.current;
@@ -23804,45 +21790,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                     <span className="font-medium text-xs">{buildModeData.displayValues.price}</span>
                                   </div>
-                                ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                                ) : (
                                   <button
                                     onClick={() => {
                                       const textarea = importDataTextareaRef.current;
@@ -23966,45 +21914,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         </div>
                       )}
                     </div>
-                  ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
                   ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
                     <>
                       <div className="text-xs font-medium text-muted-foreground mb-2">
                         Live Demo - How Your First Trade Will Import:
@@ -24457,45 +22367,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                           ) : paperTradeSearchResults.length === 0 ? (
                             <div className="px-4 py-3 text-sm text-gray-500">No results found</div>
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             paperTradeSearchResults.slice(0, 6).map((stock, idx) => (
                               <button
                                 key={`${stock.symbol}-${stock.exchange}-${idx}`}
@@ -24580,45 +22452,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           min="1"
                           data-testid="input-paper-trade-qty-mobile"
                         />
-                      ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                      ) : (
                         <Input
                           type="number"
                           placeholder="Lots"
@@ -24634,45 +22468,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
                         ) : paperTradeCurrentPrice ? (
                           <span>₹{paperTradeCurrentPrice.toFixed(2)}</span>
-                        ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                        ) : (
                           <span className="text-gray-500 dark:text-gray-400">Price</span>
                         )}
                       </div>
@@ -25084,45 +22880,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                           ) : paperTradeSearchResults.length === 0 ? (
                             <div className="px-3 py-2 text-xs text-gray-500">No results</div>
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             paperTradeSearchResults.slice(0, 6).map((stock, idx) => (
                               <button
                                 key={`${stock.symbol}-${stock.exchange}-${idx}`}
@@ -25206,45 +22964,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         min="1"
                         data-testid="input-paper-trade-qty"
                       />
-                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                    ) : (
                       <Input
                         type="number"
                         placeholder="Lots"
@@ -25262,45 +22982,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <div className="w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
                       ) : paperTradeCurrentPrice ? (
                         <span>₹{paperTradeCurrentPrice.toFixed(2)}</span>
-                      ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                      ) : (
                         <span className="text-gray-500 dark:text-gray-400">--</span>
                       )}
                     </div>
@@ -25632,44 +23314,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     {saveConfirmationData.errorMessage}
                   </p>
                 </>
-              ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
               ) : (
                 <>
                   <DialogTitle className="text-green-600">Saved Successfully</DialogTitle>
@@ -25986,45 +23630,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       <div className="whitespace-pre-wrap text-sm leading-relaxed">
                         {journalAIData.report}
                       </div>
-                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                    ) : (
                       <div className="text-center py-12">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-4"></div>
                         <p className="text-gray-600 dark:text-gray-400">
@@ -26116,45 +23722,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             />
                           </AreaChart>
                         </ResponsiveContainer>
-                      ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                      ) : (
                         <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
                           <div className="text-center">
                             <BarChart3 className="h-12 w-12 mx-auto mb-3 opacity-40" />
@@ -26339,45 +23907,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </div>
                         ) : paperTradeSearchResults.length === 0 ? (
                           <div className="px-4 py-3 text-sm text-gray-500">No results found</div>
-                        ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                        ) : (
                           paperTradeSearchResults.slice(0, 6).map((stock, idx) => (
                             <button
                               key={`${stock.symbol}-${stock.exchange}-${idx}`}
@@ -26463,45 +23993,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         min="1"
                         data-testid="input-paper-trade-qty-mobile-tab"
                       />
-                    ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                    ) : (
                       <Input
                         type="number"
                         placeholder="Lots"
@@ -26517,45 +24009,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
                       ) : paperTradeCurrentPrice ? (
                         <span>₹{paperTradeCurrentPrice.toFixed(2)}</span>
-                      ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                      ) : (
                         <span className="text-gray-500 dark:text-gray-400">Price</span>
                       )}
                     </div>
@@ -27041,87 +24495,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         >
                           {isCreatingShareableLink ? (
                             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                          ) : (
                             <Link2 className="w-4 h-4" />
                           )}
                         </Button>
-                      ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                      ) : (
                         <div className="flex items-center gap-2">
                           <Button
                             size="icon"
@@ -27614,45 +24992,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               );
                             })()}
                           </div>
-                        ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                        ) : (
                           <div className="h-28 flex items-center justify-center text-gray-400 text-xs">
                             No data
                           </div>
@@ -27675,45 +25015,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                             ))}
                           </div>
-                        ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
-                  {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                    </div>
-                  ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
-                            </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+                        ) : (
                           <div className="text-[12px] text-gray-500 dark:text-gray-400 italic py-3">No loss tags</div>
                         )}
                       </div>
