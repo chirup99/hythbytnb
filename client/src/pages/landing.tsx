@@ -944,6 +944,27 @@ export default function Landing() {
                               <stop offset="0%" stopColor="rgba(34, 197, 94, 0.3)" />
                               <stop offset="100%" stopColor="rgba(34, 197, 94, 0)" />
                             </linearGradient>
+                            <style>{`
+                              @keyframes drawLine {
+                                from { stroke-dashoffset: 600; }
+                                to { stroke-dashoffset: 0; }
+                              }
+                              @keyframes movePointer {
+                                0% { offset-distance: 0%; opacity: 0; }
+                                5% { opacity: 1; }
+                                95% { opacity: 1; }
+                                100% { offset-distance: 100%; opacity: 0; }
+                              }
+                              .animate-draw-line {
+                                stroke-dasharray: 600;
+                                stroke-dashoffset: 600;
+                                animation: drawLine 3s linear infinite;
+                              }
+                              .animate-pointer {
+                                offset-path: path("M 0 55 Q 15 50 25 48 T 50 52 T 75 45 T 100 50 T 125 48 T 150 45 T 175 35 T 200 10");
+                                animation: movePointer 3s linear infinite;
+                              }
+                            `}</style>
                           </defs>
                           <path 
                             d="M 0 55 Q 15 50 25 48 T 50 52 T 75 45 T 100 50 T 125 48 T 150 45 T 175 35 T 200 10 L 200 80 L 0 80 Z" 
@@ -953,10 +974,12 @@ export default function Landing() {
                           <path 
                             d="M 0 55 Q 15 50 25 48 T 50 52 T 75 45 T 100 50 T 125 48 T 150 45 T 175 35 T 200 10" 
                             fill="none" 
-                            stroke="white" 
+                            stroke="rgba(34, 197, 94, 1)" 
                             strokeWidth="2"
                             className="animate-draw-line"
                           />
+                          {/* Pointer */}
+                          <circle r="3" fill="white" className="animate-pointer shadow-lg" style={{ filter: 'drop-shadow(0 0 4px rgba(34, 197, 94, 0.8))' }} />
                         </svg>
                       </div>
                     </div>
@@ -964,12 +987,17 @@ export default function Landing() {
                     {/* Bottom Stats */}
                     <div className="flex justify-between mt-1 pt-1 border-t border-gray-700/50">
                       <div className="flex items-center gap-1">
-                        <span className="text-[5px] text-gray-500">Total P&L:</span>
-                        <span className="text-[6px] text-green-400 font-bold">+₹1,24,850</span>
+                        <span className="text-[5px] text-gray-500">Current Price:</span>
+                        <div className="flex items-center gap-0.5">
+                          <span className="text-[6px] text-green-400 font-bold animate-pulse">₹78,420.50</span>
+                          <svg className="w-1.5 h-1.5 text-green-400 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <path d="M12 19V5M5 12l7-7 7 7" />
+                          </svg>
+                        </div>
                       </div>
                       <div className="flex items-center gap-1">
-                        <span className="text-[5px] text-gray-500">Win Rate:</span>
-                        <span className="text-[6px] text-white font-bold">67%</span>
+                        <span className="text-[5px] text-gray-500">Trend:</span>
+                        <span className="text-[6px] text-green-400 font-bold uppercase tracking-tighter">+2.4%</span>
                       </div>
                     </div>
                   </div>
