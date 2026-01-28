@@ -16289,44 +16289,40 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Reported Bugs</h3>
                     <button
                       onClick={() => setShowMagicBugBar(!showMagicBugBar)}
-                      className={`group flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all duration-300 ${
+                      className={`group flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-200 ${
                         showMagicBugBar 
-                          ? "bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white shadow-lg shadow-purple-500/30" 
-                          : "bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 hover:bg-gradient-to-r hover:from-purple-600 hover:via-pink-500 hover:to-orange-500 hover:text-white hover:shadow-lg hover:shadow-purple-500/30"
+                          ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/30" 
+                          : "bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 border border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-slate-700 dark:hover:text-slate-300"
                       }`}
                       data-testid="button-magic-bug-bar"
                     >
-                      <Sparkles className={`h-3.5 w-3.5 ${showMagicBugBar ? "animate-pulse" : "group-hover:animate-pulse"}`} />
+                      <Sparkles className="h-3 w-3" />
                       <span>Magic Bar</span>
-                      <Zap className="h-3 w-3" />
                     </button>
                   </div>
                   {showMagicBugBar && adminBugReports.length > 0 && (
-                    <div className="animate-in fade-in slide-in-from-top-2 duration-300 p-3 rounded-xl bg-gradient-to-br from-slate-900/95 via-purple-900/20 to-slate-900/95 border border-purple-500/30 shadow-xl shadow-purple-500/10 space-y-3">
-                      <div className="flex items-center gap-2 pb-2 border-b border-purple-500/20">
-                        <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30">
-                          <Sparkles className="h-3.5 w-3.5 text-white" />
-                        </div>
-                        <span className="text-xs font-bold text-white">Smart Bug Analysis</span>
-                        <Badge className="ml-auto text-[9px] h-4 px-2 bg-purple-500/20 text-purple-300 border-purple-500/30">AI Powered</Badge>
+                    <div className="animate-in fade-in slide-in-from-top-2 duration-200 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 space-y-3">
+                      <div className="flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-700/50">
+                        <Sparkles className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                        <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Smart Bug Analysis</span>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
-                        <div className="group p-2.5 rounded-lg bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 transition-all cursor-pointer">
+                        <div className="group p-2 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer">
                           <div className="flex items-center gap-1.5 mb-1">
-                            <AlertTriangle className="h-3 w-3 text-red-400" />
-                            <span className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Critical</span>
+                            <AlertTriangle className="h-3 w-3 text-slate-500 dark:text-slate-400" />
+                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Critical</span>
                           </div>
-                          <div className="text-lg font-black text-red-300">
+                          <div className="text-base font-bold text-slate-700 dark:text-slate-200">
                             {adminBugReports.filter(b => b.title?.toLowerCase().includes('error') || b.title?.toLowerCase().includes('crash') || b.title?.toLowerCase().includes('broken') || b.description?.toLowerCase().includes('critical')).length}
                           </div>
-                          <p className="text-[9px] text-red-400/70 mt-0.5">Errors & crashes</p>
+                          <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">Errors & crashes</p>
                         </div>
-                        <div className="group p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-all cursor-pointer">
+                        <div className="group p-2 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer">
                           <div className="flex items-center gap-1.5 mb-1">
-                            <RefreshCw className="h-3 w-3 text-amber-400" />
-                            <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Repeated</span>
+                            <RefreshCw className="h-3 w-3 text-slate-500 dark:text-slate-400" />
+                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Repeated</span>
                           </div>
-                          <div className="text-lg font-black text-amber-300">
+                          <div className="text-base font-bold text-slate-700 dark:text-slate-200">
                             {(() => {
                               const titles = adminBugReports.map(b => b.title?.toLowerCase().split(' ').slice(0, 2).join(' '));
                               const counts: Record<string, number> = {};
@@ -16334,33 +16330,33 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               return Object.values(counts).filter(c => c > 1).reduce((a, b) => a + b, 0);
                             })()}
                           </div>
-                          <p className="text-[9px] text-amber-400/70 mt-0.5">Similar reports</p>
+                          <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">Similar reports</p>
                         </div>
-                        <div className="group p-2.5 rounded-lg bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/20 transition-all cursor-pointer">
+                        <div className="group p-2 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer">
                           <div className="flex items-center gap-1.5 mb-1">
-                            <Target className="h-3 w-3 text-blue-400" />
-                            <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Priority</span>
+                            <Target className="h-3 w-3 text-slate-500 dark:text-slate-400" />
+                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Priority</span>
                           </div>
-                          <div className="text-lg font-black text-blue-300">
+                          <div className="text-base font-bold text-slate-700 dark:text-slate-200">
                             {adminBugReports.filter(b => b.status === 'pending' && (b.title?.toLowerCase().includes('not working') || b.title?.toLowerCase().includes('not loading') || b.title?.toLowerCase().includes('issue'))).length}
                           </div>
-                          <p className="text-[9px] text-blue-400/70 mt-0.5">Fix ASAP</p>
+                          <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">Fix ASAP</p>
                         </div>
                       </div>
                       {adminBugReports.filter(b => b.title?.toLowerCase().includes('error') || b.title?.toLowerCase().includes('crash') || b.title?.toLowerCase().includes('not working')).length > 0 && (
-                        <div className="pt-2 border-t border-purple-500/20">
+                        <div className="pt-2 border-t border-slate-200 dark:border-slate-700/50">
                           <div className="flex items-center gap-1.5 mb-2">
-                            <Flame className="h-3 w-3 text-orange-400" />
-                            <span className="text-[10px] font-bold text-orange-400">Top Priority Bugs</span>
+                            <Flame className="h-3 w-3 text-slate-500 dark:text-slate-400" />
+                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400">Top Priority Bugs</span>
                           </div>
                           <div className="space-y-1">
                             {adminBugReports.filter(b => b.title?.toLowerCase().includes('error') || b.title?.toLowerCase().includes('crash') || b.title?.toLowerCase().includes('not working')).slice(0, 3).map((bug, i) => (
-                              <div key={bug.bugId || i} className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20">
-                                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                                <span className="text-[10px] text-orange-200 flex-1 truncate">{bug.title}</span>
-                                <Badge className="text-[8px] h-4 px-1.5 bg-orange-500/20 text-orange-300 border-orange-500/30">
+                              <div key={bug.bugId || i} className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30">
+                                <div className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-500" />
+                                <span className="text-[10px] text-slate-600 dark:text-slate-300 flex-1 truncate">{bug.title}</span>
+                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400">
                                   {bug.status === 'pending' ? 'Pending' : bug.status}
-                                </Badge>
+                                </span>
                               </div>
                             ))}
                           </div>
