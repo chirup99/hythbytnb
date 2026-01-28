@@ -16284,7 +16284,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   </Button>
                 </div>
               ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
+                <div className="p-4 space-y-3 pt-[0px] pb-[0px] pl-[10px] pr-[10px] max-h-[450px] overflow-y-auto custom-thin-scrollbar">
                   <div className="flex items-center justify-between gap-3">
                     <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Reported Bugs</h3>
                     <button
