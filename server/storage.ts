@@ -186,6 +186,18 @@ export interface InsertVerifiedReport {
   expiresAt: Date;
 }
 
+export interface AuthorizedEmail {
+  id: number;
+  email: string;
+  isActive: boolean;
+  createdAt: Date;
+}
+
+export interface InsertAuthorizedEmail {
+  email: string;
+  isActive?: boolean;
+}
+
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
@@ -219,6 +231,12 @@ export interface IStorage {
   getVerifiedReport(reportId: string): Promise<VerifiedReport | undefined>;
   incrementReportViews(reportId: string): Promise<void>;
   deleteExpiredReports(): Promise<void>;
+
+  // Authorized Emails
+  getAuthorizedEmails(): Promise<AuthorizedEmail[]>;
+  addAuthorizedEmail(email: InsertAuthorizedEmail): Promise<AuthorizedEmail>;
+  removeAuthorizedEmail(email: string): Promise<void>;
+  isEmailAuthorized(email: string): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -236,6 +254,8 @@ export class MemStorage implements IStorage {
   private livestreamSettingsData: LivestreamSettings | undefined;
   private verifiedReportsMap: Map<string, VerifiedReport>;
   private currentVerifiedReportId: number;
+  private authorizedEmailsList: Map<string, AuthorizedEmail>;
+  private currentAuthorizedEmailId: number;
 
   constructor() {
     this.users = new Map();
@@ -250,6 +270,17 @@ export class MemStorage implements IStorage {
     this.currentAnalysisResultId = 1;
     this.verifiedReportsMap = new Map();
     this.currentVerifiedReportId = 1;
+    this.authorizedEmailsList = new Map();
+    this.currentAuthorizedEmailId = 1;
+    
+    // Add default admin
+    const adminEmail = "chiranjeevi.perala99@gmail.com";
+    this.authorizedEmailsList.set(adminEmail, {
+      id: this.currentAuthorizedEmailId++,
+      email: adminEmail,
+      isActive: true,
+      createdAt: new Date()
+    });
     
     this.apiStatusData = {
       id: 1,
@@ -537,6 +568,34 @@ export class MemStorage implements IStorage {
         this.verifiedReportsMap.delete(reportId);
       }
     }
+  }
+
+  async getAuthorizedEmails(): Promise<AuthorizedEmail[]> {
+    return Array.from(this.authorizedEmailsList.values());
+  }
+
+  async addAuthorizedEmail(insert: InsertAuthorizedEmail): Promise<AuthorizedEmail> {
+    const existing = this.authorizedEmailsList.get(insert.email);
+    if (existing) return existing;
+
+    const id = this.currentAuthorizedEmailId++;
+    const authEmail: AuthorizedEmail = {
+      id,
+      email: insert.email,
+      isActive: insert.isActive ?? true,
+      createdAt: new Date()
+    };
+    this.authorizedEmailsList.set(insert.email, authEmail);
+    return authEmail;
+  }
+
+  async removeAuthorizedEmail(email: string): Promise<void> {
+    this.authorizedEmailsList.delete(email);
+  }
+
+  async isEmailAuthorized(email: string): Promise<boolean> {
+    const auth = this.authorizedEmailsList.get(email);
+    return !!auth && auth.isActive;
   }
 }
 

@@ -242,6 +242,22 @@ export interface VerifiedReportData {
   generatedAt: string;
 }
 
+// Authorized Emails table to manage access to restricted features
+export const authorizedEmails = pgTable("authorized_emails", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertAuthorizedEmailSchema = createInsertSchema(authorizedEmails).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type AuthorizedEmail = typeof authorizedEmails.$inferSelect;
+export type InsertAuthorizedEmail = z.infer<typeof insertAuthorizedEmailSchema>;
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
