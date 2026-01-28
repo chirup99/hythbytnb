@@ -790,9 +790,7 @@ export default function Landing() {
                       </div>
                       <div className="flex flex-col items-center justify-center border-r border-white/10 py-[1px]">
                         <span className="text-[3px] text-purple-100/70 uppercase font-medium leading-none mb-[1px]">Over Trade</span>
-                        <div className="w-3.5 h-[3px] bg-white/20 rounded-[0.5px] relative overflow-hidden">
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
-                        </div>
+                        <span className="text-[5px] text-white font-bold leading-none">12</span>
                       </div>
                       <div className="flex flex-col items-center justify-center border-r border-white/10 py-[1px]">
                         <span className="text-[3px] text-purple-100/70 uppercase font-medium leading-none mb-[1px]">FOMO</span>
