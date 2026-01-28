@@ -17653,6 +17653,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
 
+  // Authorized Emails Routes
+  app.get("/api/admin/authorized-emails", async (req, res) => {
+    try {
+      const emails = await storage.getAuthorizedEmails();
+      res.json(emails);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch authorized emails" });
+    }
+  });
+
+  app.post("/api/admin/authorized-emails", async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) return res.status(400).json({ message: "Email is required" });
+      const result = await storage.addAuthorizedEmail({ email });
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to add authorized email" });
+    }
+  });
+
+  app.delete("/api/admin/authorized-emails/:email", async (req, res) => {
+    try {
+      await storage.removeAuthorizedEmail(req.params.email);
+      res.sendStatus(204);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to remove authorized email" });
+    }
+  });
+
+  app.get("/api/admin/check-authorization/:email", async (req, res) => {
+    try {
+      const isAuthorized = await storage.isEmailAuthorized(req.params.email);
+      res.json({ isAuthorized });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to check authorization" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   // WebSocket server for real-time P&L streaming
