@@ -62,6 +62,6 @@
 ## IMPORT SESSION (Jan 28, 2026 - Session 25)
 
 [x] 1. Install the required packages - Installed missing `dotenv` dependency.
-[x] 2. Restart the workflow - Server running on port 5000 successfully with real-time WebSocket data (BANKNIFTY, SENSEX, GOLD).
+[x] 2. Restart the workflow - Server running on port 5000 successfully with Angel One auto-connection (real-time WebSocket data for BANKNIFTY, SENSEX, GOLD).
 [x] 3. Verify the project is working - Screenshot confirmed: Landing page displays world map, market indicators (USA +0.41%, Canada +0.01%, India +0.43%, Hong Kong +2.37%, Tokyo +0.05%), search bar, navigation tabs (Watchlist, Market News, Social Feed, Trading Journal, Trade Challenge), and feature cards (Social Feed, Trading Master, Journal, Tech News).
 [x] 4. Complete import - Project fully operational and ready for use.
