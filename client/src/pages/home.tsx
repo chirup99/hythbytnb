@@ -16296,14 +16296,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       }`}
                       data-testid="button-magic-bug-bar"
                     >
-                      <Sparkles className="h-3 w-3" />
-                      <span>Magic Bar</span>
+                       <Bug className="h-3 w-3" />
+                      <span>AI Bug</span>
                     </button>
                   </div>
                   {showMagicBugBar && adminBugReports.length > 0 && (
                     <div className="animate-in fade-in slide-in-from-top-2 duration-200 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 space-y-3">
                       <div className="flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-700/50">
-                        <Sparkles className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                        <Bug className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
                         <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Smart Bug Analysis</span>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
