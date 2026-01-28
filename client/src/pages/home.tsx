@@ -1971,6 +1971,9 @@ export default function Home() {
   const [reportBugDescription, setReportBugDescription] = useState("");
   const [reportBugFiles, setReportBugFiles] = useState<File[]>([]);
   const [reportBugSubmitting, setReportBugSubmitting] = useState(false);
+  const [showAddAdminAccessDialog, setShowAddAdminAccessDialog] = useState(false);
+  const [adminAccessEmail, setAdminAccessEmail] = useState("");
+  const [adminAccessRole, setAdminAccessRole] = useState<"developer" | "admin">("developer");
 
   const handleReportBug = async () => {
     const token = await getCognitoToken();
@@ -16129,6 +16132,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     </div>
                   <Button
                     size="icon"
+                    onClick={() => setShowAddAdminAccessDialog(true)}
                     className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:shadow-blue-500/50 hover:scale-105"
                     data-testid="button-add-admin-access"
                   >
@@ -16370,6 +16374,93 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 data-testid="button-submit-report-bug"
               >
                 {reportBugSubmitting ? "Submitting..." : "Report"}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+        {/* Add Admin Access Dialog */}
+        <Dialog open={showAddAdminAccessDialog} onOpenChange={setShowAddAdminAccessDialog}>
+          <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-0 overflow-hidden">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+              <DialogTitle className="text-xl font-bold text-slate-900 dark:text-white">
+                Add Admin Access
+              </DialogTitle>
+            </div>
+            
+            <div className="p-4 space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Email Address</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <Input 
+                    type="email"
+                    placeholder="Enter email address..." 
+                    value={adminAccessEmail}
+                    onChange={(e) => setAdminAccessEmail(e.target.value)}
+                    className="w-full pl-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl"
+                    data-testid="input-admin-access-email"
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Role</label>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setAdminAccessRole("developer")}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all ${
+                      adminAccessRole === "developer"
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                        : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600"
+                    }`}
+                    data-testid="radio-role-developer"
+                  >
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                      adminAccessRole === "developer" ? "border-blue-500" : "border-slate-400"
+                    }`}>
+                      {adminAccessRole === "developer" && <div className="w-2 h-2 rounded-full bg-blue-500" />}
+                    </div>
+                    <span className="font-medium">Developer</span>
+                  </button>
+                  <button
+                    onClick={() => setAdminAccessRole("admin")}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all ${
+                      adminAccessRole === "admin"
+                        ? "border-purple-500 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
+                        : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600"
+                    }`}
+                    data-testid="radio-role-admin"
+                  >
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                      adminAccessRole === "admin" ? "border-purple-500" : "border-slate-400"
+                    }`}>
+                      {adminAccessRole === "admin" && <div className="w-2 h-2 rounded-full bg-purple-500" />}
+                    </div>
+                    <span className="font-medium">Admin</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-end gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowAddAdminAccessDialog(false);
+                  setAdminAccessEmail("");
+                  setAdminAccessRole("developer");
+                }}
+                className="px-6"
+                data-testid="button-cancel-admin-access"
+              >
+                Cancel
+              </Button>
+              <Button
+                disabled={!adminAccessEmail}
+                className="px-6 bg-blue-500 hover:bg-blue-600"
+                data-testid="button-save-admin-access"
+              >
+                Save
               </Button>
             </div>
           </DialogContent>
