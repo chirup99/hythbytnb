@@ -1170,7 +1170,31 @@ export default function Landing() {
                     {!isEmailLoading && <ArrowRight className="ml-2 h-4 w-4" />}
                   </Button>
 
-                  <div className="flex justify-center">
+                  <div className="flex flex-col items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        // For resending signup code, we just re-trigger handleEmailAuth in signup mode
+                        // handleEmailAuth will call cognitoSignUp which should fail if user exists,
+                        // but actually we should use resendConfirmationCode from cognito.ts
+                        cognitoResendSignupCode(email).then(() => {
+                          toast({
+                            title: "Code Resent",
+                            description: "A new verification code has been sent to your email.",
+                          });
+                        }).catch(err => {
+                          toast({
+                            title: "Resend Failed",
+                            description: err.message || "Failed to resend code.",
+                            variant: "destructive",
+                          });
+                        });
+                      }}
+                      className="text-xs text-gray-400 hover:text-white"
+                      data-testid="button-resend-signup-otp"
+                    >
+                      Resend Code
+                    </Button>
                     <button
                       onClick={() => {
                         setIsSignupVerification(false);
@@ -1364,7 +1388,7 @@ export default function Landing() {
                     >
                       Forgot password?
                     </button>
-                  )}
+                  )}.
 
                   <div className="relative py-4">
                     <div className="absolute inset-0 flex items-center">
