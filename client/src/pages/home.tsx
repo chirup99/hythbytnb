@@ -2033,7 +2033,7 @@ export default function Home() {
     
     toast({
       title: "Access granted",
-      description: \`\${newUser.email} has been added with \${newUser.role} role.\`,
+      description: `${newUser.email} has been added with ${newUser.role} role.`,
     });
   };
   
@@ -2052,7 +2052,7 @@ export default function Home() {
     
     toast({
       title: "Access revoked",
-      description: \`\${email} has been removed from the authorized list.\`,
+      description: `${email} has been removed from the authorized list.`,
     });
   };
   
@@ -2060,9 +2060,6 @@ export default function Home() {
   const filteredAuthorizedUsers = authorizedUsers.filter(user =>
     user.email.toLowerCase().includes(adminSearchQuery.toLowerCase())
   );
-  
-  // Check if current user is the primary owner
-  const isPrimaryOwner = currentUser?.email?.toLowerCase() === PRIMARY_OWNER_EMAIL.toLowerCase();
 
   const handleReportBug = async () => {
     const token = await getCognitoToken();
@@ -2237,6 +2234,9 @@ export default function Home() {
 
   // Get current user data from AWS DynamoDB
   const { currentUser } = useCurrentUser();
+  
+  // Check if current user is the primary owner
+  const isPrimaryOwner = currentUser?.email?.toLowerCase() === PRIMARY_OWNER_EMAIL.toLowerCase();
 
   // Initialize AWS auth sync with localStorage - NO AUTOMATIC REDIRECT
   // Users can view the home screen, redirect only happens when they try to interact with protected content
