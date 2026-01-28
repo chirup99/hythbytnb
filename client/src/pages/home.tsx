@@ -1966,6 +1966,7 @@ export default function Home() {
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [showAdminDashboardDialog, setShowAdminDashboardDialog] = useState(false);
   const [adminTab, setAdminTab] = useState("bugs-list");
+  const [bugFilter, setBugFilter] = useState<"all" | "critical" | "repeated" | "priority">("all");
   const [showMagicBugBar, setShowMagicBugBar] = useState(false);
   const [showReportBugDialog, setShowReportBugDialog] = useState(false);
   const [reportBugTab, setReportBugTab] = useState<"social-feed" | "journal" | "others">("social-feed");
