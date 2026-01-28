@@ -16281,7 +16281,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   </Button>
                 </div>
               ) : adminTab === "bugs-list" ? (
-                <div className="p-4 space-y-3">
+                <div className="p-4 space-y-3 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
                   {loadingBugReports ? (
                     <div className="flex items-center justify-center py-8">
