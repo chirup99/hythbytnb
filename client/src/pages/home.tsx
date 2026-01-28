@@ -16096,7 +16096,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             </div>
             <div className="flex-1 overflow-y-auto custom-thin-scrollbar min-h-[400px]">
               {adminTab === "admin-access" ? (
-                <div className="p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
+                <div className="relative h-full p-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-4 px-1 w-full pt-[1px] pb-[1px]">
                       <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Authorized Access</h4>
@@ -16127,6 +16127,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         </div>
                       </div>
                     </div>
+                  <Button
+                    size="icon"
+                    className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:shadow-blue-500/50 hover:scale-105"
+                    data-testid="button-add-admin-access"
+                  >
+                    <Plus className="h-6 w-6" />
+                  </Button>
                 </div>
               ) : (
                 <div className="px-8 pb-8 text-center space-y-4 pt-12">
