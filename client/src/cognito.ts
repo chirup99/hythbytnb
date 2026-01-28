@@ -2,6 +2,7 @@ import { Amplify } from 'aws-amplify';
 import { 
   signIn, 
   signUp, 
+  resendSignUpCode,
   signOut, 
   getCurrentUser, 
   fetchAuthSession,
@@ -346,6 +347,11 @@ export async function checkEmailVerified(): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+export async function cognitoResendSignupCode(email: string): Promise<void> {
+  initializeCognito();
+  await resendSignUpCode({ username: email });
 }
 
 export { signOut };

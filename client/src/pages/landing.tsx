@@ -1182,7 +1182,7 @@ export default function Landing() {
                             title: "Code Resent",
                             description: "A new verification code has been sent to your email.",
                           });
-                        }).catch(err => {
+                        }).catch((err: any) => {
                           toast({
                             title: "Resend Failed",
                             description: err.message || "Failed to resend code.",
@@ -1388,7 +1388,7 @@ export default function Landing() {
                     >
                       Forgot password?
                     </button>
-                  )}.
+                  )}
 
                   <div className="relative py-4">
                     <div className="absolute inset-0 flex items-center">
