@@ -16343,6 +16343,28 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">Fix ASAP</p>
                         </div>
                       </div>
+                      <div className="flex flex-wrap gap-1.5 py-1.5 border-t border-slate-200 dark:border-slate-700/50">
+                        {(() => {
+                          const counts = adminBugReports.reduce((acc, bug) => {
+                            const locate = bug.bugLocate || "others";
+                            acc[locate] = (acc[locate] || 0) + 1;
+                            return acc;
+                          }, {} as Record<string, number>);
+                          return (
+                            <>
+                              <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30">
+                                <span className="text-[9px] font-medium text-slate-500 dark:text-slate-400">journals {counts["journal"] || 0} bugs</span>
+                              </div>
+                              <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30">
+                                <span className="text-[9px] font-medium text-slate-500 dark:text-slate-400">others {counts["others"] || 0} bugs</span>
+                              </div>
+                              <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30">
+                                <span className="text-[9px] font-medium text-slate-500 dark:text-slate-400">social feed {counts["social_feed"] || 0} bugs</span>
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
                       {adminBugReports.filter(b => b.title?.toLowerCase().includes('error') || b.title?.toLowerCase().includes('crash') || b.title?.toLowerCase().includes('not working')).length > 0 && (
                         <div className="pt-2 border-t border-slate-200 dark:border-slate-700/50">
                           <div className="flex items-center gap-1.5 mb-2">
