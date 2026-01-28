@@ -246,6 +246,7 @@ export interface VerifiedReportData {
 export const authorizedEmails = pgTable("authorized_emails", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
+  role: text("role").notNull().default("developer"), // 'admin', 'developer'
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });

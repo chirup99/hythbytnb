@@ -17692,6 +17692,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Authorized Emails Management
+  app.get("/api/admin/authorized-emails", async (req, res) => {
+    try {
+      const emails = await storage.getAuthorizedEmails();
+      res.json(emails);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch authorized emails" });
+    }
+  });
+
+  app.post("/api/admin/authorized-emails", async (req, res) => {
+    try {
+      const { email, role } = req.body;
+      if (!email) return res.status(400).json({ message: "Email is required" });
+      
+      const authEmail = await storage.addAuthorizedEmail({ email, role });
+      res.json(authEmail);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to add authorized email" });
+    }
+  });
+
+  app.delete("/api/admin/authorized-emails/:email", async (req, res) => {
+    try {
+      const { email } = req.params;
+      if (!email) return res.status(400).json({ message: "Email is required" });
+      
+      // Prevent revoking the primary owner
+      if (email === "chiranjeevi.perala99@gmail.com") {
+        return res.status(403).json({ message: "Cannot revoke access for primary owner" });
+      }
+
+      await storage.removeAuthorizedEmail(email);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to revoke authorized email" });
+    }
+  });
+
+  app.get("/api/admin/check-access/:email", async (req, res) => {
+    try {
+      const { email } = req.params;
+      const isAuthorized = await storage.isEmailAuthorized(email);
+      res.json({ authorized: isAuthorized });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to check access" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   // WebSocket server for real-time P&L streaming

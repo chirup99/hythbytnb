@@ -189,12 +189,14 @@ export interface InsertVerifiedReport {
 export interface AuthorizedEmail {
   id: number;
   email: string;
+  role: string;
   isActive: boolean;
   createdAt: Date;
 }
 
 export interface InsertAuthorizedEmail {
   email: string;
+  role?: string;
   isActive?: boolean;
 }
 
@@ -278,6 +280,7 @@ export class MemStorage implements IStorage {
     this.authorizedEmailsList.set(adminEmail, {
       id: this.currentAuthorizedEmailId++,
       email: adminEmail,
+      role: "admin",
       isActive: true,
       createdAt: new Date()
     });
@@ -576,12 +579,17 @@ export class MemStorage implements IStorage {
 
   async addAuthorizedEmail(insert: InsertAuthorizedEmail): Promise<AuthorizedEmail> {
     const existing = this.authorizedEmailsList.get(insert.email);
-    if (existing) return existing;
+    if (existing) {
+      const updated = { ...existing, role: insert.role ?? existing.role, isActive: insert.isActive ?? existing.isActive };
+      this.authorizedEmailsList.set(insert.email, updated);
+      return updated;
+    }
 
     const id = this.currentAuthorizedEmailId++;
     const authEmail: AuthorizedEmail = {
       id,
       email: insert.email,
+      role: insert.role ?? "developer",
       isActive: insert.isActive ?? true,
       createdAt: new Date()
     };
