@@ -1019,13 +1019,13 @@ export default function Landing() {
                             <g transform="translate(5, -10)">
                               <rect x="0" y="0" width="25" height="10" rx="2" fill="rgba(0,0,0,0.8)" />
                               <g className="animate-pl-text">
-                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-1">-₹1.2k</text>
-                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-2">-₹2.8k</text>
-                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-3">+₹0.5k</text>
-                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-4">+₹1.8k</text>
-                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-5">+₹2.4k</text>
-                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-6">+₹3.6k</text>
-                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-7">+₹4.2k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-1">-₹12k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-2">-₹28k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-3">+₹5k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-4">+₹18k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-5">+₹24k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-6">+₹36k</text>
+                                <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" className="val-7">+₹42k</text>
                               </g>
                             </g>
                           </g>
