@@ -16298,6 +16298,28 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       data-testid="button-magic-bug-bar"
                     >
                       <Sparkles className="h-3 w-3" />
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Reported Bugs</h3>
+                      {bugFilter !== "all" && (
+                        <button 
+                          onClick={() => setBugFilter("all")}
+                          className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-blue-500 transition-colors"
+                        >
+                          Clear Filter
+                        </button>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => setShowMagicBugBar(!showMagicBugBar)}
+                      className={`group flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-200 ${
+                        showMagicBugBar 
+                          ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/30" 
+                          : "bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 border border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-slate-700 dark:hover:text-slate-300"
+                      }`}
+                      data-testid="button-magic-bug-bar"
+                    >
+                      <Sparkles className="h-3 w-3" />
                       <span>Magic Bar</span>
                     </button>
                   </div>
@@ -16308,20 +16330,26 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Smart Bug Analysis</span>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
-                        <div className="group p-2 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer">
+                        <div 
+                          onClick={() => setBugFilter(bugFilter === "critical" ? "all" : "critical")}
+                          className={`group p-2 rounded-lg transition-all cursor-pointer border ${bugFilter === "critical" ? "bg-red-500/10 border-red-500/50" : "bg-slate-100/50 dark:bg-slate-900/40 border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300"}`}
+                        >
                           <div className="flex items-center gap-1.5 mb-1">
-                            <AlertTriangle className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Critical</span>
+                            <AlertTriangle className={`h-3 w-3 ${bugFilter === "critical" ? "text-red-500" : "text-slate-500 dark:text-slate-400"}`} />
+                            <span className={`text-[10px] font-medium uppercase tracking-wider ${bugFilter === "critical" ? "text-red-600 dark:text-red-400" : "text-slate-500 dark:text-slate-400"}`}>Critical</span>
                           </div>
                           <div className="text-base font-bold text-slate-700 dark:text-slate-200">
                             {adminBugReports.filter(b => b.title?.toLowerCase().includes('error') || b.title?.toLowerCase().includes('crash') || b.title?.toLowerCase().includes('broken') || b.description?.toLowerCase().includes('critical')).length}
                           </div>
                           <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">Errors & crashes</p>
                         </div>
-                        <div className="group p-2 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer">
+                        <div 
+                          onClick={() => setBugFilter(bugFilter === "repeated" ? "all" : "repeated")}
+                          className={`group p-2 rounded-lg transition-all cursor-pointer border ${bugFilter === "repeated" ? "bg-blue-500/10 border-blue-500/50" : "bg-slate-100/50 dark:bg-slate-900/40 border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300"}`}
+                        >
                           <div className="flex items-center gap-1.5 mb-1">
-                            <RefreshCw className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Repeated</span>
+                            <RefreshCw className={`h-3 w-3 ${bugFilter === "repeated" ? "text-blue-500" : "text-slate-500 dark:text-slate-400"}`} />
+                            <span className={`text-[10px] font-medium uppercase tracking-wider ${bugFilter === "repeated" ? "text-blue-600 dark:text-blue-400" : "text-slate-500 dark:text-slate-400"}`}>Repeated</span>
                           </div>
                           <div className="text-base font-bold text-slate-700 dark:text-slate-200">
                             {(() => {
@@ -16333,10 +16361,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </div>
                           <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">Similar reports</p>
                         </div>
-                        <div className="group p-2 rounded-lg bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer">
+                        <div 
+                          onClick={() => setBugFilter(bugFilter === "priority" ? "all" : "priority")}
+                          className={`group p-2 rounded-lg transition-all cursor-pointer border ${bugFilter === "priority" ? "bg-amber-500/10 border-amber-500/50" : "bg-slate-100/50 dark:bg-slate-900/40 border-slate-200/50 dark:border-slate-700/30 hover:border-slate-300"}`}
+                        >
                           <div className="flex items-center gap-1.5 mb-1">
-                            <Target className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Priority</span>
+                            <Target className={`h-3 w-3 ${bugFilter === "priority" ? "text-amber-500" : "text-slate-500 dark:text-slate-400"}`} />
+                            <span className={`text-[10px] font-medium uppercase tracking-wider ${bugFilter === "priority" ? "text-amber-600 dark:text-amber-400" : "text-slate-500 dark:text-slate-400"}`}>Priority</span>
                           </div>
                           <div className="text-base font-bold text-slate-700 dark:text-slate-200">
                             {adminBugReports.filter(b => b.status === 'pending' && (b.title?.toLowerCase().includes('not working') || b.title?.toLowerCase().includes('not loading') || b.title?.toLowerCase().includes('issue'))).length}
@@ -16397,15 +16428,28 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     </div>
                   ) : (
                     <div className="space-y-1 max-h-[380px] overflow-y-auto custom-thin-scrollbar">
-                      {adminBugReports.map((bug, index) => (
-                        <div
-                          key={bug.bugId || index}
-                          className="group"
-                          data-testid={`bug-item-${index}`}
-                        >
-                          <button
-                            onClick={() => setExpandedBugId(expandedBugId === bug.bugId ? null : bug.bugId)}
-                            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-left"
+                      {adminBugReports
+                        .filter(bug => {
+                          if (bugFilter === "all") return true;
+                          if (bugFilter === "critical") return bug.title?.toLowerCase().includes('error') || bug.title?.toLowerCase().includes('crash') || bug.title?.toLowerCase().includes('broken') || bug.description?.toLowerCase().includes('critical');
+                          if (bugFilter === "repeated") {
+                            const titles = adminBugReports.map(b => b.title?.toLowerCase().split(' ').slice(0, 2).join(' '));
+                            const counts: Record<string, number> = {};
+                            titles.forEach(t => { if (t) counts[t] = (counts[t] || 0) + 1; });
+                            const t = bug.title?.toLowerCase().split(' ').slice(0, 2).join(' ');
+                            return t && counts[t] > 1;
+                          }
+                          if (bugFilter === "priority") return bug.status === 'pending' && (bug.title?.toLowerCase().includes('not working') || bug.title?.toLowerCase().includes('not loading') || bug.title?.toLowerCase().includes('issue'));
+                          return true;
+                        })
+                        .sort((a, b) => {
+                          const isCriticalA = a.title?.toLowerCase().includes('error') || a.title?.toLowerCase().includes('crash') || a.title?.toLowerCase().includes('broken') || a.description?.toLowerCase().includes('critical');
+                          const isCriticalB = b.title?.toLowerCase().includes('error') || b.title?.toLowerCase().includes('crash') || b.title?.toLowerCase().includes('broken') || b.description?.toLowerCase().includes('critical');
+                          if (isCriticalA && !isCriticalB) return -1;
+                          if (!isCriticalA && isCriticalB) return 1;
+                          return 0;
+                        })
+                        .map((bug, index) => (
                           >
                             <ChevronRight className={`h-3 w-3 text-slate-400 transition-transform ${expandedBugId === bug.bugId ? 'rotate-90' : ''}`} />
                             <span className="flex-1 text-xs font-medium text-slate-700 dark:text-slate-200 truncate">{bug.title}</span>
