@@ -1974,6 +1974,95 @@ export default function Home() {
   const [showAddAdminAccessDialog, setShowAddAdminAccessDialog] = useState(false);
   const [adminAccessEmail, setAdminAccessEmail] = useState("");
   const [adminAccessRole, setAdminAccessRole] = useState<"developer" | "admin">("developer");
+  
+  // Primary owner email - only this user can manage admin access
+  const PRIMARY_OWNER_EMAIL = "chiranjeevi.perala99@gmail.com";
+  
+  // Authorized users state with localStorage persistence
+  interface AuthorizedUser {
+    email: string;
+    role: "developer" | "admin" | "owner";
+    addedAt: string;
+  }
+  
+  const [authorizedUsers, setAuthorizedUsers] = useState<AuthorizedUser[]>(() => {
+    // Initialize from localStorage
+    const saved = localStorage.getItem("authorizedUsers");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return [{ email: PRIMARY_OWNER_EMAIL, role: "owner" as const, addedAt: new Date().toISOString() }];
+      }
+    }
+    // Default: only primary owner
+    return [{ email: PRIMARY_OWNER_EMAIL, role: "owner" as const, addedAt: new Date().toISOString() }];
+  });
+  
+  const [adminSearchQuery, setAdminSearchQuery] = useState("");
+  
+  // Save authorized users to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("authorizedUsers", JSON.stringify(authorizedUsers));
+  }, [authorizedUsers]);
+  
+  // Handler to add new admin access
+  const handleAddAdminAccess = () => {
+    if (!adminAccessEmail || !adminAccessEmail.includes("@")) return;
+    
+    // Check if email already exists
+    if (authorizedUsers.some(u => u.email.toLowerCase() === adminAccessEmail.toLowerCase())) {
+      toast({
+        title: "Email already exists",
+        description: "This email is already in the authorized list.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const newUser: AuthorizedUser = {
+      email: adminAccessEmail.toLowerCase(),
+      role: adminAccessRole,
+      addedAt: new Date().toISOString(),
+    };
+    
+    setAuthorizedUsers(prev => [...prev, newUser]);
+    setShowAddAdminAccessDialog(false);
+    setAdminAccessEmail("");
+    setAdminAccessRole("developer");
+    
+    toast({
+      title: "Access granted",
+      description: \`\${newUser.email} has been added with \${newUser.role} role.\`,
+    });
+  };
+  
+  // Handler to revoke admin access (only primary owner can do this)
+  const handleRevokeAdminAccess = (email: string) => {
+    if (email.toLowerCase() === PRIMARY_OWNER_EMAIL.toLowerCase()) {
+      toast({
+        title: "Cannot revoke",
+        description: "Primary owner access cannot be revoked.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setAuthorizedUsers(prev => prev.filter(u => u.email.toLowerCase() !== email.toLowerCase()));
+    
+    toast({
+      title: "Access revoked",
+      description: \`\${email} has been removed from the authorized list.\`,
+    });
+  };
+  
+  // Filter authorized users based on search query
+  const filteredAuthorizedUsers = authorizedUsers.filter(user =>
+    user.email.toLowerCase().includes(adminSearchQuery.toLowerCase())
+  );
+  
+  // Check if current user is the primary owner
+  const isPrimaryOwner = currentUser?.email?.toLowerCase() === PRIMARY_OWNER_EMAIL.toLowerCase();
 
   const handleReportBug = async () => {
     const token = await getCognitoToken();
@@ -16108,27 +16197,60 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
                           <Input 
                             placeholder="Search accounts..." 
+                            value={adminSearchQuery}
+                            onChange={(e) => setAdminSearchQuery(e.target.value)}
                             className="h-7 w-full pl-7 bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 rounded-lg text-[11px] focus-visible:ring-1 focus-visible:ring-blue-500/30 transition-all"
                             data-testid="input-admin-search"
                           />
                         </div>
                       </div>
-                      <Badge variant="outline" className="text-[9px] h-4 px-2 border-slate-200 dark:border-slate-800 whitespace-nowrap bg-slate-50/50 dark:bg-slate-800/50">1 Total</Badge>
+                      <Badge variant="outline" className="text-[9px] h-4 px-2 border-slate-200 dark:border-slate-800 whitespace-nowrap bg-slate-50/50 dark:bg-slate-800/50">{filteredAuthorizedUsers.length} Total</Badge>
                     </div>
                   </div>
                     <div className="mt-4 space-y-2">
-                      <div className="flex items-center justify-between p-3 bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/50 rounded-xl hover:border-blue-500/30 transition-all duration-300">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-                            <span className="text-[10px] font-bold text-blue-500">CP</span>
+                      {filteredAuthorizedUsers.map((user, index) => {
+                        const initials = user.email.substring(0, 2).toUpperCase();
+                        const isOwner = user.role === "owner";
+                        const roleColor = user.role === "owner" ? "green" : user.role === "admin" ? "purple" : "blue";
+                        return (
+                          <div key={user.email} className="flex items-center justify-between p-3 bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-700/50 rounded-xl hover:border-blue-500/30 transition-all duration-300" data-testid={`admin-user-row-${index}`}>
+                            <div className="flex items-center gap-3">
+                              <div className={`w-8 h-8 rounded-lg bg-${roleColor}-500/10 flex items-center justify-center border border-${roleColor}-500/20`}>
+                                <span className={`text-[10px] font-bold text-${roleColor}-500`}>{initials}</span>
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-[11px] font-medium text-slate-700 dark:text-slate-200">{user.email}</span>
+                                <span className={`text-[9px] font-medium capitalize ${user.role === "owner" ? "text-green-500" : user.role === "admin" ? "text-purple-500" : "text-blue-500"}`}>
+                                  {user.role === "owner" ? "Primary Owner" : user.role}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {isOwner ? (
+                                <>
+                                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                                  <span className="text-[9px] font-bold text-green-500 uppercase tracking-widest">Active</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Badge variant="outline" className={`text-[8px] h-5 px-2 ${user.role === "admin" ? "border-purple-300 text-purple-500 bg-purple-50 dark:bg-purple-900/20" : "border-blue-300 text-blue-500 bg-blue-50 dark:bg-blue-900/20"}`}>
+                                    {user.role === "admin" ? "Admin" : "Developer"}
+                                  </Badge>
+                                  <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleRevokeAdminAccess(user.email)}
+                                    className="h-6 w-6 text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                    data-testid={`button-revoke-${index}`}
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </Button>
+                                </>
+                              )}
+                            </div>
                           </div>
-                          <span className="text-[11px] font-medium text-slate-700 dark:text-slate-200">chiranjeevi.perala99@gmail.com</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-                          <span className="text-[9px] font-bold text-green-500 uppercase tracking-widest">Active</span>
-                        </div>
-                      </div>
+                        );
+                      })}
                     </div>
                   <Button
                     size="icon"
@@ -16456,6 +16578,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 Cancel
               </Button>
               <Button
+                onClick={handleAddAdminAccess}
                 disabled={!adminAccessEmail}
                 className="px-6 bg-blue-500 hover:bg-blue-600"
                 data-testid="button-save-admin-access"
