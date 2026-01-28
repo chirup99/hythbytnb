@@ -9054,6 +9054,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GET ALL BUG REPORTS - AWS DynamoDB
+  app.get('/api/admin/bug-reports', async (req, res) => {
+    try {
+      const { getAllBugReports } = await import('./neofeed-dynamodb-migration');
+      const bugs = await getAllBugReports();
+      res.json(bugs);
+    } catch (error) {
+      console.error('Error fetching bug reports:', error);
+      res.json([]);
+    }
+  });
+
   // GET COMMENTS (existing endpoint) - AWS DynamoDB
   app.get('/api/social-posts/:id/comments', async (req, res) => {
     try {

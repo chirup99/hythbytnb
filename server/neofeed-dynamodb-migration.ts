@@ -148,6 +148,23 @@ export async function createBugReport(reportData: {
   }
 }
 
+export async function getAllBugReports(): Promise<BugReport[]> {
+  try {
+    const result = await docClient.send(new ScanCommand({
+      TableName: TABLES.REPORT_BUGS
+    }));
+    
+    const bugs = (result.Items || []) as BugReport[];
+    bugs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    
+    console.log(`✅ Fetched ${bugs.length} bug reports from AWS`);
+    return bugs;
+  } catch (error) {
+    console.error('❌ Error fetching bug reports:', error);
+    return [];
+  }
+}
+
 export async function createUserPost(postData: any) {
   try {
     const postId = nanoid();
