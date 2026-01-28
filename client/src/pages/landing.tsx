@@ -960,7 +960,7 @@ export default function Landing() {
                                 stroke-dashoffset: 600;
                                 animation: drawLine 3s linear infinite;
                               }
-                              .animate-pointer {
+                              .animate-pointer-group {
                                 offset-path: path("M 0 55 Q 15 50 25 48 T 50 52 T 75 45 T 100 50 T 125 48 T 150 45 T 175 35 T 200 10");
                                 animation: movePointer 3s linear infinite;
                               }
@@ -978,8 +978,15 @@ export default function Landing() {
                             strokeWidth="2"
                             className="animate-draw-line"
                           />
-                          {/* Pointer */}
-                          <circle r="3" fill="white" className="animate-pointer shadow-lg" style={{ filter: 'drop-shadow(0 0 4px rgba(34, 197, 94, 0.8))' }} />
+                          {/* Pointer Group with Vertical Line and P&L */}
+                          <g className="animate-pointer-group">
+                            <line x1="0" y1="-80" x2="0" y2="80" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="2,2" />
+                            <circle r="3" fill="white" className="shadow-lg" style={{ filter: 'drop-shadow(0 0 4px rgba(34, 197, 94, 0.8))' }} />
+                            <g transform="translate(5, -10)">
+                              <rect x="0" y="0" width="25" height="10" rx="2" fill="rgba(0,0,0,0.8)" />
+                              <text x="12.5" y="7" textAnchor="middle" fontSize="5" fontWeight="bold" fill="#4ade80">+₹4.2k</text>
+                            </g>
+                          </g>
                         </svg>
                       </div>
                     </div>
