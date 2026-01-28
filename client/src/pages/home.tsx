@@ -1976,6 +1976,7 @@ export default function Home() {
   const [adminAccessRole, setAdminAccessRole] = useState<"developer" | "admin">("developer");
   const [adminBugReports, setAdminBugReports] = useState<Array<{ bugId: string; title: string; reportDate: string; bugLocate: string; status: string; username: string; }>>([]); 
   const [loadingBugReports, setLoadingBugReports] = useState(false);
+  const [expandedBugId, setExpandedBugId] = useState<string | null>(null);
   
   // Primary owner email - only this user can manage admin access
   const PRIMARY_OWNER_EMAIL = "chiranjeevi.perala99@gmail.com";
@@ -16282,37 +16283,65 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </div>
               ) : adminTab === "bugs-list" ? (
                 <div className="p-4 space-y-3 pt-[0px] pb-[0px] pl-[10px] pr-[10px]">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Reported Bugs</h3>
+                  <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Reported Bugs</h3>
                   {loadingBugReports ? (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                    <div className="flex items-center justify-center py-6">
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-slate-300 dark:border-slate-600 border-t-blue-500"></div>
                     </div>
                   ) : adminBugReports.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-slate-500 dark:text-slate-400">No bug reports found</p>
+                    <div className="text-center py-6">
+                      <p className="text-xs text-slate-400 dark:text-slate-500">No bug reports</p>
                     </div>
                   ) : (
-                    <div className="space-y-2 max-h-[350px] overflow-y-auto custom-thin-scrollbar">
+                    <div className="space-y-1 max-h-[380px] overflow-y-auto custom-thin-scrollbar">
                       {adminBugReports.map((bug, index) => (
                         <div
                           key={bug.bugId || index}
-                          className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                          className="group"
                           data-testid={`bug-item-${index}`}
                         >
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{bug.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-slate-500 dark:text-slate-400">
-                                {new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${bug.bugLocate === 'social_feed' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
-                              </span>
+                          <button
+                            onClick={() => setExpandedBugId(expandedBugId === bug.bugId ? null : bug.bugId)}
+                            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-left"
+                          >
+                            <ChevronRight className={`h-3 w-3 text-slate-400 transition-transform ${expandedBugId === bug.bugId ? 'rotate-90' : ''}`} />
+                            <span className="flex-1 text-xs font-medium text-slate-700 dark:text-slate-200 truncate">{bug.title}</span>
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded ${bug.status === 'pending' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' : bug.status === 'in_progress' ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-slate-500/10 text-slate-500'}`}>
+                              {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
+                            </span>
+                          </button>
+                          {expandedBugId === bug.bugId && (
+                            <div className="ml-5 mr-2 mt-1 mb-2 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-lg border border-slate-200/50 dark:border-slate-700/50 space-y-2">
+                              <div className="flex items-center gap-4 text-[10px] text-slate-500 dark:text-slate-400">
+                                <span className="flex items-center gap-1">
+                                  <User className="h-3 w-3" />
+                                  {bug.username || 'Unknown'}
+                                </span>
+                                {bug.email && (
+                                  <span className="flex items-center gap-1">
+                                    <Mail className="h-3 w-3" />
+                                    {bug.email}
+                                  </span>
+                                )}
+                                <span>{new Date(bug.reportDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                <span className={`px-1.5 py-0.5 rounded text-[10px] ${bug.bugLocate === 'social_feed' ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : bug.bugLocate === 'journal' ? 'bg-green-500/10 text-green-600 dark:text-green-400' : 'bg-slate-500/10 text-slate-500 dark:text-slate-400'}`}>
+                                  {bug.bugLocate === 'social_feed' ? 'Social Feed' : bug.bugLocate === 'journal' ? 'Journal' : 'Others'}
+                                </span>
+                              </div>
+                              {bug.description && (
+                                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{bug.description}</p>
+                              )}
+                              {bug.media && bug.media.length > 0 && (
+                                <div className="flex gap-2 pt-1 overflow-x-auto">
+                                  {bug.media.map((url, i) => (
+                                    <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 w-12 h-12 rounded-md overflow-hidden border border-slate-200 dark:border-slate-700 hover:opacity-80 transition-opacity">
+                                      <img src={url} alt={`Bug media ${i + 1}`} className="w-full h-full object-cover" />
+                                    </a>
+                                  ))}
+                                </div>
+                              )}
                             </div>
-                          </div>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${bug.status === 'pending' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : bug.status === 'in_progress' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : bug.status === 'resolved' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                            {bug.status === 'pending' ? 'Pending' : bug.status === 'in_progress' ? 'In Progress' : bug.status === 'resolved' ? 'Resolved' : 'Closed'}
-                          </span>
+                          )}
                         </div>
                       ))}
                     </div>
