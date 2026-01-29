@@ -2084,6 +2084,7 @@ export default function Home() {
     user.email.toLowerCase().includes(adminSearchQuery.toLowerCase())
   );
 
+
   const handleReportBug = async () => {
     const token = await getCognitoToken();
     if (!reportBugTitle || !reportBugDescription || reportBugSubmitting) return;
@@ -2092,33 +2093,25 @@ export default function Home() {
     try {
       let imageUrls: string[] = [];
 
-      // Upload files to S3 if there are any
+      // Convert files to base64 data URLs (same approach as Create Post)
       if (reportBugFiles.length > 0) {
-        console.log(`📤 Uploading ${reportBugFiles.length} bug report media files...`);
-        const formData = new FormData();
-        reportBugFiles.forEach((file) => {
-          formData.append('files', file);
-        });
+        console.log(`📤 Converting ${reportBugFiles.length} bug report media files to base64...`);
+        
+        const convertToBase64 = (file: File): Promise<string> => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        };
 
-        const uploadResponse = await fetch("/api/bug-reports/upload-media", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${token || ""}`
-          },
-          body: formData,
-        });
-
-        if (!uploadResponse.ok) {
-          const errorData = await uploadResponse.json().catch(() => ({}));
-          throw new Error(errorData.error || "Failed to upload media files");
-        }
-
-        const uploadResult = await uploadResponse.json();
-        imageUrls = uploadResult.urls || [];
-        console.log(`✅ Uploaded ${imageUrls.length} media files:`, imageUrls);
+        const base64Promises = reportBugFiles.map(file => convertToBase64(file));
+        imageUrls = await Promise.all(base64Promises);
+        console.log(`✅ Converted ${imageUrls.length} media files to base64`);
       }
 
-      // Submit bug report with uploaded image URLs
+      // Submit bug report with base64 image data
       const response = await fetch("/api/report-bug", {
         method: "POST",
         headers: {
