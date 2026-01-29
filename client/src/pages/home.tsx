@@ -13740,9 +13740,37 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex flex-col min-w-0">
-                            <p className="text-white font-semibold text-base">
-                              {currentUser.displayName && currentUser.displayName !== "Not available" ? currentUser.displayName : (currentUser.username && !currentUser.username.includes("@") ? currentUser.username : "")}
-                            </p>
+                            <div className="flex items-center gap-1.5">
+                              <p className="text-white font-semibold text-base">
+                                {currentUser.displayName && currentUser.displayName !== "Not available" ? currentUser.displayName : (currentUser.username && !currentUser.username.includes("@") ? currentUser.username : "")}
+                              </p>
+                              {(() => {
+                                const userEmail = currentUser?.email?.toLowerCase();
+                                const adminUser = authorizedUsers.find(u => u.email.toLowerCase() === userEmail);
+                                if (adminUser) {
+                                  if (adminUser.role === "owner") {
+                                    return (
+                                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center shadow-sm" title="Primary Owner">
+                                        <Check className="h-2.5 w-2.5 text-white" />
+                                      </div>
+                                    );
+                                  } else if (adminUser.role === "developer") {
+                                    return (
+                                      <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center shadow-sm" title="Developer">
+                                        <Check className="h-2.5 w-2.5 text-white" />
+                                      </div>
+                                    );
+                                  } else if (adminUser.role === "admin") {
+                                    return (
+                                      <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200" title="Admin">
+                                        <Check className="h-2.5 w-2.5 text-gray-700" />
+                                      </div>
+                                    );
+                                  }
+                                }
+                                return null;
+                              })()}
+                            </div>
                             <p className="text-blue-200 text-sm">
                                {currentUser.username && !currentUser.username.includes("@") ? `@${currentUser.username}` : ""}
                             </p>
