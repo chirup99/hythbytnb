@@ -200,6 +200,20 @@ export interface InsertAuthorizedEmail {
   isActive?: boolean;
 }
 
+export interface AdminAccess {
+  id: number;
+  emailId: string;
+  roles: string;
+  date: Date;
+  revokeDate: Date | null;
+}
+
+export interface InsertAdminAccess {
+  emailId: string;
+  roles: string;
+  revokeDate?: Date | null;
+}
+
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
@@ -240,6 +254,7 @@ export interface IStorage {
   removeAuthorizedEmail(email: string): Promise<void>;
   isEmailAuthorized(email: string): Promise<boolean>;
   getAdminAccessTable(): Promise<any[]>;
+  saveAdminAccess(access: InsertAdminAccess): Promise<AdminAccess>;
 }
 
 export class MemStorage implements IStorage {
@@ -259,6 +274,8 @@ export class MemStorage implements IStorage {
   private currentVerifiedReportId: number;
   private authorizedEmailsList: Map<string, AuthorizedEmail>;
   private currentAuthorizedEmailId: number;
+  private adminAccessList: AdminAccess[];
+  private currentAdminAccessId: number;
 
   constructor() {
     this.users = new Map();
@@ -275,6 +292,8 @@ export class MemStorage implements IStorage {
     this.currentVerifiedReportId = 1;
     this.authorizedEmailsList = new Map();
     this.currentAuthorizedEmailId = 1;
+    this.adminAccessList = [];
+    this.currentAdminAccessId = 1;
     
     // Add default admin - still keeping for fallback but prioritizing external fetch
     const adminEmail = "chiranjeevi.perala99@gmail.com";
@@ -609,20 +628,38 @@ export class MemStorage implements IStorage {
 
   async getAdminAccessTable(): Promise<any[]> {
     try {
-      // Prioritize fetching from DynamoDB if integration is available
-      // For now we simulate the structure based on the request
-      // Columns: emailds, roles, display names, date, revoke date
-      return Array.from(this.authorizedEmailsList.values()).map(user => ({
-        emailds: user.email,
-        roles: user.role,
-        displayNames: user.email.split('@')[0],
-        date: user.createdAt.toISOString(),
-        revokeDate: null
+      return this.adminAccessList.map(access => ({
+        emailds: access.emailId,
+        roles: access.roles,
+        displayNames: access.emailId.split('@')[0],
+        date: access.date.toISOString(),
+        revokeDate: access.revokeDate ? access.revokeDate.toISOString() : null
       }));
     } catch (error) {
       console.error("Error fetching admin access table:", error);
       return [];
     }
+  }
+
+  async saveAdminAccess(access: InsertAdminAccess): Promise<AdminAccess> {
+    const id = this.currentAdminAccessId++;
+    const newAccess: AdminAccess = {
+      id,
+      emailId: access.emailId,
+      roles: access.roles,
+      date: new Date(),
+      revokeDate: access.revokeDate ?? null
+    };
+    this.adminAccessList.push(newAccess);
+    
+    // Also add to authorized emails for access control
+    await this.addAuthorizedEmail({
+      email: access.emailId,
+      role: access.roles,
+      isActive: true
+    });
+
+    return newAccess;
   }
 }
 

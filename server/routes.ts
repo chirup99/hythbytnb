@@ -17786,6 +17786,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/admin-access", async (req, res) => {
+    try {
+      const accessData = await storage.getAdminAccessTable();
+      res.json(accessData);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch admin access data" });
+    }
+  });
+
+  app.post("/api/admin-access", async (req, res) => {
+    try {
+      const { emailId, roles, revokeDate } = req.body;
+      if (!emailId || !roles) {
+        return res.status(400).json({ message: "Email and Role are required" });
+      }
+      const newAccess = await storage.saveAdminAccess({ 
+        emailId, 
+        roles, 
+        revokeDate: revokeDate ? new Date(revokeDate) : null 
+      });
+      res.json(newAccess);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to save admin access data" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   // WebSocket server for real-time P&L streaming

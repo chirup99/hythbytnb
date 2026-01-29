@@ -251,13 +251,29 @@ export const authorizedEmails = pgTable("authorized_emails", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+// Admin Access table (as requested by user)
+export const adminAccess = pgTable("access_admin", {
+  id: serial("id").primaryKey(),
+  emailId: text("email_id").notNull(),
+  roles: text("roles").notNull(), // 'admin', 'developer'
+  date: timestamp("date").notNull().defaultNow(),
+  revokeDate: timestamp("revoke_date"),
+});
+
 export const insertAuthorizedEmailSchema = createInsertSchema(authorizedEmails).omit({
   id: true,
   createdAt: true,
 });
 
+export const insertAdminAccessSchema = createInsertSchema(adminAccess).omit({
+  id: true,
+  date: true,
+});
+
 export type AuthorizedEmail = typeof authorizedEmails.$inferSelect;
 export type InsertAuthorizedEmail = z.infer<typeof insertAuthorizedEmailSchema>;
+export type AdminAccess = typeof adminAccess.$inferSelect;
+export type InsertAdminAccess = z.infer<typeof insertAdminAccessSchema>;
 
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
