@@ -9172,15 +9172,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // ==================== REPORT BUG ENDPOINTS ====================
 
-  // Upload bug media files to S3
-  app.post('/api/bug-reports/upload-media', upload.array('files', 5), async (req: any, res) => {
+  // Upload bug media files to S3 (using express-fileupload, not multer)
+  app.post('/api/bug-reports/upload-media', async (req: any, res) => {
     try {
       console.log('📤 [BUG-REPORT] Uploading media files...');
       
-      const files = req.files;
-      if (!files || files.length === 0) {
+      // express-fileupload stores files in req.files as an object
+      if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json({ error: 'No files provided' });
       }
+
+      // Get the files - can be single file or array
+      let files = req.files.files;
+      if (!files) {
+        return res.status(400).json({ error: 'No files field provided' });
+      }
+      
+      // Normalize to array
+      if (!Array.isArray(files)) {
+        files = [files];
+      }
+
+      console.log(`📤 [BUG-REPORT] Processing ${files.length} file(s)...`);
 
       // Validate file count
       if (files.length > 5) {
@@ -9192,7 +9205,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       for (const file of files) {
         if (file.size > maxSize) {
           return res.status(400).json({ 
-            error: `File ${file.originalname} exceeds 10MB limit` 
+            error: `File ${file.name} exceeds 10MB limit` 
           });
         }
       }
@@ -9222,13 +9235,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       for (const file of files) {
         const timestamp = Date.now();
         const randomId = Math.random().toString(36).substring(2, 8);
-        const fileExtension = file.originalname?.split('.').pop() || 'jpg';
+        const fileExtension = file.name?.split('.').pop() || 'jpg';
         const key = `bug-reports/${timestamp}-${randomId}.${fileExtension}`;
 
         const uploadCommand = new PutObjectCommand({
           Bucket: bucketName,
           Key: key,
-          Body: file.buffer,
+          Body: file.data, // express-fileupload uses .data instead of .buffer
           ContentType: file.mimetype || 'application/octet-stream'
         });
 
