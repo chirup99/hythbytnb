@@ -17688,16 +17688,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/access-table", async (req, res) => {
-    try {
-      const accessTable = await storage.getAdminAccessTable();
-      res.json(accessTable);
-    } catch (error) {
-      console.error("Error fetching admin access table:", error);
-      res.status(500).json({ message: "Failed to fetch admin access table" });
-    }
-  });
-
   app.post("/api/admin/authorized-emails", async (req, res) => {
     try {
       const { email } = req.body;
@@ -17734,16 +17724,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(emails);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch authorized emails" });
-    }
-  });
-
-  app.get("/api/admin/access-table", async (req, res) => {
-    try {
-      const accessTable = await storage.getAdminAccessTable();
-      res.json(accessTable);
-    } catch (error) {
-      console.error("Error fetching admin access table:", error);
-      res.status(500).json({ message: "Failed to fetch admin access table" });
     }
   });
 
