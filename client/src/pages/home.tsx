@@ -16503,9 +16503,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               {bug.description && (
                                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{bug.description}</p>
                               )}
-                              {bug.media && bug.media.length > 0 && (
+                              {bug.bugMedia && bug.bugMedia.length > 0 && (
                                 <div className="flex gap-2 pt-1 overflow-x-auto">
-                                  {bug.media.map((url, i) => (
+                                  {bug.bugMedia.map((url, i) => (
                                     <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 w-12 h-12 rounded-md overflow-hidden border border-slate-200 dark:border-slate-700 hover:opacity-80 transition-opacity">
                                       <img src={url} alt={`Bug media ${i + 1}`} className="w-full h-full object-cover" />
                                     </a>
