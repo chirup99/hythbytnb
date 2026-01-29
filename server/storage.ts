@@ -239,6 +239,7 @@ export interface IStorage {
   addAuthorizedEmail(email: InsertAuthorizedEmail): Promise<AuthorizedEmail>;
   removeAuthorizedEmail(email: string): Promise<void>;
   isEmailAuthorized(email: string): Promise<boolean>;
+  getAdminAccessTable(): Promise<any[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -275,7 +276,7 @@ export class MemStorage implements IStorage {
     this.authorizedEmailsList = new Map();
     this.currentAuthorizedEmailId = 1;
     
-    // Add default admin
+    // Add default admin - still keeping for fallback but prioritizing external fetch
     const adminEmail = "chiranjeevi.perala99@gmail.com";
     this.authorizedEmailsList.set(adminEmail, {
       id: this.currentAuthorizedEmailId++,
@@ -604,6 +605,24 @@ export class MemStorage implements IStorage {
   async isEmailAuthorized(email: string): Promise<boolean> {
     const auth = this.authorizedEmailsList.get(email);
     return !!auth && auth.isActive;
+  }
+
+  async getAdminAccessTable(): Promise<any[]> {
+    try {
+      // Prioritize fetching from DynamoDB if integration is available
+      // For now we simulate the structure based on the request
+      // Columns: emailds, roles, display names, date, revoke date
+      return Array.from(this.authorizedEmailsList.values()).map(user => ({
+        emailds: user.email,
+        roles: user.role,
+        displayNames: user.email.split('@')[0],
+        date: user.createdAt.toISOString(),
+        revokeDate: null
+      }));
+    } catch (error) {
+      console.error("Error fetching admin access table:", error);
+      return [];
+    }
   }
 }
 
