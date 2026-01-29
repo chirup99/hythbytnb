@@ -13762,8 +13762,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     );
                                   } else if (adminUser.role === "admin") {
                                     return (
-                                      <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200" title="Admin">
-                                        <Check className="h-2.5 w-2.5 text-gray-700" />
+                                      <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center shadow-sm" title="Admin">
+                                        <Check className="h-2.5 w-2.5 text-white" />
                                       </div>
                                     );
                                   }
@@ -14012,13 +14012,22 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <Bug className="h-4 w-4" />
                                     <span>report bug</span>
                                   </button>
-                                  <button onClick={() => setShowAdminDashboardDialog(true)}
-                                    className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
-                                    data-testid="nav-admin-dashboard"
-                                  >
-                                    <Bug className="h-4 w-4" />
-                                    <span>Admin -dashboard</span>
-                                  </button>
+                                  {(() => {
+                                    const userEmail = currentUser?.email?.toLowerCase();
+                                    const isAuthorizedAdmin = authorizedUsers.some(u => u.email.toLowerCase() === userEmail);
+                                    if (isAuthorizedAdmin) {
+                                      return (
+                                        <button onClick={() => setShowAdminDashboardDialog(true)}
+                                          className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                                          data-testid="nav-admin-dashboard"
+                                        >
+                                          <Bug className="h-4 w-4" />
+                                          <span>Admin -dashboard</span>
+                                        </button>
+                                      );
+                                    }
+                                    return null;
+                                  })()}
                                   <button
                                     onClick={toggleTheme}
                                     className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
