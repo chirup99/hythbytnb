@@ -9368,6 +9368,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // ==================== END REPORT BUG ENDPOINTS ====================
 
+  // Admin Access Endpoints
+  app.post("/api/admin/access", async (req, res) => {
+    try {
+      const { email_id, roles } = req.body;
+      if (!email_id || !roles) {
+        return res.status(400).json({ error: "Email and role are required" });
+      }
+      const { createAdminAccess } = await import('./neofeed-dynamodb-migration');
+      const result = await createAdminAccess({ email_id, roles });
+      res.json(result);
+    } catch (error: any) {
+      console.error('❌ Error creating admin access:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.get("/api/admin/access", async (_req, res) => {
+    try {
+      const { getAllAdminAccess } = await import('./neofeed-dynamodb-migration');
+      const result = await getAllAdminAccess();
+      res.json(result);
+    } catch (error: any) {
+      console.error('❌ Error fetching admin access:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // FOLLOW USER
   app.post('/api/users/:username/follow-pg', async (req, res) => {
     try {

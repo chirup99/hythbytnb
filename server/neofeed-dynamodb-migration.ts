@@ -23,8 +23,57 @@ export const TABLES = {
   AUDIO_POSTS: 'neofeed-audio-posts',
   BANNERS: 'neofeed-banners',
   FOLLOWS: 'neofeed-follows',
-  REPORT_BUGS: 'neofeed-report-bugs'
+  REPORT_BUGS: 'neofeed-report-bugs',
+  ADMIN_ACCESS: 'access-admin'
 };
+
+export interface AdminAccess {
+  email_id: string;
+  roles: string;
+  date: string;
+  revoke_date?: string;
+}
+
+export async function createAdminAccess(accessData: {
+  email_id: string;
+  roles: string;
+}): Promise<AdminAccess> {
+  try {
+    const timestamp = new Date().toISOString();
+    const item: AdminAccess = {
+      email_id: accessData.email_id,
+      roles: accessData.roles,
+      date: timestamp
+    };
+
+    await docClient.send(new PutCommand({
+      TableName: TABLES.ADMIN_ACCESS,
+      Item: {
+        pk: `admin#${accessData.email_id}`,
+        sk: 'ACCESS',
+        ...item
+      }
+    }));
+    
+    console.log(`✅ Admin access created: ${accessData.email_id}`);
+    return item;
+  } catch (error) {
+    console.error('❌ Error creating admin access:', error);
+    throw error;
+  }
+}
+
+export async function getAllAdminAccess(): Promise<AdminAccess[]> {
+  try {
+    const result = await docClient.send(new ScanCommand({
+      TableName: TABLES.ADMIN_ACCESS
+    }));
+    return (result.Items || []) as AdminAccess[];
+  } catch (error) {
+    console.error('❌ Error fetching admin access:', error);
+    return [];
+  }
+}
 
 async function tableExists(tableName: string): Promise<boolean> {
   try {
@@ -81,7 +130,7 @@ export async function initializeNeoFeedTables() {
       await createTableIfNotExists(tableName);
     }
     
-    console.log('✅ NeoFeed DynamoDB tables ready');
+    console.log('✅ NeoFeed DynamoDB tables ready for admin access');
     return true;
   } catch (error) {
     console.error('❌ Failed to initialize NeoFeed tables:', error);
