@@ -2028,9 +2028,36 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("authorizedUsers", JSON.stringify(authorizedUsers));
   }, [authorizedUsers]);
-  
+
+  // Fetch admin access from AWS when admin dashboard opens with admin-access tab
+  useEffect(() => {
+    if (showAdminDashboardDialog && adminTab === "admin-access") {
+      console.log('📥 Fetching admin access from AWS...');
+      fetch('/api/admin/access')
+        .then(res => res.json())
+        .then((data: any[]) => {
+          console.log('✅ Fetched admin access from AWS:', data);
+          // Transform AWS data to local format
+          const awsUsers: AuthorizedUser[] = data.map(item => ({
+            email: item.email_id,
+            role: item.roles as "developer" | "admin" | "owner",
+            addedAt: item.date
+          }));
+          // Merge with primary owner if not present
+          const hasOwner = awsUsers.some(u => u.email.toLowerCase() === PRIMARY_OWNER_EMAIL.toLowerCase());
+          if (!hasOwner) {
+            awsUsers.unshift({ email: PRIMARY_OWNER_EMAIL, role: "owner" as const, addedAt: new Date().toISOString() });
+          }
+          setAuthorizedUsers(awsUsers);
+        })
+        .catch(err => {
+          console.error('❌ Error fetching admin access:', err);
+        });
+    }
+  }, [showAdminDashboardDialog, adminTab]);
+
   // Handler to add new admin access
-  const handleAddAdminAccess = () => {
+  const handleAddAdminAccess = async () => {
     if (!adminAccessEmail || !adminAccessEmail.includes("@")) return;
     
     // Check if email already exists
@@ -2043,21 +2070,48 @@ export default function Home() {
       return;
     }
     
-    const newUser: AuthorizedUser = {
-      email: adminAccessEmail.toLowerCase(),
-      role: adminAccessRole,
-      addedAt: new Date().toISOString(),
-    };
-    
-    setAuthorizedUsers(prev => [...prev, newUser]);
-    setShowAddAdminAccessDialog(false);
-    setAdminAccessEmail("");
-    setAdminAccessRole("developer");
-    
-    toast({
-      title: "Access granted",
-      description: `${newUser.email} has been added with ${newUser.role} role.`,
-    });
+    try {
+      // Save to AWS DynamoDB
+      const response = await fetch('/api/admin/access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email_id: adminAccessEmail.toLowerCase(),
+          roles: adminAccessRole
+        })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to save admin access');
+      }
+      
+      const savedData = await response.json();
+      console.log('✅ Admin access saved to AWS:', savedData);
+      
+      const newUser: AuthorizedUser = {
+        email: adminAccessEmail.toLowerCase(),
+        role: adminAccessRole,
+        addedAt: savedData.date || new Date().toISOString(),
+      };
+      
+      setAuthorizedUsers(prev => [...prev, newUser]);
+      setShowAddAdminAccessDialog(false);
+      setAdminAccessEmail("");
+      setAdminAccessRole("developer");
+      
+      toast({
+        title: "Access granted",
+        description: `${newUser.email} has been added with ${newUser.role} role.`,
+      });
+    } catch (error: any) {
+      console.error('❌ Error saving admin access:', error);
+      toast({
+        title: "Error saving access",
+        description: error.message || "Failed to save admin access to database.",
+        variant: "destructive",
+      });
+    }
   };
   
   // Handler to revoke admin access (only primary owner can do this)
