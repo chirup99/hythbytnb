@@ -23,7 +23,7 @@ class AWSDynamoDBService {
   private initialize() {
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID?.trim();
     const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY?.trim();
-    const region = (process.env.AWS_REGION || "ap-south-2").trim();
+    const region = (process.env.AWS_REGION || "ap-south-1").trim();
 
     if (!accessKeyId || !secretAccessKey) {
       console.log("⚠️ AWS credentials not found in environment variables");
