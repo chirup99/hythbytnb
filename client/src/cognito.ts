@@ -45,7 +45,7 @@ const cognitoConfig = {
       userPoolClientId: import.meta.env.VITE_COGNITO_APP_CLIENT_ID || '',
       loginWith: {
         oauth: {
-          domain: import.meta.env.VITE_COGNITO_DOMAIN || '',
+          domain: import.meta.env.VITE_COGNITO_DOMAIN || 'perala-auth.auth.ap-south-1.amazoncognito.com',
           scopes: ['openid', 'email', 'profile'],
           redirectSignIn: [
             'https://perala.in/landing',
