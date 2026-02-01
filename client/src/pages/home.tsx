@@ -19533,7 +19533,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <DialogContent className="max-w-[700px] p-0 overflow-hidden bg-white dark:bg-slate-900 border-none rounded-xl shadow-2xl">
                                 <div className="flex flex-col md:flex-row h-full min-h-[350px]">
                                   {/* Left Side: Card Display */}
-                                  <div className="w-full md:w-1/2 p-8 bg-slate-100 dark:bg-white dark:bg-slate-800 flex items-center justify-center relative overflow-hidden border-r border-slate-200 dark:border-slate-200 dark:border-slate-700">
+                                  <div className="w-full md:w-1/2 flex flex-col bg-slate-100 dark:bg-slate-800 relative overflow-hidden border-r border-slate-200 dark:border-slate-700">
+                                    <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-center">
+                                      <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] opacity-50">Mini</div>
+                                    </div>
+                                    <div className="flex-1 p-8 flex items-center justify-center relative">
                                     <div className="absolute inset-0 opacity-10">
                                       <div className="absolute top-[-20%] left-[-20%] w-[140%] h-[140%] rounded-full bg-gradient-to-br from-violet-500 via-transparent to-transparent"></div>
                                     </div>
@@ -19562,10 +19566,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         </div>
                                       </div>
                                     </motion.div>
+                                    </div>
                                   </div>
                                   <div className="w-full md:w-1/2 flex flex-col bg-white dark:bg-slate-900">
                                     <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-center relative">
-                                      <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] opacity-50">Mini Play</div>
+                                      <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] opacity-50">Play</div>
                                     </div>
                                     
                                     <div className="flex-1 overflow-y-auto p-4 space-y-4">
