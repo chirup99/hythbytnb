@@ -19534,7 +19534,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <div className="flex flex-col md:flex-row h-full min-h-[350px]">
                                   {/* Left Side: Card Display */}
                                   <div className="w-full md:w-1/2 flex flex-col bg-slate-100 dark:bg-slate-800 relative overflow-hidden border-r border-slate-200 dark:border-slate-700">
-                                    <div className="py-4 pr-0 pl-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-end">
+                                    <div className="py-4 pr-0 pl-4 flex items-center justify-end">
                                       <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] opacity-50">Mini</div>
                                     </div>
                                     <div className="flex-1 p-8 flex items-center justify-center relative">
