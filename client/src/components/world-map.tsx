@@ -871,7 +871,7 @@ export function WorldMap() {
         {/* Drawing Controls - Repositioned to bottom right for both mobile and desktop */}
         {isDrawing && (
           <div
-            className={`absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[60] ${isMobile ? "" : "bg-black/20 p-2 rounded-xl backdrop-blur-sm border border-white/5"}`}
+            className="absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[60] p-2 rounded-xl backdrop-blur-sm border border-white/5 text-[#e3f2fd] bg-[#e3f2fd]"
           >
             {allPaths.length > 0 && (
               <Button
