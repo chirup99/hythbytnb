@@ -721,7 +721,7 @@ export function WorldMap() {
       <div
         className={`flex items-center justify-center transition-all duration-500 overflow-visible relative z-0 ${isDrawing ? "h-32 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}
       >
-        <div className="flex items-center gap-6 bg-[#1a1a1a] p-4 rounded-2xl border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.6)]">
+        <div className="flex items-center gap-6 bg-[#1a1a1a] p-4 rounded-2xl border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.6)] pt-[0px] pb-[0px] pl-[20px] pr-[20px] text-[12px] text-left font-normal">
           {/* Radar Unit */}
           <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-[#0d0d0d] flex items-center justify-center shadow-2xl flex-shrink-0">
             {/* Center Ship Silhouette - Crud Oil Tanker Shape */}
