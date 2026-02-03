@@ -719,7 +719,7 @@ export function WorldMap() {
 
       {/* Navigation Radar System - Only visible when drawing */}
       <div
-        className={`flex items-center justify-center transition-all duration-500 overflow-visible ${isDrawing ? "h-32 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}
+        className={`flex items-center justify-center transition-all duration-500 overflow-visible relative z-0 ${isDrawing ? "h-32 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}
       >
         <div className="flex items-center gap-6 bg-[#1a1a1a] p-4 rounded-2xl border border-green-500/20 shadow-[0_0_20px_rgba(0,0,0,0.6)]">
           {/* Radar Unit */}
