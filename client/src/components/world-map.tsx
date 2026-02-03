@@ -852,7 +852,7 @@ export function WorldMap() {
           </div>
 
           {/* Data Readout Panel - Relocated to the right */}
-          <div className="text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-start gap-1.5 w-[160px] flex-shrink-0">
+          <div className="text-[10px] font-mono text-green-500/90 font-bold uppercase tracking-widest flex flex-col items-start gap-1.5 w-[160px] flex-shrink-0 relative">
             <div className="flex items-center gap-2">
               <span className="opacity-50 text-[8px]">Status:</span>
               <span className="text-green-400 animate-pulse">Online</span>
@@ -887,49 +887,47 @@ export function WorldMap() {
                 </div>
               </div>
             )}
+            
+            {/* Embedded Controls */}
+            <div className="mt-auto flex items-center gap-2 pt-1">
+              {allPaths.length > 0 && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={saveDrawing}
+                  className="h-7 w-7 text-green-400 hover:bg-green-500/10 border border-green-500/20"
+                  title="Save Route"
+                  disabled={savedPaths.length >= 5}
+                >
+                  <Save className="h-4 w-4" />
+                </Button>
+              )}
+              {(allPaths.length > 0 || savedPaths.length > 0) && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={resetDrawing}
+                  className="h-7 w-7 text-red-400 hover:bg-red-500/10 border border-red-500/20"
+                  title="Delete All"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => {
+                  setAllPaths([]);
+                  setIsDrawing(false);
+                }}
+                className="h-7 w-7 text-gray-400 hover:bg-gray-500/10 border border-white/10"
+                title="Cancel"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
-
-        {/* Drawing Controls - Repositioned to bottom right for both mobile and desktop */}
-        {isDrawing && (
-          <div className="absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[70] p-2 rounded-xl backdrop-blur-sm border border-white/5 text-[#e3f2fd] bg-[#e3f2fd]">
-            {allPaths.length > 0 && (
-              <Button
-                size="icon"
-                variant="secondary"
-                onClick={saveDrawing}
-                className="h-11 w-11 text-primary bg-background/90 shadow-lg border border-primary/20"
-                title="Save Route"
-                disabled={savedPaths.length >= 5}
-              >
-                <Save className="h-6 w-6" />
-              </Button>
-            )}
-            {(allPaths.length > 0 || savedPaths.length > 0) && (
-              <Button
-                size="icon"
-                variant="secondary"
-                onClick={resetDrawing}
-                className="h-11 w-11 text-destructive bg-background/90 shadow-lg border border-destructive/20"
-                title="Delete All"
-              >
-                <Trash2 className="h-6 w-6" />
-              </Button>
-            )}
-            <Button
-              size="icon"
-              variant="secondary"
-              onClick={() => {
-                setAllPaths([]);
-                setIsDrawing(false);
-              }}
-              className="h-11 w-11 bg-background/90 shadow-lg border border-foreground/10"
-              title="Cancel"
-            >
-              <X className="h-6 w-6" />
-            </Button>
-          </div>
-        )}
       </div>
 
       {/* Trading hours indicator with live market data */}
