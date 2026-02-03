@@ -57,11 +57,11 @@ const getRegionColor = (
     regionName = "USA";
   }
   // India (approximate x: 550-620, y: 220-320)
-  else if (x >= 550 && x <= 620 && y >= 220 && y <= 320) {
+  else if (x >= 550 && x <= 600 && y >= 220 && y <= 320) {
     regionName = "INDIA";
   }
   // Hong Kong / Southern China (approximate x: 620-700, y: 200-260)
-  else if (x >= 620 && x <= 700 && y >= 200 && y <= 260) {
+  else if (x >= 560 && x <= 700 && y >= 165 && y <= 250) {
     regionName = "HONG KONG";
   }
   // Japan / Tokyo (approximate x: 700-780, y: 160-230)
@@ -725,25 +725,41 @@ export function WorldMap() {
           {/* Radar Unit */}
           <div className="relative w-24 h-24 rounded-full border-2 border-green-500/30 bg-[#0d0d0d] flex items-center justify-center shadow-2xl flex-shrink-0">
             {/* Center Ship Silhouette - Crud Oil Tanker Shape */}
-            <div 
+            <div
               className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none transition-transform duration-300 ease-out"
-              style={{ 
+              style={{
                 transform: `rotate(${(() => {
                   if (direction.x === 0 && direction.y === 0) return 0;
-                  return Math.atan2(direction.y, direction.x) * (180 / Math.PI) + 90;
-                })()}deg)`
+                  return (
+                    Math.atan2(direction.y, direction.x) * (180 / Math.PI) + 90
+                  );
+                })()}deg)`,
               }}
             >
               <svg viewBox="0 0 32 32" className="w-12 h-12 fill-green-500">
                 {/* Long flat hull of a tanker */}
                 <path d="M 16,4 L 16,4 C 18,6 20,8 20,12 L 20,24 C 20,26 18,28 16,28 L 16,28 C 14,28 12,26 12,24 L 12,12 C 12,8 14,6 16,4 Z" />
                 {/* Bridge/Cabin section at the back (aft) */}
-                <rect x="13" y="22" width="6" height="4" rx="0.5" className="fill-green-600" />
+                <rect
+                  x="13"
+                  y="22"
+                  width="6"
+                  height="4"
+                  rx="0.5"
+                  className="fill-green-600"
+                />
                 {/* Small details/piping on deck */}
-                <rect x="15.5" y="8" width="1" height="12" rx="0.2" className="fill-green-400/60" />
+                <rect
+                  x="15.5"
+                  y="8"
+                  width="1"
+                  height="12"
+                  rx="0.2"
+                  className="fill-green-400/60"
+                />
               </svg>
             </div>
-            
+
             {/* Radar Circles */}
             <div className="absolute inset-0 rounded-full border border-green-500/20 m-4" />
             <div className="absolute inset-0 rounded-full border border-green-500/10 m-8" />
@@ -771,7 +787,10 @@ export function WorldMap() {
 
             {/* Radar World Map & Static Ships - Visual Only */}
             <div className="absolute inset-0 rounded-full overflow-hidden opacity-30 pointer-events-none p-1">
-              <svg viewBox="550 200 150 150" className="w-full h-full fill-green-500/40">
+              <svg
+                viewBox="550 200 150 150"
+                className="w-full h-full fill-green-500/40"
+              >
                 {worldMapDots.map(([cx, cy], i) => (
                   <circle key={`radar-dot-${i}`} cx={cx} cy={cy} r="1.5" />
                 ))}
@@ -825,7 +844,7 @@ export function WorldMap() {
                 }`}
               />
 
-            {/* Radar "Blip" trailing effect (visual only) */}
+              {/* Radar "Blip" trailing effect (visual only) */}
               <div
                 className={`absolute w-1.5 h-1.5 bg-green-400/60 rounded-full blur-[2px] transition-transform duration-300 ${direction.x !== 0 || direction.y !== 0 ? "scale-[4] opacity-40" : "scale-0"}`}
               />
@@ -853,7 +872,10 @@ export function WorldMap() {
               <div className="mt-1 w-full flex-1 min-h-0 flex flex-col">
                 <div className="flex items-center gap-1.5 opacity-50 text-[8px] mb-0.5">
                   <div className="flex items-center">
-                    <svg viewBox="0 0 24 24" className="w-3 h-3 fill-green-500/80">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="w-3 h-3 fill-green-500/80"
+                    >
                       <path d="M 2,16 C 2,14 20,14 22,18 C 20,22 2,22 2,20 Z" />
                       <rect x="4" y="10" width="12" height="6" />
                     </svg>
@@ -870,9 +892,7 @@ export function WorldMap() {
 
         {/* Drawing Controls - Repositioned to bottom right for both mobile and desktop */}
         {isDrawing && (
-          <div
-            className="absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[60] p-2 rounded-xl backdrop-blur-sm border border-white/5 text-[#e3f2fd] bg-[#e3f2fd]"
-          >
+          <div className="absolute bottom-4 right-4 flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-300 z-[70] p-2 rounded-xl backdrop-blur-sm border border-white/5 text-[#e3f2fd] bg-[#e3f2fd]">
             {allPaths.length > 0 && (
               <Button
                 size="icon"
