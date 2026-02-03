@@ -1,7 +1,7 @@
 [x] 1. Install the required packages - Installed missing `dotenv` dependency.
 [x] 2. Restart the workflow - Server running on port 5000 successfully.
 [x] 3. Verify the project is working - Screenshot confirmed landing page is operational.
-[x] 4. Fix Save button interaction - Set radar dashboard z-index to 0.
+[x] 4. Fix Save button interaction - Relocated save button into the radar dashboard for better accessibility.
 [x] 5. Complete import - Project fully operational and ready for use.
 
 ---
