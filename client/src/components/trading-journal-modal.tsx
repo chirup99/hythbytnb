@@ -47,7 +47,7 @@ export function TradingJournalModal({ open, onOpenChange, isAutoPopup = false }:
       if (!val) handleDismiss();
       else onOpenChange(val);
     }}>
-      <DialogContent className="max-w-sm w-[90vw] pl-[5px] pr-[5px] pt-[12px] pb-[12px]">
+      <DialogContent className="max-w-sm w-[90vw] pl-[5px] pr-[5px] pt-[12px] pb-[12px] rounded-lg">
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-2">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
