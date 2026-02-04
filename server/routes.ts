@@ -21858,6 +21858,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Save manual Dhan credentials
+  app.post('/api/broker/dhan/connect', (req, res) => {
+    try {
+      const { clientId, accessToken } = req.body;
+      if (!clientId || !accessToken) {
+        return res.status(400).json({ success: false, error: 'Client ID and Access Token are required' });
+      }
+
+      dhanOAuthManager.setManualToken(clientId, accessToken);
+      res.json({ success: true, message: 'Connected to Dhan successfully' });
+    } catch (error: any) {
+      console.error('🔴 [DHAN] Error connecting manually:', error.message);
+      res.status(500).json({ success: false, error: 'Failed to connect' });
+    }
+  });
+
   // Get Dhan connection status
   app.get('/api/broker/dhan/status', (req, res) => {
     try {

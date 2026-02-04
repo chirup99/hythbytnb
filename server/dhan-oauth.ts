@@ -209,6 +209,19 @@ class DhanOAuthManager {
     }
   }
 
+  // Set manual token (Individual API Key flow)
+  setManualToken(clientId: string, accessToken: string): void {
+    this.state.accessToken = accessToken;
+    this.state.clientId = clientId;
+    this.state.userName = 'Dhan User';
+    this.state.isAuthenticated = true;
+    this.state.tokenExpiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days default
+    this.state.lastRefresh = new Date();
+
+    console.log('✅ [DHAN] Manual token set successfully');
+    console.log(`✅ [DHAN] Client ID: ${clientId}`);
+  }
+
   // Get current authentication status
   getStatus() {
     const isTokenExpired = this.state.tokenExpiry && new Date() > this.state.tokenExpiry;

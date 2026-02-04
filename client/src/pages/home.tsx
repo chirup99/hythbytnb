@@ -4207,7 +4207,156 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   }, [upstoxAccessToken]);
   const [angelOneAccessToken, setAngelOneAccessToken] = useState<string | null>(null);
   const [angelOneIsConnected, setAngelOneIsConnected] = useState(false);
+  const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
+  const [dhanClientIdInput, setDhanClientIdInput] = useState("");
+  const [dhanTokenInput, setDhanTokenInput] = useState("");
+
+
+  const submitDhanCredentials = async () => {
+    try {
+      if (!dhanClientIdInput || !dhanTokenInput) {
+        toast({
+          title: "Error",
+          description: "Please enter both Client ID and Access Token",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const response = await apiRequest("POST", "/api/broker/dhan/connect", {
+        clientId: dhanClientIdInput,
+        accessToken: dhanTokenInput
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setDhanAccessToken(dhanTokenInput);
+        setDhanIsConnected(true);
+        localStorage.setItem("dhan_access_token", dhanTokenInput);
+        localStorage.setItem("dhan_client_id", dhanClientIdInput);
+        setIsDhanDialogOpen(false);
+        toast({
+          title: "Success",
+          description: "Dhan connected successfully"
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: data.error || "Failed to connect to Dhan",
+          variant: "destructive"
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+          description: error.message || "Failed to connect to Dhan",
+          variant: "destructive"
+      });
+    }
+  };
+
   const [dhanAccessToken, setDhanAccessToken] = useState<string | null>(null);
+
+  const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
+  const [dhanClientIdInput, setDhanClientIdInput] = useState("");
+  const [dhanTokenInput, setDhanTokenInput] = useState("");
+
+  const handleDhanConnect = async () => {
+    setIsDhanDialogOpen(true);
+  };
+
+  const submitDhanCredentials = async () => {
+    try {
+      if (!dhanClientIdInput || !dhanTokenInput) {
+        toast({
+          title: "Error",
+          description: "Please enter both Client ID and Access Token",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const response = await apiRequest("POST", "/api/broker/dhan/connect", {
+        clientId: dhanClientIdInput,
+        accessToken: dhanTokenInput
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setDhanAccessToken(dhanTokenInput);
+        setDhanIsConnected(true);
+        localStorage.setItem("dhan_access_token", dhanTokenInput);
+        localStorage.setItem("dhan_client_id", dhanClientIdInput);
+        setIsDhanDialogOpen(false);
+        toast({
+          title: "Success",
+          description: "Dhan connected successfully"
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: data.error || "Failed to connect to Dhan",
+          variant: "destructive"
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to connect to Dhan",
+        variant: "destructive"
+      });
+    }
+  };
+
+
+  const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
+  const [dhanClientIdInput, setDhanClientIdInput] = useState("");
+  const [dhanTokenInput, setDhanTokenInput] = useState("");
+
+
+  const submitDhanCredentials = async () => {
+    try {
+      if (!dhanClientIdInput || !dhanTokenInput) {
+        toast({
+          title: "Error",
+          description: "Please enter both Client ID and Access Token",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const response = await apiRequest("POST", "/api/broker/dhan/connect", {
+        clientId: dhanClientIdInput,
+        accessToken: dhanTokenInput
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setDhanAccessToken(dhanTokenInput);
+        setDhanIsConnected(true);
+        localStorage.setItem("dhan_access_token", dhanTokenInput);
+        localStorage.setItem("dhan_client_id", dhanClientIdInput);
+        setIsDhanDialogOpen(false);
+        toast({
+          title: "Success",
+          description: "Dhan connected successfully"
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: data.error || "Failed to connect to Dhan",
+          variant: "destructive"
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to connect to Dhan",
+        variant: "destructive"
+      });
+    }
+  };
+
   const [dhanIsConnected, setDhanIsConnected] = useState(false);
   // Zerodha OAuth Handlers
   // Check localStorage on mount to restore connection state
@@ -4842,54 +4991,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     }
   };
 
-  const handleDhanConnect = async () => {
-    try {
-      console.log('🔵 Starting Dhan OAuth flow...');
-      const response = await fetch('/api/broker/dhan/login-url');
-      const data = await response.json();
-      
-      if (data.error) {
-        alert('Setup Error:\n' + data.error);
-        return;
-      }
-      
-      const { loginUrl } = data;
-      console.log('🔗 Dhan login URL:', loginUrl);
-      
-      const popup = window.open(
-        loginUrl,
-        'dhan_oauth',
-        'width=600,height=800,resizable=yes,scrollbars=yes'
-      );
-      
-      if (!popup) {
-        console.warn('❌ Popup blocked');
-        alert('Popup blocked. Please enable popups and try again.');
-        return;
-      }
-      
-      console.log('✅ Popup opened, waiting for OAuth callback...');
-      
-      let checkCount = 0;
-      const monitorPopup = setInterval(() => {
-        checkCount++;
-        if (popup.closed) {
-          clearInterval(monitorPopup);
-          console.log('⚠️ Dhan popup closed');
-          return;
-        }
-        if (checkCount > 300) {
-          clearInterval(monitorPopup);
-          popup.close();
-          console.log('⚠️ Dhan popup timeout');
-        }
-      }, 1000);
-      
-    } catch (error) {
-      console.error('❌ Dhan error:', error);
-      alert('Error: ' + (error instanceof Error ? error.message : 'Failed to connect'));
-    }
-  };
 
   const handleRevokeZerodha = () => {
     localStorage.removeItem("zerodha_token"); document.cookie = "zerodha_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
