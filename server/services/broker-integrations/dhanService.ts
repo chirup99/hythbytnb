@@ -37,10 +37,11 @@ export async function fetchDhanTrades(): Promise<DhanTrade[]> {
     console.log('📊 [DHAN] Fetching trades...');
     
     // Call Dhan API to get trades/orders
-    // Dhan API endpoint for orders: GET /v2/orders
+    // Dhan API requires access-token header
     const response = await axios.get('https://api.dhan.co/v2/orders', {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'access-token': accessToken,
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       timeout: 10000
@@ -92,10 +93,11 @@ export async function fetchDhanPositions(): Promise<DhanPosition[]> {
     console.log('📊 [DHAN] Fetching positions...');
     
     // Call Dhan API to get positions
-    // Dhan API endpoint for positions: GET /v2/positions
+    // Dhan API requires access-token header
     const response = await axios.get('https://api.dhan.co/v2/positions', {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'access-token': accessToken,
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       timeout: 10000
@@ -158,19 +160,20 @@ export async function fetchDhanMargins(): Promise<number> {
 
     console.log('📊 [DHAN] Fetching available funds...');
     
-    // Call Dhan API to get fund/margin details
-    // Dhan API endpoint for funds: GET /v2/margin
-    const response = await axios.get('https://api.dhan.co/v2/margin', {
+    // Call Dhan API to get fund/limit details
+    // Official Dhan API uses /v2/fundlimit
+    const response = await axios.get('https://api.dhan.co/v2/fundlimit', {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'access-token': accessToken,
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       timeout: 10000
     });
 
-    const availableFunds = response.data?.data?.availableBalance || 
-                          response.data?.data?.availableMargin || 
-                          response.data?.data?.net || 0;
+    // Available funds in Dhan API response
+    // Official Dhan API uses /v2/fundlimit and returns dhanCash
+    const availableFunds = response.data?.dhanCash || response.data?.availableBalance || 0;
 
     console.log(`✅ [DHAN] Available funds: ₹${availableFunds}`);
     return availableFunds;
