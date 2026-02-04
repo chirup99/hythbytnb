@@ -18,6 +18,9 @@ interface BrokerDataProps {
   upstoxAccessToken?: string | null;
   upstoxUserId?: string | null;
   upstoxUserName?: string | null;
+  dhanAccessToken?: string | null;
+  dhanUserId?: string | null;
+  dhanUserName?: string | null;
   brokerOrders: any[];
   fetchingBrokerOrders: boolean;
   zerodhaAccessToken: string | null;
@@ -54,7 +57,9 @@ interface BrokerDataProps {
 export function BrokerData(props: BrokerDataProps) {
   const {
     showOrderModal, setShowOrderModal, orderTab, setOrderTab, showUserId, setShowUserId,
-    zerodhaClientId, zerodhaUserName, upstoxAccessToken, upstoxUserId, upstoxUserName, brokerOrders, fetchingBrokerOrders, zerodhaAccessToken,
+    zerodhaClientId, zerodhaUserName, upstoxAccessToken, upstoxUserId, upstoxUserName,
+    dhanAccessToken, dhanUserId, dhanUserName,
+    brokerOrders, fetchingBrokerOrders, zerodhaAccessToken,
     recordAllBrokerOrders, brokerPositions, fetchingBrokerPositions, showBrokerImportModal,
     setShowBrokerImportModal, handleBrokerImport, showImportModal, setShowImportModal,
     handleFileUpload, activeFormat, detectedFormatLabel, isBuildMode, setIsBuildMode,
@@ -64,8 +69,8 @@ export function BrokerData(props: BrokerDataProps) {
     brokerFunds
   } = props;
 
-  const isConnected = zerodhaAccessToken || upstoxAccessToken;
-  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : null;
+  const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken;
+  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : null;
 
   const formatSymbol = (symbol: string) => {
     if (!symbol) return "";
@@ -141,8 +146,14 @@ export function BrokerData(props: BrokerDataProps) {
                       <span>id: {showUserId ? (upstoxUserId || "N/A") : "••••••"} | {showUserId ? (upstoxUserName && upstoxUserName !== "undefined" && upstoxUserName !== "N/A" ? upstoxUserName : "Upstox User") : "•••••"}</span>
                     </>
                   )}
+                  {activeBroker === 'dhan' && (
+                    <>
+                      <img src="https://dhan.co/static/images/dhan-logo-white.svg" alt="Dhan" className="w-3 h-3 dark:invert" />
+                      <span>id: {showUserId ? (dhanUserId || "N/A") : "••••••"} | {showUserId ? (dhanUserName || "Dhan User") : "•••••"}</span>
+                    </>
+                  )}
                 </div>
-                {(activeBroker === 'zerodha' || activeBroker === 'upstox') && (
+                {(activeBroker === 'zerodha' || activeBroker === 'upstox' || activeBroker === 'dhan') && (
                   <button onClick={() => setShowUserId(!showUserId)} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors" data-testid="button-toggle-user-id" title={showUserId ? "Hide ID" : "Show ID"}>
                     {showUserId ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                   </button>
