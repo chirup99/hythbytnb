@@ -43,32 +43,6 @@ The application will start on **http://localhost:5000**
 - `npm run db:push` - Update database schema
 - `npm run check` - Type check with TypeScript
 
-## 🔧 Environment Variables
-
-The following environment variables are automatically set in Replit:
-- `DATABASE_URL` - PostgreSQL database connection
-- `PORT` - Server port (default: 5000)
-
-Optional (for enhanced features):
-- `GOOGLE_CLOUD_PROJECT_ID` - Google Cloud project
-- `GOOGLE_CLOUD_PRIVATE_KEY` - Google Cloud auth
-- `GOOGLE_CLOUD_CLIENT_EMAIL` - Google Cloud email
-- `FYERS_ACCESS_TOKEN` - Fyers API token
-
-## 🎯 What This App Does
-
-- **Real-time Trading Data**: Live market prices and charts
-- **AI Analysis**: Gemini AI for market insights
-- **Social Features**: Post updates and interact with community
-- **Pattern Analysis**: Advanced BATTU trading patterns
-- **WebSocket Streaming**: Real-time price updates
-
-## 📚 Documentation
-
-All detailed documentation is in the `docs/` folder:
-- Trading patterns and strategies
-- API explanations
-- Market analysis guides
 
 ## 🛠️ Technology Stack
 
