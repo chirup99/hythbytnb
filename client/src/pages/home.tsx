@@ -4239,7 +4239,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         accessToken: dhanTokenInput
       });
 
-      const data = await response.json();
+      const data = response;
       if (data.success) {
         setDhanAccessToken(dhanTokenInput);
         setDhanIsConnected(true);
