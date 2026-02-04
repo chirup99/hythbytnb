@@ -4207,56 +4207,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   }, [upstoxAccessToken]);
   const [angelOneAccessToken, setAngelOneAccessToken] = useState<string | null>(null);
   const [angelOneIsConnected, setAngelOneIsConnected] = useState(false);
-  const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
-  const [dhanClientIdInput, setDhanClientIdInput] = useState("");
-  const [dhanTokenInput, setDhanTokenInput] = useState("");
+  
+  
+  
 
 
-  const submitDhanCredentials = async () => {
-    try {
-      if (!dhanClientIdInput || !dhanTokenInput) {
-        toast({
-          title: "Error",
-          description: "Please enter both Client ID and Access Token",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      const response = await apiRequest("POST", "/api/broker/dhan/connect", {
-        clientId: dhanClientIdInput,
-        accessToken: dhanTokenInput
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setDhanAccessToken(dhanTokenInput);
-        setDhanIsConnected(true);
-        localStorage.setItem("dhan_access_token", dhanTokenInput);
-        localStorage.setItem("dhan_client_id", dhanClientIdInput);
-        setIsDhanDialogOpen(false);
-        toast({
-          title: "Success",
-          description: "Dhan connected successfully"
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: data.error || "Failed to connect to Dhan",
-          variant: "destructive"
-        });
-      }
-    } catch (error: any) {
-      toast({
-        title: "Error",
-          description: error.message || "Failed to connect to Dhan",
-          variant: "destructive"
-      });
-    }
-  };
+  
 
   const [dhanAccessToken, setDhanAccessToken] = useState<string | null>(null);
-
   const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
   const [dhanClientIdInput, setDhanClientIdInput] = useState("");
   const [dhanTokenInput, setDhanTokenInput] = useState("");
@@ -4308,54 +4266,30 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     }
   };
 
+  
+  
+  
 
-  const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
-  const [dhanClientIdInput, setDhanClientIdInput] = useState("");
-  const [dhanTokenInput, setDhanTokenInput] = useState("");
+  
+
+  
 
 
-  const submitDhanCredentials = async () => {
-    try {
-      if (!dhanClientIdInput || !dhanTokenInput) {
-        toast({
-          title: "Error",
-          description: "Please enter both Client ID and Access Token",
-          variant: "destructive"
-        });
-        return;
-      }
+  
+  
+  
 
-      const response = await apiRequest("POST", "/api/broker/dhan/connect", {
-        clientId: dhanClientIdInput,
-        accessToken: dhanTokenInput
-      });
+  
 
-      const data = await response.json();
-      if (data.success) {
-        setDhanAccessToken(dhanTokenInput);
-        setDhanIsConnected(true);
-        localStorage.setItem("dhan_access_token", dhanTokenInput);
-        localStorage.setItem("dhan_client_id", dhanClientIdInput);
-        setIsDhanDialogOpen(false);
-        toast({
-          title: "Success",
-          description: "Dhan connected successfully"
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: data.error || "Failed to connect to Dhan",
-          variant: "destructive"
-        });
-      }
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to connect to Dhan",
-        variant: "destructive"
-      });
-    }
-  };
+  
+
+
+  
+  
+  
+
+
+  
 
   const [dhanIsConnected, setDhanIsConnected] = useState(false);
   // Zerodha OAuth Handlers
@@ -19611,7 +19545,57 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </Button>
                           )}
 
-                          <p className="text-xs text-center text-muted-foreground mt-4">
+                          
+                          
+
+
+                          
+
+                          <Dialog open={isDhanDialogOpen} onOpenChange={setIsDhanDialogOpen}>
+                            <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                              <DialogHeader>
+                                <DialogTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+                                  <img src="https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701" alt="Dhan" className="h-5" />
+                                  Connect Dhan Broker
+                                </DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4 py-4">
+                                <div className="space-y-2">
+                                  <Label htmlFor="dhan-client-id" className="text-slate-700 dark:text-slate-300">Client ID</Label>
+                                  <Input
+                                    id="dhan-client-id"
+                                    placeholder="Enter your Dhan Client ID"
+                                    value={dhanClientIdInput}
+                                    onChange={(e) => setDhanClientIdInput(e.target.value)}
+                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="dhan-access-token" className="text-slate-700 dark:text-slate-300">Access Token</Label>
+                                  <Input
+                                    id="dhan-access-token"
+                                    type="password"
+                                    placeholder="Enter your Dhan Access Token"
+                                    value={dhanTokenInput}
+                                    onChange={(e) => setDhanTokenInput(e.target.value)}
+                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                  />
+                                  <p className="text-[10px] text-slate-500">
+                                    You can generate your access token from Dhan HQ portal settings.
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex justify-end gap-3 pt-2">
+                                <Button variant="outline" onClick={() => setIsDhanDialogOpen(false)}>
+                                  Cancel
+                                </Button>
+                                <Button onClick={submitDhanCredentials} className="bg-green-600 hover:bg-green-700 text-white">
+                                  Connect Account
+                                </Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+<p className="text-xs text-center text-muted-foreground mt-4">
                             Connect your broker account to auto-import trades
                           </p>
                         </div>
