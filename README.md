@@ -1,6 +1,4 @@
-# Trading Platform
 
-A full-stack trading application with real-time market data, AI analysis, and social features.
 
 ## 📁 Project Structure
 
