@@ -172,7 +172,6 @@ export async function fetchDhanMargins(): Promise<number> {
     });
 
     // Available funds in Dhan API response
-    // Official Dhan API uses /v2/fundlimit and returns dhanCash
     const availableFunds = response.data?.dhanCash || response.data?.availableBalance || 0;
 
     console.log(`✅ [DHAN] Available funds: ₹${availableFunds}`);
