@@ -19569,7 +19569,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                   </div>
                                   <div className="w-full md:w-1/2 flex flex-col bg-white dark:bg-slate-900">
-                                    <div className="py-4 pl-0 pr-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-start relative">
+                                    <div className="py-4 pl-0 pr-4 border-b border-slate-100 dark:border-slate-800 hidden md:flex items-center justify-start relative">
                                       <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] opacity-50"> Play</div>
                                     </div>
                                     
