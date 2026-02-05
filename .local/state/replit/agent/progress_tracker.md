@@ -117,6 +117,6 @@
 
 ## UI FIX SESSION (Feb 05, 2026 - Session 63)
 
-[x] 1. Fix Dhan client name fetching - Added delay in `server/dhan-oauth.ts` and real-time status check in `client/src/pages/home.tsx` to ensure real profile name is used.
-[x] 2. Enhance Dhan icon visibility - Added `opacity-80` to the Dhan logo in `client/src/components/broker-data.tsx`.
-[x] 3. Restart workflow - Verified changes are live.
+[x] 1. Fix Dhan client name fetching - Switched to using `dhanClientName` directly from the token response as per API specifications.
+[x] 2. Enhance Dhan icon visibility - Set `opacity-80` for the Dhan logo.
+[x] 3. Restart workflow - Applied changes.

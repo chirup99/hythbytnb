@@ -181,7 +181,7 @@ class DhanOAuthManager {
         
         this.state.accessToken = tokenData.accessToken;
         this.state.clientId = tokenData.dhanClientId || '';
-        this.state.userName = tokenData.dhanClientName || '';
+        this.state.userName = tokenData.dhanClientName || ''; // Use user name directly from token response
         this.state.tokenExpiry = expiryTime;
         this.state.isAuthenticated = true;
         this.state.lastRefresh = new Date();
@@ -190,17 +190,6 @@ class DhanOAuthManager {
         console.log(`✅ [DHAN] Client ID: ${this.state.clientId}`);
         console.log(`✅ [DHAN] Client Name: ${this.state.userName}`);
         console.log(`⏰ [DHAN] Token expires at: ${expiryTime.toISOString()}`);
-        
-        // Fetch real profile name immediately after successful connection
-        // The /v2/profile endpoint is the standard way to get user details in Dhan
-        this.fetchAndSetProfileName(tokenData.accessToken).then(() => {
-          console.log(`✅ [DHAN] Final Profile Name: ${this.state.userName}`);
-        }).catch(err => {
-          console.error('⚠️ [DHAN] Failed to fetch profile name on initial connection:', err.message);
-        });
-
-        // Small delay to ensure profile name is updated before first status poll
-        await new Promise(resolve => setTimeout(resolve, 500));
         
         return true;
       }
