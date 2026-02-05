@@ -198,6 +198,9 @@ class DhanOAuthManager {
         }).catch(err => {
           console.error('⚠️ [DHAN] Failed to fetch profile name on initial connection:', err.message);
         });
+
+        // Small delay to ensure profile name is updated before first status poll
+        await new Promise(resolve => setTimeout(resolve, 500));
         
         return true;
       }
