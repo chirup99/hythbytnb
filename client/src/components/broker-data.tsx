@@ -180,13 +180,16 @@ export function BrokerData(props: BrokerDataProps) {
                         <th className="px-2 py-2 text-left font-medium">Type</th>
                         <th className="px-2 py-2 text-left font-medium">Qty</th>
                         <th className="px-2 py-2 text-left font-medium">Price</th>
+                        <th className="px-2 py-2 text-left font-medium">P&L</th>
+                        <th className="px-2 py-2 text-left font-medium">%</th>
+                        <th className="px-2 py-2 text-left font-medium">Duration</th>
                         <th className="px-2 py-2 text-left font-medium">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {brokerOrders.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-2 py-4 text-center text-gray-500">
+                          <td colSpan={10} className="px-2 py-4 text-center text-gray-500">
                             {fetchingBrokerOrders ? 'Loading orders...' : isConnected ? 'No orders found' : 'Connect to broker to view orders'}
                           </td>
                         </tr>
@@ -200,6 +203,10 @@ export function BrokerData(props: BrokerDataProps) {
                         }).map((trade, index) => {
                           const status = String(trade.status || "").toUpperCase().trim();
                           const isClosed = status === "REJECTED" || status === "CANCELLED";
+                          
+                          const duration = trade.duration || '-';
+                          const pnl = trade.pnl || '-';
+                          const returnPercent = trade.returnPercent || '-';
                           
                           return (
                             <tr key={index} className={`border-b hover:bg-gray-50 dark:hover:bg-gray-700 ${isClosed ? 'bg-gray-100/50 dark:bg-gray-800/40' : ''}`}>
@@ -217,6 +224,19 @@ export function BrokerData(props: BrokerDataProps) {
                               <td className="px-2 py-2">{trade.type}</td>
                               <td className="px-2 py-2">{trade.qty}</td>
                               <td className="px-2 py-2">₹{typeof trade.price === 'number' ? trade.price.toFixed(2) : trade.price}</td>
+                              <td className={`px-2 py-2 font-medium ${
+                                !pnl || pnl === '-' ? 'text-gray-400' :
+                                pnl.startsWith('₹-') || pnl.startsWith('-') ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'
+                              }`}>
+                                {pnl}
+                              </td>
+                              <td className={`px-2 py-2 ${
+                                !returnPercent || returnPercent === '-' ? 'text-gray-400' :
+                                returnPercent.startsWith('-') ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'
+                              }`}>
+                                {returnPercent}
+                              </td>
+                              <td className="px-2 py-2 text-gray-500 dark:text-gray-400">{duration}</td>
                               <td className="px-2 py-2">
                                 <span className={`text-xs font-medium ${
                                   status === 'COMPLETE' ? 'text-green-600 dark:text-green-400' :

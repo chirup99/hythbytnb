@@ -67,3 +67,11 @@
 [x] 2. Restart workflow - Application restarted and running successfully on port 5000.
 [x] 3. Verify project working - Screenshot confirmed trading app with world map, market indicators (USA, Canada, India, Hong Kong, Tokyo), search functionality, feature buttons (Watchlist, Market News, Social Feed, Trading Journal, Trade Challenge), and feature cards (Social Feed, Trading Master, Journal, Tech News) fully operational.
 [x] 4. Mark import complete - All tasks completed successfully.
+
+---
+
+## UI FIX SESSION (Feb 05, 2026 - Session 56)
+
+[x] 1. Update Trade History UI - Added P&L, %, and Duration columns to the Orders tab in `client/src/components/broker-data.tsx`.
+[x] 2. Update Dhan Service - Implemented round-trip P&L, return percentage, and duration calculation for Dhan broker data in `server/services/broker-integrations/dhanService.ts`.
+[x] 3. Restart workflow - Applied backend changes and verified server is running.

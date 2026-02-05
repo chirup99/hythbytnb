@@ -9,6 +9,8 @@ export interface DhanTrade {
   qty: number;
   price: number;
   pnl: string;
+  returnPercent?: string;
+  duration?: string;
   type: string;
   status: string;
 }
@@ -37,24 +39,73 @@ export async function fetchDhanTrades(): Promise<DhanTrade[]> {
     });
 
     const orders = response.data?.data || response.data || [];
-    return orders.map((order: any) => {
+    
+    // Group orders by symbol to calculate P&L for round-trip trades
+    const trades: DhanTrade[] = [];
+    const openBuyOrders: Record<string, any[]> = {};
+    const openSellOrders: Record<string, any[]> = {};
+
+    // Sort orders by time to process chronologically
+    const sortedOrders = orders.sort((a: any, b: any) => 
+      new Date(a.orderDateTime || a.updateTime || 0).getTime() - new Date(b.orderDateTime || b.updateTime || 0).getTime()
+    );
+
+    sortedOrders.forEach((order: any) => {
       const statusUpper = String(order.orderStatus || order.status || '').toUpperCase();
       let mappedStatus = 'PENDING';
       if (['TRADED', 'EXECUTED', 'COMPLETE', 'SUCCESS'].includes(statusUpper)) mappedStatus = 'COMPLETE';
       else if (statusUpper.includes('REJECT')) mappedStatus = 'REJECTED';
       else if (statusUpper.includes('CANCEL')) mappedStatus = 'CANCELLED';
 
-      return {
-        time: order.orderDateTime || order.updateTime ? new Date(order.orderDateTime || order.updateTime).toLocaleTimeString() : '-',
-        order: (order.transactionType || order.side || '').toUpperCase() === 'SELL' ? 'SELL' : 'BUY',
-        symbol: order.tradingSymbol || order.symbol || 'N/A',
-        qty: Number(order.quantity || order.qty || 0),
-        price: Number(order.averagePrice || order.price || 0),
-        pnl: order.pnl ? `₹${Number(order.pnl).toFixed(2)}` : '-',
+      const side = (order.transactionType || order.side || '').toUpperCase();
+      const symbol = order.tradingSymbol || order.symbol || 'N/A';
+      const qty = Number(order.quantity || order.qty || 0);
+      const price = Number(order.averagePrice || order.price || 0);
+      const time = order.orderDateTime || order.updateTime ? new Date(order.orderDateTime || order.updateTime) : null;
+
+      let pnl = '-';
+      let returnPercent = '-';
+      let duration = '-';
+
+      if (mappedStatus === 'COMPLETE') {
+        const opposingSide = side === 'BUY' ? openSellOrders : openBuyOrders;
+        const sameSide = side === 'BUY' ? openBuyOrders : openSellOrders;
+
+        if (opposingSide[symbol] && opposingSide[symbol].length > 0) {
+          const match = opposingSide[symbol].shift();
+          const buyPrice = side === 'BUY' ? price : match.price;
+          const sellPrice = side === 'SELL' ? price : match.price;
+          
+          const rawPnl = (sellPrice - buyPrice) * qty;
+          pnl = `₹${rawPnl.toFixed(2)}`;
+          returnPercent = buyPrice > 0 ? `${((sellPrice - buyPrice) / buyPrice * 100).toFixed(2)}%` : '0.00%';
+          
+          if (time && match.time) {
+            const diffMs = Math.abs(time.getTime() - match.time.getTime());
+            const diffSec = Math.floor(diffMs / 1000);
+            duration = diffSec < 60 ? `${diffSec}s` : `${Math.floor(diffSec / 60)}m ${diffSec % 60}s`;
+          }
+        } else {
+          if (!sameSide[symbol]) sameSide[symbol] = [];
+          sameSide[symbol].push({ price, qty, time });
+        }
+      }
+
+      trades.push({
+        time: time ? time.toLocaleTimeString() : '-',
+        order: side === 'SELL' ? 'SELL' : 'BUY',
+        symbol,
+        qty,
+        price,
+        pnl,
+        returnPercent,
+        duration,
         type: order.orderType || 'MARKET',
         status: mappedStatus
-      };
+      });
     });
+
+    return trades;
   } catch (error) {
     return [];
   }
