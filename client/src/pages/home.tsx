@@ -4220,6 +4220,36 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [dhanClientIdInput, setDhanClientIdInput] = useState(localStorage.getItem("dhan_client_id") || "");
   const [dhanTokenInput, setDhanTokenInput] = useState("");
 
+  useEffect(() => {
+    const checkDhanInit = async () => {
+      const token = localStorage.getItem("dhan_access_token");
+      const clientId = localStorage.getItem("dhan_client_id");
+      const savedName = localStorage.getItem("dhan_user_name");
+      
+      if (token && clientId) {
+        setDhanAccessToken(token);
+        setDhanIsConnected(true);
+        if (savedName) {
+          setDhanUserName(savedName);
+        } else {
+          // Fetch name if missing
+          try {
+            const response = await apiRequest("POST", "/api/broker/dhan/connect", {
+              clientId,
+              accessToken: token
+            });
+            if (response.success && response.clientName) {
+              setDhanUserName(response.clientName);
+              localStorage.setItem("dhan_user_name", response.clientName);
+            }
+          } catch (e) {
+            console.error("Failed to load Dhan profile", e);
+          }
+        }
+      }
+    };
+    checkDhanInit();
+  }, []);
   const handleDhanConnect = async () => {
     setIsDhanDialogOpen(true);
   };

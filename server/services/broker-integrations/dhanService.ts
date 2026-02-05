@@ -37,7 +37,6 @@ export async function fetchDhanTrades(): Promise<DhanTrade[]> {
     console.log('📊 [DHAN] Fetching trades...');
     
     // Call Dhan API to get trades/orders
-    // Dhan API requires access-token header
     const response = await axios.get('https://api.dhan.co/v2/orders', {
       headers: {
         'access-token': accessToken,
@@ -47,7 +46,6 @@ export async function fetchDhanTrades(): Promise<DhanTrade[]> {
       timeout: 10000
     });
 
-    return trades;
     const orders = response.data?.data || response.data || [];
 
     // Transform Dhan orders to our trade format
@@ -77,6 +75,9 @@ export async function fetchDhanTrades(): Promise<DhanTrade[]> {
         status: mappedStatus
       };
     });
+
+    console.log(`✅ [DHAN] Fetched ${trades.length} trades`);
+    return trades;
   } catch (error: any) {
     console.error('❌ [DHAN] Error fetching trades:', error.message);
     return [];
@@ -93,8 +94,6 @@ export async function fetchDhanPositions(): Promise<DhanPosition[]> {
 
     console.log('📊 [DHAN] Fetching positions...');
     
-    // Call Dhan API to get positions
-    // Dhan API requires access-token header
     const response = await axios.get('https://api.dhan.co/v2/positions', {
       headers: {
         'access-token': accessToken,
@@ -104,7 +103,6 @@ export async function fetchDhanPositions(): Promise<DhanPosition[]> {
       timeout: 10000
     });
 
-    return positions;
     const positionsData = response.data?.data || response.data || [];
 
     // Map Dhan positions to our internal format
@@ -127,6 +125,9 @@ export async function fetchDhanPositions(): Promise<DhanPosition[]> {
         status: quantity !== 0 ? 'OPEN' : 'CLOSED'
       };
     });
+
+    console.log(`✅ [DHAN] Fetched ${positions.length} positions`);
+    return positions;
   } catch (error: any) {
     console.error('❌ [DHAN] Error fetching positions:', error.message);
     return [];
@@ -143,8 +144,6 @@ export async function fetchDhanMargins(): Promise<number> {
 
     console.log('📊 [DHAN] Fetching available funds...');
     
-    // Call Dhan API to get fund/limit details
-    // Official Dhan API uses /v2/fundlimit
     const response = await axios.get('https://api.dhan.co/v2/fundlimit', {
       headers: {
         'access-token': accessToken,
@@ -155,7 +154,12 @@ export async function fetchDhanMargins(): Promise<number> {
     });
 
     // Available funds in Dhan API response
-    const availableFunds = response.data?.dhanCash ?? response.data?.data?.dhanCash ?? response.data?.availableBalance ?? 0;
+    // Per Dhan docs: "availabelBalance" (typo)
+    const availableFunds = response.data?.availabelBalance ?? 
+                           response.data?.availableBalance ?? 
+                           response.data?.dhanCash ?? 
+                           response.data?.data?.availabelBalance ?? 
+                           response.data?.data?.availableBalance ?? 0;
 
     console.log(`✅ [DHAN] Available funds: ₹${availableFunds}`);
     return availableFunds;
