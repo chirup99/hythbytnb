@@ -4215,6 +4215,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   
 
   const [dhanAccessToken, setDhanAccessToken] = useState<string | null>(null);
+  const [dhanUserName, setDhanUserName] = useState<string | null>(null);
   const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
   const [dhanClientIdInput, setDhanClientIdInput] = useState("");
   const [dhanTokenInput, setDhanTokenInput] = useState("");
