@@ -85,3 +85,11 @@
 [x] 2. Restart workflow - Application restarted and running successfully on port 5000.
 [x] 3. Verify project working - Screenshot confirmed trading app with world map, market indicators (USA, Canada, India, Hong Kong, Tokyo), search functionality, feature buttons (Watchlist, Market News, Social Feed, Trading Journal, Trade Challenge), and feature cards (Social Feed, Trading Master, Journal, Tech News) fully operational.
 [x] 4. Mark import complete - All tasks completed successfully.
+
+---
+
+## BUG FIX SESSION (Feb 05, 2026 - Session 58)
+
+[x] 1. Fix Dhan Client Name display - Updated `client/src/components/broker-data.tsx` and `client/src/pages/home.tsx` to use `dhanClientName` instead of `dhanUserName` to match Dhan API documentation.
+[x] 2. Update localStorage keys - Updated `dhan_user_name` to `dhan_client_name` for consistency.
+[x] 3. Verified UI - The client name will now correctly pull from `dhanClientName` as provided by the Dhan profile response.

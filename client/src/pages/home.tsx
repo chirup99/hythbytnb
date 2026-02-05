@@ -4215,7 +4215,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   
 
   const [dhanAccessToken, setDhanAccessToken] = useState<string | null>(null);
-  const [dhanUserName, setDhanUserName] = useState<string | null>(localStorage.getItem("dhan_user_name"));
+  const [dhanClientName, setDhanClientName] = useState<string | null>(localStorage.getItem("dhan_client_name"));
   const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
   const [dhanClientIdInput, setDhanClientIdInput] = useState(localStorage.getItem("dhan_client_id") || "");
   const [dhanTokenInput, setDhanTokenInput] = useState("");
@@ -4224,13 +4224,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     const checkDhanInit = async () => {
       const token = localStorage.getItem("dhan_access_token");
       const clientId = localStorage.getItem("dhan_client_id");
-      const savedName = localStorage.getItem("dhan_user_name");
+      const savedName = localStorage.getItem("dhan_client_name");
       
       if (token && clientId) {
         setDhanAccessToken(token);
         setDhanIsConnected(true);
         if (savedName) {
-          setDhanUserName(savedName);
+          setDhanClientName(savedName);
         } else {
           // Fetch name if missing
           try {
@@ -4239,8 +4239,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               accessToken: token
             });
             if (response.success && response.clientName) {
-              setDhanUserName(response.clientName);
-              localStorage.setItem("dhan_user_name", response.clientName);
+              setDhanClientName(response.clientName);
+              localStorage.setItem("dhan_client_name", response.clientName);
             }
           } catch (e) {
             console.error("Failed to load Dhan profile", e);
@@ -4276,8 +4276,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         setDhanAccessToken(dhanTokenInput);
         setDhanIsConnected(true);
         if (data.clientName) {
-          setDhanUserName(data.clientName);
-          localStorage.setItem("dhan_user_name", data.clientName);
+          setDhanClientName(data.clientName);
+          localStorage.setItem("dhan_client_name", data.clientName);
         }
         localStorage.setItem("dhan_access_token", dhanTokenInput);
         localStorage.setItem("dhan_client_id", dhanClientIdInput);
@@ -4572,7 +4572,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         localStorage.setItem("dhan_token", token);
         localStorage.setItem("dhan_token", token);
         localStorage.setItem("dhan_user_id", "dhan_user");
-        localStorage.setItem("dhan_user_name", "Dhan Account");
+        localStorage.setItem("dhan_client_name", "Dhan Account");
         document.cookie = `dhan_token=${token}; path=/; SameSite=Lax; Secure`;
         setDhanIsConnected(true);
         setShowConnectDialog(false);
@@ -21534,7 +21534,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           upstoxUserName={upstoxUserName}
           dhanAccessToken={dhanAccessToken}
           dhanUserId={dhanClientIdInput}
-          dhanUserName={dhanUserName || "Dhan User"}
+          dhanClientName={dhanClientName || "Dhan User"}
           brokerPositions={brokerPositions} 
           fetchingBrokerPositions={fetchingBrokerPositions} 
           showBrokerImportModal={showBrokerImportModal} 
