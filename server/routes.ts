@@ -21881,11 +21881,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const profile = response.data?.data || response.data || {};
         const clientName = profile.dhanClientName || profile.clientName || 'Dhan User';
+        dhanOAuthManager.setUserName(clientName);
         
         res.json({ 
           success: true, 
           message: 'Connected to Dhan successfully',
-          clientName: clientName
+          clientName: clientName,
+          dhanClientName: clientName
         });
       } catch (profileErr: any) {
         console.warn('⚠️ [DHAN] Could not fetch profile name:', profileErr.message);

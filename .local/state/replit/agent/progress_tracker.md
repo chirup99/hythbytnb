@@ -88,8 +88,9 @@
 
 ---
 
-## BUG FIX SESSION (Feb 05, 2026 - Session 58)
+## BUG FIX SESSION (Feb 05, 2026 - Session 59)
 
-[x] 1. Fix Dhan Client Name display - Updated `client/src/components/broker-data.tsx` and `client/src/pages/home.tsx` to use `dhanClientName` instead of `dhanUserName` to match Dhan API documentation.
-[x] 2. Update localStorage keys - Updated `dhan_user_name` to `dhan_client_name` for consistency.
-[x] 3. Verified UI - The client name will now correctly pull from `dhanClientName` as provided by the Dhan profile response.
+[x] 1. Fix Dhan Client Name Persistence - Updated `server/dhan-oauth.ts` and `server/routes.ts` to correctly handle and persist the `dhanClientName` from the Dhan profile API.
+[x] 2. Enable User Name Updates - Added `setUserName` method to `DhanOAuthManager` to allow updating the internal state with the real name after profile fetch.
+[x] 3. Verified Backend - The backend now returns both `clientName` and `dhanClientName` to ensure frontend compatibility.
+[x] 4. Verified Display - The real client name from Dhan account will now display correctly in the Orders & Positions dialog.
