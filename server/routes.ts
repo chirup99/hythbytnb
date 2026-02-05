@@ -21859,7 +21859,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Save manual Dhan credentials
-  app.post('/api/broker/dhan/connect', (req, res) => {
+  // Get Dhan connection status
+  app.post('/api/broker/dhan/connect', async (req, res) => {
     try {
       const { clientId, accessToken } = req.body;
       if (!clientId || !accessToken) {
@@ -21867,14 +21868,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       dhanOAuthManager.setManualToken(clientId, accessToken);
-      res.json({ success: true, message: 'Connected to Dhan successfully' });
+      
+      try {
+        const response = await axios.get('https://api.dhan.co/v2/profile', {
+          headers: {
+            'access-token': accessToken,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          timeout: 5000
+        });
+        
+        const profile = response.data?.data || response.data || {};
+        const clientName = profile.dhanClientName || profile.clientName || 'Dhan User';
+        
+        res.json({ 
+          success: true, 
+          message: 'Connected to Dhan successfully',
+          clientName: clientName
+        });
+      } catch (profileErr: any) {
+        console.warn('⚠️ [DHAN] Could not fetch profile name:', profileErr.message);
+        res.json({ success: true, message: 'Connected to Dhan (Profile name fetch failed)' });
+      }
     } catch (error: any) {
       console.error('🔴 [DHAN] Error connecting manually:', error.message);
       res.status(500).json({ success: false, error: 'Failed to connect' });
     }
   });
-
-  // Get Dhan connection status
   app.get('/api/broker/dhan/status', (req, res) => {
     try {
       const status = dhanOAuthManager.getStatus();

@@ -47,14 +47,15 @@ export async function fetchDhanTrades(): Promise<DhanTrade[]> {
       timeout: 10000
     });
 
-    const orders = response.data?.data || [];
+    return trades;
+    const orders = response.data?.data || response.data || [];
 
     // Transform Dhan orders to our trade format
     const trades: DhanTrade[] = orders.map((order: any) => {
       const statusUpper = String(order.orderStatus || order.status || '').toUpperCase();
       let mappedStatus = 'PENDING';
       
-      if (statusUpper.includes('COMPLETE') || statusUpper.includes('EXECUTED')) {
+      if (statusUpper === 'TRADED' || statusUpper === 'EXECUTED' || statusUpper === 'COMPLETE' || statusUpper === 'SUCCESS') {
         mappedStatus = 'COMPLETE';
       } else if (statusUpper.includes('REJECT')) {
         mappedStatus = 'REJECTED';
@@ -62,20 +63,20 @@ export async function fetchDhanTrades(): Promise<DhanTrade[]> {
         mappedStatus = 'CANCELLED';
       }
 
+      const qty = Number(order.quantity || order.qty || 0);
+      const price = Number(order.averagePrice || order.price || 0);
+
       return {
-        time: order.orderDateTime ? new Date(order.orderDateTime).toLocaleTimeString() : '-',
-        order: order.transactionType === 'BUY' ? 'BUY' : 'SELL',
-        symbol: order.symbol || order.tradingSymbol || 'N/A',
-        qty: order.quantity || 0,
-        price: order.averagePrice || order.price || 0,
-        pnl: order.pnl ? `₹${order.pnl.toFixed(2)}` : '-',
+        time: order.orderDateTime || order.updateTime ? new Date(order.orderDateTime || order.updateTime).toLocaleTimeString() : '-',
+        order: (order.transactionType || order.side || '').toUpperCase() === 'SELL' ? 'SELL' : 'BUY',
+        symbol: order.tradingSymbol || order.symbol || 'N/A',
+        qty: qty,
+        price: price,
+        pnl: order.pnl ? `₹${Number(order.pnl).toFixed(2)}` : '-',
         type: order.orderType || 'MARKET',
         status: mappedStatus
       };
     });
-
-    console.log(`✅ [DHAN] Fetched ${trades.length} trades`);
-    return trades;
   } catch (error: any) {
     console.error('❌ [DHAN] Error fetching trades:', error.message);
     return [];
@@ -103,47 +104,29 @@ export async function fetchDhanPositions(): Promise<DhanPosition[]> {
       timeout: 10000
     });
 
-    const positionsData = response.data?.data || [];
-
-    // Group by symbol and consolidate
-    const positionMap = new Map();
-
-    positionsData.forEach((pos: any) => {
-      const symbol = pos.symbol || pos.tradingSymbol || 'N/A';
-      if (!positionMap.has(symbol)) {
-        positionMap.set(symbol, {
-          symbol: symbol,
-          entry_price: pos.averagePrice || pos.entryPrice || 0,
-          current_price: pos.lastPrice || pos.currentPrice || 0,
-          qty: pos.quantity || 0,
-          quantity: pos.quantity || 0,
-          unrealized_pnl: pos.unrealizedPnl || 0,
-          unrealizedPnl: pos.unrealizedPnl || 0,
-          status: (pos.quantity || 0) > 0 ? 'OPEN' : 'CLOSED'
-        });
-      } else {
-        // Consolidate positions with same symbol
-        const existing = positionMap.get(symbol);
-        existing.qty += pos.quantity || 0;
-        existing.quantity += pos.quantity || 0;
-        existing.unrealized_pnl += pos.unrealizedPnl || 0;
-        existing.unrealizedPnl += pos.unrealizedPnl || 0;
-      }
-    });
-
-    // Convert to array and calculate return percentage
-    const positions: DhanPosition[] = Array.from(positionMap.values()).map((pos: any) => ({
-      ...pos,
-      return_percent: pos.unrealizedPnl && pos.entry_price && pos.qty 
-        ? ((pos.unrealizedPnl / (pos.entry_price * pos.qty)) * 100).toFixed(2) 
-        : "0.00",
-      returnPercent: pos.unrealizedPnl && pos.entry_price && pos.qty 
-        ? ((pos.unrealizedPnl / (pos.entry_price * pos.qty)) * 100).toFixed(2) 
-        : "0.00"
-    }));
-
-    console.log(`✅ [DHAN] Fetched ${positions.length} positions`);
     return positions;
+    const positionsData = response.data?.data || response.data || [];
+
+    // Map Dhan positions to our internal format
+    const positions: DhanPosition[] = positionsData.map((pos: any) => {
+      const quantity = Number(pos.netQty || pos.quantity || 0);
+      const entryPrice = Number(pos.avgCost || pos.averagePrice || pos.entryPrice || 0);
+      const lastPrice = Number(pos.lastPrice || pos.currentPrice || 0);
+      const unrealizedPnl = Number(pos.unrealizedProfit || pos.unrealizedPnl || 0);
+      
+      return {
+        symbol: pos.tradingSymbol || pos.symbol || 'N/A',
+        entry_price: entryPrice,
+        current_price: lastPrice,
+        qty: quantity,
+        quantity: quantity,
+        unrealized_pnl: unrealizedPnl,
+        unrealizedPnl: unrealizedPnl,
+        return_percent: entryPrice && quantity ? ((unrealizedPnl / (entryPrice * Math.abs(quantity))) * 100).toFixed(2) : "0.00",
+        returnPercent: entryPrice && quantity ? ((unrealizedPnl / (entryPrice * Math.abs(quantity))) * 100).toFixed(2) : "0.00",
+        status: quantity !== 0 ? 'OPEN' : 'CLOSED'
+      };
+    });
   } catch (error: any) {
     console.error('❌ [DHAN] Error fetching positions:', error.message);
     return [];
@@ -172,7 +155,7 @@ export async function fetchDhanMargins(): Promise<number> {
     });
 
     // Available funds in Dhan API response
-    const availableFunds = response.data?.dhanCash || response.data?.availableBalance || 0;
+    const availableFunds = response.data?.dhanCash ?? response.data?.data?.dhanCash ?? response.data?.availableBalance ?? 0;
 
     console.log(`✅ [DHAN] Available funds: ₹${availableFunds}`);
     return availableFunds;
