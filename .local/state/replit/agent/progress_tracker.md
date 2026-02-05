@@ -75,3 +75,4 @@
 [x] 1. Update Trade History UI - Added P&L, %, and Duration columns to the Orders tab in `client/src/components/broker-data.tsx`.
 [x] 2. Update Dhan Service - Implemented round-trip P&L, return percentage, and duration calculation for Dhan broker data in `server/services/broker-integrations/dhanService.ts`.
 [x] 3. Restart workflow - Applied backend changes and verified server is running.
+[x] 4. Verified Display - Confirmed P&L, %, and Duration are now correctly calculated and displayed for round-trip trades.
