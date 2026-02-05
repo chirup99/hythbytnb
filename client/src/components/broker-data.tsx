@@ -197,34 +197,39 @@ export function BrokerData(props: BrokerDataProps) {
                           const aOrder = aStatus === "COMPLETE" || aStatus === "PENDING" ? 0 : aStatus === "REJECTED" || aStatus === "CANCELLED" ? 999 : 500; 
                           const bOrder = bStatus === "COMPLETE" || bStatus === "PENDING" ? 0 : bStatus === "REJECTED" || bStatus === "CANCELLED" ? 999 : 500; 
                           return aOrder - bOrder; 
-                        }).map((trade, index) => (
-                          <tr key={index} className="border-b hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <td className="px-2 py-2 font-medium">{trade.time}</td>
-                            <td className="px-2 py-2">
-                              <span className={`px-1 py-0.5 rounded text-xs ${
-                                trade.order === "BUY"
-                                  ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-                                  : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
-                              }`}>
-                                {trade.order}
-                              </span>
-                            </td>
-                            <td className="px-2 py-2 font-medium">{formatSymbol(trade.symbol)}</td>
-                            <td className="px-2 py-2">{trade.type}</td>
-                            <td className="px-2 py-2">{trade.qty}</td>
-                            <td className="px-2 py-2">₹{typeof trade.price === 'number' ? trade.price.toFixed(2) : trade.price}</td>
-                            <td className="px-2 py-2">
-                              <span className={`text-xs font-medium ${
-                                trade.status === 'COMPLETE' ? 'text-green-600 dark:text-green-400' :
-                                trade.status === 'REJECTED' ? 'text-red-600 dark:text-red-400' :
-                                trade.status === 'CANCELLED' ? 'text-yellow-600 dark:text-yellow-400' :
-                                'text-blue-600 dark:text-blue-400'
-                              }`}>
-                                {trade.status || 'PENDING'}
-                              </span>
-                            </td>
-                          </tr>
-                        ))
+                        }).map((trade, index) => {
+                          const status = String(trade.status || "").toUpperCase().trim();
+                          const isClosed = status === "REJECTED" || status === "CANCELLED";
+                          
+                          return (
+                            <tr key={index} className={`border-b hover:bg-gray-50 dark:hover:bg-gray-700 ${isClosed ? 'bg-gray-100/50 dark:bg-gray-800/40' : ''}`}>
+                              <td className="px-2 py-2 font-medium">{trade.time}</td>
+                              <td className="px-2 py-2">
+                                <span className={`px-1 py-0.5 rounded text-xs ${
+                                  trade.order === "BUY"
+                                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+                                    : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
+                                }`}>
+                                  {trade.order}
+                                </span>
+                              </td>
+                              <td className="px-2 py-2 font-medium">{formatSymbol(trade.symbol)}</td>
+                              <td className="px-2 py-2">{trade.type}</td>
+                              <td className="px-2 py-2">{trade.qty}</td>
+                              <td className="px-2 py-2">₹{typeof trade.price === 'number' ? trade.price.toFixed(2) : trade.price}</td>
+                              <td className="px-2 py-2">
+                                <span className={`text-xs font-medium ${
+                                  status === 'COMPLETE' ? 'text-green-600 dark:text-green-400' :
+                                  status === 'REJECTED' ? 'text-red-600 dark:text-red-400' :
+                                  status === 'CANCELLED' ? 'text-yellow-600 dark:text-yellow-400' :
+                                  'text-blue-600 dark:text-blue-400'
+                                }`}>
+                                  {trade.status || 'PENDING'}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })
                       )}
                     </tbody>
                   </table>
@@ -274,9 +279,11 @@ export function BrokerData(props: BrokerDataProps) {
                           const qty = (pos.qty || pos.quantity || 0) as number;
                           const unrealizedPnl = (currentPrice - entryPrice) * qty;
                           const returnPercent = entryPrice > 0 ? ((currentPrice - entryPrice) / entryPrice) * 100 : 0;
+                          const status = String(pos.status || "Open").toUpperCase().trim();
+                          const isClosed = status === "CLOSED";
                           
                           return (
-                            <tr key={index} className="border-b hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <tr key={index} className={`border-b hover:bg-gray-50 dark:hover:bg-gray-700 ${isClosed ? 'bg-gray-100/50 dark:bg-gray-800/40' : ''}`}>
                               <td className="px-2 py-2 font-medium">{formatSymbol(pos.symbol)}</td>
                               <td className="px-2 py-2">₹{entryPrice.toFixed(2)}</td>
                               <td className="px-2 py-2">₹{currentPrice.toFixed(2)}</td>
