@@ -191,12 +191,11 @@ class DhanOAuthManager {
         console.log(`✅ [DHAN] Client Name: ${this.state.userName}`);
         console.log(`⏰ [DHAN] Token expires at: ${expiryTime.toISOString()}`);
         
-        // Fetch real profile name immediately after successful connection if not provided or looks like default
-        if (!this.state.userName || this.state.userName === 'Dhan User') {
-          this.fetchAndSetProfileName(tokenData.accessToken).catch(err => {
-            console.error('⚠️ [DHAN] Failed to fetch profile name on initial connection:', err.message);
-          });
-        }
+        // Fetch real profile name immediately after successful connection
+        // The /v2/profile endpoint is the standard way to get user details in Dhan
+        this.fetchAndSetProfileName(tokenData.accessToken).catch(err => {
+          console.error('⚠️ [DHAN] Failed to fetch profile name on initial connection:', err.message);
+        });
         
         return true;
       }

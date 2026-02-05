@@ -150,7 +150,7 @@ export function BrokerData(props: BrokerDataProps) {
                   {activeBroker === 'dhan' && (
                     <>
                       <img src="https://dhan.co/static/images/dhan-logo-white.svg" alt="Dhan" className="w-3 h-3 dark:invert" />
-                      <span>id: {showUserId ? (dhanClientId || dhanUserId || "N/A") : "••••••"} | {showUserId ? (dhanClientName || "Dhan User") : "•••••"}</span>
+                      <span>id: {showUserId ? (dhanClientId || dhanUserId || "N/A") : "••••••"} | {showUserId ? (dhanClientName && dhanClientName !== "Dhan User" ? dhanClientName : "Dhan User") : "•••••"}</span>
                     </>
                   )}
                 </div>
