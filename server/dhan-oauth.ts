@@ -191,6 +191,13 @@ class DhanOAuthManager {
         console.log(`✅ [DHAN] Client Name: ${this.state.userName}`);
         console.log(`⏰ [DHAN] Token expires at: ${expiryTime.toISOString()}`);
         
+        // Fetch real profile name immediately after successful connection if not provided or looks like default
+        if (!this.state.userName || this.state.userName === 'Dhan User') {
+          this.fetchAndSetProfileName(tokenData.accessToken).catch(err => {
+            console.error('⚠️ [DHAN] Failed to fetch profile name on initial connection:', err.message);
+          });
+        }
+        
         return true;
       }
 
@@ -206,6 +213,20 @@ class DhanOAuthManager {
         console.error('🔴 [DHAN] Response:', error.response.data);
       }
       return false;
+    }
+  }
+
+  private async fetchAndSetProfileName(token: string): Promise<void> {
+    try {
+      const response = await axios.get('https://api.dhan.co/v2/profile', {
+        headers: { 'access-token': token, 'Content-Type': 'application/json' },
+        timeout: 5000
+      });
+      if (response.data?.dhanClientName) {
+        this.setUserName(response.data.dhanClientName);
+      }
+    } catch (error) {
+      // Ignore errors here
     }
   }
 

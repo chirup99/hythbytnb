@@ -21898,12 +21898,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ success: false, error: 'Failed to connect' });
     }
   });
-  app.get('/api/broker/dhan/status', (req, res) => {
+  app.get('/api/broker/dhan/status', async (req, res) => {
     try {
-      const status = dhanOAuthManager.getStatus();
+      let status = dhanOAuthManager.getStatus();
+      
+      // If connected but name is default, try to fetch it
+      if (status.connected && (!status.userName || status.userName === 'Dhan User')) {
+        try {
+          const response = await axios.get('https://api.dhan.co/v2/profile', {
+            headers: { 'access-token': status.accessToken!, 'Content-Type': 'application/json' },
+            timeout: 5000
+          });
+          if (response.data?.dhanClientName) {
+            dhanOAuthManager.setUserName(response.data.dhanClientName);
+            status = dhanOAuthManager.getStatus(); // Get updated status with new name
+          }
+        } catch (profileErr) {
+          // Profile fetch failed, proceed with existing status
+        }
+      }
+
       res.json({
         success: true,
         ...status,
+        clientName: status.userName,
+        dhanClientName: status.userName
       });
     } catch (error: any) {
       console.error('🔴 [DHAN] Error getting status:', error.message);
