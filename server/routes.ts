@@ -21905,16 +21905,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // If connected but name is default, try to fetch it
       if (status.connected && (!status.userName || status.userName === 'Dhan User')) {
         try {
+          console.log(`🔵 [DHAN] Fetching profile for name update...`);
           const response = await axios.get('https://api.dhan.co/v2/profile', {
-            headers: { 'access-token': status.accessToken!, 'Content-Type': 'application/json' },
+            headers: { 
+              'access-token': status.accessToken!, 
+              'client-id': status.clientId!,
+              'Content-Type': 'application/json' 
+            },
             timeout: 5000
           });
-          if (response.data?.dhanClientName) {
-            dhanOAuthManager.setUserName(response.data.dhanClientName);
+          
+          const profileName = response.data?.dhanClientName || response.data?.clientName;
+          if (profileName) {
+            console.log(`✅ [DHAN] Profile name found: ${profileName}`);
+            dhanOAuthManager.setUserName(profileName);
             status = dhanOAuthManager.getStatus(); // Get updated status with new name
+          } else {
+            console.log(`⚠️ [DHAN] Profile response received but no name found:`, response.data);
           }
-        } catch (profileErr) {
-          // Profile fetch failed, proceed with existing status
+        } catch (profileErr: any) {
+          console.error(`🔴 [DHAN] Profile fetch failed:`, profileErr.message);
+          if (profileErr.response?.data) {
+            console.error(`🔴 [DHAN] Profile error details:`, profileErr.response.data);
+          }
         }
       }
 
