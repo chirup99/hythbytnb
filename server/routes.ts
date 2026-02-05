@@ -21922,7 +21922,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: true,
         ...status,
         clientName: status.userName,
-        dhanClientName: status.userName
+        dhanClientName: status.userName,
+        dhanClientId: status.clientId
       });
     } catch (error: any) {
       console.error('🔴 [DHAN] Error getting status:', error.message);
