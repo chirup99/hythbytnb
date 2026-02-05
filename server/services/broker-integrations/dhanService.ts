@@ -73,7 +73,7 @@ export async function fetchDhanPositions(): Promise<DhanPosition[]> {
     const positionsData = response.data?.data || response.data || [];
     return positionsData.map((pos: any) => {
       const quantity = Number(pos.netQty || pos.quantity || 0);
-      const entryPrice = Number(pos.avgCost || pos.averagePrice || pos.entryPrice || 0);
+      const entryPrice = Number(pos.buyAvg || pos.avgCostPrice || pos.averagePrice || pos.entryPrice || 0);
       const unrealizedPnl = Number(pos.unrealizedProfit || pos.unrealizedPnl || 0);
       return {
         symbol: pos.tradingSymbol || pos.symbol || 'N/A',
