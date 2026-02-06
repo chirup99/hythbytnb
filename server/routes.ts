@@ -20923,9 +20923,108 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
 
-  // ========================================
+  // Get Upstox orders
+  app.get('/api/upstox/orders', async (req, res) => {
+    try {
+      const accessToken = upstoxOAuthManager.getAccessToken();
+      if (!accessToken) {
+        return res.status(401).json({ error: 'Upstox not connected' });
+      }
+
+      console.log('🔵 [UPSTOX API] Fetching orders...');
+      const response = await axios.get('https://api.upstox.com/v2/order/retrieve-all', {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+
+      if (response.data && response.data.status === 'success') {
+        const orders = response.data.data.map((order: any) => ({
+          time: order.order_timestamp ? new Date(order.order_timestamp).toLocaleTimeString('en-IN', { hour12: false }) : 'N/A',
+          order: order.transaction_type, // BUY or SELL
+          symbol: order.trading_symbol,
+          type: order.order_type,
+          qty: order.quantity,
+          price: order.average_price || order.price || 0,
+          status: order.status
+        }));
+        res.json(orders);
+      } else {
+        res.json([]);
+      }
+    } catch (error: any) {
+      console.error('🔴 [UPSTOX API] Error fetching orders:', error.message);
+      res.status(500).json({ error: 'Failed to fetch Upstox orders' });
+    }
+  });
+
+  // Get Upstox positions
+  app.get('/api/upstox/positions', async (req, res) => {
+    try {
+      const accessToken = upstoxOAuthManager.getAccessToken();
+      if (!accessToken) {
+        return res.status(401).json({ error: 'Upstox not connected' });
+      }
+
+      console.log('🔵 [UPSTOX API] Fetching positions...');
+      const response = await axios.get('https://api.upstox.com/v2/portfolio/get-positions', {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+
+      if (response.data && response.data.status === 'success') {
+        const positions = response.data.data.map((pos: any) => ({
+          symbol: pos.trading_symbol,
+          entryPrice: pos.average_price || 0,
+          currentPrice: pos.last_price || 0,
+          qty: pos.quantity,
+          status: pos.quantity === 0 ? 'CLOSED' : 'OPEN'
+        }));
+        res.json(positions);
+      } else {
+        res.json([]);
+      }
+    } catch (error: any) {
+      console.error('🔴 [UPSTOX API] Error fetching positions:', error.message);
+      res.status(500).json({ error: 'Failed to fetch Upstox positions' });
+    }
+  });
+
+  // Get Upstox funds
+  app.get('/api/upstox/funds', async (req, res) => {
+    try {
+      const accessToken = upstoxOAuthManager.getAccessToken();
+      if (!accessToken) {
+        return res.status(401).json({ error: 'Upstox not connected' });
+      }
+
+      console.log('🔵 [UPSTOX API] Fetching funds...');
+      const response = await axios.get('https://api.upstox.com/v2/user/get-funds-and-margin', {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+
+      if (response.data && response.data.status === 'success') {
+        // Equity funds is usually the relevant one for most traders
+        const funds = response.data.data.equity?.available_margin || 0;
+        res.json({ funds });
+      } else {
+        res.json({ funds: 0 });
+      }
+    } catch (error: any) {
+      console.error('🔴 [UPSTOX API] Error fetching funds:', error.message);
+      res.status(500).json({ error: 'Failed to fetch Upstox funds' });
+    }
+  });
+
+  // ==========================================
   // ZERODHA OAUTH 2.0 IMPLEMENTATION
-  // ========================================
+  // ==========================================
   // Proper implementation based on https://kite.trade/docs/connect/v3/
   // 
   // FLOW:
