@@ -21318,18 +21318,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get Upstox available funds
-  app.get("/api/broker/upstox/margins", (req, res) => {
+  app.get("/api/broker/upstox/margins", async (req, res) => {
     try {
       const token = upstoxOAuthManager.getAccessToken();
-      if (!token) return res.status(401).json({ success: false });
-      fetch("https://api.upstox.com/v2/user/get-funds-and-margin", {
+      if (!token) {
+        console.log('⚠️ [UPSTOX-MARGINS] No token found');
+        return res.status(401).json({ success: false, availableCash: 0 });
+      }
+      
+      console.log('🚀 [UPSTOX-MARGINS] Fetching funds from Upstox API...');
+      const response = await fetch("https://api.upstox.com/v2/user/get-funds-and-margin", {
         method: "GET",
-        headers: { "Authorization": `Bearer ${token}`, "Accept": "application/json" }
-      })
-        .then(r => r.json())
-        .then(data => res.json({ success: true, availableCash: data.data?.available_margin || 0 }))
-        .catch(() => res.json({ success: true, availableCash: 0 }));
-    } catch (e) { res.json({ success: true, availableCash: 0 }); }
+        headers: { 
+          "Authorization": `Bearer ${token}`, 
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        }
+      });
+      
+      if (!response.ok) {
+        const errorBody = await response.text();
+        console.error(`🔴 [UPSTOX-MARGINS] API Error ${response.status}:`, errorBody);
+        return res.json({ success: true, availableCash: 0 });
+      }
+
+      const data = await response.json();
+      console.log('🔍 [UPSTOX-MARGINS] Full Response:', JSON.stringify(data));
+
+      if (data.status === 'success' && data.data) {
+        const equityFunds = data.data.equity || {};
+        const commodityFunds = data.data.commodity || {};
+        
+        // Upstox API documentation says available_margin is the total margin available for trading
+        // Prioritize equity segment available_margin
+        let availableFunds = 0;
+        
+        if (equityFunds.available_margin !== undefined) {
+          availableFunds = Number(equityFunds.available_margin);
+        } else if (commodityFunds.available_margin !== undefined) {
+          availableFunds = Number(commodityFunds.available_margin);
+        } else if (data.data.available_margin !== undefined) {
+          availableFunds = Number(data.data.available_margin);
+        }
+
+        console.log('✅ [UPSTOX-MARGINS] Derived Available Funds:', availableFunds);
+        res.json({ success: true, availableCash: availableFunds });
+      } else {
+        console.log('⚠️ [UPSTOX-MARGINS] Response status not success or no data:', data.status);
+        res.json({ success: true, availableCash: 0 });
+      }
+    } catch (e: any) { 
+      console.error('🔴 [UPSTOX-MARGINS] Exception:', e.message);
+      res.json({ success: true, availableCash: 0 }); 
+    }
   });
         return res.json({
           success: true,
@@ -21622,7 +21663,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const token = upstoxOAuthManager.getAccessToken();
       if (!token) {
-        return res.status(401).json({ success: false, error: 'Not authenticated with Upstox' });
+        return res.status(401).json({ success: false, availableCash: 0, error: 'Not authenticated with Upstox' });
       }
 
       const response = await fetch('https://api.upstox.com/v2/user/get-funds-and-margin', {
@@ -21635,14 +21676,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       const data = await response.json();
+      console.log('🔍 [UPSTOX] Full Funds API Response:', JSON.stringify(data));
+      
       if (data.status === 'success' && data.data) {
         // Upstox returns data under 'equity' and 'commodity' keys
-        // If segment is not provided, it returns both. We prefer equity segment for funds display.
+        // The documentation shows available_margin inside these segment objects
         const equityFunds = data.data.equity || {};
-        const availableFunds = equityFunds.available_margin !== undefined ? equityFunds.available_margin : (data.data.available_margin || 0);
-        console.log('✅ [UPSTOX] Funds fetched:', availableFunds);
+        const commodityFunds = data.data.commodity || {};
+        
+        // Prioritize equity segment available_margin as per documentation
+        // Fallback to commodity if equity is 0 or missing
+        // Also check if available_margin exists directly in data (older API versions)
+        const availableFunds = (equityFunds.available_margin !== undefined && equityFunds.available_margin !== 0) 
+          ? equityFunds.available_margin 
+          : (commodityFunds.available_margin !== undefined && commodityFunds.available_margin !== 0)
+            ? commodityFunds.available_margin
+            : (data.data.available_margin !== undefined)
+              ? data.data.available_margin
+              : 0;
+              
+        console.log('✅ [UPSTOX] Derived Available Funds:', availableFunds);
         res.json({
           success: true,
+          availableCash: availableFunds,
           availableFunds: availableFunds,
           data: data.data
         });
@@ -21650,12 +21706,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log('⚠️ [UPSTOX] Funds response not successful:', data);
         res.json({
           success: false,
+          availableCash: 0,
           availableFunds: 0
         });
       }
     } catch (error: any) {
       console.error('🔴 [UPSTOX] Error fetching funds:', error.message);
-      res.status(500).json({ success: false, error: 'Failed to get funds' });
+      res.status(500).json({ success: false, availableCash: 0, error: 'Failed to get funds' });
     }
   });
 
