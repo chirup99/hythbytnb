@@ -109,11 +109,11 @@ class UpstoxOAuthManager {
     
     // Clean up old states (older than 10 minutes)
     const now = new Date();
-    for (const [key, value] of this.oauthStates.entries()) {
+    Array.from(this.oauthStates.entries()).forEach(([key, value]) => {
       if (now.getTime() - value.createdAt.getTime() > 10 * 60 * 1000) {
         this.oauthStates.delete(key);
       }
-    }
+    });
 
     return { url: authUrl, state };
   }

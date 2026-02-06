@@ -21267,26 +21267,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/broker/upstox/trades", (req, res) => {
     try {
       const token = upstoxOAuthManager.getAccessToken();
-      if (!token) return res.status(401).json({ success: false });
-      fetch("https://api.upstox.com/v2/order/retrieve-all", {
+      if (!token) return res.status(401).json({ success: false, trades: [] });
+      
+      const upstoxUrl = "https://api.upstox.com/v2/order/retrieve-all";
+      console.log(`🚀 [UPSTOX-TRADES] Fetching from ${upstoxUrl}`);
+      
+      fetch(upstoxUrl, {
         method: "GET",
-        headers: { "Authorization": `Bearer ${token}`, "Accept": "application/json" }
+        headers: { 
+          "Authorization": `Bearer ${token}`, 
+          "Accept": "application/json" 
+        }
       })
-        .then(r => r.json())
+        .then(async r => {
+          if (!r.ok) {
+            const errText = await r.text();
+            console.error(`🔴 [UPSTOX-TRADES] API Error ${r.status}:`, errText);
+            throw new Error(`Upstox API returned ${r.status}`);
+          }
+          return r.json();
+        })
         .then(data => {
+          console.log(`✅ [UPSTOX-TRADES] Received ${data.data?.length || 0} orders`);
           const trades = (data.data || []).map((o: any) => ({
-            time: o.order_datetime ? new Date(o.order_datetime).toLocaleTimeString() : "N/A",
-            order: o.side === "BUY" ? "BUY" : "SELL",
+            time: o.order_timestamp || o.order_datetime || "N/A",
+            order: o.transaction_type || o.side || "N/A",
             symbol: o.tradingsymbol || o.instrument_key || "N/A",
             type: o.order_type || "MARKET",
             qty: o.quantity || 0,
-            price: o.price || 0,
+            price: o.average_price || o.price || 0,
             status: o.status || "PENDING"
           }));
           res.json({ success: true, trades });
         })
-        .catch(() => res.json({ success: true, trades: [] }));
-    } catch (e) { res.json({ success: true, trades: [] }); }
+        .catch((err) => {
+          console.error(`❌ [UPSTOX-TRADES] fetch failed:`, err.message);
+          res.json({ success: true, trades: [] });
+        });
+    } catch (e: any) { 
+      console.error(`❌ [UPSTOX-TRADES] Exception:`, e.message);
+      res.json({ success: true, trades: [] }); 
+    }
   });
 
   // Get Upstox orders (alias for trades to support frontend)
@@ -21294,12 +21315,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const token = upstoxOAuthManager.getAccessToken();
       if (!token) return res.status(401).json({ success: false, orders: [] });
-      fetch("https://api.upstox.com/v2/order/retrieve-all", {
+      
+      const upstoxUrl = "https://api.upstox.com/v2/order/retrieve-all";
+      console.log(`🚀 [UPSTOX-ORDERS] Fetching from ${upstoxUrl}`);
+      
+      fetch(upstoxUrl, {
         method: "GET",
-        headers: { "Authorization": `Bearer ${token}`, "Accept": "application/json" }
+        headers: { 
+          "Authorization": `Bearer ${token}`, 
+          "Accept": "application/json" 
+        }
       })
-        .then(r => r.json())
+        .then(async r => {
+          if (!r.ok) {
+            const errText = await r.text();
+            console.error(`🔴 [UPSTOX-ORDERS] API Error ${r.status}:`, errText);
+            throw new Error(`Upstox API returned ${r.status}`);
+          }
+          return r.json();
+        })
         .then(data => {
+          console.log(`✅ [UPSTOX-ORDERS] Received ${data.data?.length || 0} orders`);
           const orders = (data.data || []).map((o: any) => ({
             time: o.order_timestamp || o.order_datetime || "N/A",
             order: o.transaction_type || o.side || "N/A",
@@ -21311,8 +21347,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }));
           res.json({ success: true, orders });
         })
-        .catch(() => res.json({ success: true, orders: [] }));
-    } catch (e) { res.json({ success: true, orders: [] }); }
+        .catch((err) => {
+          console.error(`❌ [UPSTOX-ORDERS] fetch failed:`, err.message);
+          res.json({ success: true, orders: [] });
+        });
+    } catch (e: any) { 
+      console.error(`❌ [UPSTOX-ORDERS] Exception:`, e.message);
+      res.json({ success: true, orders: [] }); 
+    }
   });
 
   // Get Upstox positions

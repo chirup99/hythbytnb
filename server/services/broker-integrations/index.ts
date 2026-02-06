@@ -14,7 +14,7 @@ export async function fetchBrokerTrades(
     case "kite":
       return fetchKiteTrades(credentials as KiteCredentials);
     case "dhan":
-      return fetchDhanTrades(credentials as DhanCredentials);
+      return fetchDhanTrades(credentials as DhanCredentials) as any;
     default:
       throw new Error(`Unsupported broker: ${(credentials as any).broker}`);
   }
