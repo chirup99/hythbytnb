@@ -21636,8 +21636,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const data = await response.json();
       if (data.status === 'success' && data.data) {
+        // Upstox returns data under 'equity' and 'commodity' keys
+        // If segment is not provided, it returns both. We prefer equity segment for funds display.
         const equityFunds = data.data.equity || {};
-        const availableFunds = equityFunds.available_margin || 0;
+        const availableFunds = equityFunds.available_margin !== undefined ? equityFunds.available_margin : (data.data.available_margin || 0);
         console.log('✅ [UPSTOX] Funds fetched:', availableFunds);
         res.json({
           success: true,
