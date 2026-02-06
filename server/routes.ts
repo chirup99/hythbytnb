@@ -21289,6 +21289,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (e) { res.json({ success: true, trades: [] }); }
   });
 
+  // Get Upstox orders (alias for trades to support frontend)
+  app.get("/api/broker/upstox/orders", (req, res) => {
+    try {
+      const token = upstoxOAuthManager.getAccessToken();
+      if (!token) return res.status(401).json({ success: false, orders: [] });
+      fetch("https://api.upstox.com/v2/order/retrieve-all", {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${token}`, "Accept": "application/json" }
+      })
+        .then(r => r.json())
+        .then(data => {
+          const orders = (data.data || []).map((o: any) => ({
+            time: o.order_timestamp || o.order_datetime || "N/A",
+            order: o.transaction_type || o.side || "N/A",
+            symbol: o.tradingsymbol || o.instrument_key || "N/A",
+            type: o.order_type || "MARKET",
+            qty: o.quantity || 0,
+            price: o.average_price || o.price || 0,
+            status: o.status || "PENDING"
+          }));
+          res.json({ success: true, orders });
+        })
+        .catch(() => res.json({ success: true, orders: [] }));
+    } catch (e) { res.json({ success: true, orders: [] }); }
+  });
+
   // Get Upstox positions
   app.get("/api/broker/upstox/positions", async (req, res) => {
     try {
