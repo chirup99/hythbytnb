@@ -19704,7 +19704,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           {[
                                             { title: "Deep Relaxation Meditation", duration: "10:05", id: "m1", youtubeId: "B7nkVhC10Gw" }
                                           ].map((track) => (
-                                            <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
+                                            <div key={track.id} onClick={() => { setSelectedAudioTrack(track); setIsAudioPlaying(true); }} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
                                               <div className="flex items-center gap-3">
                                                 <div className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center group-hover:bg-violet-500 transition-colors">
                                                   <Play className="w-3 h-3 text-violet-500 group-hover:text-slate-900 dark:hover:text-white" />
@@ -19727,7 +19727,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           {[
                                             { title: 'Bruce Lee: "Your Greatest Enemy Is Within"', duration: "22:30", id: "p1", youtubeId: "KnppzfiZcgM" }
                                           ].map((track) => (
-                                            <div key={track.id} onClick={() => setSelectedAudioTrack(track)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
+                                            <div key={track.id} onClick={() => { setSelectedAudioTrack(track); setIsAudioPlaying(true); }} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
                                               <div className="flex items-center gap-3">
                                                 <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
                                                   <Play className="w-3 h-3 text-blue-500 group-hover:text-slate-900 dark:hover:text-white" />
