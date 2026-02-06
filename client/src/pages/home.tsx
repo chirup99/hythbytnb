@@ -2307,8 +2307,8 @@ export default function Home() {
                 }
               }, 1000);
               console.log("🎵 YouTube Audio Ready");
-              event.target.playVideo();
-              setIsAudioPlaying(true);
+              if (currentTime > 0) event.target.seekTo(currentTime, true);
+              if (isAudioPlaying) event.target.playVideo(); else event.target.pauseVideo();
             },
             onStateChange: (event: any) => {
               if (event.data === (window as any).YT.PlayerState.ENDED) {
