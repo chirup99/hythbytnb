@@ -2324,9 +2324,9 @@ export default function Home() {
   useEffect(() => {
     if (youtubePlayerRef.current) {
       if (isAudioPlaying) {
-        youtubePlayerRef.current.playVideo();
+        if (youtubePlayerRef.current && typeof youtubePlayerRef.current.playVideo === "function") youtubePlayerRef.current.playVideo();
       } else {
-        youtubePlayerRef.current.pauseVideo();
+        if (youtubePlayerRef.current && typeof youtubePlayerRef.current.pauseVideo === "function") youtubePlayerRef.current.pauseVideo();
       }
     }
   }, [isAudioPlaying]);
