@@ -19116,7 +19116,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   ) : (
                                     tradeHistoryData.map((trade, index) => (
                                       <tr key={index} className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                                        <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.time}</td>
+                                        <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{(() => { if (!trade.time) return "-"; const timeMatch = trade.time.match(/(\d{1,2}):(\d{2}):(\d{2})/); if (timeMatch) { let [_, hours, minutes, seconds] = timeMatch.map(Number); const ampm = hours >= 12 ? "PM" : "AM"; hours = hours % 12 || 12; return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")} ${ampm}`; } return trade.time; })()}</td>
                                         <td className="px-2 py-2">
                                           <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                                             trade.order === "BUY" ? "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300" : "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300"
@@ -19323,7 +19323,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     key={index}
                                     className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                                   >
-                                    <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.time}</td>
+                                    <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{(() => { if (!trade.time) return "-"; const timeMatch = trade.time.match(/(\d{1,2}):(\d{2}):(\d{2})/); if (timeMatch) { let [_, hours, minutes, seconds] = timeMatch.map(Number); const ampm = hours >= 12 ? "PM" : "AM"; hours = hours % 12 || 12; return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")} ${ampm}`; } return trade.time; })()}</td>
                                     <td className="px-2 py-2">
                                       <span
                                         className={`text-xs font-bold px-1.5 py-0.5 rounded ${
