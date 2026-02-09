@@ -21519,43 +21519,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!response.ok) {
         const errorBody = await response.text();
         console.error(`🔴 [UPSTOX-MARGINS] API Error ${response.status}:`, errorBody);
-        return res.json({ success: true, availableCash: 0 });
+        return res.status(response.status).json({ success: false, availableCash: 0, error: errorBody });
       }
 
       const data = await response.json();
-      console.log('🔍 [UPSTOX-MARGINS] Full Response:', JSON.stringify(data));
+      console.log('🔍 [UPSTOX-MARGINS] FULL API RESPONSE:', JSON.stringify(data, null, 2));
 
       if (data.status === 'success' && data.data) {
-        const equityFunds = data.data.equity || {};
-        const commodityFunds = data.data.commodity || {};
-        
-        // Upstox API documentation says available_margin is the total margin available for trading
-        // Summing both equity and commodity to show true available funds
-        const availableFunds = Number(equityFunds.available_margin || 0) + Number(commodityFunds.available_margin || 0);
+        let availableFunds = 0;
 
-        console.log('✅ [UPSTOX-MARGINS] Derived Total Available Funds:', availableFunds);
-        res.json({ 
+        // Upstox API returns available_margin within equity/commodity objects
+        // Some accounts might return it as a string or number
+        if (data.data.equity) {
+          const equityMargin = parseFloat(data.data.equity.available_margin || 0);
+          availableFunds += equityMargin;
+          console.log(`📊 [UPSTOX-MARGINS] Equity Margin: ${equityMargin}`);
+        }
+        
+        if (data.data.commodity) {
+          const commodityMargin = parseFloat(data.data.commodity.available_margin || 0);
+          availableFunds += commodityMargin;
+          console.log(`📊 [UPSTOX-MARGINS] Commodity Margin: ${commodityMargin}`);
+        }
+        
+        // Safety check for top level available_margin
+        if (availableFunds === 0 && data.data.available_margin !== undefined) {
+          availableFunds = parseFloat(data.data.available_margin);
+          console.log(`📊 [UPSTOX-MARGINS] Top-level Margin: ${availableFunds}`);
+        }
+
+        console.log(`✅ [UPSTOX-MARGINS] Total derived: ${availableFunds}`);
+        
+        return res.json({ 
           success: true, 
           availableCash: availableFunds,
           availableFunds: availableFunds,
-          equity: equityFunds,
-          commodity: commodityFunds
+          equity: data.data.equity || {},
+          commodity: data.data.commodity || {}
         });
       } else {
         console.log('⚠️ [UPSTOX-MARGINS] Response status not success or no data:', data.status);
-        res.json({ success: true, availableCash: 0 });
+        return res.json({ success: false, availableCash: 0, status: data.status });
       }
     } catch (e: any) { 
       console.error('🔴 [UPSTOX-MARGINS] Exception:', e.message);
-      res.json({ success: true, availableCash: 0 }); 
+      return res.status(500).json({ success: false, availableCash: 0, error: e.message }); 
     }
   });
-        return res.json({
-          success: true,
-          availableCash,
-          equity: data.data?.equity || {}
-        });
-      }
       
       // API call failed - log the response body for debugging
       const errorText = await response.text();
