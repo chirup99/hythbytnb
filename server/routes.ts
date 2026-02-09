@@ -21010,23 +21010,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       if (response.data && response.data.status === 'success') {
-        // Equity funds is usually the relevant one for most traders
+        // Upstox returns data under 'equity' and 'commodity' keys
         const equityFunds = response.data.data.equity || {};
         const commodityFunds = response.data.data.commodity || {};
         
-        // Prioritize equity segment available_margin as per documentation
-        const funds = (equityFunds.available_margin !== undefined) 
-          ? equityFunds.available_margin 
-          : (commodityFunds.available_margin !== undefined)
-            ? commodityFunds.available_margin
-            : (response.data.data.available_margin !== undefined)
-              ? response.data.data.available_margin
-              : 0;
+        // Total available margin from both segments
+        const funds = Number(equityFunds.available_margin || 0) + Number(commodityFunds.available_margin || 0);
               
-        console.log('✅ [UPSTOX API] Derived funds:', funds);
-        res.json({ funds });
+        console.log('✅ [UPSTOX API] Derived total funds:', funds);
+        res.json({ 
+          success: true,
+          funds,
+          availableCash: funds,
+          availableFunds: funds,
+          equity: equityFunds,
+          commodity: commodityFunds
+        });
       } else {
-        res.json({ funds: 0 });
+        res.json({ success: false, funds: 0, availableCash: 0 });
       }
     } catch (error: any) {
       console.error('🔴 [UPSTOX API] Error fetching funds:', error.message);
@@ -21529,19 +21530,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const commodityFunds = data.data.commodity || {};
         
         // Upstox API documentation says available_margin is the total margin available for trading
-        // Prioritize equity segment available_margin
-        let availableFunds = 0;
-        
-        if (equityFunds.available_margin !== undefined) {
-          availableFunds = Number(equityFunds.available_margin);
-        } else if (commodityFunds.available_margin !== undefined) {
-          availableFunds = Number(commodityFunds.available_margin);
-        } else if (data.data.available_margin !== undefined) {
-          availableFunds = Number(data.data.available_margin);
-        }
+        // Summing both equity and commodity to show true available funds
+        const availableFunds = Number(equityFunds.available_margin || 0) + Number(commodityFunds.available_margin || 0);
 
-        console.log('✅ [UPSTOX-MARGINS] Derived Available Funds:', availableFunds);
-        res.json({ success: true, availableCash: availableFunds });
+        console.log('✅ [UPSTOX-MARGINS] Derived Total Available Funds:', availableFunds);
+        res.json({ 
+          success: true, 
+          availableCash: availableFunds,
+          availableFunds: availableFunds,
+          equity: equityFunds,
+          commodity: commodityFunds
+        });
       } else {
         console.log('⚠️ [UPSTOX-MARGINS] Response status not success or no data:', data.status);
         res.json({ success: true, availableCash: 0 });
@@ -21863,22 +21862,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const equityFunds = data.data.equity || {};
         const commodityFunds = data.data.commodity || {};
         
-        // Prioritize equity segment available_margin as per documentation
-        // Fallback to commodity if equity is missing
-        // Also check if available_margin exists directly in data (older API versions)
-        const availableFunds = (equityFunds.available_margin !== undefined) 
-          ? equityFunds.available_margin 
-          : (commodityFunds.available_margin !== undefined)
-            ? commodityFunds.available_margin
-            : (data.data.available_margin !== undefined)
-              ? data.data.available_margin
-              : 0;
+        // Total available funds across segments
+        const availableFunds = Number(equityFunds.available_margin || 0) + Number(commodityFunds.available_margin || 0);
               
-        console.log('✅ [UPSTOX] Derived Available Funds:', availableFunds);
+        console.log('✅ [UPSTOX] Derived Total Available Funds:', availableFunds);
         res.json({
           success: true,
           availableCash: availableFunds,
           availableFunds: availableFunds,
+          funds: availableFunds,
           data: data.data
         });
       } else {
@@ -21886,7 +21878,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json({
           success: false,
           availableCash: 0,
-          availableFunds: 0
+          availableFunds: 0,
+          funds: 0
         });
       }
     } catch (error: any) {
