@@ -5,3 +5,4 @@
 [x] 5. Fix Dhan logo and client name display - Updated logo URL and enhanced backend profile name fetching logic.
 [x] 6. Re-verified app startup after dotenv reinstall - Server running, Angel One connected, WebSocket streaming live data.
 [x] 7. Re-verified workflow after environment migration - tsx resolved, server responding 200, UI fully loaded with trading dashboard.
+[x] 8. Re-installed dotenv after environment reset - Package reinstalled, workflow restarted and running successfully on port 5000.
