@@ -23667,7 +23667,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <td className="px-2 py-1.5 text-right text-gray-500">{hidePositionDetails ? '***' : position.entryPrice.toFixed(2)}</td>
                               <td className="px-2 py-1.5 text-right">{position.currentPrice.toFixed(2)}</td>
                               <td className="px-2 py-1.5 text-right text-orange-500 text-[10px] font-medium">
-                                {(position as any).slTriggerPrice ? `₹${(position as any).slTriggerPrice.toFixed(2)}` : '-'}
+                                {(position as any).slType === 'duration' ? `Time: ${(position as any).slValue} ${(position as any).slDurationUnit || 'min'}` : (position as any).slTriggerPrice ? `₹${(position as any).slTriggerPrice.toFixed(2)}` : '-'}
                               </td>
                               <td className={`px-2 py-1.5 text-right font-medium ${position.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                 {hidePositionDetails ? '***' : `₹${position.pnl.toFixed(0)}`}
