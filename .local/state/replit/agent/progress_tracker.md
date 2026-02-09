@@ -13,3 +13,4 @@
 [x] 13. Fixed entry price display issue in Positions tab - Identified as Upstox broker issue. Updated Upstox positions route in `server/routes.ts` to correctly map `entry_price` from `average_price`, `buy_price`, or `cost_price` for better data reliability. Verified Dhan service mapping also.
 [x] 14. Session recovery (Final) - Verified server running on port 5000, WebSocket streaming live, and all broker position data correctly mapped. All tasks complete.
 [x] 15. Session recovery (Feb 9, #2) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All systems operational.
+[x] 16. Session recovery (Feb 9, #3) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated successfully, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
