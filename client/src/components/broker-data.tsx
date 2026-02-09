@@ -252,7 +252,7 @@ export function BrokerData(props: BrokerDataProps) {
                                   status === 'CANCELLED' ? 'text-yellow-600 dark:text-yellow-400' :
                                   'text-blue-600 dark:text-blue-400'
                                 }`}>
-                                  {trade.status || 'PENDING'}
+                                  {(trade.status || 'PENDING').toUpperCase()}
                                 </span>
                               </td>
                             </tr>
@@ -347,7 +347,7 @@ export function BrokerData(props: BrokerDataProps) {
                               <td className={`px-2 py-2 ${returnPercent >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                                 {returnPercent.toFixed(2)}%
                               </td>
-                              <td className="px-2 py-2">{pos.status || 'Open'}</td>
+                              <td className="px-2 py-2">{(pos.status || 'Open').toUpperCase()}</td>
                             </tr>
                           );
                         })
