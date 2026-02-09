@@ -124,12 +124,13 @@ export async function fetchDhanPositions(): Promise<DhanPosition[]> {
     const positionsData = response.data?.data || response.data || [];
     return positionsData.map((pos: any) => {
       const quantity = Number(pos.netQty || pos.quantity || 0);
-      const entryPrice = Number(pos.buyAvg || pos.avgCostPrice || pos.averagePrice || pos.entryPrice || 0);
+      const entryPrice = Number(pos.avgCostPrice || pos.buyAvg || pos.averagePrice || pos.entryPrice || 0);
       const unrealizedPnl = Number(pos.unrealizedProfit || pos.unrealizedPnl || 0);
+      const ltp = Number(pos.lastPrice || pos.currentPrice || pos.ltp || 0);
       
       // Calculate current price if not provided: (unrealizedPnl / quantity) + entryPrice
       // PnL = (Current - Entry) * Qty => Current = (PnL / Qty) + Entry
-      let currentPrice = Number(pos.lastPrice || pos.currentPrice || 0);
+      let currentPrice = ltp;
       if (currentPrice === 0 && quantity !== 0) {
         currentPrice = (unrealizedPnl / quantity) + entryPrice;
       }
