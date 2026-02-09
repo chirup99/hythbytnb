@@ -1,5 +1,4 @@
 import { Countdown } from '@/components/countdown';
-import { Countdown } from "@/components/countdown";
 ﻿import { motion, AnimatePresence } from "framer-motion";
 
 import { BrokerData } from "@/components/broker-data";
@@ -6294,6 +6293,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       // Calculate SL trigger price if SL is enabled
       let slTriggerPrice: number | undefined;
       let slExpiryTime: number | undefined;
+
+      if (paperTradeSLEnabled && paperTradeSLType === 'duration') {
+        const durationValue = parseInt(paperTradeSLValue);
+        if (!isNaN(durationValue)) {
+          const multiplier = paperTradeSLDurationUnit === 'hr' ? 60 * 60 * 1000 : 60 * 1000;
+          slExpiryTime = Date.now() + (durationValue * multiplier);
+        }
+      }
 
       if (paperTradeSLEnabled && paperTradeSLValue) {
         if (paperTradeSLType === 'price') {
@@ -23174,7 +23181,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                             <div className="text-[10px] text-gray-400 mt-1">
                               LTP: ₹{position.currentPrice.toFixed(2)}
-                              {(position as any).slTriggerPrice && (
+                              {(position as any).slType === "duration" ? ((position as any).slExpiryTime ? <span className="text-orange-500 ml-2">Time: <Countdown expiryTime={(position as any).slExpiryTime} /></span> : null) : (position as any).slTriggerPrice && (
                                 <span className="text-orange-500 ml-2">SL: ₹{(position as any).slTriggerPrice.toFixed(2)}</span>
                               )}
                             </div>
@@ -23669,7 +23676,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <td className="px-2 py-1.5 text-right text-gray-500">{hidePositionDetails ? '***' : position.entryPrice.toFixed(2)}</td>
                               <td className="px-2 py-1.5 text-right">{position.currentPrice.toFixed(2)}</td>
                               <td className="px-2 py-1.5 text-right text-orange-500 text-[10px] font-medium">
-                                {(position as any).slType === 'duration' ? `Time: ${(position as any).slValue} ${(position as any).slDurationUnit || 'min'}` : (position as any).slTriggerPrice ? `₹${(position as any).slTriggerPrice.toFixed(2)}` : '-'}
+                                {(position as any).slType === 'duration' ? ((position as any).slExpiryTime ? <Countdown expiryTime={(position as any).slExpiryTime} /> : `Time: ${(position as any).slValue} ${(position as any).slDurationUnit || "min"}`) : (position as any).slTriggerPrice ? `₹${(position as any).slTriggerPrice.toFixed(2)}` : "-"}
                               </td>
                               <td className={`px-2 py-1.5 text-right font-medium ${position.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                 {hidePositionDetails ? '***' : `₹${position.pnl.toFixed(0)}`}
@@ -24781,7 +24788,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <div className="text-[10px] text-gray-400 mt-1 flex items-center justify-start">
                               <div>
                                 LTP: ₹{position.currentPrice.toFixed(2)}
-                                {(position as any).slTriggerPrice && (
+                                {(position as any).slType === "duration" ? ((position as any).slExpiryTime ? <span className="text-orange-500 ml-2">Time: <Countdown expiryTime={(position as any).slExpiryTime} /></span> : null) : (position as any).slTriggerPrice && (
                                   <span className="text-orange-500 ml-2">SL: ₹{(position as any).slTriggerPrice.toFixed(2)}</span>
                                 )}
                               </div>
@@ -24789,7 +24796,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
                               </div>
                             </div>
-                              {(position as any).slTriggerPrice && (
+                              {(position as any).slType === "duration" ? ((position as any).slExpiryTime ? <span className="text-orange-500 ml-2">Time: <Countdown expiryTime={(position as any).slExpiryTime} /></span> : null) : (position as any).slTriggerPrice && (
                                 <span className="text-orange-500 ml-2">SL: ₹{(position as any).slTriggerPrice.toFixed(2)}</span>
                               )}
                             </div>
