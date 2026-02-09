@@ -21375,6 +21375,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         console.log('✅ [ZERODHA] Fetched available balance:', availableCash);
 
+        return res.json({ 
+          success: true, 
+          availableCash,
+          equity 
+        });
+      }
+
+      const errorText = await response.text();
+      console.error('❌ [ZERODHA] Margins API returned status:', response.status, 'Body:', errorText.substring(0, 200));
+      return res.status(response.status).json({ 
+        success: false, 
+        availableCash: 0, 
+        error: 'Failed to fetch from Zerodha API' 
+      });
+    } catch (error) {
+      console.error('❌ [ZERODHA] Error fetching margins:', error);
+      return res.status(500).json({ 
+        success: false, 
+        availableCash: 0, 
+        error: 'Server error fetching broker funds' 
+      });
+    }
+  });
+
   // Get Upstox trades (orders)
   app.get("/api/broker/upstox/trades", (req, res) => {
     try {
@@ -21564,24 +21588,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (e: any) { 
       console.error('🔴 [UPSTOX-MARGINS] Exception:', e.message);
       return res.status(500).json({ success: false, availableCash: 0, error: e.message }); 
-    }
-  });
-      
-      // API call failed - log the response body for debugging
-      const errorText = await response.text();
-      console.error('❌ [ZERODHA] Margins API returned status:', response.status, 'Body:', errorText.substring(0, 200));
-      return res.status(response.status).json({ 
-        success: false, 
-        availableCash: 0, 
-        error: 'Failed to fetch from Zerodha API' 
-      });
-    } catch (error) {
-      console.error('❌ [ZERODHA] Error fetching margins:', error);
-      return res.status(500).json({ 
-        success: false, 
-        availableCash: 0, 
-        error: 'Server error fetching broker funds' 
-      });
     }
   });
 
