@@ -11848,6 +11848,37 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     };
   }, [tradeHistoryData]);
 
+  // Helper function to parse time string into Date object reliably
+  const parseTradeTime = (timeStr: string): Date => {
+    if (!timeStr) return new Date(0);
+    
+    // If it is already a full date string or ISO format
+    if (timeStr.includes("-") || timeStr.includes("T")) {
+      const d = new Date(timeStr);
+      if (!isNaN(d.getTime())) return d;
+    }
+
+    // Handle formats like "11:11:38 AM" or "12:08:33 PM" or "11:11:38"
+    const timeMatch = timeStr.match(/(\d+):(\d+):(\d+)\s*(AM|PM)?/i);
+    if (timeMatch) {
+      let hours = parseInt(timeMatch[1]);
+      const minutes = parseInt(timeMatch[2]);
+      const seconds = parseInt(timeMatch[3]);
+      const ampm = timeMatch[4]?.toUpperCase();
+
+      if (ampm === "PM" && hours < 12) hours += 12;
+      if (ampm === "AM" && hours === 12) hours = 0;
+
+      const d = new Date();
+      d.setHours(hours, minutes, seconds, 0);
+      return d;
+    }
+
+    // Fallback to basic Date parsing
+    const d = new Date(`1970-01-01 ${timeStr}`);
+    return isNaN(d.getTime()) ? new Date(0) : d;
+  };
+
   // Helper function to format duration in milliseconds to readable format (d, h, m, s)
   const formatDuration = (durationMs: number): string => {
     if (durationMs < 0) return '-';
@@ -11941,10 +11972,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           const totalPnL = pnlPerShare * trade.qty;
 
           // Calculate duration from first buy to this sell
-          const entryTime = new Date(
-            `1970-01-01 ${positions[symbol].firstTradeTime}`,
+          const entryTime = parseTradeTime(
+            positions[symbol].firstTradeTime,
           );
-          const exitTime = new Date(`1970-01-01 ${trade.time}`);
+          const exitTime = parseTradeTime(trade.time);
           const durationMs = exitTime.getTime() - entryTime.getTime();
           const durationText = formatDuration(durationMs);
 
@@ -12334,8 +12365,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         const totalPnL = pnlPerShare * trade.qty;
 
         // Calculate duration
-        const openTime = new Date(`1970-01-01 ${openTrade.time}`);
-        const closeTime = new Date(`1970-01-01 ${trade.time}`);
+        const openTime = parseTradeTime(openTrade.time);
+        const closeTime = parseTradeTime(trade.time);
         const durationMs = closeTime.getTime() - openTime.getTime();
         const durationText = formatDuration(durationMs);
 
