@@ -1,3 +1,5 @@
+import { Countdown } from '@/components/countdown';
+import { Countdown } from "@/components/countdown";
 ﻿import { motion, AnimatePresence } from "framer-motion";
 
 import { BrokerData } from "@/components/broker-data";
