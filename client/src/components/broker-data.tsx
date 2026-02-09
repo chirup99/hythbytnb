@@ -306,7 +306,7 @@ export function BrokerData(props: BrokerDataProps) {
                           const currentPrice = (pos.currentPrice || pos.current_price || 0) as number;
                           const qty = (pos.qty || pos.quantity || 0) as number;
                           const unrealizedPnl = (currentPrice - entryPrice) * qty;
-                          const returnPercent = entryPrice > 0 ? ((currentPrice - entryPrice) / entryPrice) * 100 : 0;
+                          const returnPercent = (entryPrice > 0 && !isClosed) ? ((currentPrice - entryPrice) / entryPrice) * 100 : 0;
                           const status = String(pos.status || "Open").toUpperCase().trim();
                           const isClosed = status === "CLOSED";
                           
@@ -344,8 +344,8 @@ export function BrokerData(props: BrokerDataProps) {
                               <td className={`px-2 py-2 font-medium ${unrealizedPnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                                 ₹{unrealizedPnl.toFixed(2)}
                               </td>
-                              <td className={`px-2 py-2 ${returnPercent >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                                {returnPercent.toFixed(2)}%
+                              <td className={`px-2 py-2 ${returnPercent >= 0 || isClosed ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                                {isClosed ? "0.00%" : `${returnPercent.toFixed(2)}%`}
                               </td>
                               <td className="px-2 py-2">{(pos.status || 'Open').toUpperCase()}</td>
                             </tr>
