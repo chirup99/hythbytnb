@@ -10,3 +10,4 @@
 [x] 10. Fixed broken Zerodha margins route syntax error - Repaired incomplete route handler at line 21376, removed orphaned code block, reinstalled dotenv, server running successfully with live WebSocket data.
 [x] 11. Session recovery - Reinstalled dotenv, restarted workflow, verified server running with Angel One connected and WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 12. Session recovery (Feb 9) - Reinstalled dotenv, restarted workflow, server running on port 5000. Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All systems operational.
+[x] 13. Fixed entry price display issue in Positions tab - Updated Dhan service to correctly map `costPrice` and added camelCase field mapping for frontend compatibility. Verified entry price calculation logic.

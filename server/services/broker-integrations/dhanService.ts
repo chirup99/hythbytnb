@@ -124,7 +124,8 @@ export async function fetchDhanPositions(): Promise<DhanPosition[]> {
     const positionsData = response.data?.data || response.data || [];
     return positionsData.map((pos: any) => {
       const quantity = Number(pos.netQty || pos.quantity || 0);
-      const entryPrice = Number(pos.avgCostPrice || pos.buyAvg || pos.averagePrice || pos.entryPrice || 0);
+      // Dhan API often uses costPrice or buyAvg for entry price in positions
+      const entryPrice = Number(pos.costPrice || pos.buyAvg || pos.avgCostPrice || pos.averagePrice || pos.entryPrice || 0);
       const unrealizedPnl = Number(pos.unrealizedProfit || pos.unrealizedPnl || 0);
       const ltp = Number(pos.lastPrice || pos.currentPrice || pos.ltp || 0);
       
@@ -138,7 +139,9 @@ export async function fetchDhanPositions(): Promise<DhanPosition[]> {
       return {
         symbol: pos.tradingSymbol || pos.symbol || 'N/A',
         entry_price: entryPrice,
+        entryPrice: entryPrice, // Added for frontend compatibility
         current_price: currentPrice,
+        currentPrice: currentPrice, // Added for frontend compatibility
         qty: quantity,
         quantity: quantity,
         unrealized_pnl: unrealizedPnl,
