@@ -6605,7 +6605,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     }
 
     // Filter to only COMPLETE orders (successful orders only)
-    const completeOrders = brokerOrders.filter((order: any) => order.status === 'COMPLETE');
+    const completeOrders = brokerOrders.filter((order: any) =>  (String(order.status || '').toUpperCase().trim() === 'COMPLETE' || String(order.status || '').toUpperCase().trim() === 'COMPLETED'));
     
     if (completeOrders.length === 0) {
       toast({
@@ -6689,7 +6689,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   // Auto-tap: Automatically record broker orders when NEW COMPLETE orders are added
   useEffect(() => {
     // Count only COMPLETE orders
-    const completeOrders = brokerOrders.filter((order: any) => order.status === 'COMPLETE');
+    const completeOrders = brokerOrders.filter((order: any) =>  (String(order.status || '').toUpperCase().trim() === 'COMPLETE' || String(order.status || '').toUpperCase().trim() === 'COMPLETED'));
     const completeOrdersCount = completeOrders.length;
     
     // Only auto-trigger if COMPLETE count increased (new success orders added)
