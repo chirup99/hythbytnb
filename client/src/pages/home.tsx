@@ -11944,7 +11944,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           const entryTime = new Date(
             `1970-01-01 ${positions[symbol].firstTradeTime}`,
           );
-          const exitTime = new Date(`1970-01-01 ${trade.time}`);
+          const exitTime = (() => { const t = trade.time; if (t.includes("AM") || t.includes("PM")) { const d = new Date(`1970-01-01 ${t}`); return d; } return new Date(`1970-01-01 ${t}`); })();
           const durationMs = exitTime.getTime() - entryTime.getTime();
           const durationText = formatDuration(durationMs);
 
