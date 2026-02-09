@@ -21507,7 +21507,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const data = await response.json();
       const positions = (data.data || []).map((p: any) => ({
         symbol: p.tradingsymbol || p.instrument_key || "N/A",
-        entry_price: p.average_price || 0,
+        entry_price: p.average_price || p.buy_price || p.cost_price || 0,
         current_price: p.last_price || 0,
         quantity: p.quantity || 0,
         unrealised_pnl: p.unrealised_pnl || 0,
