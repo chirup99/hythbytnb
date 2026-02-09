@@ -151,7 +151,7 @@ export function BrokerData(props: BrokerDataProps) {
                   )}
                   {activeBroker === 'dhan' && (
                     <>
-                      <img src="https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701" alt="Dhan" className="w-4 h-4 dark:invert opacity-90" />
+                      <img src="https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701" alt="Dhan" className="w-4 h-4" />
                       <span>id: {showUserId ? (dhanClientId || dhanUserId || "N/A") : "••••••"} | {showUserId ? (dhanClientName && dhanClientName !== "Dhan User" ? dhanClientName : "Dhan User") : "•••••"}</span>
                     </>
                   )}
