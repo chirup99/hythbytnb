@@ -204,9 +204,34 @@ export function BrokerData(props: BrokerDataProps) {
                           const status = String(trade.status || "").toUpperCase().trim();
                           const isClosed = status === "REJECTED" || status === "CANCELLED";
                           
+                          // Format time to show only time (HH:MM:SS AM/PM) if it's a full date string
+                          let displayTime = trade.time;
+                          if (displayTime && displayTime.includes(' ')) {
+                            try {
+                              const dateParts = displayTime.split(' ');
+                              // If it's YYYY-MM-DD HH:MM:SS, take the second part
+                              if (dateParts.length >= 2) {
+                                displayTime = dateParts[1];
+                                // Add AM/PM if not present and if it looks like a 24h time we want to convert or just keep as is
+                                // User asked for "same zerodha orders&postion format" which from image 2 shows "11:13:39 AM"
+                                const timeObj = new Date(`2000-01-01 ${displayTime}`);
+                                if (!isNaN(timeObj.getTime())) {
+                                  displayTime = timeObj.toLocaleTimeString('en-US', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit', 
+                                    second: '2-digit',
+                                    hour12: true 
+                                  });
+                                }
+                              }
+                            } catch (e) {
+                              console.error("Error formatting time:", e);
+                            }
+                          }
+
                           return (
                             <tr key={index} className={`border-b hover:bg-gray-50 dark:hover:bg-gray-700 ${isClosed ? 'bg-gray-100/50 dark:bg-gray-800/40' : ''}`}>
-                              <td className="px-2 py-2 font-medium">{trade.time}</td>
+                              <td className="px-2 py-2 font-medium">{displayTime}</td>
                               <td className="px-2 py-2">
                                 <span className={`px-1 py-0.5 rounded text-xs ${
                                   trade.order === "BUY"
@@ -285,9 +310,34 @@ export function BrokerData(props: BrokerDataProps) {
                           const status = String(pos.status || "Open").toUpperCase().trim();
                           const isClosed = status === "CLOSED";
                           
+                          // Format time if available (some brokers include it in positions)
+                          let displayTime = pos.time || pos.timestamp || '';
+                          if (displayTime && typeof displayTime === 'string' && displayTime.includes(' ')) {
+                            try {
+                              const dateParts = displayTime.split(' ');
+                              if (dateParts.length >= 2) {
+                                displayTime = dateParts[1];
+                                const timeObj = new Date(`2000-01-01 ${displayTime}`);
+                                if (!isNaN(timeObj.getTime())) {
+                                  displayTime = timeObj.toLocaleTimeString('en-US', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit', 
+                                    second: '2-digit',
+                                    hour12: true 
+                                  });
+                                }
+                              }
+                            } catch (e) {
+                              console.error("Error formatting position time:", e);
+                            }
+                          }
+                          
                           return (
                             <tr key={index} className={`border-b hover:bg-gray-50 dark:hover:bg-gray-700 ${isClosed ? 'bg-gray-100/50 dark:bg-gray-800/40' : ''}`}>
-                              <td className="px-2 py-2 font-medium">{formatSymbol(pos.symbol)}</td>
+                              <td className="px-2 py-2 font-medium">
+                                <div>{formatSymbol(pos.symbol)}</div>
+                                {displayTime && <div className="text-[10px] text-gray-500 font-normal">{displayTime}</div>}
+                              </td>
                               <td className="px-2 py-2">₹{entryPrice.toFixed(2)}</td>
                               <td className="px-2 py-2">₹{currentPrice.toFixed(2)}</td>
                               <td className="px-2 py-2">{qty}</td>
