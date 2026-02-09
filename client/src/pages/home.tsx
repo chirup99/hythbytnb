@@ -24537,10 +24537,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                             {paperTradeSLType !== 'high' && paperTradeSLType !== 'low' && (
                               <div>
-                                <label className="text-[10px] text-gray-500 uppercase">Value</label>
+                                <label className="text-[10px] text-gray-500 uppercase">{paperTradeSLType === 'duration' ? 'Duration' : 'Value'}</label>
                                 <Input
                                   type="number"
-                                  placeholder={paperTradeSLType === 'price' ? 'Price' : '%'}
+                                  placeholder={paperTradeSLType === 'price' ? 'Price' : paperTradeSLType === 'duration' ? (paperTradeSLDurationUnit === 'min' ? 'Minutes' : 'Hours') : '%'}
                                   value={paperTradeSLValue}
                                   onChange={(e) => setPaperTradeSLValue(e.target.value)}
                                   className="h-9 text-sm mt-1"
