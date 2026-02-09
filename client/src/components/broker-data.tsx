@@ -306,9 +306,9 @@ export function BrokerData(props: BrokerDataProps) {
                           const currentPrice = (pos.currentPrice || pos.current_price || 0) as number;
                           const qty = (pos.qty || pos.quantity || 0) as number;
                           const unrealizedPnl = (currentPrice - entryPrice) * qty;
-                          const returnPercent = (entryPrice > 0 && !isClosed) ? ((currentPrice - entryPrice) / entryPrice) * 100 : 0;
                           const status = String(pos.status || "Open").toUpperCase().trim();
                           const isClosed = status === "CLOSED";
+                          const returnPercent = (entryPrice > 0 && !isClosed) ? ((currentPrice - entryPrice) / entryPrice) * 100 : 0;
                           
                           // Format time if available (some brokers include it in positions)
                           let displayTime = pos.time || pos.timestamp || '';
