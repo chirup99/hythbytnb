@@ -22999,8 +22999,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <SelectItem value="price">Price SL</SelectItem>
                                           <SelectItem value="percent">% SL</SelectItem>
                                           <SelectItem value="duration">Duration</SelectItem>
-                                          <SelectItem value="high">Candle High</SelectItem>
-                                          <SelectItem value="low">Candle Low</SelectItem>
                                         </SelectContent>
                                       </Select>
                                     </div>
@@ -23497,8 +23495,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <SelectItem value="price">Price SL</SelectItem>
                                         <SelectItem value="percent">% SL</SelectItem>
                                         <SelectItem value="duration">Duration</SelectItem>
-                                        <SelectItem value="high">Candle High</SelectItem>
-                                        <SelectItem value="low">Candle Low</SelectItem>
                                       </SelectContent>
                                     </Select>
                                   </div>
@@ -24503,8 +24499,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <SelectItem value="price">Price SL</SelectItem>
                                   <SelectItem value="percent">% SL</SelectItem>
                                   <SelectItem value="duration">Duration</SelectItem>
-                                  <SelectItem value="high">Candle High</SelectItem>
-                                  <SelectItem value="low">Candle Low</SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
