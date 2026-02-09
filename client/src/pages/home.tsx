@@ -19116,7 +19116,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   ) : (
                                     tradeHistoryData.map((trade, index) => (
                                       <tr key={index} className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                                        <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.time}</td>
+                                        <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{(() => { if (!trade.time) return "-"; try { if (trade.time.includes("AM") || trade.time.includes("PM")) return trade.time; const dateObj = new Date(trade.time.includes(" ") ? trade.time : `1970-01-01 ${trade.time}`); if (isNaN(dateObj.getTime())) return trade.time; return dateObj.toLocaleTimeString("en-US", { hour12: true, hour: "numeric", minute: "2-digit", second: "2-digit" }); } catch (e) { return trade.time; } })()}</td>
                                         <td className="px-2 py-2">
                                           <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                                             trade.order === "BUY" ? "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300" : "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300"
@@ -19323,7 +19323,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     key={index}
                                     className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                                   >
-                                    <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{trade.time}</td>
+                                    <td className="px-2 py-2 text-slate-600 dark:text-slate-400">{(() => { if (!trade.time) return "-"; try { if (trade.time.includes("AM") || trade.time.includes("PM")) return trade.time; const dateObj = new Date(trade.time.includes(" ") ? trade.time : `1970-01-01 ${trade.time}`); if (isNaN(dateObj.getTime())) return trade.time; return dateObj.toLocaleTimeString("en-US", { hour12: true, hour: "numeric", minute: "2-digit", second: "2-digit" }); } catch (e) { return trade.time; } })()}</td>
                                     <td className="px-2 py-2">
                                       <span
                                         className={`text-xs font-bold px-1.5 py-0.5 rounded ${
