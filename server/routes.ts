@@ -21011,7 +21011,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       if (response.data && response.data.status === 'success') {
         // Equity funds is usually the relevant one for most traders
-        const funds = response.data.data.equity?.available_margin || 0;
+        const equityFunds = response.data.data.equity || {};
+        const commodityFunds = response.data.data.commodity || {};
+        
+        // Prioritize equity segment available_margin as per documentation
+        const funds = (equityFunds.available_margin !== undefined) 
+          ? equityFunds.available_margin 
+          : (commodityFunds.available_margin !== undefined)
+            ? commodityFunds.available_margin
+            : (response.data.data.available_margin !== undefined)
+              ? response.data.data.available_margin
+              : 0;
+              
+        console.log('✅ [UPSTOX API] Derived funds:', funds);
         res.json({ funds });
       } else {
         res.json({ funds: 0 });
@@ -21852,11 +21864,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const commodityFunds = data.data.commodity || {};
         
         // Prioritize equity segment available_margin as per documentation
-        // Fallback to commodity if equity is 0 or missing
+        // Fallback to commodity if equity is missing
         // Also check if available_margin exists directly in data (older API versions)
-        const availableFunds = (equityFunds.available_margin !== undefined && equityFunds.available_margin !== 0) 
+        const availableFunds = (equityFunds.available_margin !== undefined) 
           ? equityFunds.available_margin 
-          : (commodityFunds.available_margin !== undefined && commodityFunds.available_margin !== 0)
+          : (commodityFunds.available_margin !== undefined)
             ? commodityFunds.available_margin
             : (data.data.available_margin !== undefined)
               ? data.data.available_margin
