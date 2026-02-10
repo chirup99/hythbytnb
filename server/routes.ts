@@ -5560,7 +5560,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
+      const awsRegion = process.env.ACM_REGION || process.env.AWS_REGION || 'ap-south-1';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {
         console.log('❌ AWS credentials not configured');
@@ -5723,7 +5723,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
+      const awsRegion = process.env.ACM_REGION || process.env.AWS_REGION || 'ap-south-1';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {
         console.log('❌ AWS credentials not configured');
@@ -5911,7 +5911,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
+      const awsRegion = process.env.ACM_REGION || process.env.AWS_REGION || 'ap-south-1';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {
         // If AWS not configured, assume username is available
@@ -7632,7 +7632,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
+      const awsRegion = process.env.ACM_REGION || process.env.AWS_REGION || 'ap-south-1';
       const bucketName = process.env.AWS_S3_BUCKET || 'neofeed-profile-images';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {
@@ -9214,7 +9214,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const awsRegion = process.env.AWS_REGION || 'ap-south-2';
+      const awsRegion = process.env.ACM_REGION || process.env.AWS_REGION || 'ap-south-1';
       const bucketName = process.env.AWS_S3_BUCKET || 'neofeed-profile-images';
 
       if (!awsAccessKeyId || !awsSecretAccessKey) {
