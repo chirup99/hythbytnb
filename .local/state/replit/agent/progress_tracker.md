@@ -22,3 +22,4 @@
 [x] 22. Fixed paper trading duration SL expiry - Added `onExpiry` callback to `Countdown` component in `home.tsx` to automatically trigger `exitPosition` when the timer hits zero. Verified via browser console logs.
 [x] 23. Removed 'candle high' and 'candle low' SL options - Updated `home.tsx` to remove these options from the SL type selection, keeping only Price, Duration, and Percentage. All items marked [x] complete.
 [x] 24. Session recovery (Feb 10) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
+[x] 25. Session recovery (Feb 10, #2) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
