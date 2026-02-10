@@ -20430,6 +20430,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               avgPnL: 0,
                               bestDay: 0,
                               worstDay: 0,
+                              totalDuration: 0,
+                              durations: [],
                             };
                           }
 
@@ -20441,6 +20443,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             stats.wins += metrics.winningTrades || 0;
                             stats.losses += metrics.losingTrades || 0;
                             stats.totalPnL += metrics.netPnL || 0;
+                            
+                            // Track duration if available (assuming duration in minutes)
+                            const duration = metrics.avgDuration || metrics.duration || 0;
+                            if (duration > 0) {
+                              stats.totalDuration += duration;
+                              stats.durations.push(duration);
+                            }
                             stats.bestDay = Math.max(
                               stats.bestDay,
                               metrics.netPnL || 0,
@@ -20463,6 +20472,35 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           stats.tradingDays > 0
                             ? stats.totalPnL / stats.tradingDays
                             : 0;
+                        
+                        stats.avgDuration = stats.totalTrades > 0 ? (stats.totalDuration / stats.totalTrades) : 0;
+                        
+                        // Determine trading style
+                        if (stats.avgDuration === 0) {
+                          stats.tradingStyle = "Inconsistent";
+                        } else if (stats.avgDuration < 15) {
+                          stats.tradingStyle = "Scalper";
+                        } else if (stats.avgDuration < 60) {
+                          stats.tradingStyle = "Intraday";
+                        } else if (stats.avgDuration < 1440) {
+                          stats.tradingStyle = "Swing Trade";
+                        } else {
+                          stats.tradingStyle = "Holding";
+                        }
+                        
+                        // Override for emotional exit if loss making with high duration
+                        if (stats.totalPnL < 0 && stats.avgDuration > 30) {
+                          stats.tradingStyle = "Emotional Panic Exit";
+                        }
+                        
+                        // Check for inconsistency in durations
+                        if (stats.durations.length > 2) {
+                           const min = Math.min(...stats.durations);
+                           const max = Math.max(...stats.durations);
+                           if (max > min * 5) {
+                             stats.tradingStyle = "Unconsistance Duration";
+                           }
+                        }
                       });
 
                       const tagAnalysis = Object.values(tagStats).sort(
@@ -20855,11 +20893,27 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           }}
                                         ></div>
                                       </div>
-                                      <div className="flex items-center justify-between">
+                                      <div className="flex items-center justify-between mb-1">
                                         <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Success Rate</span>
                                         <span className="text-xs font-bold text-slate-600 dark:text-slate-400">
                                           {tag.winRate.toFixed(1)}%
                                         </span>
+                                      </div>
+                                      <div className="flex items-center justify-between border-t border-slate-50 dark:border-slate-700/50 pt-2 mt-2">
+                                        <div className="flex flex-col">
+                                          <span className="text-[9px] uppercase tracking-tighter text-slate-400 font-bold">Avg Duration</span>
+                                          <span className="text-[10px] font-semibold text-slate-500">{tag.avgDuration > 0 ? tag.avgDuration.toFixed(0) + 'm' : '--'}</span>
+                                        </div>
+                                        <div className="text-right">
+                                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter ${
+                                            tag.tradingStyle === 'Scalper' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
+                                            tag.tradingStyle === 'Intraday' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' :
+                                            tag.tradingStyle === 'Emotional Panic Exit' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' :
+                                            'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
+                                          }`}>
+                                            {tag.tradingStyle}
+                                          </span>
+                                        </div>
                                       </div>
                                     </div>
                                   ))}
