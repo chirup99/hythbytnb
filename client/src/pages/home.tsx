@@ -20816,17 +20816,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
 
                             {insights.topPerformers.length > 0 ? (
-                              <div className="space-y-4">
+                              <div className="flex overflow-x-auto gap-4 pb-4 snap-x no-scrollbar -mx-2 px-2 scroll-smooth">
                                 {insights.topPerformers
-                                  .slice(0, 4)
                                   .map((tag: any, idx: number) => (
-                                    <div key={tag.tag} className="relative">
-                                      <div className="flex items-center justify-between w-full justify-start mb-2">
-                                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                          {tag.tag}
+                                    <div 
+                                      key={tag.tag} 
+                                      className="flex-shrink-0 w-[240px] snap-start bg-white dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all"
+                                    >
+                                      <div className="flex items-center justify-between w-full mb-3">
+                                        <span className="text-sm font-bold text-slate-800 dark:text-slate-200 truncate pr-2">
+                                          {(tag.displayTag || tag.tag).toUpperCase()}
                                         </span>
                                         <span
-                                          className={`text-sm font-semibold ${
+                                          className={`text-sm font-bold ${
                                             tag.totalPnL >= 0
                                               ? "text-emerald-600"
                                               : "text-red-500"
@@ -20838,7 +20840,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           ).toLocaleString()}
                                         </span>
                                       </div>
-                                      <div className="w-full h-2 bg-slate-100 dark:bg-slate-100 dark:bg-slate-700 rounded-full">
+                                      <div className="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full mb-2">
                                         <div
                                           className={`h-2 rounded-full transition-all duration-1000 ${
                                             tag.totalPnL >= 0
@@ -20853,8 +20855,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           }}
                                         ></div>
                                       </div>
-                                      <div className="text-xs text-slate-500 mt-1">
-                                        {tag.winRate.toFixed(1)}% success rate
+                                      <div className="flex items-center justify-between">
+                                        <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Success Rate</span>
+                                        <span className="text-xs font-bold text-slate-600 dark:text-slate-400">
+                                          {tag.winRate.toFixed(1)}%
+                                        </span>
                                       </div>
                                     </div>
                                   ))}
@@ -21149,12 +21154,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <h4 className="text-lg font-semibold mb-4">
                                     🚨 Most Problematic Tags
                                   </h4>
-                                  <div className="grid md:grid-cols-2 gap-4">
+                                  <div className="flex overflow-x-auto gap-4 pb-4 snap-x no-scrollbar -mx-2 px-2 scroll-smooth">
                                     {worstTags.length > 0 ? (
                                       worstTags.map((tag: any, idx: number) => (
                                         <div
                                           key={idx}
-                                          className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20"
+                                          className="flex-shrink-0 w-[280px] snap-start bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20"
                                         >
                                           <div className="flex items-start gap-3">
                                             <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">

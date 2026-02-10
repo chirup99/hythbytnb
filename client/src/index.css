@@ -448,3 +448,21 @@ input[type="range"].slider-thumb-purple::-moz-range-track {
     scrollbar-width: none;
   }
 }
+
+/* Carousel utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Carousel utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
