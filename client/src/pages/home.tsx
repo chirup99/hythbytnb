@@ -24778,7 +24778,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 {hidePositionDetails ? '***' : `₹${position.pnl.toFixed(0)}`}
                               </div>
                             </div>
-                            <div className="text-[10px] text-gray-400 mt-1">
                             <div className="text-[10px] text-gray-400 mt-1 flex items-center justify-start">
                               <div>
                                 LTP: ₹{position.currentPrice.toFixed(2)}
@@ -24789,10 +24788,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className={`text-[10px] font-semibold ${position.pnlPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                 {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
                               </div>
-                            </div>
-                              {(position as any).slType === "duration" ? ((position as any).slExpiryTime ? <span className="text-orange-500 ml-2">Time: <Countdown expiryTime={(position as any).slExpiryTime} onExpiry={() => exitPosition(position.id)} /></span> : null) : (position as any).slTriggerPrice && (
-                                <span className="text-orange-500 ml-2">SL: ₹{(position as any).slTriggerPrice.toFixed(2)}</span>
-                              )}
                             </div>
                           </div>
 
