@@ -23,3 +23,4 @@
 [x] 23. Removed 'candle high' and 'candle low' SL options - Updated `home.tsx` to remove these options from the SL type selection, keeping only Price, Duration, and Percentage. All items marked [x] complete.
 [x] 24. Session recovery (Feb 10) - Reinstalled dotenv, restarted workflow, server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 25. Limit paper trading option chain expiry dropdown - Modified `home.tsx` to display only the 3 latest expiry dates in the option chain selection dropdown. All items marked [x] complete.
+[x] 26. Session recovery (Feb 10, #2) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized. All items marked [x] complete.
