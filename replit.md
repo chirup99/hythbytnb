@@ -69,6 +69,7 @@ Preferred communication style: Simple, everyday language.
 - **BATTU 4-Candle Rule Methodology**: Involves data collection, block formation, Point A/B detection, pattern classification, slope calculation, timing validation, and recursive analysis (80min down to 5min).
 - **Demo Mode**: Allows users to switch between shared demo data (Google Cloud Storage) and personal trading data (Firebase Firestore), with access controls for saving and deleting formats based on authentication status.
 - **Audio MiniCast**: Enables users to create audio-based content from feed posts by selecting up to 5 posts, which are then displayed as swipeable cards with play controls in the feed.
+- **Paper Trading Enhancements**: Option chain expiry dropdown limited to the 3 nearest expiry dates for better usability.
 
 ## AI Trading Agent Enhancements (December 2025)
 

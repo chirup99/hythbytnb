@@ -23895,7 +23895,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg">
-                    {getOptionExpiryDates(selectedOptionIndex).map((date) => (
+                    {getOptionExpiryDates(selectedOptionIndex).slice(0, 3).map((date) => (
                       <SelectItem key={date.value} value={date.value}>
                         {date.label}
                       </SelectItem>
