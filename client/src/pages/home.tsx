@@ -23872,7 +23872,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           <DialogContent className="w-full max-w-2xl md:max-w-2xl p-0 md:p-0 bg-white dark:bg-gray-900 rounded-lg md:rounded-lg border border-gray-200 dark:border-gray-700">
 
             {/* Desktop Header */}
-            <div className="hidden md:block border-b border-gray-200 dark:border-gray-700 px-4 py-2">
+            <div className="block border-b border-gray-200 dark:border-gray-700 px-4 py-2">
               <div className="flex items-center justify-center mb-2">
                 <span className="text-xs font-semibold text-green-600 dark:text-green-400">Spot: ₹{(optionChainData?.spotPrice || 0)?.toLocaleString()}</span>
               </div>
@@ -23880,7 +23880,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               {/* Desktop Controls */}
               <div className="flex items-center justify-center gap-2">
                 <Select value={selectedOptionIndex} onValueChange={(val) => { setSelectedOptionIndex(val); setSelectedOptionExpiryDate(""); setOptionChainData(null); setTimeout(() => fetchOptionChainData(val), 0); }}>
-                  <SelectTrigger className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded text-gray-900 dark:text-white text-xs w-auto" data-testid="select-option-index-desktop">
+                  <SelectTrigger className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded text-gray-900 dark:text-white text-xs w-auto" data-testid="select-option-index">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg">
@@ -23891,7 +23891,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </Select>
 
                 <Select value={selectedOptionExpiryDate || (getOptionExpiryDates(selectedOptionIndex)[0]?.value || "")} onValueChange={(val) => { setSelectedOptionExpiryDate(val); fetchOptionChainData(selectedOptionIndex, val); }}>
-                  <SelectTrigger className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded text-gray-900 dark:text-white text-xs w-auto" data-testid="select-option-expiry-date-desktop">
+                  <SelectTrigger className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded text-gray-900 dark:text-white text-xs w-auto" data-testid="select-option-expiry-date">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg">
@@ -23907,7 +23907,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
             {/* Content Area */}
             {/* Desktop Table View */}
-            <div className="hidden md:block px-6 py-4 overflow-y-auto max-h-96">
+            <div className="px-2 md:px-6 py-4 overflow-y-auto max-h-[70vh]">
               {optionChainLoading && (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
