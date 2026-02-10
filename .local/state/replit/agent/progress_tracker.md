@@ -24,3 +24,4 @@
 [x] 24. Session recovery (Feb 10) - Reinstalled dotenv, restarted workflow, server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 25. Limit paper trading option chain expiry dropdown - Modified `home.tsx` to display only the 3 latest expiry dates in the option chain selection dropdown. All items marked [x] complete.
 [x] 26. Session recovery (Feb 10, #2) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized. All items marked [x] complete.
+[x] 27. Session recovery (Feb 10, #3) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. Market indices fetched (USA +0.47%, Canada +1.70%, India +0.26%, Tokyo +2.28%, Hong Kong +0.58%). All items marked [x] complete.
