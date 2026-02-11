@@ -97,12 +97,26 @@ export function LiveBanner() {
   const handleCustomUrlSubmit = () => {
     if (!customUrl) return;
     
-    let processedUrl = customUrl;
-    // Convert watch URL to embed URL if needed
-    if (processedUrl.includes('youtube.com/watch?v=')) {
-      processedUrl = processedUrl.replace('watch?v=', 'embed/');
-    } else if (processedUrl.includes('youtu.be/')) {
-      processedUrl = processedUrl.replace('youtu.be/', 'youtube.com/embed/');
+    let processedUrl = customUrl.trim();
+    
+    try {
+      // Handle various YouTube URL formats
+      if (processedUrl.includes('youtube.com/watch?v=')) {
+        const urlObj = new URL(processedUrl);
+        const videoId = urlObj.searchParams.get('v');
+        if (videoId) processedUrl = `https://www.youtube.com/embed/${videoId}`;
+      } else if (processedUrl.includes('youtu.be/')) {
+        const videoId = processedUrl.split('youtu.be/')[1]?.split(/[?#]/)[0];
+        if (videoId) processedUrl = `https://www.youtube.com/embed/${videoId}`;
+      } else if (processedUrl.includes('youtube.com/live/')) {
+        const videoId = processedUrl.split('live/')[1]?.split(/[?#]/)[0];
+        if (videoId) processedUrl = `https://www.youtube.com/embed/${videoId}`;
+      } else if (processedUrl.includes('youtube.com/embed/')) {
+        // Already an embed URL, just ensure it has the protocol
+        if (processedUrl.startsWith('//')) processedUrl = 'https:' + processedUrl;
+      }
+    } catch (e) {
+      console.error('Error processing URL:', e);
     }
 
     updateStreamUrl(processedUrl);
@@ -111,9 +125,10 @@ export function LiveBanner() {
   };
 
   const updateStreamUrl = (url: string) => {
+    const origin = window.location.origin;
     const cleanUrl = url.includes('?') 
-      ? `${url}&enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0`
-      : `${url}?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0`;
+      ? `${url}&enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&origin=${encodeURIComponent(origin)}`
+      : `${url}?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&origin=${encodeURIComponent(origin)}`;
     setYoutubeUrl(cleanUrl);
     setCurrentIndex(0);
     localStorage.setItem('youtube_banner_url', cleanUrl);
