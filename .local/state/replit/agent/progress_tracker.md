@@ -27,3 +27,4 @@
 [x] 27. Session recovery (Feb 10, #3) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. Market indices fetched (USA +0.47%, Canada +1.70%, India +0.26%, Tokyo +2.28%, Hong Kong +0.58%). All items marked [x] complete.
 [x] 28. Session recovery (Feb 10, #4) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 29. Session recovery (Feb 11) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI). All items marked [x] complete.
+[x] 30. Added CNBC-TV18 live stream and custom URL dropdown to LiveBanner component. Implemented custom URL dialog and localStorage persistence. Verified UI integration. All items marked [x] complete.
