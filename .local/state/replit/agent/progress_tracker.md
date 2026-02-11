@@ -31,3 +31,4 @@
 [x] 31. Fixed YouTube playback errors by improving URL processing for various formats (watch, share, live) and adding mandatory origin parameter for embed security. All items marked [x] complete.
 [x] 32. Session recovery (Feb 11, #2) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized. All items marked [x] complete.
 [x] 33. Updated CNBC Live Stream URL to the latest working link (P857H4ej-MQ). Verified across default content and dropdown handlers. All items marked [x] complete.
+[x] 34. Implemented carousel pause logic: The banner carousel now completely stops when the video is playing and only resumes when paused, regardless of which slide is currently active. All items marked [x] complete.

@@ -182,7 +182,7 @@ export function LiveBanner() {
     if (!isCarouselPlaying) return;
     
     // STOP carousel if YouTube video is playing
-    if (currentContent.youtubeEmbedUrl && isVideoPlaying) {
+    if (isVideoPlaying) {
       console.log('⏸️ Carousel PAUSED - YouTube video is playing');
       return;
     }
