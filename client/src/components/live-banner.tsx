@@ -50,7 +50,7 @@ const getDefaultBannerContent = (youtubeUrl?: string | null): BannerContent[] =>
       type: 'live_stream',
       title: 'CNBC Live Stream',
       description: 'Watch live market analysis and trading strategies',
-      youtubeEmbedUrl: youtubeUrl || 'https://www.youtube.com/embed/0AzLJkgUtAo?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&pp=ygUJY25iYyBsaXZl',
+      youtubeEmbedUrl: youtubeUrl || 'https://www.youtube.com/embed/P857H4ej-MQ?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&pp=ygUJY25iYyBsaXZl',
       isLive: true,
       priority: 'high'
     },
@@ -86,11 +86,11 @@ export function LiveBanner() {
   const [customUrl, setCustomUrl] = useState('');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const [youtubeUrl, setYoutubeUrl] = useState<string>('https://www.youtube.com/embed/0AzLJkgUtAo?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&pp=ygUJY25iYyBsaXZl');
+  const [youtubeUrl, setYoutubeUrl] = useState<string>('https://www.youtube.com/embed/P857H4ej-MQ?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&pp=ygUJY25iYyBsaXZl');
 
   const handleCnbcStream = () => {
     // CNBC-TV18 Live Stream (India) - typically has a stable live link
-    const cnbcUrl = 'https://www.youtube.com/embed/videoseries?list=PLDmqN8C6I06p6-T6xJ7nS7R_2YQhM_GfL&enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0';
+    const cnbcUrl = 'https://www.youtube.com/embed/P857H4ej-MQ?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0';
     updateStreamUrl(cnbcUrl);
   };
 
@@ -160,7 +160,7 @@ export function LiveBanner() {
         setYoutubeUrl(cleanUrl);
         setCurrentIndex(0);
       } else {
-        setYoutubeUrl('https://www.youtube.com/embed/0AzLJkgUtAo?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&pp=ygUJY25iYyBsaXZl');
+        setYoutubeUrl('https://www.youtube.com/embed/P857H4ej-MQ?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&pp=ygUJY25iYyBsaXZl');
         setCurrentIndex(0);
       }
     };
