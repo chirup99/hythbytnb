@@ -14086,18 +14086,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   if (profile.id === "samantha" || profile.name.toLowerCase().includes("samantha")) {
                                                     const v = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
                                                     if (v) utterance.voice = v;
-                                                    utterance.pitch = 1.05; // Slightly higher pitch for more natural female voice
-                                                    utterance.rate = 0.95;  // Slightly slower for better articulation
+                                                    utterance.pitch = voicePitch !== 1.0 ? voicePitch : 1.05; // Use manual if changed
+                                                    utterance.rate = voiceRate !== 1.0 ? voiceRate : 0.95;
                                                   } else if (profile.id === "amro" || profile.name.toLowerCase().includes("amro")) {
                                                     const v = voices.find(v => (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
                                                     if (v) utterance.voice = v;
-                                                    utterance.pitch = 0.9;  // Slightly lower pitch for more resonance
-                                                    utterance.rate = 1.0;
+                                                    utterance.pitch = voicePitch !== 1.0 ? voicePitch : 0.9;
+                                                    utterance.rate = voiceRate !== 1.0 ? voiceRate : 1.0;
                                                   } else if (profile.id === "heera" || profile.name.toLowerCase().includes("heera")) {
                                                     const v = voices.find(v => v.name.includes("Hindi") || v.name.includes("India") || v.name.includes("Kalpana") || v.name.includes("Hemant"));
                                                     if (v) utterance.voice = v;
-                                                    utterance.pitch = 1.0;
-                                                    utterance.rate = 0.9;   // Slower for natural Hindi/Indian English cadence
+                                                    utterance.pitch = voicePitch !== 1.0 ? voicePitch : 1.0;
+                                                    utterance.rate = voiceRate !== 1.0 ? voiceRate : 0.9;
                                                   }
                                                   utterance.volume = 1.0;
                                                   window.speechSynthesis.speak(utterance);
@@ -14120,7 +14120,57 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       })}
                                     </div>
                                     <div className="w-full h-px bg-gray-700/50 my-1" />
-                                    <p className="text-[11px] text-gray-500 italic">Select a voice for your audio post</p>
+                                    <div className="flex items-center justify-between">
+                                      <p className="text-[11px] text-gray-500 italic">Select a voice for your audio post</p>
+                                      <button 
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setIsVoiceSettingsOpen(!isVoiceSettingsOpen);
+                                        }}
+                                        className={`p-1 rounded-full hover:bg-white/10 transition-transform ${isVoiceSettingsOpen ? 'rotate-180 text-blue-400' : 'text-gray-500'}`}
+                                      >
+                                        <ChevronDown className="h-4 w-4" />
+                                      </button>
+                                    </div>
+
+                                    {isVoiceSettingsOpen && (
+                                      <div className="mt-3 space-y-4 p-3 bg-gray-900/50 rounded-lg border border-gray-700 animate-in fade-in slide-in-from-top-2 duration-200">
+                                        <div className="space-y-2">
+                                          <div className="flex justify-between items-center">
+                                            <span className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Pitch</span>
+                                            <span className="text-[10px] text-blue-400 font-mono">{voicePitch.toFixed(1)}</span>
+                                          </div>
+                                          <div className="relative h-6 flex items-center group">
+                                            <input
+                                              type="range"
+                                              min="0.5"
+                                              max="2.0"
+                                              step="0.1"
+                                              value={voicePitch}
+                                              onChange={(e) => setVoicePitch(parseFloat(e.target.value))}
+                                              className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                          <div className="flex justify-between items-center">
+                                            <span className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Speed Rate</span>
+                                            <span className="text-[10px] text-blue-400 font-mono">{voiceRate.toFixed(1)}x</span>
+                                          </div>
+                                          <div className="relative h-6 flex items-center group">
+                                            <input
+                                              type="range"
+                                              min="0.5"
+                                              max="2.0"
+                                              step="0.1"
+                                              value={voiceRate}
+                                              onChange={(e) => setVoiceRate(parseFloat(e.target.value))}
+                                              className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
                               )}
