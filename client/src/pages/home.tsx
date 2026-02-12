@@ -1983,6 +1983,9 @@ export default function Home() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
   const [isVoiceActive, setIsVoiceActive] = useState(false);
+  const [isVoiceSettingsOpen, setIsVoiceSettingsOpen] = useState(false);
+  const [voicePitch, setVoicePitch] = useState(1.0);
+  const [voiceRate, setVoiceRate] = useState(1.0);
   const [showAdminDashboardDialog, setShowAdminDashboardDialog] = useState(false);
   const [adminTab, setAdminTab] = useState("bugs-list");
   const [showMagicBugBar, setShowMagicBugBar] = useState(false);
