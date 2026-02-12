@@ -14086,13 +14086,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   if (profile.id === "samantha" || profile.name.toLowerCase().includes("samantha")) {
                                                     const v = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
                                                     if (v) utterance.voice = v;
+                                                    utterance.pitch = 1.05; // Slightly higher pitch for more natural female voice
+                                                    utterance.rate = 0.95;  // Slightly slower for better articulation
                                                   } else if (profile.id === "amro" || profile.name.toLowerCase().includes("amro")) {
                                                     const v = voices.find(v => (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
                                                     if (v) utterance.voice = v;
+                                                    utterance.pitch = 0.9;  // Slightly lower pitch for more resonance
+                                                    utterance.rate = 1.0;
                                                   } else if (profile.id === "heera" || profile.name.toLowerCase().includes("heera")) {
                                                     const v = voices.find(v => v.name.includes("Hindi") || v.name.includes("India") || v.name.includes("Kalpana") || v.name.includes("Hemant"));
                                                     if (v) utterance.voice = v;
+                                                    utterance.pitch = 1.0;
+                                                    utterance.rate = 0.9;   // Slower for natural Hindi/Indian English cadence
                                                   }
+                                                  utterance.volume = 1.0;
                                                   window.speechSynthesis.speak(utterance);
                                                 }
                                               }
