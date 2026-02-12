@@ -14086,18 +14086,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   if (profile.id === "samantha" || profile.name.toLowerCase().includes("samantha")) {
                                                     const v = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
                                                     if (v) utterance.voice = v;
-                                                    utterance.pitch = voicePitch !== 1.0 ? voicePitch : 1.05; // Use manual if changed
-                                                    utterance.rate = voiceRate !== 1.0 ? voiceRate : 0.95;
+                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 1.05; // Use manual if changed
+                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.95;
                                                   } else if (profile.id === "amro" || profile.name.toLowerCase().includes("amro")) {
                                                     const v = voices.find(v => (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
                                                     if (v) utterance.voice = v;
-                                                    utterance.pitch = voicePitch !== 1.0 ? voicePitch : 0.9;
-                                                    utterance.rate = voiceRate !== 1.0 ? voiceRate : 1.0;
+                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 0.9;
+                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 1.0;
                                                   } else if (profile.id === "heera" || profile.name.toLowerCase().includes("heera")) {
                                                     const v = voices.find(v => v.name.includes("Hindi") || v.name.includes("India") || v.name.includes("Kalpana") || v.name.includes("Hemant"));
                                                     if (v) utterance.voice = v;
-                                                    utterance.pitch = voicePitch !== 1.0 ? voicePitch : 1.0;
-                                                    utterance.rate = voiceRate !== 1.0 ? voiceRate : 0.9;
+                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 1.0;
+                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.9;
                                                   }
                                                   utterance.volume = 1.0;
                                                   window.speechSynthesis.speak(utterance);
@@ -14138,7 +14138,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <div className="space-y-2">
                                           <div className="flex justify-between items-center">
                                             <span className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Pitch</span>
-                                            <span className="text-[10px] text-blue-400 font-mono">{voicePitch.toFixed(1)}</span>
+                                            <span className="text-[10px] text-blue-400 font-mono">{(voicePitch || 1.0).toFixed(1)}</span>
                                           </div>
                                           <div className="relative h-6 flex items-center group">
                                             <input
@@ -14146,7 +14146,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               min="0.5"
                                               max="2.0"
                                               step="0.1"
-                                              value={voicePitch}
+                                              value={voicePitch || 1.0}
                                               onChange={(e) => setVoicePitch(parseFloat(e.target.value))}
                                               className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
                                             />
@@ -14155,7 +14155,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <div className="space-y-2">
                                           <div className="flex justify-between items-center">
                                             <span className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Speed Rate</span>
-                                            <span className="text-[10px] text-blue-400 font-mono">{voiceRate.toFixed(1)}x</span>
+                                            <span className="text-[10px] text-blue-400 font-mono">{(voiceRate || 1.0).toFixed(1)}x</span>
                                           </div>
                                           <div className="relative h-6 flex items-center group">
                                             <input
@@ -14163,7 +14163,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               min="0.5"
                                               max="2.0"
                                               step="0.1"
-                                              value={voiceRate}
+                                              value={voiceRate || 1.0}
                                               onChange={(e) => setVoiceRate(parseFloat(e.target.value))}
                                               className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
                                             />
