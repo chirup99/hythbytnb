@@ -38,3 +38,4 @@
 [x] 38. Session recovery (Feb 12, #3) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
 [x] 39. Fixed voice profile preview by restoring missing state variables (isVoiceSettingsOpen, voicePitch, voiceRate). Resolved ReferenceErrors causing page crash. All items marked [x] complete.
 [x] 40. Session recovery (Feb 12, #4) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
+[x] 41. Session recovery (Feb 12, #5) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
