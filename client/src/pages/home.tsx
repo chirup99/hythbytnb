@@ -14157,92 +14157,94 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     {isVoiceSettingsOpen && (
                                         <div className="px-6 py-6 bg-gray-800/80 border border-gray-700/50 rounded-2xl shadow-xl animate-in fade-in slide-in-from-top-4 duration-500 backdrop-blur-md">
                                           <div className="space-y-6">
-                                            <div className="space-y-3">
-                                              <div className="flex justify-between items-center px-1">
-                                                <span className="text-[11px] uppercase tracking-[0.2em] text-blue-400/80 font-bold">Pitch</span>
+                                            <div className="flex justify-between gap-6 px-2 py-4 bg-gray-900/30 rounded-xl border border-gray-700/50">
+                                              {/* Pitch Slider */}
+                                              <div className="flex flex-col items-center gap-3 flex-1">
+                                                <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Pitch</span>
+                                                <div className="relative h-32 w-8 flex flex-col items-center group">
+                                                  <div className="absolute w-1.5 h-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="w-full bg-gradient-to-t from-blue-600 to-blue-400 absolute bottom-0 transition-all duration-300" 
+                                                      style={{ height: `${((voicePitch - 0.5) / 1.5) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="0.5"
+                                                    max="2.0"
+                                                    step="0.1"
+                                                    value={voicePitch || 1.0}
+                                                    onChange={(e) => setVoicePitch(parseFloat(e.target.value))}
+                                                    className="absolute w-32 h-8 -rotate-90 bg-transparent appearance-none cursor-pointer z-10 top-1/2 -translate-y-1/2 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                    style={{ width: '128px' }}
+                                                  />
+                                                </div>
                                                 <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{(voicePitch || 1.0).toFixed(1)}</span>
                                               </div>
-                                              <div className="relative h-6 flex items-center group px-1">
-                                                <div className="absolute w-full h-1 bg-gray-700/50 rounded-full overflow-hidden">
-                                                  <div 
-                                                    className="h-full bg-gradient-to-r from-blue-600 to-blue-400" 
-                                                    style={{ width: `${((voicePitch - 0.5) / 1.5) * 100}%` }}
+
+                                              {/* Speed Rate Slider */}
+                                              <div className="flex flex-col items-center gap-3 flex-1">
+                                                <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Speed</span>
+                                                <div className="relative h-32 w-8 flex flex-col items-center group">
+                                                  <div className="absolute w-1.5 h-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="w-full bg-gradient-to-t from-blue-600 to-blue-400 absolute bottom-0 transition-all duration-300" 
+                                                      style={{ height: `${((voiceRate - 0.5) / 1.5) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="0.5"
+                                                    max="2.0"
+                                                    step="0.1"
+                                                    value={voiceRate || 1.0}
+                                                    onChange={(e) => setVoiceRate(parseFloat(e.target.value))}
+                                                    className="absolute w-32 h-8 -rotate-90 bg-transparent appearance-none cursor-pointer z-10 top-1/2 -translate-y-1/2 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                    style={{ width: '128px' }}
                                                   />
                                                 </div>
-                                                <input
-                                                  type="range"
-                                                  min="0.5"
-                                                  max="2.0"
-                                                  step="0.1"
-                                                  value={voicePitch || 1.0}
-                                                  onChange={(e) => setVoicePitch(parseFloat(e.target.value))}
-                                                  className="absolute w-full h-1 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
-                                                />
-                                              </div>
-                                            </div>
-
-                                            <div className="space-y-3">
-                                              <div className="flex justify-between items-center px-1">
-                                                <span className="text-[11px] uppercase tracking-[0.2em] text-blue-400/80 font-bold">Speed Rate</span>
                                                 <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{(voiceRate || 1.0).toFixed(1)}x</span>
                                               </div>
-                                              <div className="relative h-6 flex items-center group px-1">
-                                                <div className="absolute w-full h-1 bg-gray-700/50 rounded-full overflow-hidden">
-                                                  <div 
-                                                    className="h-full bg-gradient-to-r from-blue-600 to-blue-400" 
-                                                    style={{ width: `${((voiceRate - 0.5) / 1.5) * 100}%` }}
+
+                                              {/* Break Time Slider */}
+                                              <div className="flex flex-col items-center gap-3 flex-1">
+                                                <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Break</span>
+                                                <div className="relative h-32 w-8 flex flex-col items-center group">
+                                                  <div className="absolute w-1.5 h-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="w-full bg-gradient-to-t from-blue-600 to-blue-400 absolute bottom-0 transition-all duration-300" 
+                                                      style={{ height: `${((voiceBreakTime - 0) / 1000) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="1000"
+                                                    step="50"
+                                                    value={voiceBreakTime}
+                                                    onChange={(e) => setVoiceBreakTime(parseInt(e.target.value))}
+                                                    className="absolute w-32 h-8 -rotate-90 bg-transparent appearance-none cursor-pointer z-10 top-1/2 -translate-y-1/2 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                    style={{ width: '128px' }}
                                                   />
                                                 </div>
-                                                <input
-                                                  type="range"
-                                                  min="0.5"
-                                                  max="2.0"
-                                                  step="0.1"
-                                                  value={voiceRate || 1.0}
-                                                  onChange={(e) => setVoiceRate(parseFloat(e.target.value))}
-                                                  className="absolute w-full h-1 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
-                                                />
-                                              </div>
-                                            </div>
-
-                                            <div className="space-y-3">
-                                              <div className="flex justify-between items-center px-1">
-                                                <span className="text-[11px] uppercase tracking-[0.2em] text-blue-400/80 font-bold">Break Time</span>
                                                 <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{voiceBreakTime}ms</span>
                                               </div>
-                                              <div className="relative h-6 flex items-center group px-1">
-                                                <div className="absolute w-full h-1 bg-gray-700/50 rounded-full overflow-hidden">
-                                                  <div 
-                                                    className="h-full bg-gradient-to-r from-blue-600 to-blue-400" 
-                                                    style={{ width: `${((voiceBreakTime - 0) / 1000) * 100}%` }}
-                                                  />
-                                                </div>
-                                                <input
-                                                  type="range"
-                                                  min="0"
-                                                  max="1000"
-                                                  step="50"
-                                                  value={voiceBreakTime}
-                                                  onChange={(e) => setVoiceBreakTime(parseInt(e.target.value))}
-                                                  className="absolute w-full h-1 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
-                                                />
-                                              </div>
                                             </div>
 
-                                            <div className="space-y-3">
+                                            <div className="space-y-3 mt-2">
                                               <div className="flex justify-between items-center px-1">
                                                 <span className="text-[11px] uppercase tracking-[0.2em] text-blue-400/80 font-bold">Emphasis</span>
                                                 <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full capitalize">{voiceEmphasis}</span>
                                               </div>
-                                              <div className="flex gap-2 px-1">
+                                              <div className="flex p-1 bg-gray-900/50 rounded-2xl border border-gray-700/50">
                                                 {['none', 'moderate', 'strong'].map((level) => (
                                                   <button
                                                     key={level}
                                                     onClick={() => setVoiceEmphasis(level)}
-                                                    className={`flex-1 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-300 border ${
+                                                    className={`flex-1 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-300 ${
                                                       voiceEmphasis === level 
-                                                        ? 'bg-blue-500 border-blue-400 text-white shadow-lg shadow-blue-500/20' 
-                                                        : 'bg-gray-800/50 border-gray-700 text-gray-400 hover:border-gray-600'
+                                                        ? 'bg-white text-blue-600 shadow-md scale-[1.02]' 
+                                                        : 'text-gray-400 hover:text-gray-200'
                                                     }`}
                                                   >
                                                     {level}
