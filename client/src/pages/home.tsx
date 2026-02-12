@@ -14175,7 +14175,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     step="0.1"
                                                     value={voicePitch || 1.0}
                                                     onChange={(e) => setVoicePitch(parseFloat(e.target.value))}
-                                                    className="absolute w-32 h-8 -rotate-90 bg-transparent appearance-none cursor-pointer z-10 top-1/2 -translate-y-1/2 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                    className="absolute w-32 h-8 -rotate-90 bg-transparent appearance-none cursor-pointer z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
                                                     style={{ width: '128px' }}
                                                   />
                                                 </div>
@@ -14199,7 +14199,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     step="0.1"
                                                     value={voiceRate || 1.0}
                                                     onChange={(e) => setVoiceRate(parseFloat(e.target.value))}
-                                                    className="absolute w-32 h-8 -rotate-90 bg-transparent appearance-none cursor-pointer z-10 top-1/2 -translate-y-1/2 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                    className="absolute w-32 h-8 -rotate-90 bg-transparent appearance-none cursor-pointer z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
                                                     style={{ width: '128px' }}
                                                   />
                                                 </div>
@@ -14223,7 +14223,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     step="50"
                                                     value={voiceBreakTime}
                                                     onChange={(e) => setVoiceBreakTime(parseInt(e.target.value))}
-                                                    className="absolute w-32 h-8 -rotate-90 bg-transparent appearance-none cursor-pointer z-10 top-1/2 -translate-y-1/2 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                    className="absolute w-32 h-8 -rotate-90 bg-transparent appearance-none cursor-pointer z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
                                                     style={{ width: '128px' }}
                                                   />
                                                 </div>
