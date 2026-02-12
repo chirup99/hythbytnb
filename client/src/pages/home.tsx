@@ -10347,7 +10347,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     fomo: true,
     winRate: true,
     streak: true,
-    overtrading: false,
+    overtrading: true,
     topTags: false,
     aiAnalysis: false,
     planned: false,
@@ -20211,7 +20211,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         data-testid="stat-overtrading"
                                         title={`Click to ${activeTagHighlight?.tag === 'overtrading' ? 'hide' : 'show'} overtrading dates on heatmap`}
                                       >
-                                        <div className="text-[10px] opacity-80">OvrTrade</div>
+                                        <div className="text-[10px] opacity-80">OverTrade</div>
                                         <div className="text-xs font-bold text-orange-200">{overTradingCount}</div>
                                       </button>
                                     )}
@@ -20251,11 +20251,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <div className="space-y-2">
                                         <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 flex items-center justify-start">
                                           <span>Customize Magic Bar</span>
-                                          <span className="text-xs opacity-70">{Object.values(visibleStats).filter(v => v).length}/6</span>
+                                          <span className="text-xs opacity-70">{Object.values(visibleStats).filter(v => v).length}/8</span>
                                         </div>
                                         {(() => {
                                           const selectedCount = Object.values(visibleStats).filter(v => v).length;
-                                          const isAtLimit = selectedCount >= 6;
+                                          const isAtLimit = selectedCount >= 8;
                                           const handleCheckChange = (field: string, checked: boolean) => {
                                             if (checked && isAtLimit) return;
                                             const updated = {...visibleStats, [field]: checked}; setVisibleStats(updated); localStorage.setItem("magicBarPrefs", JSON.stringify(updated));
