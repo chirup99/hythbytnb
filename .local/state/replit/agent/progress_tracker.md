@@ -33,3 +33,4 @@
 [x] 33. Updated CNBC Live Stream URL to the latest working link (P857H4ej-MQ). Verified across default content and dropdown handlers. All items marked [x] complete.
 [x] 34. Implemented carousel pause logic: The banner carousel now completely stops when the video is playing and only resumes when paused, regardless of which slide is currently active. All items marked [x] complete.
 [x] 35. Session recovery (Feb 11, #3) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
+[x] 36. Session recovery (Feb 12) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
