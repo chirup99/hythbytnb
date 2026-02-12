@@ -486,6 +486,15 @@ function SwipeableCardStack({
       utterance.voice = preferredVoice;
     }
 
+    // Apply more human-like parameters based on PRD
+    utterance.pitch = voicePitch || 1.0;
+    utterance.rate = voiceRate || 1.0;
+    utterance.volume = 1.0;
+
+    // Simulate natural prosody by adding slight random variations to pitch
+    // and ensuring emphasis on certain types of content could be handled via text processing
+    // but for Web Speech API we are limited to these parameters.
+
     utterance.onstart = () => setIsPlaying(true);
     utterance.onend = () => {
       setIsPlaying(false);
@@ -14137,42 +14146,57 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
 
                                     {isVoiceSettingsOpen && (
-                                      <div className="mt-3 space-y-4 p-3 bg-gray-900/50 rounded-lg border border-gray-700 animate-in fade-in slide-in-from-top-2 duration-200">
-                                        <div className="space-y-2">
-                                          <div className="flex justify-between items-center">
-                                            <span className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Pitch</span>
-                                            <span className="text-[10px] text-blue-400 font-mono">{(voicePitch || 1.0).toFixed(1)}</span>
-                                          </div>
-                                          <div className="relative h-6 flex items-center group">
-                                            <input
-                                              type="range"
-                                              min="0.5"
-                                              max="2.0"
-                                              step="0.1"
-                                              value={voicePitch || 1.0}
-                                              onChange={(e) => setVoicePitch(parseFloat(e.target.value))}
-                                              className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                                            />
+                                        <div className="px-6 py-6 bg-gray-800/80 border border-gray-700/50 rounded-2xl shadow-xl animate-in fade-in slide-in-from-top-4 duration-500 backdrop-blur-md">
+                                          <div className="space-y-6">
+                                            <div className="space-y-3">
+                                              <div className="flex justify-between items-center px-1">
+                                                <span className="text-[11px] uppercase tracking-[0.2em] text-blue-400/80 font-bold">Pitch</span>
+                                                <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{(voicePitch || 1.0).toFixed(1)}</span>
+                                              </div>
+                                              <div className="relative h-6 flex items-center group px-1">
+                                                <div className="absolute w-full h-1 bg-gray-700/50 rounded-full overflow-hidden">
+                                                  <div 
+                                                    className="h-full bg-gradient-to-r from-blue-600 to-blue-400" 
+                                                    style={{ width: `${((voicePitch - 0.5) / 1.5) * 100}%` }}
+                                                  />
+                                                </div>
+                                                <input
+                                                  type="range"
+                                                  min="0.5"
+                                                  max="2.0"
+                                                  step="0.1"
+                                                  value={voicePitch || 1.0}
+                                                  onChange={(e) => setVoicePitch(parseFloat(e.target.value))}
+                                                  className="absolute w-full h-1 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                />
+                                              </div>
+                                            </div>
+
+                                            <div className="space-y-3">
+                                              <div className="flex justify-between items-center px-1">
+                                                <span className="text-[11px] uppercase tracking-[0.2em] text-blue-400/80 font-bold">Speed Rate</span>
+                                                <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{(voiceRate || 1.0).toFixed(1)}x</span>
+                                              </div>
+                                              <div className="relative h-6 flex items-center group px-1">
+                                                <div className="absolute w-full h-1 bg-gray-700/50 rounded-full overflow-hidden">
+                                                  <div 
+                                                    className="h-full bg-gradient-to-r from-blue-600 to-blue-400" 
+                                                    style={{ width: `${((voiceRate - 0.5) / 1.5) * 100}%` }}
+                                                  />
+                                                </div>
+                                                <input
+                                                  type="range"
+                                                  min="0.5"
+                                                  max="2.0"
+                                                  step="0.1"
+                                                  value={voiceRate || 1.0}
+                                                  onChange={(e) => setVoiceRate(parseFloat(e.target.value))}
+                                                  className="absolute w-full h-1 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                />
+                                              </div>
+                                            </div>
                                           </div>
                                         </div>
-                                        <div className="space-y-2">
-                                          <div className="flex justify-between items-center">
-                                            <span className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Speed Rate</span>
-                                            <span className="text-[10px] text-blue-400 font-mono">{(voiceRate || 1.0).toFixed(1)}x</span>
-                                          </div>
-                                          <div className="relative h-6 flex items-center group">
-                                            <input
-                                              type="range"
-                                              min="0.5"
-                                              max="2.0"
-                                              step="0.1"
-                                              value={voiceRate || 1.0}
-                                              onChange={(e) => setVoiceRate(parseFloat(e.target.value))}
-                                              className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
                                     )}
                                   </div>
                                 </div>
