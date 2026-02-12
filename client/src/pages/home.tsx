@@ -14083,7 +14083,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
 
                               {isVoiceActive && (
-                                <div className="px-4 py-6 bg-gray-800/50 border border-gray-700 rounded-lg animate-in fade-in slide-in-from-top-2 duration-200 overflow-y-auto max-h-[400px]">
+                                <div className="px-4 py-6 bg-gray-800/50 border border-gray-700 rounded-lg animate-in fade-in slide-in-from-top-2 duration-200 overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-thumb-blue-500/50 scrollbar-track-transparent">
                                   <div className="flex flex-col items-center gap-4">
                                     <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">voice profiles</span>
                                     <div className="flex flex-wrap items-center justify-center gap-4 py-2">
