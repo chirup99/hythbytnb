@@ -1939,6 +1939,24 @@ export default function Home() {
   // AUTO-CONNECT: Angel One API - Automatically connect when app loads
   useAngelOneAutoconnect();
   const { theme, toggleTheme } = useTheme();
+  const [isNavVisible, setIsNavVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setIsNavVisible(false);
+      } else {
+        setIsNavVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const [activeTab, setActiveTab] = useState("trading-home");
   const [showTutorOverlay, setShowTutorOverlay] = useState(false);
   const [showComingSoonDialog, setShowComingSoonDialog] = useState(false);
@@ -24259,7 +24277,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
         {/* Minimalist Floating Pill Navigation - Mobile Only */}
         {activeTab === "journal" && (
-          <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 pb-4 px-6 pointer-events-none">
+          <div className={`md:hidden fixed bottom-0 left-0 right-0 z-50 pb-4 px-6 pointer-events-none transition-transform duration-300 ${isNavVisible ? 'translate-y-0' : 'translate-y-full'}`}>
             <div className="max-w-xs mx-auto bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-full shadow-lg border border-gray-200/50 dark:border-gray-700/50 pointer-events-auto">
               <div className="flex items-center justify-around px-1.5 py-1.5">
                 {/* Home Tab */}
