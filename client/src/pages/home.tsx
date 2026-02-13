@@ -455,8 +455,8 @@ function SwipeableCardStack({
 
     const voiceProfileMap: Record<string, string[]> = {
       samantha: ["Samantha", "Victoria", "Female", "US", "Zira", "en-US"],
-      amro: ["Daniel", "Oliver", "Arthur", "Male", "UK", "GB", "en-GB"],
-      heera: ["Hindi", "India", "Kalpana", "Female", "en-IN"]
+      liam: ["Liam", "Daniel", "Oliver", "Arthur", "Male", "UK", "GB", "US", "en-GB", "en-US"],
+      sophia: ["Sophia", "Aria", "Female", "US", "UK", "English", "Zira", "en-US"]
     };
     const selectedProfile = (typeof window !== "undefined" && localStorage.getItem("activeVoiceProfileId")) || "samantha";
     const priorityKeywords = voiceProfileMap[selectedProfile as keyof typeof voiceProfileMap] || voiceProfileMap.samantha;
@@ -471,10 +471,10 @@ function SwipeableCardStack({
     if (!preferredVoice) {
       if (selectedProfile === "samantha") {
         preferredVoice = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
-      } else if (selectedProfile === "amro") {
-        preferredVoice = voices.find(v => (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
-      } else if (selectedProfile === "heera") {
-        preferredVoice = voices.find(v => v.name.includes("Hindi") || v.name.includes("India") || v.name.includes("Kalpana") || v.name.includes("Hemant"));
+      } else if (selectedProfile === "liam") {
+        preferredVoice = voices.find(v => v.name.includes("Liam") || (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("US") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
+      } else if (selectedProfile === "sophia") {
+        preferredVoice = voices.find(v => v.name.includes("Sophia") || v.name.includes("Aria") || (v.name.includes("Female") && (v.name.includes("English") || v.name.includes("US"))) || v.name.includes("Zira"));
       }
     }
 
