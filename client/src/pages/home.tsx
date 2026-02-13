@@ -13847,7 +13847,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             {/* Render content based on active tab */}
 
             {activeTab === 'dashboard' && localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
-              <div className="space-y-8">
+              <div className="space-y-8 relative">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-0 right-0 text-gray-400 hover:text-white hover:bg-white/10"
+                  onClick={() => setActiveTab('trading-home')}
+                  data-testid="button-back-trading-dashboard"
+                >
+                  <ArrowLeft className="h-6 w-6" />
+                </Button>
                 <div className="text-center space-y-4">
                   <div className="flex items-center justify-center gap-3">
                     <Star className="h-6 w-6 text-yellow-400" />
