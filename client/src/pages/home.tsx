@@ -14134,35 +14134,43 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   const isExclamation = baseText.trim().endsWith('!');
                                                   
                                                   // Base parameters from attached humanization documents
+                                                  // Speech Rate: 0.95 – 1.05 (Recommended Range)
                                                   let finalPitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 1.0;
-                                                  let finalRate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.95; // Human sweet spot 0.95-1.05
+                                                  let finalRate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.98; // Human sweet spot
                                                   
                                                   // Level 1: Sentence Type Detection → Pitch Contour Logic
+                                                  // Pitch: ±5% to ±15% (Recommended Range)
                                                   if (isQuestion) {
                                                     finalPitch *= 1.12; // Rise at end (+12%)
                                                   } else if (isExclamation) {
-                                                    finalPitch *= 1.10; // Excited (+10%)
+                                                    finalPitch *= 1.08; // Excited (+8%)
                                                     utterance.volume = 1.0;
                                                   } else {
-                                                    finalPitch *= 0.95; // Statement drop (-5%)
+                                                    finalPitch *= 0.94; // Statement drop (-6%)
                                                   }
 
-                                                  // Level 2: Word Importance (Simulated by rate variability)
-                                                  // Standard TTS API doesn't allow per-word duration easily without splitting,
-                                                  // but we can set a more natural base rate.
+                                                  // Level 2: Pause Modeling (Simulated via text punctuation spacing)
+                                                  // Adding extra space after punctuation helps the browser's engine 
+                                                  // naturally insert micro-pauses (150-600ms range)
+                                                  processedText = processedText
+                                                    .replace(/,/g, ',   ') // Comma pause (~200ms)
+                                                    .replace(/\./g, '.     ') // Period pause (~500ms)
+                                                    .replace(/\?/g, '?     ') // Question pause
+                                                    .replace(/!/g, '!     '); // Exclamation pause
+
                                                   utterance.rate = finalRate;
                                                   utterance.pitch = finalPitch;
                                                   utterance.text = processedText;
                                                   
-                                                  // Dynamic Volume & Energy
-                                                  utterance.volume = 1.0;
-
-                                                  // Level 4: Micro Variation (Anti-Robot Layer)
-                                                  // Humans have micro pitch/rate changes (±3% jitter)
-                                                  const pitchJitter = (Math.random() * 0.06) - 0.03;
-                                                  const rateJitter = (Math.random() * 0.04) - 0.02;
+                                                  // Level 4: Micro Variation (Anti-Robot Layer / Jitter)
+                                                  // Humans have micro pitch/rate changes (jitter)
+                                                  const pitchJitter = (Math.random() * 0.08) - 0.04; // ±4%
+                                                  const rateJitter = (Math.random() * 0.04) - 0.02; // ±2%
                                                   utterance.pitch += pitchJitter;
                                                   utterance.rate += rateJitter;
+
+                                                  // Dynamic Energy Variation (Volume)
+                                                  utterance.volume = 0.95 + (Math.random() * 0.1); // ±5% dynamic energy
 
                                                   window.speechSynthesis.speak(utterance);
                                                 }
