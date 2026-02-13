@@ -14112,8 +14112,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <div className="flex items-center justify-start gap-4 py-2 overflow-x-auto no-scrollbar scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                                       {[
                                         { id: "samantha", name: "Samantha", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" },
-                                        { id: "amro", name: "Amro", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" },
-                                        { id: "heera", name: "Heera", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" },
+                                        { id: "liam", name: "Liam", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop" },
+                                        { id: "sophia", name: "Sophia", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop" },
                                       ].map((profile) => {
                                         const isSelected = activeVoiceProfileId === profile.id;
                                         return (
@@ -14136,14 +14136,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     selectedVoice = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
                                                     utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 1.05;
                                                     utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.92; // Slightly slower for naturalness
-                                                  } else if (profile.id === "amro" || profile.name.toLowerCase().includes("amro")) {
-                                                    selectedVoice = voices.find(v => (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
-                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 0.88;
-                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.98;
-                                                  } else if (profile.id === "heera" || profile.name.toLowerCase().includes("heera")) {
-                                                    selectedVoice = voices.find(v => v.name.includes("Hindi") || v.name.includes("India") || v.name.includes("Kalpana") || v.name.includes("Hemant"));
-                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 1.0;
-                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.88;
+                                                  } else if (profile.id === "liam" || profile.name.toLowerCase().includes("liam")) {
+                                                    selectedVoice = voices.find(v => v.name.includes("Liam") || (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("US") || v.name.includes("English"))) || v.name.includes("Daniel") || v.name.includes("Arthur"));
+                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 0.95; // Smooth male
+                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 1.02; // Slightly faster for smoothness
+                                                  } else if (profile.id === "sophia" || profile.name.toLowerCase().includes("sophia")) {
+                                                    selectedVoice = voices.find(v => v.name.includes("Sophia") || v.name.includes("Aria") || (v.name.includes("Female") && (v.name.includes("English") || v.name.includes("US"))) || v.name.includes("Zira"));
+                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 1.02; // Smooth female
+                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.95;
                                                   }
 
                                                   if (selectedVoice) utterance.voice = selectedVoice;
