@@ -268,12 +268,6 @@ function MainLayout({ children }: { children: React.ReactNode }) {
       icon: HomeIcon,
       current: location === "/app",
     },
-    ...(currentUser.email === 'chiranjeevi.perala99@gmail.com' ? [{
-      name: "Dashboard", 
-      href: "/dashboard", 
-      icon: Sparkles,
-      current: location === "/dashboard",
-    }] : []),
     {
       name: "Theme",
       href: "#",
