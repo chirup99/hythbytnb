@@ -1,0 +1,354 @@
+Excellent 👌 — I’ll give you a **production-ready PRD (Product Requirements Document)** for implementing a **ChatGPT-style human voice logic layer** in your Replit TTS app.
+
+This PRD assumes:
+
+* You’re using a neural TTS model (VITS / FastSpeech2 / similar)
+* You control inference parameters
+* You can preprocess text before synthesis
+
+---
+
+# 📄 PRODUCT REQUIREMENTS DOCUMENT
+
+## Project: Human-Like Conversational Voice Engine
+
+## Platform: Replit (Node.js or Python backend)
+
+---
+
+# 1️⃣ Objective
+
+Transform robotic neural TTS output into:
+
+* Natural
+* Expressive
+* Conversational
+* Emotion-aware
+* Non-repetitive
+
+By implementing a **Prosody Control + Humanization Layer** before synthesis.
+
+---
+
+# 2️⃣ Architecture Overview
+
+```
+User Text
+   ↓
+Text Analyzer
+   ↓
+Prosody Engine
+   ↓
+Parameter Controller
+   ↓
+TTS Model (VITS / FastSpeech / etc.)
+   ↓
+High Quality Vocoder
+   ↓
+Audio Output
+```
+
+---
+
+# 3️⃣ Core Humanization Modules
+
+---
+
+# 🔹 MODULE A — Sentence Intelligence Engine
+
+### Goal:
+
+Detect speech intent and adjust pitch contour + energy.
+
+---
+
+### 3.1 Sentence Classification Logic
+
+```pseudo
+if text ends with "?":
+    type = "question"
+elif text ends with "!":
+    type = "exclamation"
+else:
+    type = "statement"
+```
+
+---
+
+### 3.2 Parameter Adjustments
+
+| Sentence Type | Pitch Shift | Energy | Speed |
+| ------------- | ----------- | ------ | ----- |
+| Statement     | -6% at end  | 0%     | 1.0   |
+| Question      | +12% at end | +3%    | 1.02  |
+| Exclamation   | +10% global | +8%    | 1.05  |
+
+---
+
+# 🔹 MODULE B — Speech Rate Controller
+
+### Global Range Requirement
+
+| Parameter   | Range       |
+| ----------- | ----------- |
+| Speech Rate | 0.95 – 1.05 |
+
+---
+
+### Implementation Logic
+
+```pseudo
+base_rate = 1.0
+
+if sentence_length > 20 words:
+    base_rate = 0.97
+
+if emotional_intensity > 0.7:
+    base_rate = 1.04
+```
+
+---
+
+# 🔹 MODULE C — Dynamic Pitch Engine
+
+### Required Pitch Variation
+
+| Parameter       | Value       |
+| --------------- | ----------- |
+| Base Pitch      | 0%          |
+| Variation Range | ±5% to ±15% |
+| Safe Default    | ±10%        |
+
+---
+
+### Logic
+
+```pseudo
+pitch_variation = random(-10%, +10%)
+
+if question:
+    end_pitch += 12%
+
+if serious tone:
+    pitch -= 4%
+```
+
+---
+
+# 🔹 MODULE D — Duration & Emphasis Engine
+
+### Word-Level Duration Scaling
+
+| Word Type      | Multiplier |
+| -------------- | ---------- |
+| Noun           | 1.15       |
+| Verb           | 1.15       |
+| Adjective      | 1.10       |
+| Function words | 0.92       |
+
+---
+
+### Emphasis Detection Logic
+
+Trigger words:
+
+* very
+* really
+* so
+* extremely
+* ALL CAPS
+
+```pseudo
+if emphasis_word:
+    duration *= 1.2
+    pitch += 8%
+    energy += 10%
+```
+
+---
+
+# 🔹 MODULE E — Pause Modeling System
+
+### Required Pause Duration Range
+
+| Type        | Duration  |
+| ----------- | --------- |
+| Comma       | 180–250ms |
+| Period      | 400–600ms |
+| Question    | 350–500ms |
+| Long clause | 250ms     |
+
+---
+
+### Logic
+
+```pseudo
+if ",":
+    insert_pause(220ms)
+
+if ".":
+    insert_pause(500ms)
+```
+
+---
+
+# 🔹 MODULE F — Energy Control System
+
+### Required Energy Variation
+
+| Parameter      | Range |
+| -------------- | ----- |
+| Energy Dynamic | ±3–8% |
+| Safe Default   | ±5%   |
+
+---
+
+### Logic
+
+```pseudo
+energy += random(-5%, +5%)
+
+if excited:
+    energy += 8%
+
+if serious:
+    energy -= 3%
+```
+
+---
+
+# 🔹 MODULE G — Temperature & Noise Control
+
+For neural TTS models:
+
+---
+
+## Temperature
+
+| Parameter   | Range      |
+| ----------- | ---------- |
+| Temperature | 0.6 – 0.75 |
+| Recommended | 0.68       |
+
+Lower → robotic
+Higher → unstable
+
+---
+
+## Noise Scale (VITS-style)
+
+| Parameter   | Range     |
+| ----------- | --------- |
+| Noise Scale | 0.5 – 0.8 |
+| Recommended | 0.67      |
+
+Lower → flat
+Higher → expressive but risky
+
+---
+
+# 🔹 MODULE H — Micro Variation Engine (Anti-Robot Layer)
+
+### Required Variation
+
+| Feature         | Range |
+| --------------- | ----- |
+| Pitch jitter    | ±3%   |
+| Duration jitter | ±2%   |
+| Energy jitter   | ±3%   |
+
+---
+
+### Logic
+
+```pseudo
+pitch += random(-3%, +3%)
+duration += random(-2%, +2%)
+energy += random(-3%, +3%)
+```
+
+This prevents repeated robotic patterns.
+
+---
+
+# 4️⃣ Master Safe Preset (Production Ready)
+
+Use this preset for stable conversational tone:
+
+```
+speech_rate = 1.0
+pitch_variation = ±10%
+temperature = 0.68
+noise_scale = 0.67
+comma_pause = 220ms
+period_pause = 500ms
+energy_dynamic = ±5%
+noun_duration = 1.15
+function_duration = 0.92
+micro_jitter = ±3%
+```
+
+This gives:
+
+* Natural pacing
+* Conversational tone
+* No robotic flatness
+* No exaggerated cartoon voice
+
+---
+
+# 5️⃣ Technical Requirements
+
+### Backend Must Support:
+
+* Text preprocessing
+* POS tagging (for word importance)
+* Sentiment detection
+* Parameter injection into TTS inference
+
+### Audio Output:
+
+* Minimum 22kHz
+* Prefer 44.1kHz
+* Use neural vocoder (HiFi-GAN or better)
+
+---
+
+# 6️⃣ Performance Constraints (Replit Safe)
+
+* Processing time per sentence < 150ms preprocessing
+* No heavy emotion model unless cached
+* Random jitter must be seeded per sentence
+
+---
+
+# 7️⃣ Success Metrics
+
+Voice should:
+
+* Not sound flat
+* Not have equal word timing
+* Not have monotone pitch
+* Not have zero pauses
+* Not repeat identical prosody across sentences
+
+---
+
+# 🚀 If You Want Next-Level (Optional Phase 2)
+
+Add:
+
+* Breath simulation (150ms noise)
+* Style embedding vectors
+* Reference audio cloning
+* Context memory (tone consistent across conversation)
+
+---
+
+If you tell me:
+
+* Are you using Python or Node in Replit?
+* Which exact TTS model?
+* Are you using API or self-hosted?
+
+I can generate a **direct implementation blueprint with code structure** for your stack.
