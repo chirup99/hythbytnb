@@ -489,14 +489,28 @@ function SwipeableCardStack({
     // Apply more human-like parameters based on PRD
     utterance.pitch = voicePitch || 1.0;
     utterance.rate = voiceRate || 1.0;
-    utterance.volume = 1.0;
+    
+    // Dynamic Energy Variation (Volume)
+    const energyVariance = (voiceEnergyDynamic || 5) / 100;
+    utterance.volume = (1.0 - energyVariance) + (Math.random() * energyVariance * 2);
+
+    // Micro Variation (Anti-Robot Layer / Jitter)
+    const jitterAmount = (voiceMicroJitter || 3) / 100;
+    const pitchJitter = (Math.random() * jitterAmount * 2) - jitterAmount;
+    const rateJitter = (Math.random() * jitterAmount) - (jitterAmount / 2);
+    utterance.pitch += pitchJitter;
+    utterance.rate += rateJitter;
 
     // Human-like processing: add breaks and emphasis simulation
-    // Since Web Speech API doesn't support SSML, we simulate emphasis by slightly
-    // increasing volume/pitch for specific parts, or adding pauses in the text
+    const commaPause = voiceCommaPause || 220;
+    const periodPause = voicePeriodPause || 500;
+    
+    // We simulate pauses by processing the text
     const processedText = cleanText
-      .replace(/,/g, `, [break:${voiceBreakTime}ms]`)
-      .replace(/\./g, `. [break:${voiceBreakTime * 1.5}ms]`);
+      .replace(/,/g, `, [break:${commaPause}ms]`)
+      .replace(/\./g, `. [break:${periodPause}ms]`);
+    
+    utterance.text = processedText;
     
     // Note: Actual [break] tags won't work in Web Speech API, 
     // but we can simulate by splitting the text and speaking in chunks if needed.
@@ -2004,6 +2018,15 @@ export default function Home() {
   const [voiceRate, setVoiceRate] = useState(1.0);
   const [voiceBreakTime, setVoiceBreakTime] = useState(200); // ms
   const [voiceEmphasis, setVoiceEmphasis] = useState("moderate"); // none, moderate, strong
+  const [voicePitchVariation, setVoicePitchVariation] = useState(10);
+  const [voiceTemperature, setVoiceTemperature] = useState(0.68);
+  const [voiceNoiseScale, setVoiceNoiseScale] = useState(0.67);
+  const [voiceCommaPause, setVoiceCommaPause] = useState(220);
+  const [voicePeriodPause, setVoicePeriodPause] = useState(500);
+  const [voiceEnergyDynamic, setVoiceEnergyDynamic] = useState(5);
+  const [voiceNounDuration, setVoiceNounDuration] = useState(1.15);
+  const [voiceFunctionDuration, setVoiceFunctionDuration] = useState(0.92);
+  const [voiceMicroJitter, setVoiceMicroJitter] = useState(3);
   const [showAdminDashboardDialog, setShowAdminDashboardDialog] = useState(false);
   const [adminTab, setAdminTab] = useState("bugs-list");
   const [showMagicBugBar, setShowMagicBugBar] = useState(false);
@@ -14150,27 +14173,29 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   }
 
                                                   // Level 2: Pause Modeling (Simulated via text punctuation spacing)
-                                                  // Adding extra space after punctuation helps the browser's engine 
-                                                  // naturally insert micro-pauses (150-600ms range)
+                                                  const commaPause = voiceCommaPause || 220;
+                                                  const periodPause = voicePeriodPause || 500;
+                                                  
                                                   processedText = processedText
-                                                    .replace(/,/g, ',   ') // Comma pause (~200ms)
-                                                    .replace(/\./g, '.     ') // Period pause (~500ms)
-                                                    .replace(/\?/g, '?     ') // Question pause
-                                                    .replace(/!/g, '!     '); // Exclamation pause
+                                                    .replace(/,/g, `, ${' '.repeat(Math.floor(commaPause/50))}`) 
+                                                    .replace(/\./g, `. ${' '.repeat(Math.floor(periodPause/50))}`)
+                                                    .replace(/\?/g, `? ${' '.repeat(Math.floor(periodPause/50))}`) 
+                                                    .replace(/!/g, `! ${' '.repeat(Math.floor(periodPause/50))}`);
 
                                                   utterance.rate = finalRate;
                                                   utterance.pitch = finalPitch;
                                                   utterance.text = processedText;
                                                   
                                                   // Level 4: Micro Variation (Anti-Robot Layer / Jitter)
-                                                  // Humans have micro pitch/rate changes (jitter)
-                                                  const pitchJitter = (Math.random() * 0.08) - 0.04; // ±4%
-                                                  const rateJitter = (Math.random() * 0.04) - 0.02; // ±2%
+                                                  const jitterAmount = (voiceMicroJitter || 3) / 100;
+                                                  const pitchJitter = (Math.random() * jitterAmount * 2) - jitterAmount;
+                                                  const rateJitter = (Math.random() * jitterAmount) - (jitterAmount / 2);
                                                   utterance.pitch += pitchJitter;
                                                   utterance.rate += rateJitter;
 
                                                   // Dynamic Energy Variation (Volume)
-                                                  utterance.volume = 0.95 + (Math.random() * 0.1); // ±5% dynamic energy
+                                                  const energyVariance = (voiceEnergyDynamic || 5) / 100;
+                                                  utterance.volume = (1.0 - energyVariance) + (Math.random() * energyVariance * 2);
 
                                                   window.speechSynthesis.speak(utterance);
                                                 }
@@ -14208,7 +14233,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     {isVoiceSettingsOpen && (
                                         <div className="px-6 py-6 bg-gray-800/80 border border-gray-700/50 rounded-2xl shadow-xl animate-in fade-in slide-in-from-top-4 duration-500 backdrop-blur-md">
                                           <div className="space-y-6">
-                                            <div className="flex flex-col gap-6 w-full">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                                               {/* Pitch Slider */}
                                               <div className="flex flex-col gap-3 w-full">
                                                 <div className="flex justify-between items-center px-1">
@@ -14306,14 +14331,237 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       // Live testing: play sample with break
                                                       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
                                                         window.speechSynthesis.cancel();
-                                                        const utterance = new SpeechSynthesisUtterance(`Testing break time. One. Two.`);
+                                                        const utterance = new SpeechSynthesisUtterance(`Testing break time.`);
                                                         utterance.pitch = voicePitch || 1.0;
                                                         utterance.rate = voiceRate || 1.0;
-                                                        // Note: Standard SpeechSynthesis doesn't have a direct "break" parameter for words,
-                                                        // but we play the sample to show current pitch/rate.
                                                         window.speechSynthesis.speak(utterance);
                                                       }
                                                     }}
+                                                    className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              {/* Pitch Variation Slider */}
+                                              <div className="flex flex-col gap-3 w-full">
+                                                <div className="flex justify-between items-center px-1">
+                                                  <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Pitch Variation</span>
+                                                  <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">±{voicePitchVariation}%</span>
+                                                </div>
+                                                <div className="relative w-full h-6 flex items-center group">
+                                                  <div className="absolute h-1.5 w-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 absolute left-0 transition-all duration-300" 
+                                                      style={{ width: `${(voicePitchVariation / 20) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="20"
+                                                    step="1"
+                                                    value={voicePitchVariation}
+                                                    onChange={(e) => setVoicePitchVariation(parseInt(e.target.value))}
+                                                    className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              {/* Temperature Slider */}
+                                              <div className="flex flex-col gap-3 w-full">
+                                                <div className="flex justify-between items-center px-1">
+                                                  <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Temperature</span>
+                                                  <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{voiceTemperature}</span>
+                                                </div>
+                                                <div className="relative w-full h-6 flex items-center group">
+                                                  <div className="absolute h-1.5 w-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 absolute left-0 transition-all duration-300" 
+                                                      style={{ width: `${((voiceTemperature - 0.6) / 0.15) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="0.6"
+                                                    max="0.75"
+                                                    step="0.01"
+                                                    value={voiceTemperature}
+                                                    onChange={(e) => setVoiceTemperature(parseFloat(e.target.value))}
+                                                    className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              {/* Noise Scale Slider */}
+                                              <div className="flex flex-col gap-3 w-full">
+                                                <div className="flex justify-between items-center px-1">
+                                                  <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Noise Scale</span>
+                                                  <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{voiceNoiseScale}</span>
+                                                </div>
+                                                <div className="relative w-full h-6 flex items-center group">
+                                                  <div className="absolute h-1.5 w-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 absolute left-0 transition-all duration-300" 
+                                                      style={{ width: `${((voiceNoiseScale - 0.5) / 0.3) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="0.5"
+                                                    max="0.8"
+                                                    step="0.01"
+                                                    value={voiceNoiseScale}
+                                                    onChange={(e) => setVoiceNoiseScale(parseFloat(e.target.value))}
+                                                    className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              {/* Comma Pause Slider */}
+                                              <div className="flex flex-col gap-3 w-full">
+                                                <div className="flex justify-between items-center px-1">
+                                                  <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Comma Pause</span>
+                                                  <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{voiceCommaPause}ms</span>
+                                                </div>
+                                                <div className="relative w-full h-6 flex items-center group">
+                                                  <div className="absolute h-1.5 w-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 absolute left-0 transition-all duration-300" 
+                                                      style={{ width: `${((voiceCommaPause - 180) / 70) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="180"
+                                                    max="250"
+                                                    step="1"
+                                                    value={voiceCommaPause}
+                                                    onChange={(e) => setVoiceCommaPause(parseInt(e.target.value))}
+                                                    className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              {/* Period Pause Slider */}
+                                              <div className="flex flex-col gap-3 w-full">
+                                                <div className="flex justify-between items-center px-1">
+                                                  <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Period Pause</span>
+                                                  <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{voicePeriodPause}ms</span>
+                                                </div>
+                                                <div className="relative w-full h-6 flex items-center group">
+                                                  <div className="absolute h-1.5 w-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 absolute left-0 transition-all duration-300" 
+                                                      style={{ width: `${((voicePeriodPause - 400) / 200) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="400"
+                                                    max="600"
+                                                    step="1"
+                                                    value={voicePeriodPause}
+                                                    onChange={(e) => setVoicePeriodPause(parseInt(e.target.value))}
+                                                    className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              {/* Energy Dynamic Slider */}
+                                              <div className="flex flex-col gap-3 w-full">
+                                                <div className="flex justify-between items-center px-1">
+                                                  <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Energy Dynamic</span>
+                                                  <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">±{voiceEnergyDynamic}%</span>
+                                                </div>
+                                                <div className="relative w-full h-6 flex items-center group">
+                                                  <div className="absolute h-1.5 w-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 absolute left-0 transition-all duration-300" 
+                                                      style={{ width: `${((voiceEnergyDynamic - 3) / 5) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="3"
+                                                    max="8"
+                                                    step="1"
+                                                    value={voiceEnergyDynamic}
+                                                    onChange={(e) => setVoiceEnergyDynamic(parseInt(e.target.value))}
+                                                    className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              {/* Noun Duration Slider */}
+                                              <div className="flex flex-col gap-3 w-full">
+                                                <div className="flex justify-between items-center px-1">
+                                                  <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Noun Duration</span>
+                                                  <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{voiceNounDuration}x</span>
+                                                </div>
+                                                <div className="relative w-full h-6 flex items-center group">
+                                                  <div className="absolute h-1.5 w-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 absolute left-0 transition-all duration-300" 
+                                                      style={{ width: `${((voiceNounDuration - 1.0) / 0.5) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="1.0"
+                                                    max="1.5"
+                                                    step="0.01"
+                                                    value={voiceNounDuration}
+                                                    onChange={(e) => setVoiceNounDuration(parseFloat(e.target.value))}
+                                                    className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              {/* Function Duration Slider */}
+                                              <div className="flex flex-col gap-3 w-full">
+                                                <div className="flex justify-between items-center px-1">
+                                                  <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Function Duration</span>
+                                                  <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">{voiceFunctionDuration}x</span>
+                                                </div>
+                                                <div className="relative w-full h-6 flex items-center group">
+                                                  <div className="absolute h-1.5 w-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 absolute left-0 transition-all duration-300" 
+                                                      style={{ width: `${((voiceFunctionDuration - 0.8) / 0.4) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="0.8"
+                                                    max="1.2"
+                                                    step="0.01"
+                                                    value={voiceFunctionDuration}
+                                                    onChange={(e) => setVoiceFunctionDuration(parseFloat(e.target.value))}
+                                                    className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              {/* Micro Jitter Slider */}
+                                              <div className="flex flex-col gap-3 w-full">
+                                                <div className="flex justify-between items-center px-1">
+                                                  <span className="text-[10px] uppercase tracking-wider text-blue-400/70 font-bold">Micro Jitter</span>
+                                                  <span className="text-xs text-blue-400 font-mono bg-blue-400/10 px-2 py-0.5 rounded-full">±{voiceMicroJitter}%</span>
+                                                </div>
+                                                <div className="relative w-full h-6 flex items-center group">
+                                                  <div className="absolute h-1.5 w-full bg-gray-700/50 rounded-full overflow-hidden">
+                                                    <div 
+                                                      className="h-full bg-gradient-to-r from-blue-600 to-blue-400 absolute left-0 transition-all duration-300" 
+                                                      style={{ width: `${(voiceMicroJitter / 5) * 100}%` }}
+                                                    />
+                                                  </div>
+                                                  <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="5"
+                                                    step="1"
+                                                    value={voiceMicroJitter}
+                                                    onChange={(e) => setVoiceMicroJitter(parseInt(e.target.value))}
                                                     className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
                                                   />
                                                 </div>
