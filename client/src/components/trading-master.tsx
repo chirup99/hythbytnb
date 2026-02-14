@@ -5794,7 +5794,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
             <CardContent className="p-4 h-full flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <h3 className="text-lg font-semibold text-white">Visual Chart</h3>
                   
                   {/* Symbol Search Combobox */}
                   <Popover open={openSymbolSearch} onOpenChange={setOpenSymbolSearch}>
