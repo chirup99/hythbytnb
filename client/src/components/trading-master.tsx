@@ -20,6 +20,35 @@ import { MinimalChart } from './minimal-chart';
 import BlackboardDrawing from './blackboard-drawing';
 import { TradingViewStyleChart } from './tradingview-style-chart';
 import { format } from 'date-fns';
+
+/**
+ * Helper to convert minutes to HH:MM format
+ */
+const minutesToTime = (minutes: number) => {
+  if (typeof minutes !== 'number' || isNaN(minutes)) return '09:15';
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+};
+
+/**
+ * Helper to filter candles by minute range
+ */
+const getFilteredCandles = (candles: any[], range: [number, number]) => {
+  if (!candles) return [];
+  if (!range || !Array.isArray(range) || range.length < 2) return candles;
+  return candles.filter(c => {
+    if (!c || !c.time) return true;
+    const timeParts = c.time.split(':');
+    if (timeParts.length < 2) return true;
+    const h = parseInt(timeParts[0]);
+    const m = parseInt(timeParts[1]);
+    if (isNaN(h) || isNaN(m)) return true;
+    const mins = h * 60 + m;
+    return mins >= range[0] && mins <= range[1];
+  });
+};
+
 import type { 
   PatternPoint, 
   PatternRays, 
@@ -915,19 +944,9 @@ function AtmOhlcDisplay({ optionChainData, selectedStrike, onStrikeChange, selec
   );
 }
 
-// Helper to convert minutes to HH:MM format
-function minutesToTime(minutes: number) {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
-}
-
 export function TradingMaster({ onConfigChange, onBackClick }: TradingMasterProps = {}) {
   const [selectedTimeframe, setSelectedTimeframe] = useState('1d');
   const [selectedStrike, setSelectedStrike] = useState<number>(24750);
-  
-  // Add only the missing variables that don't exist elsewhere
-  const [selectedSymbol, setSelectedSymbol] = useState('NSE:NIFTY50-INDEX');
   
   // Dynamic time range calculation based on selected timeframe
   const calculateTimeRangeForTimeframe = (timeframe: string): [number, number] => {
@@ -951,6 +970,11 @@ export function TradingMaster({ onConfigChange, onBackClick }: TradingMasterProp
         return [555, 930];
     }
   };
+
+  const [timeRange, setTimeRange] = useState<[number, number]>(calculateTimeRangeForTimeframe('1d'));
+  
+  // Add only the missing variables that don't exist elsewhere
+  const [selectedSymbol, setSelectedSymbol] = useState('NSE:NIFTY50-INDEX');
   
   // Share dialog state
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
@@ -2640,8 +2664,8 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
     }
   };
   
-  const startTime = minutesToTime(timeRange[0]);
-  const endTime = minutesToTime(timeRange[1]);
+  const startTime = (timeRange && timeRange[0] !== undefined) ? minutesToTime(timeRange[0]) : '09:15';
+  const endTime = (timeRange && timeRange[1] !== undefined) ? minutesToTime(timeRange[1]) : '15:30';
   
   // 🔥 REVOLUTIONARY 6-STAGE CHART TRANSFORMATION - Strategy Validation & Robustness Testing
   const [transformationMode, setTransformationMode] = useState(0); // 0=original, 1=inverted, 2=reversed, 3=inverted+reversed, 4=horizontal flip, 5=interactive mock
