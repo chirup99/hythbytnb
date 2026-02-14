@@ -2539,71 +2539,16 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
   const [ohlcFromDate, setOhlcFromDate] = useState(format(smartDate, 'yyyy-MM-dd'));
   const [ohlcToDate, setOhlcToDate] = useState(format(smartDate, 'yyyy-MM-dd'));
   
-  // 🕘 TIME RANGE FILTERING - NEW FEATURE WITH DUAL SLIDER
-  const [showTimeFilter, setShowTimeFilter] = useState(false);
-
-  const [timeRange, setTimeRange] = useState<[number, number]>(calculateTimeRangeForTimeframe('1d'));
-  
-  // Update time range when timeframe changes
-  useEffect(() => {
-    const newTimeRange = calculateTimeRangeForTimeframe(selectedTimeframe);
-    setTimeRange(newTimeRange);
-  }, [selectedTimeframe]);
-  
-  // Convert minutes to time string (HH:MM format)
-  const minutesToTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-  };
-  
-  // Convert minutes to 12-hour format with AM/PM
-  const minutesToDisplayTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12;
-    return `${displayHours}:${mins.toString().padStart(2, '0')} ${ampm}`;
-  };
-
   // 🎯 VISUAL CHART AI Helper Functions
-  const getFilteredCandles = (candles: any[], timeRange: [number, number]) => {
-    if (!candles || !timeRange || timeRange.length !== 2) return [];
-    
-    const [startMinute, endMinute] = timeRange;
-    
-    // Helper function to convert minutes since midnight to timestamp
-    const minutesToTimestamp = (minutes: number, baseDate: Date = new Date()) => {
-      const date = new Date(baseDate);
-      date.setHours(0, 0, 0, 0);
-      date.setMinutes(minutes);
-      return Math.floor(date.getTime() / 1000);
-    };
-    
-    // Use the first candle's date as reference
-    const firstCandle = candles[0];
-    if (!firstCandle) return [];
-    
-    const baseTimestamp = firstCandle.timestamp || firstCandle.time || Date.now() / 1000;
-    const baseDate = new Date(typeof baseTimestamp === 'string' ? baseTimestamp : baseTimestamp * 1000);
-    
-    const startTargetTime = minutesToTimestamp(startMinute, baseDate);
-    const endTargetTime = minutesToTimestamp(endMinute, baseDate);
-    
-    // Filter candles to only include those within the time range
-    return candles.filter(candle => {
-      const candleTime = candle.timestamp || candle.time || 0;
-      const candleTimestamp = typeof candleTime === 'string' ? new Date(candleTime).getTime() / 1000 : candleTime;
-      return candleTimestamp >= startTargetTime && candleTimestamp <= endTargetTime;
-    });
-  };
+  // (Helper functions removed)
 
-  const drawMiniLineChart = (canvas: HTMLCanvasElement, candles: any[], timeRange: [number, number]) => {
+  // 🎯 VISUAL CHART AI logic continued...
+  const drawMiniLineChart = (canvas: HTMLCanvasElement, candles: any[]) => {
     const ctx = canvas.getContext('2d');
     if (!ctx || !candles || candles.length === 0) return;
     
-    // Get filtered candles for the selected time range
-    const filteredCandles = getFilteredCandles(candles, timeRange);
+    // Get all candles (time filtering removed)
+    const filteredCandles = candles;
     if (filteredCandles.length === 0) return;
     
     const width = canvas.width;
@@ -5156,7 +5101,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
   // 🔶 OHLC data query - Using Angel One API (BACKGROUND POLLING DISABLED FOR PERFORMANCE)
   const { data: ohlcData } = useQuery<HistoricalDataResponse>({
-    queryKey: ['/api/angelone/historical', ohlcSymbol, ohlcFromDate, ohlcToDate, ohlcTimeframe, timeRange, showTimeFilter],
+    queryKey: ['/api/angelone/historical', ohlcSymbol, ohlcFromDate, ohlcToDate, ohlcTimeframe],
     enabled: true, // Enable manual fetching only
     refetchInterval: false, // DISABLED: No background polling for performance
     retry: false,
@@ -5256,7 +5201,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
       };
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(['/api/angelone/historical', ohlcSymbol, ohlcFromDate, ohlcToDate, ohlcTimeframe, timeRange, showTimeFilter], data);
+      queryClient.setQueryData(['/api/angelone/historical', ohlcSymbol, ohlcFromDate, ohlcToDate, ohlcTimeframe, timeRange], data);
     },
   });
 
@@ -5264,23 +5209,8 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
   const displayOhlcData = useMemo(() => {
     if (!ohlcData) return null;
     
-    // 🕘 APPLY TIME FILTERING FIRST
-    let filteredData = ohlcData;
-    if (showTimeFilter && ohlcData.candles) {
-      const startMinutes = timeRange[0];
-      const endMinutes = timeRange[1];
-      
-      const filteredCandles = ohlcData.candles.filter((candle: any) => {
-        const candleDate = new Date(candle.timestamp * 1000);
-        const candleMinutes = candleDate.getHours() * 60 + candleDate.getMinutes();
-        return candleMinutes >= startMinutes && candleMinutes <= endMinutes;
-      });
-      
-      filteredData = {
-        ...ohlcData,
-        candles: filteredCandles
-      };
-    }
+    // 🕘 TIME FILTERING REMOVED
+    const filteredData = ohlcData;
     
     if (transformationMode === 5) {
       // Interactive Mock Mode: Combine real + mock candles
@@ -5299,7 +5229,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
     }
     
     return filteredData;
-  }, [ohlcData, transformationMode, originalOhlcData, selectionLineIndex, mockCandlesFromIndex, showTimeFilter, timeRange]);
+  }, [ohlcData, transformationMode, originalOhlcData, selectionLineIndex, mockCandlesFromIndex]);
 
   // 🌐 EXPOSE CHART DATA GLOBALLY for pattern detection access
   useEffect(() => {
@@ -6497,136 +6427,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                 />
               </div>
               
-              {/* 🕘 TIME RANGE FILTER - RELOCATED TO VISUAL CHART BOTTOM */}
-              <div className="mt-3 border-t border-slate-700 pt-3">
-                {/* TIME RANGE FILTER TOGGLE */}
-                <div className="flex items-center gap-2 mb-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowTimeFilter(!showTimeFilter)}
-                    className="text-xs h-6 px-2 bg-blue-600/10 hover:bg-blue-600/20 border-blue-500/30 text-blue-400"
-                    data-testid="toggle-time-filter"
-                  >
-                    <Filter className="h-3 w-3 mr-1" />
-                    {showTimeFilter ? 'Hide' : 'Show'} Time Filter
-                  </Button>
-                  {showTimeFilter && (
-                    <span className="text-xs text-green-600 dark:text-green-400 font-medium">
-                      ⚡ Real-time filtering
-                    </span>
-                  )}
-                </div>
-
-                {/* COMPACT DUAL RANGE SLIDER - TIME SELECTOR */}
-                {showTimeFilter && (
-                  <div className="p-3 bg-gradient-to-r from-blue-50/80 to-purple-50/80 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <div className="space-y-3">
-                      {/* Compact Time Display Labels */}
-                      <div className="flex justify-between items-center">
-                        <div className="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">
-                          {minutesToDisplayTime(timeRange[0])}
-                        </div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">
-                          📊 Time Range
-                        </div>
-                        <div className="bg-purple-600 text-white px-2 py-1 rounded-full text-xs font-semibold">
-                          {minutesToDisplayTime(timeRange[1])}
-                        </div>
-                      </div>
-                      
-                      {/* Dual Range Slider */}
-                      <div className="relative">
-                        <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
-                          {/* Selected Range Background */}
-                          <div 
-                            className="absolute h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg transition-all duration-150"
-                            style={{
-                              left: `${((timeRange[0] - 540) / (960 - 540)) * 100}%`,
-                              width: `${((timeRange[1] - timeRange[0]) / (960 - 540)) * 100}%`
-                            }}
-                          />
-                        </div>
-                        
-                        {/* Range Input for Start Time */}
-                        <input
-                          type="range"
-                          min="540"  // 9:00 AM
-                          max="960"  // 4:00 PM  
-                          step="15"  // 15-minute intervals
-                          value={timeRange[0]}
-                          onChange={(e) => {
-                            const newStart = parseInt(e.target.value);
-                            if (newStart < timeRange[1]) {
-                              setTimeRange([newStart, timeRange[1]]);
-                              console.log(`🕘 Real-time filter: Start time changed to ${minutesToDisplayTime(newStart)}`);
-                            }
-                          }}
-                          className="absolute top-0 left-0 w-full h-2 bg-transparent appearance-none cursor-pointer slider-thumb-blue"
-                          style={{ background: 'transparent' }}
-                          data-testid="start-time-slider"
-                        />
-                        
-                        {/* Range Input for End Time */}
-                        <input
-                          type="range"
-                          min="540"  // 9:00 AM
-                          max="960"  // 4:00 PM
-                          step="15"  // 15-minute intervals  
-                          value={timeRange[1]}
-                          onChange={(e) => {
-                            const newEnd = parseInt(e.target.value);
-                            if (newEnd > timeRange[0]) {
-                              setTimeRange([timeRange[0], newEnd]);
-                              console.log(`🕘 Real-time filter: End time changed to ${minutesToDisplayTime(newEnd)}`);
-                            }
-                          }}
-                          className="absolute top-0 left-0 w-full h-2 bg-transparent appearance-none cursor-pointer slider-thumb-purple"
-                          style={{ background: 'transparent' }}
-                          data-testid="end-time-slider"
-                        />
-                      </div>
-                      
-                      {/* Compact Quick Preset Buttons */}
-                      <div className="flex gap-1 justify-center">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setTimeRange([555, 930])} // 9:15 AM to 3:30 PM
-                          className="text-xs h-5 px-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-300 dark:border-green-700"
-                        >
-                          Full
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setTimeRange([555, 720])} // 9:15 AM to 12:00 PM
-                          className="text-xs h-5 px-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 border-orange-300 dark:border-orange-700"
-                        >
-                          AM
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setTimeRange([720, 930])} // 12:00 PM to 3:30 PM
-                          className="text-xs h-5 px-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border-purple-300 dark:border-purple-700"
-                        >
-                          PM
-                        </Button>
-                      </div>
-                      
-                      {/* Compact Status Indicator */}
-                      <div className="text-xs text-center">
-                        {displayOhlcData && showTimeFilter && (
-                          <div className="text-green-600 dark:text-green-400">
-                            ⚡ {displayOhlcData.candles?.length || 0} candles filtered
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
             </CardContent>
           </Card>
         </div>
@@ -11424,16 +11224,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     </div>
                   </div>
 
-                  {/* Time Filter */}
-                  <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Filter className="h-4 w-4 text-blue-600" />
-                      <span className="text-sm font-medium text-blue-800 dark:text-blue-200">Show Time Filter</span>
-                    </div>
-                    <div className="text-xs text-blue-600 dark:text-blue-300">
-                      Current range: {minutesToDisplayTime(timeRange[0])} - {minutesToDisplayTime(timeRange[1])}
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
 
