@@ -7690,8 +7690,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   // Queries for NIFTY50 and NIFTYBANK chart data - optimized with caching
   const { data: nifty50ChartData = [], isLoading: isNifty50Loading } = useQuery({
-    queryKey: ['stock-chart', 'NIFTY', nifty50Timeframe],
-    queryFn: () => fetch(`/api/stock-chart-data/NIFTY?timeframe=${nifty50Timeframe}`).then(res => res.json()),
+    queryKey: ['stock-chart', 'NSE:NIFTY50-INDEX', nifty50Timeframe],
+    queryFn: () => fetch(`/api/stock-chart-data/NSE:NIFTY50-INDEX?timeframe=${nifty50Timeframe}`).then(res => res.json()),
     refetchInterval: nifty50Timeframe === '1D' ? 60000 : 300000,
     staleTime: 0,
     gcTime: 600000,
@@ -7702,7 +7702,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const { data: niftyBankChartData = [], isLoading: isNiftyBankLoading } = useQuery({
     queryKey: ['stock-chart', selectedWatchlistSymbol, niftyBankTimeframe],
     queryFn: () => {
-      const symbol = selectedWatchlistSymbol.replace('-EQ', '').replace('-BE', '');
+      const symbol = selectedWatchlistSymbol;
       return fetch(`/api/stock-chart-data/${symbol}?timeframe=${niftyBankTimeframe}`).then(res => res.json());
     },
     refetchInterval: niftyBankTimeframe === '1D' ? 60000 : 300000,
