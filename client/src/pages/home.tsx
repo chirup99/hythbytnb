@@ -7690,8 +7690,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   // Queries for NIFTY50 and NIFTYBANK chart data - optimized with caching
   const { data: nifty50ChartData = [], isLoading: isNifty50Loading } = useQuery({
-    queryKey: ['stock-chart', 'NIFTY50', nifty50Timeframe],
-    queryFn: () => fetch(`/api/stock-chart-data/NIFTY50?timeframe=${nifty50Timeframe}`).then(res => res.json()),
+    queryKey: ['stock-chart', 'NIFTY', nifty50Timeframe],
+    queryFn: () => fetch(`/api/stock-chart-data/NIFTY?timeframe=${nifty50Timeframe}`).then(res => res.json()),
     refetchInterval: nifty50Timeframe === '1D' ? 60000 : 300000,
     staleTime: 0,
     gcTime: 600000,
