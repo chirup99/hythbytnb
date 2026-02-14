@@ -89,13 +89,13 @@ export function AuthButtonAngelOne() {
 
   const { data: angelStatus, isLoading: isStatusLoading } = useQuery<AngelOneStatusData>({
     queryKey: ["/api/angelone/status"],
-    refetchInterval: 5000,
+    refetchInterval: 30000,
   });
 
   const { data: profileData } = useQuery<{ success: boolean; profile: AngelOneProfile }>({
     queryKey: ["/api/angelone/profile"],
     enabled: !!(angelStatus?.connected && angelStatus?.authenticated),
-    refetchInterval: 10000,
+    refetchInterval: 30000,
   });
 
   const connectMutation = useMutation({
@@ -240,13 +240,13 @@ export function AngelOneStatus() {
 
   const { data: angelStatus } = useQuery<AngelOneStatusData>({
     queryKey: ["/api/angelone/status"],
-    refetchInterval: 3000,
+    refetchInterval: 30000,
   });
 
   const { data: profileData } = useQuery<{ success: boolean; profile: AngelOneProfile }>({
     queryKey: ["/api/angelone/profile"],
     enabled: !!(angelStatus?.connected && angelStatus?.authenticated),
-    refetchInterval: 10000,
+    refetchInterval: 30000,
   });
 
   const refreshMutation = useMutation({
