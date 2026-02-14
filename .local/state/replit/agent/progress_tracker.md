@@ -74,3 +74,4 @@
 [x] 74. Session recovery (Feb 14, #13) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 75. Relocated symbol search, timeframe, fetch, and download controls from OHLC Data header to Visual Chart header on Trading Master tab. Removed them from both the primary OHLC Data window and the mobile/compact OHLC expandable section to ensure a consistent and simplified layout. All items marked [x] complete.
 [x] 76. Fixed JSX syntax errors (unclosed div tag at line 7273) and ensured proper structure. All items marked [x] complete.
+[x] 77. Session recovery (Feb 14, #14) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI). All items marked [x] complete.
