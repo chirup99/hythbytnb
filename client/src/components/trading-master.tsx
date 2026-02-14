@@ -5759,25 +5759,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   <Calendar className="h-3 w-3" />
                 </Button>
 
-                {/* 🔥 REVOLUTIONARY 4-STAGE TRANSFORMATION BUTTON - Progressive Chart Strategy Validation */}
-                <Button 
-                  onClick={handleTransformation}
-                  disabled={!ohlcData || !ohlcData.candles || ohlcData.candles.length === 0}
-                  variant={transformationMode > 0 ? "default" : "outline"}
-                  size="sm"
-                  className={`h-8 px-2 transition-all duration-300 ${
-                    transformationMode > 0 
-                      ? 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg border-purple-500' 
-                      : 'border-purple-300 dark:border-purple-600 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900'
-                  }`}
-                  title={transformationMode > 0 
-                    ? `Transformation Mode ${transformationMode}: ${['', 'Inverted', 'Reversed', 'Inverted+Reversed', 'Horizontal Flip', 'Interactive Mock'][transformationMode]} - Click for next mode` 
-                    : '6-Stage Chart Transformation - Progressive strategy testing'
-                  }
-                >
-                  <Shuffle className={`h-3 w-3 ${transformationMode > 0 ? 'animate-pulse' : ''}`} />
-                </Button>
-
                 {/* Fetch Button - Icon Only */}
                 <Button 
                   onClick={handleFetchOhlcData}
