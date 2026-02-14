@@ -55,3 +55,4 @@
 [x] 55. Session recovery (Feb 14, #5) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 56. Session recovery (Feb 14, #6) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 57. Session recovery (Feb 14, #7) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
+[x] 58. Added authentication checks to home page quick action buttons (Watchlist, Trading Journal, Trade Challenge) to redirect unauthenticated users to the login page. Updated both desktop and mobile layouts. All items marked [x] complete.

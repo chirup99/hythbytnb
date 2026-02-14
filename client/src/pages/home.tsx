@@ -3940,6 +3940,15 @@ ${fundamentalInsights}**📈 Essential Analysis Framework:**
 
   // Handle suggestion button clicks
   const handleSuggestionClick = (suggestion: string) => {
+    const userId = localStorage.getItem('currentUserId');
+    const userEmail = localStorage.getItem('currentUserEmail');
+
+    if (!userId || !userEmail || userId === 'null' || userEmail === 'null') {
+      console.log('[AUTH] Authentication required for suggestions - redirecting to login');
+      setLocation('/login');
+      return;
+    }
+
     setSearchQuery(suggestion);
     setIsSearchActive(true);
     // Automatically trigger search with the suggestion
@@ -16231,6 +16240,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           variant="secondary"
                           className="bg-cyan-600 hover:bg-cyan-700  text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200"
                           onClick={() => {
+                            const userId = localStorage.getItem('currentUserId');
+                            const userEmail = localStorage.getItem('currentUserEmail');
+                            if (!userId || !userEmail || userId === 'null' || userEmail === 'null') {
+                              setLocation('/login');
+                              return;
+                            }
                             setIsWatchlistLoading(true);
                             setIsSearchActive(true);
                             setSearchResults("[CHART:WATCHLIST]");
@@ -16288,7 +16303,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <Button
                           variant="secondary"
                           className="bg-indigo-600 hover:bg-indigo-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200"
-                          onClick={generateJournalAIReport}
+                          onClick={() => {
+                            const userId = localStorage.getItem('currentUserId');
+                            const userEmail = localStorage.getItem('currentUserEmail');
+                            if (!userId || !userEmail || userId === 'null' || userEmail === 'null') {
+                              setLocation('/login');
+                              return;
+                            }
+                            generateJournalAIReport();
+                          }}
                           data-testid="button-trading-journal"
                         >
                           <div className="flex items-center gap-2">
@@ -16301,6 +16324,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           variant="secondary"
                           className="bg-red-600 hover:bg-red-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200"
                           onClick={() => {
+                            const userId = localStorage.getItem('currentUserId');
+                            const userEmail = localStorage.getItem('currentUserEmail');
+                            if (!userId || !userEmail || userId === 'null' || userEmail === 'null') {
+                              setLocation('/login');
+                              return;
+                            }
                             setIsSearchActive(true);
                             setSearchResults("[CHART:TRADE]");
                           }}
@@ -16421,6 +16450,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 variant="secondary"
                                 className="bg-cyan-600 hover:bg-cyan-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0"
                                 onClick={() => {
+                                  const userId = localStorage.getItem('currentUserId');
+                                  const userEmail = localStorage.getItem('currentUserEmail');
+                                  if (!userId || !userEmail || userId === 'null' || userEmail === 'null') {
+                                    setLocation('/login');
+                                    return;
+                                  }
                                   setIsWatchlistLoading(true);
                                   setIsSearchActive(true);
                                   setSearchResults("[CHART:WATCHLIST]");
@@ -16478,7 +16513,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <Button
                                 variant="secondary"
                                 className="bg-indigo-600 hover:bg-indigo-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0"
-                                onClick={generateJournalAIReport}
+                                onClick={() => {
+                                  const userId = localStorage.getItem('currentUserId');
+                                  const userEmail = localStorage.getItem('currentUserEmail');
+                                  if (!userId || !userEmail || userId === 'null' || userEmail === 'null') {
+                                    setLocation('/login');
+                                    return;
+                                  }
+                                  generateJournalAIReport();
+                                }}
                                 data-testid="button-trading-journal-mobile"
                               >
                                 <div className="flex items-center gap-1">
@@ -16491,6 +16534,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 variant="secondary"
                                 className="bg-orange-600 hover:bg-orange-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0"
                                 onClick={() => {
+                                  const userId = localStorage.getItem('currentUserId');
+                                  const userEmail = localStorage.getItem('currentUserEmail');
+                                  if (!userId || !userEmail || userId === 'null' || userEmail === 'null') {
+                                    setLocation('/login');
+                                    return;
+                                  }
                                   setIsSearchActive(true);
                                   setSearchResults("[CHART:TRADE]");
                                 }}
