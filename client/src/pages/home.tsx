@@ -15496,17 +15496,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                             {/* Right Column - Related News */}
                                             <div className="flex-1 bg-gray-900/50 rounded-lg p-4 border border-gray-600">
-                                              <div className="flex items-center justify-start mb-4">
-                                                <div className="flex items-center gap-2">
-                                                  <Clock className="h-4 w-4 text-gray-400" />
-                                                  <h3 className="text-sm font-medium text-gray-200">
+                                              <div className="flex items-center justify-between mb-4">
+                                                <div className="flex items-center gap-2 min-w-0">
+                                                  <Clock className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                                                  <h3 className="text-sm font-medium text-gray-200 mt-[0px] mb-[0px] truncate leading-none">
                                                     Related News for {cleanSymbolForNews}
                                                   </h3>
                                                 </div>
                                                 <Button
                                                   variant="ghost"
                                                   size="sm"
-                                                  className="h-7 text-xs text-gray-400 hover:text-gray-200"
+                                                  className="h-7 text-xs text-gray-400 hover:text-gray-200 flex items-center gap-1.5 shrink-0 px-2"
                                                   onClick={() => {
                                                     setIsWatchlistNewsLoading(true);
                                                     fetch(`/api/stock-news/${cleanSymbolForNews}?refresh=${Date.now()}`)
@@ -15519,8 +15519,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   }}
                                                   data-testid="button-refresh-news"
                                                 >
-                                                  <RefreshCw className={`h-3 w-3 mr-1 ${isWatchlistNewsLoading ? 'animate-spin' : ''}`} />
-                                                  Refresh
+                                                  <RefreshCw className={`h-3 w-3 ${isWatchlistNewsLoading ? 'animate-spin' : ''}`} />
+                                                  <span className="leading-none">Refresh</span>
                                                 </Button>
                                               </div>
 
@@ -15561,9 +15561,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               {/* Quarterly Results for Selected Stock Only */}
                                               <div className="border-t border-gray-700 pt-4">
                                                 <div className="flex items-center justify-between mb-3">
-                                                  <div className="flex items-center gap-2">
-                                                    <TrendingUp className="h-4 w-4 text-gray-400" />
-                                                    <h3 className="text-sm font-medium text-gray-200">
+                                                  <div className="flex items-center gap-2 min-w-0">
+                                                    <TrendingUp className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                                                    <h3 className="text-sm font-medium text-gray-200 mt-[0px] mb-[0px] truncate leading-none">
                                                       Quarterly Performance Trend <span className="text-xs text-gray-500 ml-1">(Net profit)</span>
                                                     </h3>
                                                   </div>
@@ -15591,7 +15591,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                           }
                                                         }}
                                                         data-testid="button-refresh-quarterly"
-                                                        className="h-7 px-2"
+                                                        className="h-7 px-2 flex items-center justify-center shrink-0"
                                                       >
                                                         <RefreshCw className={`h-3 w-3 ${isWatchlistQuarterlyLoading ? "animate-spin" : ""}`} />
                                                       </Button>
