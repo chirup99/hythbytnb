@@ -915,6 +915,13 @@ function AtmOhlcDisplay({ optionChainData, selectedStrike, onStrikeChange, selec
   );
 }
 
+// Helper to convert minutes to HH:MM format
+function minutesToTime(minutes: number) {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+}
+
 export function TradingMaster({ onConfigChange, onBackClick }: TradingMasterProps = {}) {
   const [selectedTimeframe, setSelectedTimeframe] = useState('1d');
   const [selectedStrike, setSelectedStrike] = useState<number>(24750);
