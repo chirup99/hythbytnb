@@ -13846,60 +13846,89 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             {/* Render content based on active tab */}
 
             {activeTab === 'dashboard' && localStorage.getItem('currentUserEmail') === 'chiranjeevi.perala99@gmail.com' && (
-              <div className="space-y-8 relative">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-0 right-0 text-gray-400 hover:text-white hover:bg-white/10"
-                  onClick={() => setActiveTab('trading-home')}
-                  data-testid="button-back-trading-dashboard"
-                >
-                  <ArrowLeft className="h-6 w-6" />
-                </Button>
-                <div className="text-center space-y-4">
-                  <div className="flex items-center justify-center gap-3">
-                    <Star className="h-6 w-6 text-yellow-400" />
-                    <h2 className="text-2xl font-bold text-orange-400">Trading Dashboard</h2>
+              <div className="space-y-4 p-4">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <Star className="h-5 w-5 text-orange-400 fill-orange-400" />
+                    <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-amber-600">Trading Dashboard</h2>
                   </div>
-                  <p className="text-orange-300">Real-time market data via Angel One SmartAPI</p>
+                  <div className="flex items-center gap-3">
+                    <p className="text-xs text-muted-foreground hidden sm:block">Real-time market data via Angel One SmartAPI</p>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-gray-400 hover:text-white hover:bg-white/10"
+                      onClick={() => setActiveTab('trading-home')}
+                      data-testid="button-back-trading-dashboard"
+                    >
+                      <ArrowLeft className="h-5 w-5" />
+                    </Button>
+                  </div>
                 </div>
 
-                {/* Angel One Connection Setup */}
-                <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <div className="border-b border-slate-200 dark:border-slate-800 px-6 py-4">
-                    <div className="flex items-center justify-start">
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Angel One Connection</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Automatic TOTP authentication - No daily token refresh needed</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="space-y-4">
-                      <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-3">
-                        <p className="text-sm text-green-800 dark:text-green-200">
-                          <strong>✅ Angel One SmartAPI:</strong> Free API with automatic authentication. Perfect for real-time trading and market data.
-                        </p>
-                      </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* Angel One Connection Setup - Compact */}
+                  <Card className="hover-elevate">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 gap-2">
+                      <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Angel One Connection</CardTitle>
+                      <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <p className="text-[10px] text-muted-foreground mb-3">Automatic TOTP authentication enabled.</p>
                       <AuthButtonAngelOne />
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Angel One Status - Compact */}
+                  <Card className="hover-elevate">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 gap-2">
+                      <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">API Status</CardTitle>
+                      <Activity className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <AngelOneStatus />
+                    </CardContent>
+                  </Card>
+
+                  {/* Live Market Prices - Compact */}
+                  <Card className="hover-elevate">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 gap-2">
+                      <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Market Prices</CardTitle>
+                      <div className="flex items-center gap-1.5">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                        <span className="text-[10px] font-bold text-green-500 uppercase tracking-wider">Live</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <AngelOneLiveMarketPrices />
+                    </CardContent>
+                  </Card>
+
+                  {/* Angel One API Statistics - Compact */}
+                  <Card className="hover-elevate">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 gap-2">
+                      <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">API Stats</CardTitle>
+                      <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <AngelOneApiStatistics />
+                    </CardContent>
+                  </Card>
+
+                  {/* Angel One System Status - Compact */}
+                  <Card className="hover-elevate md:col-span-2 lg:col-span-2">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 gap-2">
+                      <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">System Status & Activity</CardTitle>
+                      <ShieldCheck className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <AngelOneSystemStatus />
+                    </CardContent>
+                  </Card>
                 </div>
-
-                {/* SignIn Data Window with YouTube Link */}
-
-                {/* Angel One Status */}
-                <AngelOneStatus />
-
-                {/* Live Market Prices - BANKNIFTY, SENSEX, GOLD with WebSocket status */}
-                <AngelOneLiveMarketPrices />
-
-                {/* Angel One API Statistics */}
-                <AngelOneApiStatistics />
-
-                {/* Angel One System Status and Recent Activity */}
-                <AngelOneSystemStatus />
-
               </div>
             )}
 
