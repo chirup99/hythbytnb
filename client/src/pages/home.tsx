@@ -16909,7 +16909,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                         {/* Main clickable button */}
                         <Button
-                          onClick={() => { const currentEmail = localStorage.getItem("currentUserEmail"); if (currentEmail === "chiranjeevi.perala99@gmail.com") { setTabWithAuthCheck("tutor"); } else { setShowComingSoonDialog(true); } }}
+                          onClick={() => {
+                            const userId = localStorage.getItem('currentUserId');
+                            const userEmail = localStorage.getItem('currentUserEmail');
+                            if (!userId || !userEmail || userId === 'null' || userEmail === 'null') {
+                              setLocation('/login');
+                              return;
+                            }
+                            const currentEmail = localStorage.getItem("currentUserEmail");
+                            if (currentEmail === "chiranjeevi.perala99@gmail.com") {
+                              setTabWithAuthCheck("tutor");
+                            } else {
+                              setShowComingSoonDialog(true);
+                            }
+                          }}
                           className="relative w-16 h-16 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 shadow-2xl hover:animate-none transition-all duration-300 border-4 border-white/20 pointer-events-auto animate-bounce hover:scale-110"
                         >
                           <ChevronUp className="h-8 w-8 text-gray-400 pointer-events-none" />
