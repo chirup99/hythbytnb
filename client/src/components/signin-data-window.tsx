@@ -23,12 +23,7 @@ interface SigninDataResponse {
 }
 
 export function SigninDataWindow() {
-  return (
-    <div className="space-y-4">
-      {/* Livestream Ads Section */}
-      <LivestreamAdsControl />
-    </div>
-  );
+  return null;
 }
 
 function LivestreamAdsControl() {
