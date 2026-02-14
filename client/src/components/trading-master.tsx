@@ -5201,7 +5201,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
       };
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(['/api/angelone/historical', ohlcSymbol, ohlcFromDate, ohlcToDate, ohlcTimeframe, timeRange], data);
+      queryClient.setQueryData(['/api/angelone/historical', ohlcSymbol, ohlcFromDate, ohlcToDate, ohlcTimeframe], data);
     },
   });
 
@@ -6415,7 +6415,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   onCandleClick={handleChartCandleClick}
                   selectionLineIndex={selectionLineIndex}
                   mockStartIndex={selectionLineIndex !== null ? selectionLineIndex + 1 : null}
-                  timeRange={timeRange as [number, number]}
                   indicators={indicators}
                   chartType={chartType}
                   externalSelectedPoints={visualAISelectedPoints}
