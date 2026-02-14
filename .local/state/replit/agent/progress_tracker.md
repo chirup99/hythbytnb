@@ -66,3 +66,6 @@
 [x] 66. Removed "Show Time Filter" toggle and associated logic from Visual Chart on Trading Master dashboard. All items marked [x] complete.
 [x] 67. Cleaned up remaining "Show Time Filter" references and state variables in Trading Master component. All items marked [x] complete.
 [x] 68. Session recovery (Feb 14, #11) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
+[x] 69. Fixed Trading Master tab loading issue by moving `minutesToTime` and `getFilteredCandles` helper functions to top-level scope.
+[x] 70. Resolved ReferenceErrors by adding defensive checks for `timeRange` state variable in Trading Master component.
+[x] 71. Verified market data streaming and dashboard functionality across all views.
