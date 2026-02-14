@@ -15229,72 +15229,58 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     ))}
                                                   </div>
 
-                                                  <div className="h-48 w-full bg-gray-800/30 rounded-lg p-2">
+                                                  <div className="h-48 w-full bg-gray-800/30 rounded-lg p-2 overflow-hidden">
                                                     <ResponsiveContainer width="100%" height="100%">
-                                                      <LineChart data={isNifty50Loading ? [] : nifty50FormattedData} margin={{ top: 5, right: 15, left: 50, bottom: 5 }}>
+                                                      <AreaChart data={isNifty50Loading ? [] : nifty50FormattedData} margin={{ top: 5, right: 15, left: 5, bottom: 5 }}>
+                                                        <defs>
+                                                          <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                                                            <stop offset="5%" stopColor={getNifty50Change() >= 0 ? "#10b981" : "#ef4444"} stopOpacity={0.3}/>
+                                                            <stop offset="95%" stopColor={getNifty50Change() >= 0 ? "#10b981" : "#ef4444"} stopOpacity={0}/>
+                                                          </linearGradient>
+                                                        </defs>
                                                         <XAxis 
                                                           dataKey="time" 
                                                           axisLine={false}
                                                           tickLine={false}
                                                           tick={{ fontSize: 9, fill: '#64748b' }}
                                                           tickCount={5}
+                                                          hide
                                                         />
                                                         <YAxis 
-                                                          domain={['dataMin - 50', 'dataMax + 50']}
+                                                          domain={['auto', 'auto']}
                                                           type="number"
                                                           axisLine={false}
                                                           tickLine={false}
-                                                          tick={{ fontSize: 9, fill: '#64748b' }}
-                                                          width={10}
+                                                          hide
                                                         />
                                                         <Tooltip 
                                                           content={({ active, payload, label }) => {
                                                             if (!active || !payload || !payload.length) return null;
                                                             const value = payload[0].value;
                                                             return (
-                                                              <div style={{
-                                                                backgroundColor: '#1e293b',
-                                                                border: '1px solid #334155',
-                                                                borderRadius: '6px',
-                                                                color: '#e2e8f0',
-                                                                padding: '8px 16px',
-                                                                fontSize: '13px',
-                                                                minWidth: '140px',
-                                                                boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                gap: '12px'
-                                                              }}>
-                                                                <span style={{ fontSize: '13px', fontWeight: '500' }}>
-                                                                  ₹{Number(value).toFixed(2)}
+                                                              <div className="bg-slate-900 border border-slate-700 rounded-md p-2 shadow-xl flex items-center gap-2">
+                                                                <span className="text-sm font-medium text-slate-100">
+                                                                  ₹{Number(value).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                                                                 </span>
-                                                                <div style={{
-                                                                  width: '1px',
-                                                                  height: '20px',
-                                                                  backgroundColor: '#475569'
-                                                                }}></div>
-                                                                <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                                                                <div className="w-px h-4 bg-slate-700" />
+                                                                <span className="text-xs text-slate-400">
                                                                   {label}
                                                                 </span>
                                                               </div>
                                                             );
                                                           }}
                                                         />
-                                                        <Line 
-                                                          type="linear" 
+                                                        <Area 
+                                                          type="monotone" 
                                                           dataKey="price" 
-                                                          stroke="#ef4444"
+                                                          stroke={getNifty50Change() >= 0 ? "#10b981" : "#ef4444"}
                                                           strokeWidth={2}
+                                                          fillOpacity={1}
+                                                          fill="url(#colorPrice)"
                                                           dot={false}
-                                                          activeDot={{ r: 4, fill: '#ef4444' }}
+                                                          activeDot={{ r: 4, fill: getNifty50Change() >= 0 ? "#10b981" : "#ef4444", strokeWidth: 0 }}
                                                         />
-                                                        <ReferenceLine 
-                                                          y={getNifty50Baseline()} 
-                                                          stroke="#64748b" 
-                                                          strokeDasharray="2 2" 
-                                                          strokeWidth={1}
-                                                        />
-                                                      </LineChart>
+                                                      </AreaChart>
                                                     </ResponsiveContainer>
                                                   </div>
                                                 </div>
@@ -15334,72 +15320,58 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     ))}
                                                   </div>
 
-                                                  <div className="h-48 w-full bg-gray-800/30 rounded-lg p-2">
+                                                  <div className="h-48 w-full bg-gray-800/30 rounded-lg p-2 overflow-hidden">
                                                     <ResponsiveContainer width="100%" height="100%">
-                                                      <LineChart data={isNiftyBankLoading ? [] : niftyBankFormattedData} margin={{ top: 5, right: 15, left: 50, bottom: 5 }}>
+                                                      <AreaChart data={isNiftyBankLoading ? [] : niftyBankFormattedData} margin={{ top: 5, right: 15, left: 5, bottom: 5 }}>
+                                                        <defs>
+                                                          <linearGradient id="colorPriceBank" x1="0" y1="0" x2="0" y2="1">
+                                                            <stop offset="5%" stopColor={getNiftyBankChange() >= 0 ? "#10b981" : "#ef4444"} stopOpacity={0.3}/>
+                                                            <stop offset="95%" stopColor={getNiftyBankChange() >= 0 ? "#10b981" : "#ef4444"} stopOpacity={0}/>
+                                                          </linearGradient>
+                                                        </defs>
                                                         <XAxis 
                                                           dataKey="time" 
                                                           axisLine={false}
                                                           tickLine={false}
                                                           tick={{ fontSize: 9, fill: '#64748b' }}
                                                           tickCount={5}
+                                                          hide
                                                         />
                                                         <YAxis 
-                                                          domain={['dataMin - 50', 'dataMax + 50']}
+                                                          domain={['auto', 'auto']}
                                                           type="number"
                                                           axisLine={false}
                                                           tickLine={false}
-                                                          tick={{ fontSize: 9, fill: '#64748b' }}
-                                                          width={10}
+                                                          hide
                                                         />
                                                         <Tooltip 
                                                           content={({ active, payload, label }) => {
                                                             if (!active || !payload || !payload.length) return null;
                                                             const value = payload[0].value;
                                                             return (
-                                                              <div style={{
-                                                                backgroundColor: '#1e293b',
-                                                                border: '1px solid #334155',
-                                                                borderRadius: '6px',
-                                                                color: '#e2e8f0',
-                                                                padding: '8px 16px',
-                                                                fontSize: '13px',
-                                                                minWidth: '140px',
-                                                                boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                gap: '12px'
-                                                              }}>
-                                                                <span style={{ fontSize: '13px', fontWeight: '500' }}>
-                                                                  ₹{Number(value).toFixed(2)}
+                                                              <div className="bg-slate-900 border border-slate-700 rounded-md p-2 shadow-xl flex items-center gap-2">
+                                                                <span className="text-sm font-medium text-slate-100">
+                                                                  ₹{Number(value).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                                                                 </span>
-                                                                <div style={{
-                                                                  width: '1px',
-                                                                  height: '20px',
-                                                                  backgroundColor: '#475569'
-                                                                }}></div>
-                                                                <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                                                                <div className="w-px h-4 bg-slate-700" />
+                                                                <span className="text-xs text-slate-400">
                                                                   {label}
                                                                 </span>
                                                               </div>
                                                             );
                                                           }}
                                                         />
-                                                        <Line 
-                                                          type="linear" 
+                                                        <Area 
+                                                          type="monotone" 
                                                           dataKey="price" 
-                                                          stroke="#10b981"
+                                                          stroke={getNiftyBankChange() >= 0 ? "#10b981" : "#ef4444"}
                                                           strokeWidth={2}
+                                                          fillOpacity={1}
+                                                          fill="url(#colorPriceBank)"
                                                           dot={false}
-                                                          activeDot={{ r: 4, fill: '#10b981' }}
+                                                          activeDot={{ r: 4, fill: getNiftyBankChange() >= 0 ? "#10b981" : "#ef4444", strokeWidth: 0 }}
                                                         />
-                                                        <ReferenceLine 
-                                                          y={getNiftyBankBaseline()} 
-                                                          stroke="#64748b" 
-                                                          strokeDasharray="2 2" 
-                                                          strokeWidth={1}
-                                                        />
-                                                      </LineChart>
+                                                      </AreaChart>
                                                     </ResponsiveContainer>
                                                   </div>
                                                 </div>
