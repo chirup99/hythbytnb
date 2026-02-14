@@ -5629,160 +5629,17 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         <div>
           <Card className="bg-slate-900 dark:bg-slate-900 border-slate-700">
           <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <h3 className="text-lg font-semibold text-white">OHLC Data</h3>
-                {transformationMode > 0 && (
-                  <div className="flex items-center gap-1 bg-purple-600 text-white px-2 py-1 rounded-md text-xs font-bold animate-pulse">
-                    <Shuffle className="w-3 h-3" />
-                    <span>MODE {transformationMode}: {['', 'INVERTED', 'REVERSED', 'INVERTED+REVERSED', 'HORIZONTAL FLIP', 'INTERACTIVE MOCK'][transformationMode]}</span>
-                  </div>
-                )}
-              </div>
-              
-              {/* Control Bar */}
-              <div className="flex items-center gap-2">
-                {/* Symbol Search Combobox */}
-                <Popover open={openSymbolSearch} onOpenChange={setOpenSymbolSearch}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={openSymbolSearch}
-                      className="w-40 h-8 justify-between bg-white dark:bg-black border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-xs px-2"
-                    >
-                      {ohlcSymbol
-                        ? stockSymbols.find((symbol) => symbol.value === ohlcSymbol)?.label || ohlcSymbol
-                        : "Select symbol..."}
-                      <ChevronsUpDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-72 p-0 bg-white dark:bg-black border-gray-300 dark:border-gray-700">
-                    <Command>
-                      <CommandInput
-                        placeholder="Search stocks..."
-                        value={symbolSearchValue}
-                        onValueChange={setSymbolSearchValue}
-                        className="text-xs bg-white dark:bg-black text-gray-900 dark:text-white border-none"
-                      />
-                      <CommandList className="bg-white dark:bg-black">
-                        <CommandEmpty className="text-gray-900 dark:text-white py-3 text-center text-xs">No stock found.</CommandEmpty>
-                        <CommandGroup className="bg-white dark:bg-black">
-                          {stockSymbols
-                            .filter((symbol) => 
-                              symbol.label.toLowerCase().includes(symbolSearchValue.toLowerCase()) ||
-                              symbol.value.toLowerCase().includes(symbolSearchValue.toLowerCase())
-                            )
-                            .map((symbol) => (
-                              <CommandItem
-                                key={symbol.value}
-                                value={symbol.value}
-                                onSelect={(currentValue) => {
-                                  setOhlcSymbol(currentValue === ohlcSymbol ? "" : currentValue);
-                                  setOpenSymbolSearch(false);
-                                  setSymbolSearchValue("");
-                                }}
-                                className="flex items-center px-2 py-1.5 text-xs text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 cursor-pointer"
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-3 w-3 flex-shrink-0",
-                                    ohlcSymbol === symbol.value ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                                <span className="truncate">{symbol.label}</span>
-                              </CommandItem>
-                            ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-
-                {/* Timeframe Select with Custom option */}
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="w-20 h-8 justify-between bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-slate-300 text-xs px-2"
-                    >
-                      {getAllTimeframes().find(tf => tf.value === ohlcTimeframe)?.label || ohlcTimeframe}
-                      <ChevronsUpDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-40 p-1 bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600">
-                    <div className="grid gap-1">
-                      {getAllTimeframes().map((timeframe) => (
-                        <div key={timeframe.value} className="flex items-center justify-between px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700 group">
-                          <button 
-                            className="flex-1 text-left text-xs text-gray-900 dark:text-slate-300"
-                            onClick={() => {
-                              setOhlcTimeframe(timeframe.value);
-                            }}
-                          >
-                            {timeframe.label}
-                          </button>
-                          {timeframe.deletable && (
-                            <button
-                              className="ml-1 w-4 h-4 flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-900 rounded text-red-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                deleteTimeframe(timeframe.value);
-                              }}
-                              title="Delete timeframe"
-                            >
-                              ×
-                            </button>
-                          )}
-                        </div>
-                      ))}
-                      <div className="border-t border-gray-200 dark:border-slate-600 mt-1 pt-1">
-                        <button 
-                          className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700 text-xs text-gray-900 dark:text-slate-300"
-                          onClick={() => setShowCustomTimeframe(true)}
-                        >
-                          + Add Custom
-                        </button>
-                      </div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-semibold text-white">OHLC Data</h3>
+                  {transformationMode > 0 && (
+                    <div className="flex items-center gap-1 bg-purple-600 text-white px-2 py-1 rounded-md text-xs font-bold animate-pulse">
+                      <Shuffle className="w-3 h-3" />
+                      <span>MODE {transformationMode}: {['', 'INVERTED', 'REVERSED', 'INVERTED+REVERSED', 'HORIZONTAL FLIP', 'INTERACTIVE MOCK'][transformationMode]}</span>
                     </div>
-                  </PopoverContent>
-                </Popover>
-
-                {/* Calendar Icon Button - Hidden on Desktop */}
-                <Button 
-                  onClick={() => setShowDatePicker(!showDatePicker)}
-                  variant="outline"
-                  size="sm"
-                  className={`h-8 px-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 md:hidden ${showDatePicker ? 'bg-gray-100 dark:bg-slate-700' : ''}`}
-                  title="Select Date Range"
-                >
-                  <Calendar className="h-3 w-3" />
-                </Button>
-
-                {/* Fetch Button - Icon Only */}
-                <Button 
-                  onClick={handleFetchOhlcData}
-                  disabled={fetchOhlcData.isPending}
-                  size="sm"
-                  className="h-8 px-2 bg-green-600 hover:bg-green-700"
-                  title={fetchOhlcData.isPending ? 'Fetching...' : 'Fetch Data'}
-                >
-                  <Check className="h-3 w-3" />
-                </Button>
-
-                {/* Download Button */}
-                <Button 
-                  onClick={handleDownloadOhlcData}
-                  disabled={!ohlcData || !ohlcData.candles || ohlcData.candles.length === 0}
-                  variant="outline"
-                  size="sm"
-                  className="h-8 px-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700"
-                  title="Download OHLC CSV"
-                >
-                  <Download className="h-3 w-3" />
-                </Button>
+                  )}
+                </div>
               </div>
-            </div>
             
 
             {/* Date Range Picker */}
@@ -5938,6 +5795,147 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <h3 className="text-lg font-semibold text-white">Visual Chart</h3>
+                  
+                  {/* Symbol Search Combobox */}
+                  <Popover open={openSymbolSearch} onOpenChange={setOpenSymbolSearch}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={openSymbolSearch}
+                        className="w-40 h-8 justify-between bg-white dark:bg-black border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-xs px-2"
+                      >
+                        {ohlcSymbol
+                          ? stockSymbols.find((symbol) => symbol.value === ohlcSymbol)?.label || ohlcSymbol
+                          : "Select symbol..."}
+                        <ChevronsUpDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-72 p-0 bg-white dark:bg-black border-gray-300 dark:border-gray-700">
+                      <Command>
+                        <CommandInput
+                          placeholder="Search stocks..."
+                          value={symbolSearchValue}
+                          onValueChange={setSymbolSearchValue}
+                          className="text-xs bg-white dark:bg-black text-gray-900 dark:text-white border-none"
+                        />
+                        <CommandList className="bg-white dark:bg-black">
+                          <CommandEmpty className="text-gray-900 dark:text-white py-3 text-center text-xs">No stock found.</CommandEmpty>
+                          <CommandGroup className="bg-white dark:bg-black">
+                            {stockSymbols
+                              .filter((symbol) => 
+                                symbol.label.toLowerCase().includes(symbolSearchValue.toLowerCase()) ||
+                                symbol.value.toLowerCase().includes(symbolSearchValue.toLowerCase())
+                              )
+                              .map((symbol) => (
+                                <CommandItem
+                                  key={symbol.value}
+                                  value={symbol.value}
+                                  onSelect={(currentValue) => {
+                                    setOhlcSymbol(currentValue === ohlcSymbol ? "" : currentValue);
+                                    setOpenSymbolSearch(false);
+                                    setSymbolSearchValue("");
+                                  }}
+                                  className="flex items-center px-2 py-1.5 text-xs text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 cursor-pointer"
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-3 w-3 flex-shrink-0",
+                                      ohlcSymbol === symbol.value ? "opacity-100" : "opacity-0"
+                                    )}
+                                  />
+                                  <span className="truncate">{symbol.label}</span>
+                                </CommandItem>
+                              ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+
+                  {/* Timeframe Select with Custom option */}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-20 h-8 justify-between bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-slate-300 text-xs px-2"
+                      >
+                        {getAllTimeframes().find(tf => tf.value === ohlcTimeframe)?.label || ohlcTimeframe}
+                        <ChevronsUpDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-40 p-1 bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600">
+                      <div className="grid gap-1">
+                        {getAllTimeframes().map((timeframe) => (
+                          <div key={timeframe.value} className="flex items-center justify-between px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700 group">
+                            <button 
+                              className="flex-1 text-left text-xs text-gray-900 dark:text-slate-300"
+                              onClick={() => {
+                                setOhlcTimeframe(timeframe.value);
+                              }}
+                            >
+                              {timeframe.label}
+                            </button>
+                            {timeframe.deletable && (
+                              <button
+                                className="ml-1 w-4 h-4 flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-900 rounded text-red-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  deleteTimeframe(timeframe.value);
+                                }}
+                                title="Delete timeframe"
+                              >
+                                ×
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                        <div className="border-t border-gray-200 dark:border-slate-600 mt-1 pt-1">
+                          <button 
+                            className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700 text-xs text-gray-900 dark:text-slate-300"
+                            onClick={() => setShowCustomTimeframe(true)}
+                          >
+                            + Add Custom
+                          </button>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+
+                  {/* Calendar Icon Button - Hidden on Desktop */}
+                  <Button 
+                    onClick={() => setShowDatePicker(!showDatePicker)}
+                    variant="outline"
+                    size="sm"
+                    className={`h-8 px-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 md:hidden ${showDatePicker ? 'bg-gray-100 dark:bg-slate-700' : ''}`}
+                    title="Select Date Range"
+                  >
+                    <Calendar className="h-3 w-3" />
+                  </Button>
+
+                  {/* Fetch Button - Icon Only */}
+                  <Button 
+                    onClick={handleFetchOhlcData}
+                    disabled={fetchOhlcData.isPending}
+                    size="sm"
+                    className="h-8 px-2 bg-green-600 hover:bg-green-700"
+                    title={fetchOhlcData.isPending ? 'Fetching...' : 'Fetch Data'}
+                  >
+                    <Check className="h-3 w-3" />
+                  </Button>
+
+                  {/* Download Button */}
+                  <Button 
+                    onClick={handleDownloadOhlcData}
+                    disabled={!ohlcData || !ohlcData.candles || ohlcData.candles.length === 0}
+                    variant="outline"
+                    size="sm"
+                    className="h-8 px-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700"
+                    title="Download OHLC CSV"
+                  >
+                    <Download className="h-3 w-3" />
+                  </Button>
+
                   {transformationMode === 5 && (
                     <div className="flex items-center gap-2 bg-green-600 text-white px-3 py-1 rounded-md text-sm font-medium animate-pulse">
                       <span className="text-lg">📍</span>
