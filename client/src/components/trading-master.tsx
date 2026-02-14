@@ -6208,67 +6208,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
                   {/* ✅ PURPLE PATTERN DROPDOWN AUTOMATICALLY DETECTS - No separate orange button needed */}
 
-                  {/* Indicator Dropdown */}
-                  <Select 
-                    onValueChange={(value) => {
-                      // Show popup for indicator customization with default params
-                      setSelectedIndicatorForEdit(value);
-                      setCurrentIndicatorParams({...defaultParams[value as keyof typeof defaultParams]});
-                      setShowIndicatorPopup(true);
-                    }}
-                  >
-                    <SelectTrigger className="w-32 h-6 text-xs bg-slate-800 border-slate-600 text-white">
-                      <SelectValue placeholder="Add Indicator" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-600">
-                      <SelectItem value="sma" className="text-white hover:bg-slate-700">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${indicators.sma.length > 0 ? 'bg-yellow-400' : 'bg-gray-400'}`}></div>
-                          Add SMA ({defaultParams.sma.period})
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="ema" className="text-white hover:bg-slate-700">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${indicators.ema.length > 0 ? 'bg-blue-400' : 'bg-gray-400'}`}></div>
-                          Add EMA ({defaultParams.ema.period})
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="ma" className="text-white hover:bg-slate-700">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${indicators.ma.length > 0 ? 'bg-green-400' : 'bg-gray-400'}`}></div>
-                          Add MA ({defaultParams.ma.period})
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="rsi" className="text-white hover:bg-slate-700">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${indicators.rsi.length > 0 ? 'bg-orange-400' : 'bg-gray-400'}`}></div>
-                          Add RSI ({defaultParams.rsi.period})
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="bollinger" className="text-white hover:bg-slate-700">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${indicators.bollinger.length > 0 ? 'bg-pink-400' : 'bg-gray-400'}`}></div>
-                          Add Bollinger ({defaultParams.bollinger.period})
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="macd" className="text-white hover:bg-slate-700">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${indicators.macd.length > 0 ? 'bg-purple-400' : 'bg-gray-400'}`}></div>
-                          Add MACD ({defaultParams.macd.fast},{defaultParams.macd.slow})
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-xs text-gray-400 hover:text-white hover:bg-slate-800 h-6 px-2"
-                    data-testid="button-market-settings"
-                  >
-                    <TrendingUp className="w-3 h-3 mr-1" />
-                    Settings
-                  </Button>
                 </div>
               </div>
               
