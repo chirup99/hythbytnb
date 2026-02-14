@@ -185,11 +185,24 @@ class AngelOneAPI {
         this.addActivityLog('success', 'Status refreshed successfully');
         return { success: true, stats: this.getApiStats() };
       }
+      
+      // If profile fetch fails but we're supposedly authenticated, something is wrong
+      // Trigger a session refresh or logout to allow auto-reconnect to fix it
+      console.log('⚠️ [Angel One] Profile fetch failed during status refresh, resetting session...');
       this.trackRequest(false, Date.now() - startTime);
+      this.addActivityLog('warning', 'Profile fetch failed during refresh, resetting session for auto-reconnect');
+      this.logout(); // This will clear state and allow auto-connect to trigger
       return { success: false, stats: this.getApiStats() };
     } catch (error: any) {
       this.trackRequest(false, Date.now() - startTime);
       this.addActivityLog('error', `Status refresh failed: ${error.message}`);
+      
+      // If we get an auth error, logout to trigger auto-reconnect
+      if (error.message?.includes('Invalid Token') || error.message?.includes('expired') || error.response?.status === 401 || error.response?.status === 403) {
+        console.log('⚠️ [Angel One] Auth error during status refresh, logging out...');
+        this.logout();
+      }
+      
       return { success: false, stats: this.getApiStats() };
     }
   }

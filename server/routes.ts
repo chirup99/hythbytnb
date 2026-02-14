@@ -10513,11 +10513,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const profile = await angelOneApi.getProfile();
+      if (!profile) {
+        // If profile is null but connected, trigger logout to reset
+        console.log('⚠️ [Angel One] Profile fetch returned null, resetting session...');
+        angelOneApi.logout();
+        return res.status(401).json({
+          success: false,
+          message: "Profile unavailable, session reset"
+        });
+      }
       res.json({ 
         success: true,
         profile
       });
     } catch (error: any) {
+      // If profile fetch fails, logout to trigger auto-reconnect
+      console.log('⚠️ [Angel One] Profile fetch failed, resetting session:', error.message);
+      angelOneApi.logout();
       res.status(500).json({ 
         success: false,
         message: error.message
