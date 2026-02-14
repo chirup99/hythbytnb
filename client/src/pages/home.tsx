@@ -31,7 +31,6 @@ import { TradingJournalModal } from "@/components/trading-journal-modal";
 
 // import { ErrorPanel } from "@/components/error-panel";
 
-import { SigninDataWindow } from "@/components/signin-data-window";
 
 import { TradingViewWidget } from "@/components/tradingview-widget";
 
@@ -13888,7 +13887,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </div>
 
                 {/* SignIn Data Window with YouTube Link */}
-                <SigninDataWindow />
 
                 {/* Angel One Status */}
                 <AngelOneStatus />

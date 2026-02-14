@@ -33,7 +33,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { HistoricalDataStatus } from "@/components/historical-data-status";
 import { MonthlyProgressTracker } from "@/components/monthly-progress-tracker";
-import { SigninDataWindow } from "@/components/signin-data-window";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -223,7 +222,6 @@ export default function Dashboard() {
           {/* Progress and Data Windows Side by Side */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <MonthlyProgressTracker />
-            <SigninDataWindow />
           </div>
         </div>
       </div>
