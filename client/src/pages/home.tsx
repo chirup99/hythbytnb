@@ -7653,12 +7653,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   }>>(() => {
     const saved = localStorage.getItem('watchlistSymbols');
     return saved ? JSON.parse(saved) : [
-      { symbol: 'RELIANCE-EQ', name: 'Reliance Industries', token: '2885', exchange: 'NSE', displayName: 'RELIANCE', tradingSymbol: 'RELIANCE-EQ' },
-      { symbol: 'TCS-EQ', name: 'Tata Consultancy Services', token: '11536', exchange: 'NSE', displayName: 'TCS', tradingSymbol: 'TCS-EQ' },
-      { symbol: 'HDFCBANK-EQ', name: 'HDFC Bank', token: '1333', exchange: 'NSE', displayName: 'HDFCBANK', tradingSymbol: 'HDFCBANK-EQ' },
+      { symbol: 'NSE:RELIANCE-EQ', name: 'Reliance Industries', token: '2885', exchange: 'NSE', displayName: 'RELIANCE', tradingSymbol: 'RELIANCE-EQ' },
+      { symbol: 'NSE:TCS-EQ', name: 'Tata Consultancy Services', token: '11536', exchange: 'NSE', displayName: 'TCS', tradingSymbol: 'TCS-EQ' },
+      { symbol: 'NSE:HDFCBANK-EQ', name: 'HDFC Bank', token: '1333', exchange: 'NSE', displayName: 'HDFCBANK', tradingSymbol: 'HDFCBANK-EQ' },
     ];
   });
-  const [selectedWatchlistSymbol, setSelectedWatchlistSymbol] = useState<string>('RELIANCE-EQ');
+  const [selectedWatchlistSymbol, setSelectedWatchlistSymbol] = useState<string>('NSE:RELIANCE-EQ');
   const [watchlistSearchQuery, setWatchlistSearchQuery] = useState('');
   const [watchlistSearchResults, setWatchlistSearchResults] = useState<Array<{
     symbol: string;
@@ -15292,7 +15292,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   <div className="flex items-center justify-between mb-1">
                                                     <div className="flex items-center gap-1">
                                                       <h4 className="text-sm font-semibold text-gray-200">
-                                                        {watchlistSymbols.find(s => s.symbol === selectedWatchlistSymbol)?.displayName || selectedWatchlistSymbol.replace('-EQ', '').replace('-BE', '')}
+                                                        {watchlistSymbols.find(s => s.symbol === selectedWatchlistSymbol)?.displayName || selectedWatchlistSymbol.split(':').pop()?.replace('-EQ', '').replace('-BE', '')}
                                                       </h4>
                                                       <span className="text-xs text-green-400 flex items-center gap-1">
                                                         <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
