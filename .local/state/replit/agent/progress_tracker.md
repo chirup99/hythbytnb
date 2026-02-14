@@ -60,3 +60,4 @@
 [x] 60. Improved Angel One auto-reconnect logic: Modified `refreshStatus` and profile routes to automatically logout and trigger auto-reconnect if profile fetching fails while supposedly authenticated. This ensures the system status and profile name stay synced without manual intervention. All items marked [x] complete.
 [x] 61. Deleted OHLC Data card from Trading Master dashboard as requested. All items marked [x] complete.
 [x] 62. Session recovery (Feb 14, #9) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
+[x] 63. Deleted Nifty 50 Index chart card from Trading Master dashboard and adjusted grid layout from 4 columns to 2 columns. All items marked [x] complete.
