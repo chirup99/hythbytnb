@@ -7270,7 +7270,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
           
           {/* Trade Tab Content - 75/25 Split Layout */}
           <TabsContent value="trade" className="p-0 -mx-6 h-[calc(100vh-120px)]">
-            <div className="flex h-full gap-0">
+            <div className="flex h-full gap-0 w-full">
               {/* 75% - Visual Chart Screen (Left Side) */}
               <div className="flex-[75] border-r border-border bg-[#131722] relative">
                 {/* TradingView Chart - Full Height */}
@@ -7325,167 +7325,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                       isTradeOhlcExpanded ? 'opacity-100' : 'opacity-0 h-0'
                     }`}>
                       <div className="px-3 pb-3 space-y-3">
-                        {/* Control Bar - Stock Search, Timeframe, Fetch, Export */}
-                        <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-slate-700/50">
-                          {/* Symbol Search Combobox */}
-                          <Popover open={openSymbolSearch} onOpenChange={setOpenSymbolSearch}>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                role="combobox"
-                                aria-expanded={openSymbolSearch}
-                                className="w-32 h-7 justify-between bg-white dark:bg-slate-800 border-slate-600 text-slate-900 dark:text-white text-xs px-2"
-                                data-testid="button-trade-symbol-search"
-                              >
-                                {ohlcSymbol
-                                  ? stockSymbols.find((symbol) => symbol.value === ohlcSymbol)?.label || ohlcSymbol
-                                  : "Select..."}
-                                <ChevronsUpDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-64 p-0 bg-white dark:bg-slate-800 border-slate-600" side="top">
-                              <Command>
-                                <CommandInput
-                                  placeholder="Search stocks..."
-                                  value={symbolSearchValue}
-                                  onValueChange={setSymbolSearchValue}
-                                  className="text-xs bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-none"
-                                />
-                                <CommandList className="bg-white dark:bg-slate-800 max-h-48">
-                                  <CommandEmpty className="text-slate-900 dark:text-white py-3 text-center text-xs">No stock found.</CommandEmpty>
-                                  <CommandGroup className="bg-white dark:bg-slate-800">
-                                      {stockSymbols
-                                        .filter((symbol) => 
-                                          symbol.label.toLowerCase().includes(symbolSearchValue.toLowerCase()) ||
-                                          symbol.value.toLowerCase().includes(symbolSearchValue.toLowerCase())
-                                        )
-                                        .map((symbol) => (
-                                          <CommandItem
-                                            key={symbol.value}
-                                            value={symbol.value}
-                                            onSelect={(currentValue) => {
-                                              setOhlcSymbol(currentValue === ohlcSymbol ? "" : currentValue);
-                                              setOpenSymbolSearch(false);
-                                              setSymbolSearchValue("");
-                                            }}
-                                            className="flex items-center px-2 py-1.5 text-xs text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer"
-                                          >
-                                            <Check
-                                              className={cn(
-                                                "mr-2 h-3 w-3 flex-shrink-0",
-                                                ohlcSymbol === symbol.value ? "opacity-100" : "opacity-0"
-                                              )}
-                                            />
-                                            <span className="truncate">{symbol.label}</span>
-                                          </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                  </CommandList>
-                                </Command>
-                              </PopoverContent>
-                            </Popover>
-
-                            {/* Timeframe Select with Custom option */}
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  className="w-16 h-7 justify-between bg-white dark:bg-slate-800 border-slate-600 text-slate-900 dark:text-slate-300 text-xs px-2"
-                                  data-testid="button-trade-timeframe"
-                                >
-                                  {getAllTimeframes().find(tf => tf.value === ohlcTimeframe)?.label || ohlcTimeframe}
-                                  <ChevronsUpDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent className="w-36 p-1 bg-white dark:bg-slate-800 border-slate-600">
-                                <div className="grid gap-1 max-h-48 overflow-y-auto">
-                                  {getAllTimeframes().map((timeframe) => (
-                                    <div key={timeframe.value} className="flex items-center justify-between px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700 group">
-                                      <button 
-                                        className="flex-1 text-left text-xs text-slate-900 dark:text-slate-300"
-                                        onClick={() => {
-                                          setOhlcTimeframe(timeframe.value);
-                                        }}
-                                      >
-                                        {timeframe.label}
-                                      </button>
-                                      {timeframe.deletable && (
-                                        <button
-                                          className="ml-1 w-4 h-4 flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-900 rounded text-red-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            deleteTimeframe(timeframe.value);
-                                          }}
-                                          title="Delete timeframe"
-                                        >
-                                          ×
-                                        </button>
-                                      )}
-                                    </div>
-                                  ))}
-                                  <div className="border-t border-slate-200 dark:border-slate-600 mt-1 pt-1">
-                                    <button 
-                                      className="w-full text-left px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-xs text-slate-900 dark:text-slate-300"
-                                      onClick={() => setShowCustomTimeframe(true)}
-                                    >
-                                      + Add Custom
-                                    </button>
-                                  </div>
-                                </div>
-                              </PopoverContent>
-                            </Popover>
-
-                            {/* Transformation Button */}
-                            <Button 
-                              onClick={handleTransformation}
-                              disabled={!ohlcData || !ohlcData.candles || ohlcData.candles.length === 0}
-                              variant={transformationMode > 0 ? "default" : "outline"}
-                              size="sm"
-                              className={`h-7 px-2 transition-all duration-300 ${
-                                transformationMode > 0 
-                                  ? 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg border-purple-500' 
-                                  : 'border-purple-300 dark:border-purple-600 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900'
-                              }`}
-                              title={transformationMode > 0 
-                                ? `Mode ${transformationMode}: ${['', 'Inverted', 'Reversed', 'Inverted+Reversed', 'H-Flip', 'Mock'][transformationMode]}` 
-                                : 'Chart Transformation'
-                              }
-                              data-testid="button-trade-transform"
-                            >
-                              <Shuffle className={`h-3 w-3 ${transformationMode > 0 ? 'animate-pulse' : ''}`} />
-                            </Button>
-
-                            {/* Fetch Button */}
-                            <Button 
-                              onClick={handleFetchOhlcData}
-                              disabled={fetchOhlcData.isPending}
-                              size="sm"
-                              className="h-7 px-2 bg-green-600 hover:bg-green-700"
-                              title={fetchOhlcData.isPending ? 'Fetching...' : 'Fetch Data'}
-                              data-testid="button-trade-fetch"
-                            >
-                              {fetchOhlcData.isPending ? (
-                                <div className="animate-spin w-3 h-3 border-2 border-white border-t-transparent rounded-full"></div>
-                              ) : (
-                                <Check className="h-3 w-3" />
-                              )}
-                            </Button>
-
-                            {/* Download/Export Button */}
-                            <Button 
-                              onClick={handleDownloadOhlcData}
-                              disabled={!ohlcData || !ohlcData.candles || ohlcData.candles.length === 0}
-                              variant="outline"
-                              size="sm"
-                              className="h-7 px-2 border-slate-600 text-slate-300 hover:bg-slate-700"
-                              title="Download OHLC CSV"
-                              data-testid="button-trade-export"
-                            >
-                              <Download className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        </div>
-
                         {/* Loading State */}
                         {fetchOhlcData.isPending ? (
                           <div className="h-32 flex items-center justify-center">
@@ -8623,6 +8462,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   </div>
                 </div>
               </div>
+            </div>
           </TabsContent>
           
           {/* Backtest Tab Content */}
