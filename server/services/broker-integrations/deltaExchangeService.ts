@@ -121,18 +121,35 @@ export async function fetchDeltaWalletBalances(apiKey: string, apiSecret: string
       timeout: 10000
     });
 
-    if (!response.data.success) return null;
+    if (!response.data.success) {
+      console.log('🔴 [DELTA-BALANCES] API returned error:', response.data.error || response.data);
+      // Return a special error object so the frontend knows why it failed
+      return { 
+        available_balance: 0, 
+        total_balance: 0, 
+        asset: 'USDT',
+        error: response.data.error?.code || 'api_error',
+        client_ip: response.data.error?.context?.client_ip
+      };
+    }
 
     const balances = response.data.result || [];
-    // Delta usually provides balances per asset (BTC, USDT, etc.)
-    // We'll prioritize USDT for "Available Funds" in Indian context if available
-    const usdtWallet = balances.find((w: any) => w.asset_symbol === 'USDT') || balances[0];
+    console.log('🔵 [DELTA-BALANCES] Raw results:', JSON.stringify(balances, null, 2));
     
-    return {
+    // Delta provides balances per asset. We look for USDT as the primary trading currency.
+    // If USDT not found, we look for DETO or other assets with balance.
+    const usdtWallet = balances.find((w: any) => w.asset_symbol === 'USDT') || 
+                       balances.find((w: any) => parseFloat(w.balance) > 0) || 
+                       balances[0];
+    
+    const result = {
       available_balance: usdtWallet ? parseFloat(usdtWallet.available_balance || '0') : 0,
       total_balance: usdtWallet ? parseFloat(usdtWallet.balance || '0') : 0,
       asset: usdtWallet ? usdtWallet.asset_symbol : 'USDT'
     };
+    
+    console.log('✅ [DELTA-BALANCES] Resolved balance:', result);
+    return result;
   } catch (error) {
     console.error('Error fetching Delta wallet balances:', error);
     return null;

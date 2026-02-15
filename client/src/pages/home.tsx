@@ -4376,6 +4376,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             if (data.success && data.available_balance !== undefined) {
               setBrokerFunds(data.available_balance);
               localStorage.setItem("zerodha_broker_funds", data.available_balance.toString());
+            } else if (data.error === 'ip_not_whitelisted_for_api_key') {
+              console.warn("Delta Exchange: IP not whitelisted. Please whitelist:", data.client_ip);
+              toast({
+                title: "Delta API Restriction",
+                description: `IP ${data.client_ip} is not whitelisted in your Delta Exchange API settings.`,
+                variant: "destructive"
+              });
             }
           }
         } catch (error) {
