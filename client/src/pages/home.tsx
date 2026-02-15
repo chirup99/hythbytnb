@@ -4331,23 +4331,92 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   };
 
 
+  const [deltaExchangeTradesData, setDeltaExchangeTradesData] = useState<any[]>([]);
+  const [deltaExchangePositionsData, setDeltaExchangePositionsData] = useState<any[]>([]);
+  const [deltaExchangeFetching, setDeltaExchangeFetching] = useState(false);
+
   useEffect(() => {
-    const deltaKey = localStorage.getItem("delta_exchange_api_key");
-    if (deltaKey) {
+    const fetchDeltaData = async () => {
+      if (deltaExchangeIsConnected && deltaExchangeApiKey && deltaExchangeApiSecret) {
+        setDeltaExchangeFetching(true);
+        try {
+          const [tradesRes, positionsRes] = await Promise.all([
+            fetch("/api/broker/delta/trades", {
+              headers: {
+                "x-api-key": deltaExchangeApiKey,
+                "x-api-secret": deltaExchangeApiSecret
+              }
+            }),
+            fetch("/api/broker/delta/positions", {
+              headers: {
+                "x-api-key": deltaExchangeApiKey,
+                "x-api-secret": deltaExchangeApiSecret
+              }
+            })
+          ]);
+
+          if (tradesRes.ok) {
+            const data = await tradesRes.json();
+            setDeltaExchangeTradesData(data.trades || []);
+          }
+          if (positionsRes.ok) {
+            const data = await positionsRes.json();
+            setDeltaExchangePositionsData(data.positions || []);
+          }
+        } catch (error) {
+          console.error("Error fetching Delta data:", error);
+        } finally {
+          setDeltaExchangeFetching(false);
+        }
+      }
+    };
+
+    fetchDeltaData();
+    const interval = setInterval(fetchDeltaData, 60000);
+    return () => clearInterval(interval);
+  }, [deltaExchangeIsConnected, deltaExchangeApiKey, deltaExchangeApiSecret]);
+
+  useEffect(() => {
+    const savedApiKey = localStorage.getItem("delta_exchange_api_key");
+    const savedApiSecret = localStorage.getItem("delta_exchange_api_secret");
+    if (savedApiKey && savedApiSecret) {
+      setDeltaExchangeApiKey(savedApiKey);
+      setDeltaExchangeApiSecret(savedApiSecret);
       setDeltaExchangeIsConnected(true);
     }
   }, []);
 
-  const handleDeltaExchangeConnect = () => {
+  const handleDeltaExchangeConnect = async () => {
     if (deltaExchangeApiKey && deltaExchangeApiSecret) {
-      localStorage.setItem("delta_exchange_api_key", deltaExchangeApiKey);
-      localStorage.setItem("delta_exchange_api_secret", deltaExchangeApiSecret);
-      setDeltaExchangeIsConnected(true);
-      setIsDeltaExchangeDialogOpen(false);
-      toast({
-        title: "Connected",
-        description: "Delta Exchange India connected successfully",
-      });
+      try {
+        const response = await apiRequest("POST", "/api/broker/delta/connect", {
+          apiKey: deltaExchangeApiKey,
+          apiSecret: deltaExchangeApiSecret
+        });
+
+        if (response.success) {
+          localStorage.setItem("delta_exchange_api_key", deltaExchangeApiKey);
+          localStorage.setItem("delta_exchange_api_secret", deltaExchangeApiSecret);
+          setDeltaExchangeIsConnected(true);
+          setIsDeltaExchangeDialogOpen(false);
+          toast({
+            title: "Connected",
+            description: "Delta Exchange India connected successfully",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: response.error || "Failed to connect to Delta Exchange",
+            variant: "destructive",
+          });
+        }
+      } catch (error: any) {
+        toast({
+          title: "Error",
+          description: error.message || "Failed to connect to Delta Exchange",
+          variant: "destructive",
+        });
+      }
     } else {
       toast({
         title: "Error",

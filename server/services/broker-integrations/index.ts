@@ -3,9 +3,11 @@ import type {
   BrokerTrade,
   KiteCredentials,
   DhanCredentials,
+  DeltaCredentials,
 } from "@shared/schema";
 import { fetchKiteTrades } from "./kiteService.js";
 import { fetchDhanTrades } from "./dhanService.js";
+import { fetchDeltaTrades } from "./deltaExchangeService.js";
 
 export async function fetchBrokerTrades(
   credentials: BrokerCredentials
@@ -15,6 +17,11 @@ export async function fetchBrokerTrades(
       return fetchKiteTrades(credentials as KiteCredentials);
     case "dhan":
       return fetchDhanTrades(credentials as DhanCredentials) as any;
+    case "delta":
+      return fetchDeltaTrades(
+        (credentials as DeltaCredentials).apiKey,
+        (credentials as DeltaCredentials).apiSecret
+      );
     default:
       throw new Error(`Unsupported broker: ${(credentials as any).broker}`);
   }

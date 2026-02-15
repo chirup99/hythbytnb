@@ -52,6 +52,9 @@ interface BrokerDataProps {
   getCognitoToken: () => Promise<string | null>;
   setSavedFormats: (formats: any) => void;
   importDataTextareaRef: React.RefObject<HTMLTextAreaElement>;
+  deltaExchangeIsConnected?: boolean;
+  deltaExchangeApiKey?: string | null;
+  deltaExchangeApiSecret?: string | null;
   brokerFunds: number | null;
 }
 
@@ -60,6 +63,7 @@ export function BrokerData(props: BrokerDataProps) {
     showOrderModal, setShowOrderModal, orderTab, setOrderTab, showUserId, setShowUserId,
     zerodhaClientId, zerodhaUserName, upstoxAccessToken, upstoxUserId, upstoxUserName,
     dhanAccessToken, dhanUserId, dhanClientId, dhanClientName,
+    deltaExchangeIsConnected, deltaExchangeApiKey, deltaExchangeApiSecret,
     brokerOrders, fetchingBrokerOrders, zerodhaAccessToken,
     recordAllBrokerOrders, brokerPositions, fetchingBrokerPositions, showBrokerImportModal,
     setShowBrokerImportModal, handleBrokerImport, showImportModal, setShowImportModal,
@@ -70,8 +74,8 @@ export function BrokerData(props: BrokerDataProps) {
     brokerFunds
   } = props;
 
-  const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken;
-  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : null;
+  const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken || deltaExchangeIsConnected;
+  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : deltaExchangeIsConnected ? 'delta' : null;
 
   const formatSymbol = (symbol: string) => {
     if (!symbol) return "";
@@ -155,8 +159,14 @@ export function BrokerData(props: BrokerDataProps) {
                       <span>id: {showUserId ? (dhanClientId || dhanUserId || "N/A") : "••••••"} | {showUserId ? (dhanClientName && dhanClientName !== "Dhan User" ? dhanClientName : "Dhan User") : "•••••"}</span>
                     </>
                   )}
+                  {activeBroker === 'delta' && (
+                    <>
+                      <img src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" alt="Delta Exchange" className="w-3 h-3 rounded-full" />
+                      <span>id: {showUserId ? (deltaExchangeApiKey?.substring(0, 8) || "N/A") : "••••••"} | Delta Exchange</span>
+                    </>
+                  )}
                 </div>
-                {(activeBroker === 'zerodha' || activeBroker === 'upstox' || activeBroker === 'dhan') && (
+                {(activeBroker === 'zerodha' || activeBroker === 'upstox' || activeBroker === 'dhan' || activeBroker === 'delta') && (
                   <button onClick={() => setShowUserId(!showUserId)} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors" data-testid="button-toggle-user-id" title={showUserId ? "Hide ID" : "Show ID"}>
                     {showUserId ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                   </button>

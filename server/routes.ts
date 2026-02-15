@@ -11441,6 +11441,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
 
+  // Delta Exchange Connect
+  app.post("/api/broker/delta/connect", async (req, res) => {
+    try {
+      const { apiKey, apiSecret } = req.body;
+      if (!apiKey || !apiSecret) {
+        return res.status(400).json({ success: false, error: "API Key and Secret required" });
+      }
+
+      const { fetchDeltaPositions } = await import("./services/broker-integrations/deltaExchangeService.js");
+      const positions = await fetchDeltaPositions(apiKey, apiSecret);
+      
+      // If we can fetch positions, the credentials are valid
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Delta connection error:", error);
+      res.status(500).json({ success: false, error: "Failed to connect to Delta Exchange" });
+    }
+  });
+
+  // Delta Exchange Positions
+  app.get("/api/broker/delta/positions", async (req, res) => {
+    try {
+      const apiKey = req.headers['x-api-key'] as string;
+      const apiSecret = req.headers['x-api-secret'] as string;
+
+      if (!apiKey || !apiSecret) {
+        return res.status(401).json({ success: false, error: "Unauthorized" });
+      }
+
+      const { fetchDeltaPositions } = await import("./services/broker-integrations/deltaExchangeService.js");
+      const positions = await fetchDeltaPositions(apiKey, apiSecret);
+      res.json({ success: true, positions });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch Delta positions" });
+    }
+  });
+
+  // Delta Exchange Trades
+  app.get("/api/broker/delta/trades", async (req, res) => {
+    try {
+      const apiKey = req.headers['x-api-key'] as string;
+      const apiSecret = req.headers['x-api-secret'] as string;
+
+      if (!apiKey || !apiSecret) {
+        return res.status(401).json({ success: false, error: "Unauthorized" });
+      }
+
+      const { fetchDeltaTrades } = await import("./services/broker-integrations/deltaExchangeService.js");
+      const trades = await fetchDeltaTrades(apiKey, apiSecret);
+      res.json({ success: true, trades });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch Delta trades" });
+    }
+  });
+
   // ============================================================================
   // BROKER INTEGRATIONS
   // ============================================================================
