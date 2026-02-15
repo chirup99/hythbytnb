@@ -19883,6 +19883,22 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 />
                               </Button>
                             )}
+                            {deltaExchangeIsConnected && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs"
+                                onClick={() => setShowOrderModal(true)}
+                                data-testid="button-broker-orders-delta"
+                                title="View Orders & Positions (Delta Exchange)"
+                              >
+                                <img 
+                                  src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" 
+                                  alt="Delta Exchange" 
+                                  className="h-4 w-4 rounded-full"
+                                />
+                              </Button>
+                            )}
                             <Button
                               variant="ghost"
                               size="sm"
