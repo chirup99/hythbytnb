@@ -11496,6 +11496,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delta Exchange Wallet Balances
+  app.get("/api/broker/delta/balances", async (req, res) => {
+    try {
+      const apiKey = req.headers['x-api-key'] as string;
+      const apiSecret = req.headers['x-api-secret'] as string;
+
+      if (!apiKey || !apiSecret) {
+        return res.status(401).json({ success: false, error: "Unauthorized" });
+      }
+
+      const { fetchDeltaWalletBalances } = await import("./services/broker-integrations/deltaExchangeService.js");
+      const walletData = await fetchDeltaWalletBalances(apiKey, apiSecret);
+      res.json({ success: true, ...walletData });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch Delta balances" });
+    }
+  });
+
   // ============================================================================
   // BROKER INTEGRATIONS
   // ============================================================================

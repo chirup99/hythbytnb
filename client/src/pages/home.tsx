@@ -4342,7 +4342,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       if (deltaExchangeIsConnected && deltaExchangeApiKey && deltaExchangeApiSecret) {
         setDeltaExchangeFetching(true);
         try {
-          const [tradesRes, positionsRes] = await Promise.all([
+          const [tradesRes, positionsRes, balancesRes] = await Promise.all([
             fetch("/api/broker/delta/trades", {
               headers: {
                 "x-api-key": deltaExchangeApiKey,
@@ -4350,6 +4350,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               }
             }),
             fetch("/api/broker/delta/positions", {
+              headers: {
+                "x-api-key": deltaExchangeApiKey,
+                "x-api-secret": deltaExchangeApiSecret
+              }
+            }),
+            fetch("/api/broker/delta/balances", {
               headers: {
                 "x-api-key": deltaExchangeApiKey,
                 "x-api-secret": deltaExchangeApiSecret
@@ -4364,6 +4370,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           if (positionsRes.ok) {
             const data = await positionsRes.json();
             setDeltaExchangePositionsData(data.positions || []);
+          }
+          if (balancesRes.ok) {
+            const data = await balancesRes.json();
+            if (data.success && data.available_balance !== undefined) {
+              setBrokerFunds(data.available_balance);
+              localStorage.setItem("zerodha_broker_funds", data.available_balance.toString());
+            }
           }
         } catch (error) {
           console.error("Error fetching Delta data:", error);

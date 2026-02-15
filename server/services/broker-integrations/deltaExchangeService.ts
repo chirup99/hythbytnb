@@ -98,3 +98,43 @@ export async function fetchDeltaPositions(apiKey: string, apiSecret: string): Pr
     return [];
   }
 }
+
+export async function fetchDeltaWalletBalances(apiKey: string, apiSecret: string): Promise<any> {
+  try {
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const method = 'GET';
+    const path = '/v2/wallet/balances';
+    const query = '';
+    const payload = '';
+    
+    const signatureData = method + timestamp + path + query + payload;
+    const signature = generateSignature(apiSecret, signatureData);
+
+    const response = await axios.get(`https://api.india.delta.exchange${path}`, {
+      headers: {
+        'api-key': apiKey,
+        'timestamp': timestamp,
+        'signature': signature,
+        'User-Agent': 'replit-agent',
+        'Content-Type': 'application/json'
+      },
+      timeout: 10000
+    });
+
+    if (!response.data.success) return null;
+
+    const balances = response.data.result || [];
+    // Delta usually provides balances per asset (BTC, USDT, etc.)
+    // We'll prioritize USDT for "Available Funds" in Indian context if available
+    const usdtWallet = balances.find((w: any) => w.asset_symbol === 'USDT') || balances[0];
+    
+    return {
+      available_balance: usdtWallet ? parseFloat(usdtWallet.available_balance || '0') : 0,
+      total_balance: usdtWallet ? parseFloat(usdtWallet.balance || '0') : 0,
+      asset: usdtWallet ? usdtWallet.asset_symbol : 'USDT'
+    };
+  } catch (error) {
+    console.error('Error fetching Delta wallet balances:', error);
+    return null;
+  }
+}

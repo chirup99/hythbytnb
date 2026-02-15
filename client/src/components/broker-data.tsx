@@ -137,7 +137,7 @@ export function BrokerData(props: BrokerDataProps) {
             <div className="w-1/3 flex flex-col items-center justify-center">
               <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Available Funds</span>
               <span className="text-xs font-bold text-green-600 dark:text-green-400">
-                {showUserId ? `₹${(Number(brokerFunds) || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "₹***"}
+                {showUserId ? (activeBroker === 'delta' ? `$${(Number(brokerFunds) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : `₹${(Number(brokerFunds) || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`) : (activeBroker === 'delta' ? "$***" : "₹***")}
               </span>
             </div>
 
