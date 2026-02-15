@@ -4396,11 +4396,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       .then(res => res.json())
       .then(data => {
         console.log('🔵 [DELTA] Received profile data:', data);
-        // Handle both direct and nested result structures from backend
-        const profile = data.result || data;
-        if (profile && (profile.id || profile.account_name)) {
-          const userId = String(profile.id || profile.userId || "");
-          const accountName = String(profile.account_name || profile.userName || "Delta User");
+        if (data.success && data.result) {
+          const profile = data.result;
+          const userId = String(profile.id || "");
+          const accountName = String(profile.account_name || "Delta User");
           console.log('✅ [DELTA] Setting profile:', userId, accountName);
           setDeltaExchangeUserId(userId);
           setDeltaExchangeAccountName(accountName);
@@ -4435,10 +4434,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             if (profileRes.ok) {
               const data = await profileRes.json();
               console.log('🔵 [DELTA] Received profile data (connect):', data);
-              const profileData = data.result || data;
-              if (profileData && (profileData.id || profileData.account_name)) {
-                const userId = String(profileData.id || profileData.userId || "");
-                const accountName = String(profileData.account_name || profileData.userName || "Delta User");
+              if (data.success && data.result) {
+                const profileData = data.result;
+                const userId = String(profileData.id || "");
+                const accountName = String(profileData.account_name || "Delta User");
                 console.log('✅ [DELTA] Setting profile (connect):', userId, accountName);
                 setDeltaExchangeUserId(userId);
                 setDeltaExchangeAccountName(accountName);

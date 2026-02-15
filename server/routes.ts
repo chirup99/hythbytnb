@@ -21951,7 +21951,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       if (response.data.success) {
-        // Delta Exchange India profile response structure - matching exactly with official documentation
         const result = response.data.result || {};
         console.log('✅ [DELTA] Profile data fetched:', result.id, result.account_name);
         res.json({
@@ -21963,7 +21962,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             first_name: result.first_name,
             last_name: result.last_name,
             country: result.country,
-            ...result
+            phone_number: result.phone_number,
+            margin_mode: result.margin_mode,
+            is_kyc_done: result.is_kyc_done,
+            is_sub_account: result.is_sub_account
           }
         });
       } else {
