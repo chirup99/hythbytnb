@@ -87,12 +87,16 @@ export function BrokerData(props: BrokerDataProps) {
 
     const refreshProfile = async () => {
       try {
-        await apiRequest("GET", "/api/broker/delta/profile", null, {
+        const response = await apiRequest("GET", `/api/broker/delta/profile?apiKey=${encodeURIComponent(deltaExchangeApiKey || '')}&apiSecret=${encodeURIComponent(deltaExchangeApiSecret || '')}`, null, {
           headers: {
             'x-api-key': deltaExchangeApiKey || '',
             'x-api-secret': deltaExchangeApiSecret || ''
           }
         });
+        
+        // Detailed logging to verify response structure
+        console.log("🔍 [DELTA] Profile refresh response:", response);
+        
         queryClient.invalidateQueries({ queryKey: ["/api/broker/delta/profile"] });
       } catch (error) {
         console.error("Error refreshing Delta profile:", error);
