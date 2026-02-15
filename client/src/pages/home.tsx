@@ -4366,6 +4366,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       description: "Delta Exchange India disconnected",
     });
   };
+
+  const submitDhanCredentials = async () => {
     try {
       if (!dhanClientIdInput || !dhanTokenInput) {
         toast({
