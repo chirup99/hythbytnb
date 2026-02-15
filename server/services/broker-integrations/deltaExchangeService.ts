@@ -43,15 +43,15 @@ export async function fetchDeltaTrades(apiKey: string, apiSecret: string): Promi
 
     const orders: DeltaOrder[] = response.data.result || [];
     return orders.map(order => ({
-      time: new Date(parseInt(order.created_at) / 1000).toLocaleTimeString(),
-      order: order.side.toUpperCase() as 'BUY' | 'SELL',
+      broker: 'delta' as any,
+      tradeId: order.id.toString(),
       symbol: order.product_symbol,
-      qty: order.size,
+      action: order.side.toUpperCase() as 'BUY' | 'SELL',
+      quantity: order.size,
       price: parseFloat(order.limit_price || '0'),
-      type: order.order_type === 'limit_order' ? 'LIMIT' : 'MARKET',
-      status: order.state.toUpperCase() === 'CLOSED' ? 'COMPLETE' : order.state.toUpperCase(),
-      pnl: '-',
-      duration: '-'
+      executedAt: new Date(parseInt(order.created_at) / 1000).toISOString(),
+      pnl: 0,
+      fees: 0
     }));
   } catch (error) {
     console.error('Error fetching Delta trades:', error);

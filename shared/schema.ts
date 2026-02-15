@@ -801,7 +801,7 @@ export type InsertSavedPattern = z.infer<typeof insertSavedPatternSchema>;
 // ============================================================================
 
 // Broker identifiers (Fyers removed - using Angel One only)
-export const brokerIds = ['kite', 'dhan'] as const;
+export const brokerIds = ['kite', 'dhan', 'delta'] as const;
 export type BrokerId = typeof brokerIds[number];
 export const brokerIdSchema = z.enum(brokerIds);
 
@@ -819,16 +819,24 @@ export const dhanCredentialSchema = z.object({
   accessToken: z.string().min(1, 'Access Token is required'),
 });
 
+export const deltaCredentialSchema = z.object({
+  broker: z.literal('delta'),
+  apiKey: z.string().min(1, 'API Key is required'),
+  apiSecret: z.string().min(1, 'API Secret is required'),
+});
+
 // Discriminated union for broker credentials
 export const brokerCredentialSchema = z.discriminatedUnion('broker', [
   kiteCredentialSchema,
   dhanCredentialSchema,
+  deltaCredentialSchema,
 ]);
 
 // Credential schema map for per-broker access
 export const brokerCredentialSchemas = {
   kite: kiteCredentialSchema,
   dhan: dhanCredentialSchema,
+  delta: deltaCredentialSchema,
 } as const;
 
 // Normalized trade object from broker
@@ -874,6 +882,7 @@ export const brokerTradesResponseSchema = z.object({
 // Types
 export type KiteCredentials = z.infer<typeof kiteCredentialSchema>;
 export type DhanCredentials = z.infer<typeof dhanCredentialSchema>;
+export type DeltaCredentials = z.infer<typeof deltaCredentialSchema>;
 export type BrokerCredentials = z.infer<typeof brokerCredentialSchema>;
 export type BrokerImportRequest = z.infer<typeof brokerImportRequestSchema>;
 export type BrokerTradesResponse = z.infer<typeof brokerTradesResponseSchema>;

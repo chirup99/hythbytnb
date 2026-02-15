@@ -19,8 +19,8 @@ export async function fetchBrokerTrades(
       return fetchDhanTrades(credentials as DhanCredentials) as any;
     case "delta":
       return fetchDeltaTrades(
-        (credentials as DeltaCredentials).apiKey,
-        (credentials as DeltaCredentials).apiSecret
+        (credentials as any).apiKey,
+        (credentials as any).apiSecret
       );
     default:
       throw new Error(`Unsupported broker: ${(credentials as any).broker}`);
