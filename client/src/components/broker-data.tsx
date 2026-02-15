@@ -81,6 +81,9 @@ export function BrokerData(props: BrokerDataProps) {
 
   const queryClient = useQueryClient();
 
+  const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken || deltaExchangeIsConnected;
+  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : deltaExchangeIsConnected ? 'delta' : null;
+
   // Refresh Dhan profile every 10 seconds if connected
   useEffect(() => {
     if (activeBroker !== 'dhan' || !showOrderModal) return;
@@ -108,12 +111,7 @@ export function BrokerData(props: BrokerDataProps) {
 
     const refreshProfile = async () => {
       try {
-        const response = await apiRequest("GET", `/api/broker/delta/profile?apiKey=${encodeURIComponent(deltaExchangeApiKey || '')}&apiSecret=${encodeURIComponent(deltaExchangeApiSecret || '')}`, null, {
-          headers: {
-            'x-api-key': deltaExchangeApiKey || '',
-            'x-api-secret': deltaExchangeApiSecret || ''
-          }
-        });
+        const response = await apiRequest("GET", `/api/broker/delta/profile?apiKey=${encodeURIComponent(deltaExchangeApiKey || '')}&apiSecret=${encodeURIComponent(deltaExchangeApiSecret || '')}`, null);
         
         // Detailed logging to verify response structure
         console.log("🔍 [DELTA] Profile refresh response:", response);
@@ -128,9 +126,6 @@ export function BrokerData(props: BrokerDataProps) {
     const interval = setInterval(refreshProfile, 60000);
     return () => clearInterval(interval);
   }, [deltaExchangeIsConnected, showOrderModal, queryClient]);
-
-  const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken || deltaExchangeIsConnected;
-  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : deltaExchangeIsConnected ? 'delta' : null;
 
   const formatSymbol = (symbol: string) => {
     if (!symbol) return "";
