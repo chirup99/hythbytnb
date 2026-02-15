@@ -2318,6 +2318,8 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [isMiniPlaySearchActive, setIsMiniPlaySearchActive] = useState(false);
+  const [miniPlaySearchQuery, setMiniPlaySearchQuery] = useState("");
   const youtubePlayerRef = useRef<any>(null);
 
   useEffect(() => {
@@ -20697,113 +20699,146 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                   </div>
                                   <div className="w-full md:w-1/2 flex flex-col bg-white dark:bg-slate-900">
-                                    <div className="py-4 pl-0 pr-4 border-b border-slate-100 dark:border-slate-800 hidden md:flex items-center justify-start relative">
+                                    <div className="py-4 pl-4 pr-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between relative">
                                       <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] opacity-50"> Play</div>
+                                      <div className="flex items-center gap-2">
+                                        {isMiniPlaySearchActive && (
+                                          <input
+                                            type="text"
+                                            autoFocus
+                                            placeholder="Search tracks..."
+                                            value={miniPlaySearchQuery}
+                                            onChange={(e) => setMiniPlaySearchQuery(e.target.value)}
+                                            className="text-[10px] bg-slate-100 dark:bg-slate-800 border-none rounded px-2 py-1 w-32 focus:ring-1 focus:ring-violet-500 outline-none"
+                                          />
+                                        )}
+                                        <Button
+                                          size="icon"
+                                          variant="ghost"
+                                          className={`h-6 w-6 ${isMiniPlaySearchActive ? 'text-violet-500' : 'text-slate-400'}`}
+                                          onClick={() => {
+                                            setIsMiniPlaySearchActive(!isMiniPlaySearchActive);
+                                            if (isMiniPlaySearchActive) setMiniPlaySearchQuery("");
+                                          }}
+                                        >
+                                          <Search className="h-3 w-3" />
+                                        </Button>
+                                      </div>
                                     </div>
                                     
                                     <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                                      {/* Meditation Section */}
-                                      <div>
-                                        <h4 className="text-[10px] font-bold text-violet-500 uppercase tracking-widest mb-2 flex items-center gap-2">
-                                          <span className="w-1 h-1 rounded-full bg-violet-500"></span>
-                                          Meditation
-                                        </h4>
-                                        <div className="space-y-1">
-                                          {[
-                                            { title: "Deep Relaxation Meditation", duration: "10:05", id: "m1", youtubeId: "B7nkVhC10Gw" }
-                                          ].map((track) => (
-                                            <div key={track.id} onClick={() => { setSelectedAudioTrack(track); setIsAudioPlaying(true); }} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
-                                              <div className="flex items-center gap-3">
-                                                <div className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center group-hover:bg-violet-500 transition-colors">
-                                                  <Play className="w-3 h-3 text-violet-500 group-hover:text-slate-900 dark:hover:text-white" />
-                                                </div>
-                                                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{track.title}</span>
-                                              </div>
-                                              <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">{track.duration}</span>
-                                            </div>
-                                          ))}
+                                      {isMiniPlaySearchActive ? (
+                                        <div className="flex flex-col items-center justify-center h-full text-slate-400">
+                                          <Search className="w-8 h-8 mb-2 opacity-20" />
+                                          <p className="text-[10px] uppercase tracking-widest opacity-50">Search active</p>
                                         </div>
-                                      </div>
+                                      ) : (
+                                        <>
+                                          {/* Meditation Section */}
+                                          <div>
+                                            <h4 className="text-[10px] font-bold text-violet-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                              <span className="w-1 h-1 rounded-full bg-violet-500"></span>
+                                              Meditation
+                                            </h4>
+                                            <div className="space-y-1">
+                                              {[
+                                                { title: "Deep Relaxation Meditation", duration: "10:05", id: "m1", youtubeId: "B7nkVhC10Gw" }
+                                              ].map((track) => (
+                                                <div key={track.id} onClick={() => { setSelectedAudioTrack(track); setIsAudioPlaying(true); }} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
+                                                  <div className="flex items-center gap-3">
+                                                    <div className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center group-hover:bg-violet-500 transition-colors">
+                                                      <Play className="w-3 h-3 text-violet-500 group-hover:text-slate-900 dark:hover:text-white" />
+                                                    </div>
+                                                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{track.title}</span>
+                                                  </div>
+                                                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">{track.duration}</span>
+                                                </div>
+                                              ))}
+                                            </div>
+                                          </div>
 
-                                      {/* Psychology Section */}
-                                      <div>
-                                        <h4 className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2 flex items-center gap-2">
-                                          <span className="w-1 h-1 rounded-full bg-blue-500"></span>
-                                          Psychology
-                                        </h4>
-                                        <div className="space-y-1">
-                                          {[
-                                            { title: 'Bruce Lee: "Your Greatest Enemy Is Within"', duration: "22:30", id: "p1", youtubeId: "KnppzfiZcgM" }
-                                          ].map((track) => (
-                                            <div key={track.id} onClick={() => { setSelectedAudioTrack(track); setIsAudioPlaying(true); }} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
-                                              <div className="flex items-center gap-3">
-                                                <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
-                                                  <Play className="w-3 h-3 text-blue-500 group-hover:text-slate-900 dark:hover:text-white" />
+                                          {/* Psychology Section */}
+                                          <div>
+                                            <h4 className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                              <span className="w-1 h-1 rounded-full bg-blue-500"></span>
+                                              Psychology
+                                            </h4>
+                                            <div className="space-y-1">
+                                              {[
+                                                { title: 'Bruce Lee: "Your Greatest Enemy Is Within"', duration: "22:30", id: "p1", youtubeId: "KnppzfiZcgM" }
+                                              ].map((track) => (
+                                                <div key={track.id} onClick={() => { setSelectedAudioTrack(track); setIsAudioPlaying(true); }} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white dark:bg-slate-800/50 cursor-pointer transition-colors">
+                                                  <div className="flex items-center gap-3">
+                                                    <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
+                                                      <Play className="w-3 h-3 text-blue-500 group-hover:text-slate-900 dark:hover:text-white" />
+                                                    </div>
+                                                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{track.title}</span>
+                                                  </div>
+                                                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">{track.duration}</span>
                                                 </div>
-                                                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{track.title}</span>
-                                              </div>
-                                              <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">{track.duration}</span>
+                                              ))}
                                             </div>
-                                          ))}
-                                        </div>
-                                      </div>
+                                          </div>
+                                        </>
+                                      )}
                                     </div>
 
-                                                                        {/* Footer / Now Playing Stub */}
-                                    <div className="p-4 bg-slate-50 dark:bg-slate-800 border-t border-slate-100 dark:border-slate-800 space-y-3">
-                                      <div className="flex items-center justify-start gap-3">
-                                        <div className="flex items-center gap-3 flex-1 min-w-0">
-                                          <div className={`w-8 h-8 rounded bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg ${selectedAudioTrack ? "animate-none" : "animate-pulse"}`}>
-                                            <Music2 className="w-4 h-4 text-white" />
+                                    {!isMiniPlaySearchActive && (
+                                      <div className="p-4 bg-slate-50 dark:bg-slate-800 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                                        <div className="flex items-center justify-start gap-3">
+                                          <div className="flex items-center gap-3 flex-1 min-w-0">
+                                            <div className={`w-8 h-8 rounded bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg ${selectedAudioTrack ? "animate-none" : "animate-pulse"}`}>
+                                              <Music2 className="w-4 h-4 text-white" />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                              <div className="text-[10px] font-bold text-slate-900 dark:text-slate-100 truncate">
+                                                {selectedAudioTrack ? selectedAudioTrack.title : "Select a session"}
+                                              </div>
+                                              <div className="text-[9px] text-slate-500 uppercase tracking-tighter">
+                                                {selectedAudioTrack ? `Playing • ${selectedAudioTrack.duration}` : "Ready to play"}
+                                              <div id="youtube-audio-player" className="hidden"></div>
+                                              </div>
+                                            </div>
                                           </div>
-                                          <div className="flex-1 min-w-0">
-                                            <div className="text-[10px] font-bold text-slate-900 dark:text-slate-100 truncate">
-                                              {selectedAudioTrack ? selectedAudioTrack.title : "Select a session"}
-                                            </div>
-                                            <div className="text-[9px] text-slate-500 uppercase tracking-tighter">
-                                              {selectedAudioTrack ? `Playing • ${selectedAudioTrack.duration}` : "Ready to play"}
-                                            <div id="youtube-audio-player" className="hidden"></div>
-                                            </div>
+                                          
+                                          {/* Audio Controls */}
+                                          <div className="flex items-center gap-1">
+                                            <Button size="icon" variant="ghost" className="h-6 w-6 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
+                                              <SkipBack className="h-3 w-3" />
+                                            </Button>
+                                            <Button 
+                                              size="icon" 
+                                              variant="ghost" 
+                                              className="h-8 w-8 text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
+                                              onClick={() => setIsAudioPlaying(!isAudioPlaying)}
+                                            >
+                                              {isAudioPlaying ? <Pause className="h-4 w-4 fill-current" /> : <Play className="h-4 w-4 fill-current" />}
+                                            </Button>
+                                            <Button size="icon" variant="ghost" className="h-6 w-6 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
+                                              <SkipForward className="h-3 w-3" />
+                                            </Button>
                                           </div>
                                         </div>
                                         
-                                        {/* Audio Controls */}
-                                        <div className="flex items-center gap-1">
-                                          <Button size="icon" variant="ghost" className="h-6 w-6 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
-                                            <SkipBack className="h-3 w-3" />
-                                          </Button>
-                                          <Button 
-                                            size="icon" 
-                                            variant="ghost" 
-                                            className="h-8 w-8 text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
-                                            onClick={() => setIsAudioPlaying(!isAudioPlaying)}
-                                          >
-                                            {isAudioPlaying ? <Pause className="h-4 w-4 fill-current" /> : <Play className="h-4 w-4 fill-current" />}
-                                          </Button>
-                                          <Button size="icon" variant="ghost" className="h-6 w-6 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
-                                            <SkipForward className="h-3 w-3" />
-                                          </Button>
+                                        {/* Audio Progress Slider */}
+                                        <div className="px-1">
+                                          <div className="relative w-full h-1 bg-slate-200 dark:bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden cursor-pointer" onClick={(e) => { if (selectedAudioTrack && youtubePlayerRef.current && duration > 0) { const rect = e.currentTarget.getBoundingClientRect(); const x = e.clientX - rect.left; const clickedProgress = x / rect.width; const newTime = clickedProgress * duration; youtubePlayerRef.current.seekTo(newTime, true); setCurrentTime(newTime); setAudioProgress(clickedProgress * 100); } } }>
+                                            <div 
+                                              className="absolute top-0 left-0 h-full bg-gradient-to-r from-violet-500 to-purple-600 transition-all duration-300"
+                                              style={{ width: `${selectedAudioTrack ? audioProgress : 0}%` }}
+                                            ></div>
+                                          </div>
+                                          <div className="flex justify-between mt-1">
+                                            <span className="text-[8px] font-mono text-slate-500 dark:text-slate-400">
+                                              {selectedAudioTrack ? new Date(currentTime * 1000).toISOString().substr(14, 5) : "0:00"}
+                                            </span>
+                                            <span className="text-[8px] font-mono text-slate-500 dark:text-slate-400">
+                                              {selectedAudioTrack ? (duration > 0 ? new Date(duration * 1000).toISOString().substr(14, 5) : selectedAudioTrack.duration) : "0:00"}
+                                            </span>
+                                          </div>
                                         </div>
                                       </div>
-                                      
-                                      {/* Audio Progress Slider */}
-                                      <div className="px-1">
-                                        <div className="relative w-full h-1 bg-slate-200 dark:bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden cursor-pointer" onClick={(e) => { if (selectedAudioTrack && youtubePlayerRef.current && duration > 0) { const rect = e.currentTarget.getBoundingClientRect(); const x = e.clientX - rect.left; const clickedProgress = x / rect.width; const newTime = clickedProgress * duration; youtubePlayerRef.current.seekTo(newTime, true); setCurrentTime(newTime); setAudioProgress(clickedProgress * 100); } } }>
-                                          <div 
-                                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-violet-500 to-purple-600 transition-all duration-300"
-                                            style={{ width: `${selectedAudioTrack ? audioProgress : 0}%` }}
-                                          ></div>
-                                        </div>
-                                        <div className="flex justify-between mt-1">
-                                          <span className="text-[8px] font-mono text-slate-500 dark:text-slate-400">
-                                            {selectedAudioTrack ? new Date(currentTime * 1000).toISOString().substr(14, 5) : "0:00"}
-                                          </span>
-                                          <span className="text-[8px] font-mono text-slate-500 dark:text-slate-400">
-                                            {selectedAudioTrack ? (duration > 0 ? new Date(duration * 1000).toISOString().substr(14, 5) : selectedAudioTrack.duration) : "0:00"}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </div>
+                                    )}
                                   </div>
                                 </div>
                               </DialogContent>
