@@ -20022,16 +20022,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           <DialogTitle className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                               Connect Your Broker
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className={`h-8 w-8 transition-colors ${showDeltaExchange ? 'text-orange-500 bg-orange-50 dark:bg-orange-900/20' : 'text-slate-400'}`}
+                                onClick={() => setShowDeltaExchange(!showDeltaExchange)}
+                                title="Crypto Exchange"
+                              >
+                                <Bitcoin className="h-4 w-4" />
+                              </Button>
                             </div>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              className={`h-8 w-8 transition-colors ${showDeltaExchange ? 'text-orange-500 bg-orange-50 dark:bg-orange-900/20' : 'text-slate-400'}`}
-                              onClick={() => setShowDeltaExchange(!showDeltaExchange)}
-                              title="Crypto Exchange"
-                            >
-                              <Bitcoin className="h-4 w-4" />
-                            </Button>
                           </DialogTitle>
                         </DialogHeader>
                         <div className="space-y-3">
@@ -20049,7 +20049,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               Delta Exchange India
                             </Button>
                           ) : (
-                            <>
+                            <div className="space-y-3">
                           {zerodhaIsConnected ? (
                             <div className="flex items-center gap-2">
                               <Button
@@ -20097,8 +20097,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               />
                               Zerodha
                             </Button>
-                          )}
-                          </>
                           )}
                           {upstoxIsConnected ? (
                             <div className="flex items-center gap-2">
@@ -20215,6 +20213,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <img src="https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701" alt="Dhan" className="h-4 mr-2" />
                               Dhan
                             </Button>
+                          )}
+                            </div>
                           )}
 
                           
