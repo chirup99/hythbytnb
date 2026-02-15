@@ -20327,10 +20327,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                             </DialogContent>
                           </Dialog>
-<p className="text-xs text-center text-muted-foreground mt-4">
-                            Connect your broker account to auto-import trades
-                          </p>
                         </div>
+                        <p className="text-center text-[10px] text-gray-500 py-3 border-t border-slate-100 dark:border-slate-800">
+                          Connect your broker account to auto-import trades
+                        </p>
                       </DialogContent>
                     </Dialog>
 
