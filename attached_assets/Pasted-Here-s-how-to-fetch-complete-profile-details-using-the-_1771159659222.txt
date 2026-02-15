@@ -1,0 +1,295 @@
+Here's how to fetch complete profile details using the Delta Exchange API.
+
+Endpoint: Get User Profile
+Endpoint: GET /v2/profile
+
+Description: Returns the complete user object with personal and account-related details.
+
+Authentication: Required
+
+Parameters: None
+
+Profile Fields Returned
+id (string): Unique user identifier
+email (string): User's email address
+account_name (string): Main account or subaccount name
+first_name (string): User's first name
+last_name (string): User's last name
+dob (string): Date of birth (YYYY-MM-DD format)
+country (string): User's country of residence
+phone_number (string): User's phone number with country code
+margin_mode (string): "isolated" or "portfolio"
+pf_index_symbol (string): Portfolio index symbol (if in portfolio margin mode)
+is_sub_account (boolean): Whether the account is a sub-account
+is_kyc_done (boolean): Whether KYC verification is completed
+Example Request
+
+curl -X GET "https://api.india.delta.exchange/v2/profile" \
+  -H "api-key: your_api_key" \
+  -H "timestamp: 1542110948" \
+  -H "signature: your_generated_signature" \
+  -H "User-Agent: python-rest-client" \
+  -H "Content-Type: application/json"
+
+Response Schema
+Success Response (200):
+
+Properties:
+
+success (boolean): Indicates if the request was successful (default: true)
+result (object): User profile object containing all user details
+Sample Response
+
+{
+  "success": true,
+  "result": {
+    "id": "98765432",
+    "email": "rajtrader2342@gmail.com",
+    "account_name": "Main",
+    "first_name": "Rajesh",
+    "last_name": "Sharma",
+    "dob": "1985-08-25",
+    "country": "India",
+    "phone_number": "9876543210",
+    "margin_mode": "isolated",
+    "pf_index_symbol": ".DEXBTUSD",
+    "is_sub_account": false,
+    "is_kyc_done": true
+  }
+}
+
+Complete Python Implementation
+
+import hashlib
+import hmac
+import requests
+import time
+
+base_url = 'https://api.india.delta.exchange'
+api_key = 'your_api_key'
+api_secret = 'your_api_secret'
+
+def generate_signature(secret, message):
+    """Generate HMAC SHA256 signature"""
+    message = bytes(message, 'utf-8')
+    secret = bytes(secret, 'utf-8')
+    hash = hmac.new(secret, message, hashlib.sha256)
+    return hash.hexdigest()
+
+def fetch_profile():
+    """Fetch user profile details"""
+    
+    # Prepare request
+    method = 'GET'
+    timestamp = str(int(time.time()))
+    path = '/v2/profile'
+    query_string = ''
+    payload = ''
+    
+    # Generate signature
+    signature_data = method + timestamp + path + query_string + payload
+    signature = generate_signature(api_secret, signature_data)
+    
+    # Build headers
+    headers = {
+        'api-key': api_key,
+        'timestamp': timestamp,
+        'signature': signature,
+        'User-Agent': 'python-rest-client',
+        'Content-Type': 'application/json'
+    }
+    
+    # Make request
+    url = f'{base_url}{path}'
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=(3, 27))
+        response.raise_for_status()
+        data = response.json()
+        
+        if data.get('success'):
+            profile = data['result']
+            
+            # Display profile details
+            print("=" * 50)
+            print("USER PROFILE DETAILS")
+            print("=" * 50)
+            print(f"User ID:           {profile['id']}")
+            print(f"Account Name:      {profile['account_name']}")
+            print(f"Full Name:         {profile['first_name']} {profile['last_name']}")
+            print(f"Email:             {profile['email']}")
+            print(f"Phone Number:      {profile['phone_number']}")
+            print(f"Country:           {profile['country']}")
+            print(f"Date of Birth:     {profile['dob']}")
+            print(f"Margin Mode:       {profile['margin_mode']}")
+            print(f"Portfolio Index:   {profile.get('pf_index_symbol', 'N/A')}")
+            print(f"Is Sub-Account:    {profile['is_sub_account']}")
+            print(f"KYC Status:        {'Completed' if profile['is_kyc_done'] else 'Pending'}")
+            print("=" * 50)
+            
+            return profile
+        else:
+            print(f"Failed to fetch profile: {data}")
+            return None
+            
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching profile: {e}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response: {e.response.text}")
+        return None
+
+# Fetch and display profile
+profile = fetch_profile()
+
+# Access specific fields
+if profile:
+    user_id = profile['id']
+    username = profile['account_name']
+    print(f"\nQuick Access - User ID: {user_id}, Username: {username}")
+
+Advanced: Fetch Complete User Information
+Here's a comprehensive script that fetches profile, trading preferences, and wallet balances:
+
+
+import hashlib
+import hmac
+import requests
+import time
+import json
+
+base_url = 'https://api.india.delta.exchange'
+api_key = 'your_api_key'
+api_secret = 'your_api_secret'
+
+def generate_signature(secret, message):
+    """Generate HMAC SHA256 signature"""
+    message = bytes(message, 'utf-8')
+    secret = bytes(secret, 'utf-8')
+    hash = hmac.new(secret, message, hashlib.sha256)
+    return hash.hexdigest()
+
+def make_request(method, path, query_params=None):
+    """Make authenticated API request"""
+    timestamp = str(int(time.time()))
+    query_string = ''
+    if query_params:
+        query_string = '?' + '&'.join([f"{k}={v}" for k, v in query_params.items()])
+    payload = ''
+    
+    signature_data = method + timestamp + path + query_string + payload
+    signature = generate_signature(api_secret, signature_data)
+    
+    headers = {
+        'api-key': api_key,
+        'timestamp': timestamp,
+        'signature': signature,
+        'User-Agent': 'python-rest-client',
+        'Content-Type': 'application/json'
+    }
+    
+    url = f'{base_url}{path}'
+    
+    try:
+        response = requests.get(url, params=query_params, headers=headers, timeout=(3, 27))
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+        return None
+
+# 1. Fetch User Profile
+print("\n" + "=" * 60)
+print("1. USER PROFILE")
+print("=" * 60)
+
+profile_data = make_request('GET', '/v2/profile')
+if profile_data and profile_data.get('success'):
+    profile = profile_data['result']
+    print(f"User ID:           {profile['id']}")
+    print(f"Account Name:      {profile['account_name']}")
+    print(f"Full Name:         {profile['first_name']} {profile['last_name']}")
+    print(f"Email:             {profile['email']}")
+    print(f"Phone:             {profile['phone_number']}")
+    print(f"Country:           {profile['country']}")
+    print(f"DOB:               {profile['dob']}")
+    print(f"Margin Mode:       {profile['margin_mode']}")
+    print(f"KYC Status:        {'✓ Completed' if profile['is_kyc_done'] else '✗ Pending'}")
+    print(f"Sub-Account:       {'Yes' if profile['is_sub_account'] else 'No'}")
+
+Output Example
+When you run the script, you'll see output like this:
+
+
+============================================================
+1. USER PROFILE
+============================================================
+User ID: 98765432
+Account Name: Main
+Full Name: Rajesh Sharma
+Email: rajtrader2342@gmail.com
+Phone: 9876543210
+Country: India
+DOB: 1985-08-25
+Margin Mode: isolated
+KYC Status: ✓ Completed
+Sub-Account: No
+
+============================================================
+2. TRADING PREFERENCES
+============================================================
+User ID: 57354187
+VIP Level: 0
+VIP Discount: 0.00%
+30-Day Volume: $1060.675333
+Auto Top-up: Enabled
+DETO Commission: No
+Interest Credit: No
+
+Email Notifications:
+Adl: ✓
+Liquidation: ✓
+Margin Topup: ✗
+Marketing: ✓
+Order Cancel: ✓
+Order Fill: ✓
+Stop Order Trigger: ✓
+
+App Notifications:
+Adl: ✓
+Liquidation: ✓
+Margin Topup: ✗
+Marketing: ✓
+Order Cancel: ✗
+Order Fill: ✓
+Price Alert: ✓
+Stop Order Trigger: ✓
+
+Price Alerts: BTC, ETH
+
+============================================================
+3. WALLET BALANCES
+============================================================
+
+Asset Balance Available Blocked
+-----------------------------------------------------------------
+BTC 0.05000000 0.04500000 0.00500000
+USDT 1000.00000000 950.00000000 50.00000000
+
+Account Summary:
+Net Equity: 1050.00
+Robo Trading Equity: 1000.00
+
+============================================================
+4. SUB-ACCOUNTS
+============================================================
+Found 2 sub-account(s):
+
+• Trading Bot (ID: 98765433)
+Email: rajtrader2342+sub1@gmail.com
+Margin Mode: isolated
+
+• Hedging (ID: 98765434)
+Email: rajtrader2342+sub2@gmail.com
+Margin Mode: portfolio
+
+============================================================

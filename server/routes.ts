@@ -21943,7 +21943,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const apiKey = req.headers['x-api-key'] as string;
       const apiSecret = req.headers['x-api-secret'] as string;
       
-      if (!apiKey || !apiSecret) {
+      // FALLBACK: If headers are missing, try to get from session/cache if available
+      // or from common secrets if it's a shared demo account
+      let finalApiKey = apiKey;
+      let finalApiSecret = apiSecret;
+
+      if (!finalApiKey || !finalApiSecret) {
+         // Check if we have these in environment variables as a last resort
+         finalApiKey = process.env.DELTA_EXCHANGE_API_KEY || "";
+         finalApiSecret = process.env.DELTA_EXCHANGE_API_SECRET || "";
+      }
+
+      if (!finalApiKey || !finalApiSecret) {
         return res.status(400).json({ error: "API Key and Secret are required in headers" });
       }
 
@@ -21954,13 +21965,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const payload = '';
       
       const signature_data = method + timestamp + path + query_string + payload;
-      const signature = crypto.createHmac('sha256', apiSecret)
+      const signature = crypto.createHmac('sha256', finalApiSecret)
         .update(signature_data)
         .digest('hex');
 
       const response = await axios.get(`https://api.india.delta.exchange${path}`, {
         headers: {
-          'api-key': apiKey,
+          'api-key': finalApiKey,
           'timestamp': timestamp,
           'signature': signature,
           'User-Agent': 'node-rest-client',

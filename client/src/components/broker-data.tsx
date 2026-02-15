@@ -4,7 +4,9 @@ import { Eye, EyeOff, Plus, X, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 interface BrokerDataProps {
   showOrderModal: boolean;
@@ -76,6 +78,31 @@ export function BrokerData(props: BrokerDataProps) {
     saveFormatToUniversalLibrary, currentUser, getCognitoToken, setSavedFormats, importDataTextareaRef,
     brokerFunds
   } = props;
+
+  const queryClient = useQueryClient();
+
+  // Refresh Delta profile every minute if connected
+  useEffect(() => {
+    if (!deltaExchangeIsConnected || !showOrderModal) return;
+
+    const refreshProfile = async () => {
+      try {
+        await apiRequest("GET", "/api/broker/delta/profile", null, {
+          headers: {
+            'x-api-key': deltaExchangeApiKey || '',
+            'x-api-secret': deltaExchangeApiSecret || ''
+          }
+        });
+        queryClient.invalidateQueries({ queryKey: ["/api/broker/delta/profile"] });
+      } catch (error) {
+        console.error("Error refreshing Delta profile:", error);
+      }
+    };
+
+    refreshProfile();
+    const interval = setInterval(refreshProfile, 60000);
+    return () => clearInterval(interval);
+  }, [deltaExchangeIsConnected, showOrderModal, queryClient]);
 
   const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken || deltaExchangeIsConnected;
   const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : deltaExchangeIsConnected ? 'delta' : null;
