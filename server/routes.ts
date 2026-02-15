@@ -21975,7 +21975,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           success: true,
           result: {
             id: result.id,
+            userId: result.id,
             account_name: result.account_name,
+            userName: result.account_name,
             email: result.email,
             first_name: result.first_name,
             last_name: result.last_name,
