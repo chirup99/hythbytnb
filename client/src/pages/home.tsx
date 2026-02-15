@@ -20034,7 +20034,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
                           </DialogTitle>
                         </DialogHeader>
-                        <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                        <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                           {showDeltaExchange ? (
                             <Button
                               variant="outline"

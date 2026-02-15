@@ -79,3 +79,4 @@
 [x] 79. Session recovery (Feb 15) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI). All items marked [x] complete.
 [x] 80. Added Bitcoin icon to 'Connect Your Broker' dialog header and implemented 'Delta Exchange India' button toggle functionality. All items marked [x] complete.
 [x] 81. Session recovery (Feb 15, #2) - Reinstalled packages (npm install), restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
+[x] 82. UI: Added Groww, Fyers, ICICI Securities, Alice Blue, 5 Paisa, and M Stock to broker connections. Made dialog scrollable with a fixed height to keep the Groww button visible by default. All items marked [x] complete.
