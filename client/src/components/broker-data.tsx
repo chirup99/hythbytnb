@@ -81,6 +81,27 @@ export function BrokerData(props: BrokerDataProps) {
 
   const queryClient = useQueryClient();
 
+  // Refresh Dhan profile every 10 seconds if connected
+  useEffect(() => {
+    if (activeBroker !== 'dhan' || !showOrderModal) return;
+
+    const refreshDhanProfile = async () => {
+      try {
+        const response = await apiRequest("GET", `/api/broker/dhan/profile?accessToken=${encodeURIComponent(dhanAccessToken || '')}&dhanClientId=${encodeURIComponent(dhanClientId || dhanUserId || '')}`, null);
+        console.log("🔍 [DHAN] Profile refresh response:", response);
+        // Data updated via react-query if used, or we just refresh the status
+        queryClient.invalidateQueries({ queryKey: ["/api/broker/dhan/status"] });
+        queryClient.invalidateQueries({ queryKey: ["/api/broker/dhan/profile"] });
+      } catch (error) {
+        console.error("Error refreshing Dhan profile:", error);
+      }
+    };
+
+    refreshDhanProfile();
+    const interval = setInterval(refreshDhanProfile, 10000);
+    return () => clearInterval(interval);
+  }, [activeBroker, dhanAccessToken, dhanClientId, dhanUserId, showOrderModal, queryClient]);
+
   // Refresh Delta profile every minute if connected
   useEffect(() => {
     if (!deltaExchangeIsConnected || !showOrderModal) return;
@@ -190,7 +211,7 @@ export function BrokerData(props: BrokerDataProps) {
                   {activeBroker === 'dhan' && (
                     <>
                       <img src="https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701" alt="Dhan" className="w-4 h-4" />
-                      <span>id: {showUserId ? (dhanClientId || dhanUserId || "N/A") : "••••••"} | {showUserId ? (dhanClientName && dhanClientName !== "Dhan User" ? dhanClientName : "Dhan User") : "•••••"}</span>
+                      <span>id: {showUserId ? (dhanClientId || dhanUserId || "N/A") : "••••••"} | {showUserId ? (dhanClientName || "Dhan User") : "•••••"}</span>
                     </>
                   )}
                   {activeBroker === 'delta' && (

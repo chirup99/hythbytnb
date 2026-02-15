@@ -22263,6 +22263,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Save manual Dhan credentials
   // Get Dhan connection status
+  app.get("/api/broker/dhan/profile", async (req, res) => {
+    try {
+      const { accessToken, dhanClientId } = req.query;
+      if (!accessToken || !dhanClientId) {
+        return res.status(400).json({ error: "Access token and Client ID are required" });
+      }
+      
+      const response = await axios.get("https://api.dhan.co/v2/fundlimit", {
+        headers: {
+          'access-token': accessToken as string,
+          'client-id': dhanClientId as string,
+          'Accept': 'application/json'
+        }
+      });
+      
+      res.json({
+        success: true,
+        data: response.data
+      });
+    } catch (error: any) {
+      console.error("Error fetching Dhan profile:", error.response?.data || error.message);
+      res.status(error.response?.status || 500).json(error.response?.data || { error: "Failed to fetch profile" });
+    }
+  });
+
   app.post('/api/broker/dhan/connect', async (req, res) => {
     try {
       const { clientId, accessToken } = req.body;
