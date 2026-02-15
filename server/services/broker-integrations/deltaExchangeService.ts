@@ -42,17 +42,37 @@ export async function fetchDeltaTrades(apiKey: string, apiSecret: string): Promi
     if (!response.data.success) return [];
 
     const orders: DeltaOrder[] = response.data.result || [];
-    return orders.map(order => ({
-      broker: 'delta' as any,
-      tradeId: order.id.toString(),
-      symbol: order.product_symbol,
-      action: order.side.toUpperCase() as 'BUY' | 'SELL',
-      quantity: order.size,
-      price: parseFloat(order.limit_price || '0'),
-      executedAt: new Date(parseInt(order.created_at) / 1000).toISOString(),
-      pnl: 0,
-      fees: 0
-    }));
+    return orders.map(order => {
+      // Delta's created_at is in microseconds (as seen in some docs) or milliseconds.
+      // Based on common patterns, if it's a large number, it's likely microseconds or milliseconds.
+      const timestamp = parseInt(order.created_at);
+      let date: Date;
+      
+      if (timestamp > 1e12 && timestamp < 1e14) {
+        // Milliseconds
+        date = new Date(timestamp);
+      } else if (timestamp > 1e15) {
+        // Microseconds
+        date = new Date(timestamp / 1000);
+      } else {
+        // Seconds
+        date = new Date(timestamp * 1000);
+      }
+
+      return {
+        broker: 'delta' as any,
+        tradeId: order.id.toString(),
+        symbol: order.product_symbol,
+        action: order.side.toUpperCase() as 'BUY' | 'SELL',
+        quantity: order.size,
+        price: parseFloat(order.limit_price || '0'),
+        executedAt: date.toISOString(),
+        time: date.toISOString(), // Add time field explicitly for frontend
+        pnl: 0,
+        fees: 0,
+        status: order.state
+      };
+    });
   } catch (error) {
     console.error('Error fetching Delta trades:', error);
     return [];

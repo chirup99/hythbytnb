@@ -249,23 +249,30 @@ export function BrokerData(props: BrokerDataProps) {
                           const isClosed = status === "REJECTED" || status === "CANCELLED";
                           
                           // Format time to show only time (HH:MM:SS AM/PM) if it's a full date string
-                          let displayTime = trade.time;
-                          if (displayTime && displayTime.includes(' ')) {
+                          let displayTime = trade.time || trade.executedAt || trade.created_at;
+                          if (displayTime) {
                             try {
-                              const dateParts = displayTime.split(' ');
-                              // If it's YYYY-MM-DD HH:MM:SS, take the second part
-                              if (dateParts.length >= 2) {
-                                displayTime = dateParts[1];
-                                // Add AM/PM if not present and if it looks like a 24h time we want to convert or just keep as is
-                                // User asked for "same zerodha orders&postion format" which from image 2 shows "11:13:39 AM"
-                                const timeObj = new Date(`2000-01-01 ${displayTime}`);
-                                if (!isNaN(timeObj.getTime())) {
-                                  displayTime = timeObj.toLocaleTimeString('en-US', { 
-                                    hour: '2-digit', 
-                                    minute: '2-digit', 
-                                    second: '2-digit',
-                                    hour12: true 
-                                  });
+                              const dateObj = new Date(displayTime);
+                              if (!isNaN(dateObj.getTime())) {
+                                displayTime = dateObj.toLocaleTimeString('en-US', { 
+                                  hour: '2-digit', 
+                                  minute: '2-digit', 
+                                  second: '2-digit',
+                                  hour12: true 
+                                });
+                              } else if (displayTime.includes(' ')) {
+                                const dateParts = displayTime.split(' ');
+                                if (dateParts.length >= 2) {
+                                  displayTime = dateParts[1];
+                                  const timeObj = new Date(`2000-01-01 ${displayTime}`);
+                                  if (!isNaN(timeObj.getTime())) {
+                                    displayTime = timeObj.toLocaleTimeString('en-US', { 
+                                      hour: '2-digit', 
+                                      minute: '2-digit', 
+                                      second: '2-digit',
+                                      hour12: true 
+                                    });
+                                  }
                                 }
                               }
                             } catch (e) {
