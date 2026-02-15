@@ -4427,10 +4427,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       .then(res => res.json())
       .then(data => {
         console.log('🔵 [DELTA] Received profile data:', data);
-        if (data.success && data.result) {
-          const profile = data.result;
-          const userId = String(profile.id || "");
-          const accountName = String(profile.account_name || "Delta User");
+        const profile = (data.success && data.result) ? data.result : (data.result || data);
+        if (profile && (profile.id !== undefined || profile.userId !== undefined)) {
+          const userId = String(profile.id || profile.userId || "");
+          const accountName = String(profile.account_name || profile.userName || "Delta User");
           console.log('✅ [DELTA] Setting profile:', userId, accountName);
           setDeltaExchangeUserId(userId);
           setDeltaExchangeAccountName(accountName);
@@ -4463,17 +4463,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               }
             });
             if (profileRes.ok) {
-              const data = await profileRes.json();
-              console.log('🔵 [DELTA] Received profile data (connect):', data);
-              if (data.success && data.result) {
-                const profileData = data.result;
-                const userId = String(profileData.id || "");
-                const accountName = String(profileData.account_name || "Delta User");
-                console.log('✅ [DELTA] Setting profile (connect):', userId, accountName);
-                setDeltaExchangeUserId(userId);
-                setDeltaExchangeAccountName(accountName);
-                if (userId) localStorage.setItem("delta_exchange_user_id", userId);
-                if (accountName) localStorage.setItem("delta_exchange_account_name", accountName);
+              const data = await profileRes.ok ? await profileRes.json() : null;
+              if (data) {
+                console.log('🔵 [DELTA] Received profile data (connect):', data);
+                const profileData = (data.success && data.result) ? data.result : (data.result || data);
+                if (profileData && (profileData.id !== undefined || profileData.userId !== undefined)) {
+                  const userId = String(profileData.id || profileData.userId || "");
+                  const accountName = String(profileData.account_name || profileData.userName || "Delta User");
+                  console.log('✅ [DELTA] Setting profile (connect):', userId, accountName);
+                  setDeltaExchangeUserId(userId);
+                  setDeltaExchangeAccountName(accountName);
+                  if (userId) localStorage.setItem("delta_exchange_user_id", userId);
+                  if (accountName) localStorage.setItem("delta_exchange_account_name", accountName);
+                }
               }
             }
           } catch (err) {

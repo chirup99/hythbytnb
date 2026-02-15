@@ -21969,23 +21969,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       if (response.data.success || response.data.result) {
-        const result = response.data.result || {};
-        console.log('✅ [DELTA] Profile data fetched:', result.id, result.account_name);
+        const profileData = response.data.result || response.data;
+        console.log('✅ [DELTA] Profile data fetched:', profileData.id, profileData.account_name);
         res.json({
           success: true,
           result: {
-            id: result.id,
-            userId: result.id,
-            account_name: result.account_name,
-            userName: result.account_name,
-            email: result.email,
-            first_name: result.first_name,
-            last_name: result.last_name,
-            country: result.country,
-            phone_number: result.phone_number,
-            margin_mode: result.margin_mode,
-            is_kyc_done: result.is_kyc_done,
-            is_sub_account: result.is_sub_account
+            id: profileData.id,
+            userId: profileData.id,
+            account_name: profileData.account_name,
+            userName: profileData.account_name,
+            email: profileData.email,
+            first_name: profileData.first_name,
+            last_name: profileData.last_name,
+            country: profileData.country,
+            phone_number: profileData.phone_number,
+            margin_mode: profileData.margin_mode,
+            is_kyc_done: profileData.is_kyc_done,
+            is_sub_account: profileData.is_sub_account
           }
         });
       } else {
