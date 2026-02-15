@@ -21951,7 +21951,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       if (response.data.success) {
-        res.json(response.data.result);
+        // Delta Exchange India profile response structure
+        const result = response.data.result || {};
+        res.json({
+          id: result.id || result.user_id,
+          account_name: result.account_name || result.first_name || result.username || "Delta User",
+          email: result.email,
+          ...result
+        });
       } else {
         res.status(400).json({ error: response.data.error || "Failed to fetch profile" });
       }

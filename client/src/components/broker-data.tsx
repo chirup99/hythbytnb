@@ -165,7 +165,7 @@ export function BrokerData(props: BrokerDataProps) {
                   {activeBroker === 'delta' && (
                     <>
                       <img src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" alt="Delta Exchange" className="w-3 h-3 rounded-full" />
-                      <span>id: {showUserId ? (deltaExchangeUserId || (deltaExchangeApiKey ? deltaExchangeApiKey.substring(0, 8) : "N/A")) : "••••••"} | {showUserId ? (deltaExchangeAccountName || "Delta Exchange") : "•••••"}</span>
+                      <span>id: {showUserId ? (deltaExchangeUserId || "Fetching...") : "••••••"} | {showUserId ? (deltaExchangeAccountName || "Delta User") : "•••••"}</span>
                     </>
                   )}
                 </div>

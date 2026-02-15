@@ -4385,6 +4385,26 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       setDeltaExchangeApiKey(savedApiKey);
       setDeltaExchangeApiSecret(savedApiSecret);
       setDeltaExchangeIsConnected(true);
+      
+      // Fetch profile details on load if connected
+      fetch("/api/broker/delta/profile", {
+        headers: {
+          "x-api-key": savedApiKey,
+          "x-api-secret": savedApiSecret
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && (data.id || data.user_id)) {
+          const userId = data.id || data.user_id;
+          const accountName = data.account_name || "Delta User";
+          setDeltaExchangeUserId(userId);
+          setDeltaExchangeAccountName(accountName);
+          localStorage.setItem("delta_exchange_user_id", userId);
+          localStorage.setItem("delta_exchange_account_name", accountName);
+        }
+      })
+      .catch(err => console.error("Failed to fetch Delta profile on load:", err));
     }
   }, []);
 
