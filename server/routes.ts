@@ -21968,7 +21968,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       });
 
-      if (response.data.success) {
+      if (response.data.success || response.data.result) {
         const result = response.data.result || {};
         console.log('✅ [DELTA] Profile data fetched:', result.id, result.account_name);
         res.json({
