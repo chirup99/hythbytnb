@@ -77,7 +77,7 @@ import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmai
 
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, LineSeries, HistogramSeries, IPriceLine, createSeriesMarkers } from 'lightweight-charts';
 
-import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle, Activity } from "lucide-react";
+import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle, Activity, Bitcoin } from "lucide-react";
 
 import { parseBrokerTrades, ParseError } from "@/utils/trade-parser";
 
@@ -4230,6 +4230,7 @@ ${
   // Import Modal State
   const [showImportModal, setShowImportModal] = useState(false);
   const [showConnectDialog, setShowConnectDialog] = useState(false);
+  const [showDeltaExchange, setShowDeltaExchange] = useState(false);
 
   const [zerodhaAccessToken, setZerodhaAccessToken] = useState<string | null>(null);
   const [zerodhaIsConnected, setZerodhaIsConnected] = useState(false);
@@ -20018,9 +20019,37 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                     <Dialog open={showConnectDialog} onOpenChange={setShowConnectDialog}>
                       <DialogContent className="max-w-md">
                         <DialogHeader>
-                          <DialogTitle>Connect Your Broker</DialogTitle>
+                          <DialogTitle className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              Connect Your Broker
+                            </div>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className={`h-8 w-8 transition-colors ${showDeltaExchange ? 'text-orange-500 bg-orange-50 dark:bg-orange-900/20' : 'text-slate-400'}`}
+                              onClick={() => setShowDeltaExchange(!showDeltaExchange)}
+                              title="Crypto Exchange"
+                            >
+                              <Bitcoin className="h-4 w-4" />
+                            </Button>
+                          </DialogTitle>
                         </DialogHeader>
                         <div className="space-y-3">
+                          {showDeltaExchange ? (
+                            <Button
+                              variant="outline"
+                              className="w-full h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700"
+                              onClick={() => window.open('https://india.delta.exchange/', '_blank')}
+                            >
+                              <img 
+                                src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" 
+                                alt="Delta Exchange India" 
+                                className="w-4 h-4 mr-2 rounded-full"
+                              />
+                              Delta Exchange India
+                            </Button>
+                          ) : (
+                            <>
                           {zerodhaIsConnected ? (
                             <div className="flex items-center gap-2">
                               <Button
@@ -20068,6 +20097,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               />
                               Zerodha
                             </Button>
+                          )}
+                          </>
                           )}
                           {upstoxIsConnected ? (
                             <div className="flex items-center gap-2">

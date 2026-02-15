@@ -77,3 +77,4 @@
 [x] 77. Session recovery (Feb 14, #14) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI). All items marked [x] complete.
 [x] 78. Deleted "Visual Chart" h3 heading from Trading Master dashboard Visual Chart section. All items marked [x] complete.
 [x] 79. Session recovery (Feb 15) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI). All items marked [x] complete.
+[x] 80. Added Bitcoin icon to 'Connect Your Broker' dialog header and implemented 'Delta Exchange India' button toggle functionality. All items marked [x] complete.
