@@ -82,3 +82,4 @@
 [x] 82. UI: Added Groww, Fyers, ICICI Securities, Alice Blue, 5 Paisa, and M Stock to broker connections. Made dialog scrollable with a fixed height to keep the Groww button visible by default. All items marked [x] complete.
 [x] 83. Session recovery (Feb 15, #3) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
 [x] 84. UI: Added "Coming Soon" badge to Groww, Fyers, ICICI Securities, Alice Blue, 5 Paisa, and M Stock broker buttons. All items marked [x] complete.
+[x] 85. Session recovery (Feb 15, #4) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
