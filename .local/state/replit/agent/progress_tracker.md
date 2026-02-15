@@ -97,3 +97,4 @@
 [x] 97. Session recovery (Feb 15, #12) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
 [x] 98. UI: Added Whitelisted IP and copy button to Delta Exchange connect dialog for easier API setup. All items marked [x] complete.
 [x] 99. UI: Updated Whitelisted IP to dynamically display the user's current server hostname instead of a hardcoded value. All items marked [x] complete.
+[x] 100. Session recovery (Feb 15, #13) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. Market indices fetching (USA +0.05%, Canada +1.87%, India -1.30%, Tokyo -1.21%, Hong Kong -1.72%). All items marked [x] complete.
