@@ -4395,13 +4395,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       })
       .then(res => res.json())
       .then(data => {
-        if (data && (data.id || (data.success && data.id))) {
-          const userId = data.id;
-          const accountName = data.account_name || "Delta User";
+        console.log('🔵 [DELTA] Received profile data:', data);
+        // Handle both direct and nested result structures from backend
+        const profile = data.result || data;
+        if (profile && (profile.id || profile.account_name)) {
+          const userId = String(profile.id || profile.userId || "");
+          const accountName = String(profile.account_name || profile.userName || "Delta User");
+          console.log('✅ [DELTA] Setting profile:', userId, accountName);
           setDeltaExchangeUserId(userId);
           setDeltaExchangeAccountName(accountName);
-          localStorage.setItem("delta_exchange_user_id", userId);
-          localStorage.setItem("delta_exchange_account_name", accountName);
+          if (userId) localStorage.setItem("delta_exchange_user_id", userId);
+          if (accountName) localStorage.setItem("delta_exchange_account_name", accountName);
         }
       })
       .catch(err => console.error("Failed to fetch Delta profile on load:", err));
@@ -4429,12 +4433,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               }
             });
             if (profileRes.ok) {
-              const profileData = await profileRes.json();
-              if (profileData && (profileData.id || (profileData.success && profileData.id))) {
-                setDeltaExchangeUserId(profileData.id);
-                setDeltaExchangeAccountName(profileData.account_name);
-                localStorage.setItem("delta_exchange_user_id", profileData.id);
-                localStorage.setItem("delta_exchange_account_name", profileData.account_name || "Delta User");
+              const data = await profileRes.json();
+              console.log('🔵 [DELTA] Received profile data (connect):', data);
+              const profileData = data.result || data;
+              if (profileData && (profileData.id || profileData.account_name)) {
+                const userId = String(profileData.id || profileData.userId || "");
+                const accountName = String(profileData.account_name || profileData.userName || "Delta User");
+                console.log('✅ [DELTA] Setting profile (connect):', userId, accountName);
+                setDeltaExchangeUserId(userId);
+                setDeltaExchangeAccountName(accountName);
+                if (userId) localStorage.setItem("delta_exchange_user_id", userId);
+                if (accountName) localStorage.setItem("delta_exchange_account_name", accountName);
               }
             }
           } catch (err) {

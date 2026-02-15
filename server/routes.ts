@@ -21953,15 +21953,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (response.data.success) {
         // Delta Exchange India profile response structure - matching exactly with official documentation
         const result = response.data.result || {};
+        console.log('✅ [DELTA] Profile data fetched:', result.id, result.account_name);
         res.json({
           success: true,
-          id: result.id,
-          account_name: result.account_name,
-          email: result.email,
-          first_name: result.first_name,
-          last_name: result.last_name,
-          country: result.country,
-          ...result
+          result: {
+            id: result.id,
+            account_name: result.account_name,
+            email: result.email,
+            first_name: result.first_name,
+            last_name: result.last_name,
+            country: result.country,
+            ...result
+          }
         });
       } else {
         res.status(400).json({ error: response.data.error || "Failed to fetch profile" });
