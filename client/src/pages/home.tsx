@@ -4289,6 +4289,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [dhanAccessToken, setDhanAccessToken] = useState<string | null>(null);
   const [dhanClientName, setDhanClientName] = useState<string | null>(localStorage.getItem("dhan_client_name"));
   const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
+  const [isDeltaExchangeDialogOpen, setIsDeltaExchangeDialogOpen] = useState(false);
+  const [deltaExchangeApiKey, setDeltaExchangeApiKey] = useState("");
+  const [deltaExchangeApiSecret, setDeltaExchangeApiSecret] = useState("");
+  const [deltaExchangeIsConnected, setDeltaExchangeIsConnected] = useState(false);
   const [dhanClientIdInput, setDhanClientIdInput] = useState(localStorage.getItem("dhan_client_id") || "");
   const [dhanTokenInput, setDhanTokenInput] = useState("");
 
@@ -4327,7 +4331,41 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   };
 
 
-  const submitDhanCredentials = async () => {
+  useEffect(() => {
+    const deltaKey = localStorage.getItem("delta_exchange_api_key");
+    if (deltaKey) {
+      setDeltaExchangeIsConnected(true);
+    }
+  }, []);
+
+  const handleDeltaExchangeConnect = () => {
+    if (deltaExchangeApiKey && deltaExchangeApiSecret) {
+      localStorage.setItem("delta_exchange_api_key", deltaExchangeApiKey);
+      localStorage.setItem("delta_exchange_api_secret", deltaExchangeApiSecret);
+      setDeltaExchangeIsConnected(true);
+      setIsDeltaExchangeDialogOpen(false);
+      toast({
+        title: "Connected",
+        description: "Delta Exchange India connected successfully",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Please enter both API Key and API Secret",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeltaExchangeDisconnect = () => {
+    localStorage.removeItem("delta_exchange_api_key");
+    localStorage.removeItem("delta_exchange_api_secret");
+    setDeltaExchangeIsConnected(false);
+    toast({
+      title: "Disconnected",
+      description: "Delta Exchange India disconnected",
+    });
+  };
     try {
       if (!dhanClientIdInput || !dhanTokenInput) {
         toast({
@@ -20036,18 +20074,44 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         </DialogHeader>
                         <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                           {showDeltaExchange ? (
-                            <Button
-                              variant="outline"
-                              className="w-full h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700"
-                              onClick={() => window.open('https://india.delta.exchange/', '_blank')}
-                            >
-                              <img 
-                                src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" 
-                                alt="Delta Exchange India" 
-                                className="w-4 h-4 mr-2 rounded-full"
-                              />
-                              Delta Exchange India
-                            </Button>
+                            deltaExchangeIsConnected ? (
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  variant="outline"
+                                  className="flex-1 h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 cursor-default"
+                                >
+                                  <img 
+                                    src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" 
+                                    alt="Delta Exchange India" 
+                                    className="w-4 h-4 mr-2 rounded-full"
+                                  />
+                                  Delta Exchange
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
+                                  onClick={handleDeltaExchangeDisconnect}
+                                  title="Disconnect Delta Exchange"
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                className="w-full h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700"
+                                onClick={() => setIsDeltaExchangeDialogOpen(true)}
+                                data-testid="button-delta-exchange-dialog"
+                              >
+                                <img 
+                                  src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" 
+                                  alt="Delta Exchange India" 
+                                  className="w-4 h-4 mr-2 rounded-full"
+                                />
+                                Delta Exchange India
+                              </Button>
+                            )
                           ) : (
                             <div className="space-y-3">
                           {zerodhaIsConnected ? (
@@ -20328,6 +20392,53 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   Cancel
                                 </Button>
                                 <Button onClick={submitDhanCredentials} className="bg-green-600 hover:bg-green-700 text-white">
+                                  Connect Account
+                                </Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+
+                          <Dialog open={isDeltaExchangeDialogOpen} onOpenChange={setIsDeltaExchangeDialogOpen}>
+                            <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                              <DialogHeader>
+                                <DialogTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+                                  <img src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" alt="Delta Exchange India" className="h-5 rounded-full" />
+                                  Connect Delta Exchange India
+                                </DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4 py-4">
+                                <div className="space-y-2">
+                                  <Label htmlFor="delta-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
+                                  <Input
+                                    id="delta-api-key"
+                                    placeholder="Enter your Delta Exchange API Key"
+                                    value={deltaExchangeApiKey}
+                                    onChange={(e) => setDeltaExchangeApiKey(e.target.value)}
+                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                    data-testid="input-delta-api-key"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="delta-api-secret" className="text-slate-700 dark:text-slate-300">API Secret</Label>
+                                  <Input
+                                    id="delta-api-secret"
+                                    type="password"
+                                    placeholder="Enter your Delta Exchange API Secret"
+                                    value={deltaExchangeApiSecret}
+                                    onChange={(e) => setDeltaExchangeApiSecret(e.target.value)}
+                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                    data-testid="input-delta-api-secret"
+                                  />
+                                  <p className="text-[10px] text-slate-500">
+                                    Create your API keys at: https://www.delta.exchange/app/account/manageapikeys
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex justify-end gap-3 pt-2">
+                                <Button variant="outline" onClick={() => setIsDeltaExchangeDialogOpen(false)}>
+                                  Cancel
+                                </Button>
+                                <Button onClick={handleDeltaExchangeConnect} className="bg-orange-600 hover:bg-orange-700 text-white">
                                   Connect Account
                                 </Button>
                               </div>

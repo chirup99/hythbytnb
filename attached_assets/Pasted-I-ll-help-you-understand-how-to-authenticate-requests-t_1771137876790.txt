@@ -1,0 +1,143 @@
+I'll help you understand how to authenticate requests to the Delta Exchange API.## Authentication Overview
+
+Delta Exchange API uses HMAC SHA256 signature-based authentication. All authenticated requests must include specific headers with a cryptographically signed message.
+
+Required Headers
+Every authenticated request must contain these headers:
+
+api-key: Your API key (obtained from Delta Exchange)
+signature: Hex-encoded HMAC SHA256 signature
+timestamp: Unix timestamp (in seconds) when the request is made
+User-Agent: Your programming language or library (e.g., "python-3.10", "java")
+Content-Type: application/json (for requests with body)
+How to Generate the Signature
+The signature is created using the following process:
+
+Step 1: Create the Signature Data String
+Concatenate these components in order:
+
+
+method + timestamp + requestPath + queryString + body
+Where:
+
+method: HTTP method in uppercase (GET, POST, PUT, DELETE)
+timestamp: Same value as the timestamp header
+requestPath: The API endpoint path (e.g., /v2/orders)
+queryString: Query parameters including the ? (e.g., ?product_id=1&state=open). Empty string if no query params
+body: JSON request body as a string. Empty string for GET requests
+Step 2: Generate HMAC SHA256 Hash
+Use your API secret to create an HMAC SHA256 hash of the signature data string, then convert it to hexadecimal format.
+
+Step 3: Add to Request Headers
+Include the generated signature in the signature header.
+
+Important Requirements
+Signature Expiry: Signatures are valid for only 5 seconds. If the signature reaches Delta's servers more than 5 seconds after generation, it will be rejected.
+
+IP Whitelisting: API keys with trading permissions require whitelisted IP addresses. Requests will only succeed from whitelisted IPs. Note:
+
+IP whitelisting is mandatory and cannot be disabled
+IP ranges (CIDR notation) are NOT supported
+Add multiple IPs as comma-separated values
+Both IPv4 and IPv6 are supported
+API Key Creation: Create your API keys at: https://www.delta.exchange/app/account/manageapikeys
+
+Example: GET Request with Query Parameters
+
+# GET /v2/orders?product_id=1&state=open
+# Signature data: GET1542110948/v2/orders?product_id=1&state=open
+
+curl -X GET "https://api.india.delta.exchange/v2/orders?product_id=1&state=open" \
+  -H "api-key: a207900b7693435a8fa9230a38195d" \
+  -H "timestamp: 1542110948" \
+  -H "signature: ad767fead0bdbe91ba1e4feb142079245fecd66aa5e47a70b40ba1a4c9b4e3db" \
+  -H "User-Agent: python-rest-client" \
+  -H "Content-Type: application/json"
+
+Example: POST Request with Body
+
+# POST /v2/orders
+# Signature data: POST1542110950/v2/orders{"order_type":"limit_order","size":3,"side":"buy","limit_price":"0.0005","product_id":16}
+
+curl -X POST "https://api.india.delta.exchange/v2/orders" \
+  -H "api-key: a207900b7693435a8fa9230a38195d" \
+  -H "timestamp: 1542110950" \
+  -H "signature: [generated_signature_here]" \
+  -H "User-Agent: rest-client" \
+  -H "Content-Type: application/json" \
+  -d '{"order_type":"limit_order","size":3,"side":"buy","limit_price":"0.0005","product_id":16}'
+
+Python Implementation
+
+import hashlib
+import hmac
+import requests
+import time
+
+base_url = 'https://api.india.delta.exchange'
+api_key = 'your_api_key'
+api_secret = 'your_api_secret'
+
+def generate_signature(secret, message):
+    message = bytes(message, 'utf-8')
+    secret = bytes(secret, 'utf-8')
+    hash = hmac.new(secret, message, hashlib.sha256)
+    return hash.hexdigest()
+
+# Example 1: GET request with query parameters
+method = 'GET'
+timestamp = str(int(time.time()))
+path = '/v2/orders'
+url = f'{base_url}{path}'
+query_string = '?product_id=1&state=open'
+payload = ''
+
+# Create signature data
+signature_data = method + timestamp + path + query_string + payload
+signature = generate_signature(api_secret, signature_data)
+
+req_headers = {
+    'api-key': api_key,
+    'timestamp': timestamp,
+    'signature': signature,
+    'User-Agent': 'python-rest-client',
+    'Content-Type': 'application/json'
+}
+
+query = {"product_id": 1, "state": 'open'}
+
+response = requests.request(
+    method, url, data=payload, params=query, timeout=(3, 27), headers=req_headers
+)
+
+# Example 2: POST request with body
+method = 'POST'
+timestamp = str(int(time.time()))
+path = '/v2/orders'
+url = f'{base_url}{path}'
+query_string = ''
+payload = '{"order_type":"limit_order","size":3,"side":"buy","limit_price":"0.0005","product_id":16}'
+
+# Create signature data
+signature_data = method + timestamp + path + query_string + payload
+signature = generate_signature(api_secret, signature_data)
+
+req_headers = {
+    'api-key': api_key,
+    'timestamp': timestamp,
+    'signature': signature,
+    'User-Agent': 'rest-client',
+    'Content-Type': 'application/json'
+}
+
+response = requests.request(
+    method, url, data=payload, params={}, timeout=(3, 27), headers=req_headers
+)
+
+Common Authentication Issues
+Signature Expired: Ensure your system clock is synchronized and signatures are used within 5 seconds
+IP Not Whitelisted: Verify your public IP matches the whitelisted IP(s) in your API key settings
+IPv4 vs IPv6: Your machine might use IPv6 instead of IPv4 or vice-versa. Whitelist both or disable the unused protocol
+Dynamic IP: Some ISPs change your IP address periodically. Update your whitelisted IPs when this happens
+Missing User-Agent: Always include the User-Agent header to avoid 4XX errors
+Security Best Practices
