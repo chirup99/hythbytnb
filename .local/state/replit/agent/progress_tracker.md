@@ -102,3 +102,4 @@
 [x] 102. Session recovery (Feb 15, #14) - Reinstalled packages, verified server running on port 5000, and confirmed public IP for whitelisting (35.184.4.240). All items marked [x] complete.
 [x] 103. Session recovery (Feb 15, #15) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 104. Fixed Dhan profile fetching: Implemented backend API for real-time profile data and updated frontend to refresh every 10 seconds. Removed local fetching logic to ensure data consistency with broker API. All items marked [x] complete.
+[x] 105. UI: Standardized Dhan client ID and name display in Orders & Positions dialog to fetch directly from API every 10 seconds. Verified data persistence and real-time refresh. All items marked [x] complete.
