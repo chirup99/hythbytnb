@@ -4395,7 +4395,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       })
       .then(res => res.json())
       .then(data => {
-        if (data && data.id) {
+        if (data && (data.id || (data.success && data.id))) {
           const userId = data.id;
           const accountName = data.account_name || "Delta User";
           setDeltaExchangeUserId(userId);
@@ -4430,7 +4430,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             });
             if (profileRes.ok) {
               const profileData = await profileRes.json();
-              if (profileData && profileData.id) {
+              if (profileData && (profileData.id || (profileData.success && profileData.id))) {
                 setDeltaExchangeUserId(profileData.id);
                 setDeltaExchangeAccountName(profileData.account_name);
                 localStorage.setItem("delta_exchange_user_id", profileData.id);

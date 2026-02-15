@@ -21954,6 +21954,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Delta Exchange India profile response structure - matching exactly with official documentation
         const result = response.data.result || {};
         res.json({
+          success: true,
           id: result.id,
           account_name: result.account_name,
           email: result.email,
