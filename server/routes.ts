@@ -21919,6 +21919,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delta Exchange Profile
+  app.get("/api/broker/delta/profile", async (req, res) => {
+    try {
+      const apiKey = req.headers['x-api-key'] as string;
+      const apiSecret = req.headers['x-api-secret'] as string;
+      
+      if (!apiKey || !apiSecret) {
+        return res.status(400).json({ error: "API Key and Secret are required in headers" });
+      }
+
+      const timestamp = Math.floor(Date.now() / 1000).toString();
+      const method = 'GET';
+      const path = '/v2/profile';
+      const query_string = '';
+      const payload = '';
+      
+      const signature_data = method + timestamp + path + query_string + payload;
+      const signature = crypto.createHmac('sha256', apiSecret)
+        .update(signature_data)
+        .digest('hex');
+
+      const response = await axios.get(`https://api.india.delta.exchange${path}`, {
+        headers: {
+          'api-key': apiKey,
+          'timestamp': timestamp,
+          'signature': signature,
+          'User-Agent': 'node-rest-client',
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.data.success) {
+        res.json(response.data.result);
+      } else {
+        res.status(400).json({ error: response.data.error || "Failed to fetch profile" });
+      }
+    } catch (error: any) {
+      console.error("Delta Profile Error:", error.response?.data || error.message);
+      res.status(500).json({ error: "Failed to connect to Delta Exchange" });
+    }
+  });
+
   // Fetch funds from Upstox
   app.get('/api/upstox/funds', async (req, res) => {
     try {

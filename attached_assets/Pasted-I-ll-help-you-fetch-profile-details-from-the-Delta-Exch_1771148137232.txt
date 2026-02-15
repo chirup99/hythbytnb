@@ -1,0 +1,386 @@
+I'll help you fetch profile details from the Delta Exchange API.## Fetch Profile Details from Delta Exchange API
+
+Here's how to fetch complete profile details using the Delta Exchange API.
+
+Endpoint: Get User Profile
+Endpoint: GET /v2/profile
+
+Description: Returns the complete user object with personal and account-related details.
+
+Authentication: Required
+
+Parameters: None
+
+Profile Fields Returned
+id (string): Unique user identifier
+email (string): User's email address
+account_name (string): Main account or subaccount name
+first_name (string): User's first name
+last_name (string): User's last name
+dob (string): Date of birth (YYYY-MM-DD format)
+country (string): User's country of residence
+phone_number (string): User's phone number with country code
+margin_mode (string): "isolated" or "portfolio"
+pf_index_symbol (string): Portfolio index symbol (if in portfolio margin mode)
+is_sub_account (boolean): Whether the account is a sub-account
+is_kyc_done (boolean): Whether KYC verification is completed
+Example Request
+
+curl -X GET "https://api.india.delta.exchange/v2/profile" \
+  -H "api-key: your_api_key" \
+  -H "timestamp: 1542110948" \
+  -H "signature: your_generated_signature" \
+  -H "User-Agent: python-rest-client" \
+  -H "Content-Type: application/json"
+
+Response Schema
+Success Response (200):
+
+Properties:
+
+success (boolean): Indicates if the request was successful (default: true)
+result (object): User profile object containing all user details
+Sample Response
+
+{
+  "success": true,
+  "result": {
+    "id": "98765432",
+    "email": "rajtrader2342@gmail.com",
+    "account_name": "Main",
+    "first_name": "Rajesh",
+    "last_name": "Sharma",
+    "dob": "1985-08-25",
+    "country": "India",
+    "phone_number": "9876543210",
+    "margin_mode": "isolated",
+    "pf_index_symbol": ".DEXBTUSD",
+    "is_sub_account": false,
+    "is_kyc_done": true
+  }
+}
+
+Complete Python Implementation
+
+import hashlib
+
+base_url = 'https://api.india.delta.exchange'
+api_key = 'your_api_key'
+api_secret = 'your_api_secret'
+
+def generate_signature(secret, message):
+    """Generate HMAC SHA256 signature"""
+    message = bytes(message, 'utf-8')
+    secret = bytes(secret, 'utf-8')
+    hash = hmac.new(secret, message, hashlib.sha256)
+    return hash.hexdigest()
+
+def fetch_profile():
+    """Fetch user profile details"""
+    
+    # Prepare request
+    method = 'GET'
+    timestamp = str(int(time.time()))
+    path = '/v2/profile'
+    query_string = ''
+    payload = ''
+    
+    # Generate signature
+    signature_data = method + timestamp + path + query_string + payload
+    signature = generate_signature(api_secret, signature_data)
+    
+    # Build headers
+    headers = {
+        'api-key': api_key,
+        'timestamp': timestamp,
+        'signature': signature,
+        'User-Agent': 'python-rest-client',
+        'Content-Type': 'application/json'
+    }
+    
+    # Make request
+    url = f'{base_url}{path}'
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=(3, 27))
+        response.raise_for_status()
+        data = response.json()
+        
+        if data.get('success'):
+            profile = data['result']
+            
+            # Display profile details
+            print("=" * 50)
+            print("USER PROFILE DETAILS")
+            print("=" * 50)
+            print(f"User ID:           {profile['id']}")
+            print(f"Account Name:      {profile['account_name']}")
+            print(f"Full Name:         {profile['first_name']} {profile['last_name']}")
+            print(f"Email:             {profile['email']}")
+            print(f"Phone Number:      {profile['phone_number']}")
+            print(f"Country:           {profile['country']}")
+            print(f"Date of Birth:     {profile['dob']}")
+            print(f"Margin Mode:       {profile['margin_mode']}")
+            print(f"Portfolio Index:   {profile.get('pf_index_symbol', 'N/A')}")
+            print(f"Is Sub-Account:    {profile['is_sub_account']}")
+            print(f"KYC Status:        {'Completed' if profile['is_kyc_done'] else 'Pending'}")
+            print("=" * 50)
+            
+            return profile
+        else:
+            print(f"Failed to fetch profile: {data}")
+            return None
+            
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching profile: {e}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response: {e.response.text}")
+        return None
+
+# Fetch and display profile
+profile = fetch_profile()
+
+# Access specific fields
+if profile:
+    user_id = profile['id']
+    username = profile['account_name']
+    print(f"\nQuick Access - User ID: {user_id}, Username: {username}")
+
+Advanced: Fetch Complete User Information
+Here's a comprehensive script that fetches profile, trading preferences, and wallet balances:
+
+
+import hashlib
+profile_data = make_request('GET', '/v2/profile')
+if profile_data and profile_data.get('success'):
+    profile = profile_data['result']
+    print(f"User ID:           {profile['id']}")
+    print(f"Account Name:      {profile['account_name']}")
+    print(f"Full Name:         {profile['first_name']} {profile['last_name']}")
+    print(f"Email:             {profile['email']}")
+    print(f"Phone:             {profile['phone_number']}")
+    print(f"Country:           {profile['country']}")
+    print(f"DOB:               {profile['dob']}")
+    print(f"Margin Mode:       {profile['margin_mode']}")
+    print(f"KYC Status:        {'✓ Completed' if profile['is_kyc_done'] else '✗ Pending'}")
+    print(f"Sub-Account:       {'Yes' if profile['is_sub_account'] else 'No'}")
+
+# 2. Fetch Trading Preferences
+print("\n" + "=" * 60)
+print("2. TRADING PREFERENCES")
+print("=" * 60)
+
+prefs_data = make_request('GET', '/v2/users/trading_preferences')
+if prefs_data and prefs_data.get('success'):
+    prefs = prefs_data['result']
+    print(f"User ID:           {prefs['user_id']}")
+    print(f"VIP Level:         {prefs['vip_level']}")
+    print(f"VIP Discount:      {prefs['vip_discount_factor']}%")
+    print(f"30-Day Volume:     ${prefs['volume_30d']}")
+    print(f"Auto Top-up:       {'Enabled' if prefs['default_auto_topup'] else 'Disabled'}")
+    print(f"DETO Commission:   {'Yes' if prefs['deto_for_commission'] else 'No'}")
+    print(f"Interest Credit:   {'Yes' if prefs['interest_credit'] else 'No'}")
+    
+    print("\nEmail Notifications:")
+    for key, value in prefs['email_preferences'].items():
+        print(f"  {key.replace('_', ' ').title()}: {'✓' if value else '✗'}")
+    
+    print("\nApp Notifications:")
+    for key, value in prefs['notification_preferences'].items():
+        print(f"  {key.replace('_', ' ').title()}: {'✓' if value else '✗'}")
+    
+    if prefs['price_alert_assets']:
+        print(f"\nPrice Alerts: {', '.join(prefs['price_alert_assets'])}")
+
+# 3. Fetch Wallet Balances
+print("\n" + "=" * 60)
+print("3. WALLET BALANCES")
+print("=" * 60)
+
+wallet_data = make_request('GET', '/v2/wallet/balances')
+if wallet_data and wallet_data.get('success'):
+    wallets = wallet_data['result']
+    
+    print(f"\n{'Asset':<10} {'Balance':<20} {'Available':<20} {'Blocked':<15}")
+    print("-" * 65)
+    
+    for wallet in wallets:
+        balance = float(wallet['balance'])
+        if balance > 0 or float(wallet['blocked_margin']) > 0:
+            print(f"{wallet['asset_symbol']:<10} "
+                  f"{wallet['balance']:<20} "
+                  f"{wallet['available_balance']:<20} "
+                  f"{wallet['blocked_margin']:<15}")
+    
+    # Display meta information
+    if 'meta' in wallet_data:
+        meta = wallet_data['meta']
+        print("\nAccount Summary:")
+        print(f"  Net Equity:          {meta.get('net_equity', 'N/A')}")
+        print(f"  Robo Trading Equity: {meta.get('robo_trading_equity', 'N/A')}")
+
+# 4. Fetch Sub-Accounts (if main account)
+print("\n" + "=" * 60)
+print("4. SUB-ACCOUNTS")
+print("=" * 60)
+
+subaccounts_data = make_request('GET', '/v2/sub_accounts')
+if subaccounts_data and subaccounts_data.get('success'):
+    subaccounts = subaccounts_data['result']
+    if subaccounts:
+        print(f"Found {len(subaccounts)} sub-account(s):\n")
+        for sub in subaccounts:
+            print(f"  • {sub['account_name']} (ID: {sub['id']})")
+            print(f"    Email: {sub['email']}")
+            print(f"    Margin Mode: {sub['margin_mode']}")
+            print()
+    else:
+        print("No sub-accounts found.")
+else:
+    print("Unable to fetch sub-accounts (may not be main account)")
+
+print("=" * 60)
+
+Output Example
+When you run the script, you'll see output like this:
+
+
+============================================================
+1. USER PROFILE
+============================================================
+User ID: 98765432
+Account Name: Main
+Full Name: Rajesh Sharma
+Email: rajtrader2342@gmail.com
+Phone: 9876543210
+Country: India
+DOB: 1985-08-25
+Margin Mode: isolated
+KYC Status: ✓ Completed
+Sub-Account: No
+
+============================================================
+2. TRADING PREFERENCES
+============================================================
+User ID: 57354187
+VIP Level: 0
+VIP Discount: 0.00%
+30-Day Volume: $1060.675333
+Auto Top-up: Enabled
+DETO Commission: No
+Interest Credit: No
+
+Email Notifications:
+Adl: ✓
+Liquidation: ✓
+Margin Topup: ✗
+Marketing: ✓
+Order Cancel: ✓
+Order Fill: ✓
+Stop Order Trigger: ✓
+
+App Notifications:
+Adl: ✓
+Liquidation: ✓
+Margin Topup: ✗
+Marketing: ✓
+Order Cancel: ✗
+Order Fill: ✓
+Price Alert: ✓
+Stop Order Trigger: ✓
+
+Price Alerts: BTC, ETH
+
+============================================================
+3. WALLET BALANCES
+============================================================
+
+Asset Balance Available Blocked
+-----------------------------------------------------------------
+BTC 0.05000000 0.04500000 0.00500000
+USDT 1000.00000000 950.00000000 50.00000000
+
+Account Summary:
+Net Equity: 1050.00
+Robo Trading Equity: 1000.00
+
+============================================================
+4. SUB-ACCOUNTS
+============================================================
+Found 2 sub-account(s):
+
+• Trading Bot (ID: 98765433)
+Email: rajtrader2342+sub1@gmail.com
+Margin Mode: isolated
+
+• Hedging (ID: 98765434)
+Email: rajtrader2342+sub2@gmail.com
+Margin Mode: portfolio
+
+============================================================
+Error Handling
+Always include proper error handling:
+
+
+def fetch_profile_safe():
+    """Fetch profile with comprehensive error handling"""
+    try:
+        method = 'GET'
+        timestamp = str(int(time.time()))
+        path = '/v2/profile'
+        
+        signature_data = method + timestamp + path
+        signature = generate_signature(api_secret, signature_data)
+        
+        headers = {
+            'api-key': api_key,
+            'timestamp': timestamp,
+            'signature': signature,
+            'User-Agent': 'python-rest-client',
+            'Content-Type': 'application/json'
+        }
+        
+        response = requests.get(f'{base_url}{path}', headers=headers, timeout=(3, 27))
+        
+        # Check HTTP status
+        if response.status_code == 401:
+            print("Authentication failed. Check your API key and secret.")
+            return None
+        elif response.status_code == 403:
+            print("Access forbidden. Check IP whitelist and API permissions.")
+            return None
+        elif response.status_code != 200:
+            print(f"HTTP Error {response.status_code}: {response.text}")
+            return None
+        
+        data = response.json()
+        
+        if not data.get('success'):
+            print(f"API Error: {data.get('error', 'Unknown error')}")
+            return None
+        
+        return data['result']
+        
+    except requests.exceptions.Timeout:
+        print("Request timed out. Please try again.")
+        return None
+    except requests.exceptions.ConnectionError:
+        print("Connection error. Check your internet connection.")
+        return None
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return None
+
+# Use the safe function
+profile = fetch_profile_safe()
+if profile:
+    print(f"Successfully fetched profile for: {profile['account_name']}")
+
+Summary
+To fetch profile details from Delta Exchange:
+
+Basic Profile: Use GET /v2/profile for user ID, name, email, and account settings
+Trading Preferences: Use GET /v2/users/trading_preferences for VIP level, volume, and notification settings
+Wallet Balances: Use GET /v2/wallet/balances for account balances
+Sub-Accounts: Use GET /v2/sub_accounts to list all sub-accounts (from main account only)
+All endpoints require proper authentication with API key and signature. The profile endpoint is the primary source for user identification and basic account information.

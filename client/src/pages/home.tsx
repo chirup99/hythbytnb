@@ -4290,9 +4290,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [dhanClientName, setDhanClientName] = useState<string | null>(localStorage.getItem("dhan_client_name"));
   const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
   const [isDeltaExchangeDialogOpen, setIsDeltaExchangeDialogOpen] = useState(false);
+  const [deltaExchangeIsConnected, setDeltaExchangeIsConnected] = useState(false);
   const [deltaExchangeApiKey, setDeltaExchangeApiKey] = useState("");
   const [deltaExchangeApiSecret, setDeltaExchangeApiSecret] = useState("");
-  const [deltaExchangeIsConnected, setDeltaExchangeIsConnected] = useState(false);
+  const [deltaExchangeUserId, setDeltaExchangeUserId] = useState<string | null>(localStorage.getItem("delta_exchange_user_id"));
+  const [deltaExchangeAccountName, setDeltaExchangeAccountName] = useState<string | null>(localStorage.getItem("delta_exchange_account_name"));
   const [dhanClientIdInput, setDhanClientIdInput] = useState(localStorage.getItem("dhan_client_id") || "");
   const [dhanTokenInput, setDhanTokenInput] = useState("");
 
@@ -4397,6 +4399,28 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         if (response.success) {
           localStorage.setItem("delta_exchange_api_key", deltaExchangeApiKey);
           localStorage.setItem("delta_exchange_api_secret", deltaExchangeApiSecret);
+          
+          // Fetch profile details
+          try {
+            const profileRes = await fetch("/api/broker/delta/profile", {
+              headers: {
+                "x-api-key": deltaExchangeApiKey,
+                "x-api-secret": deltaExchangeApiSecret
+              }
+            });
+            if (profileRes.ok) {
+              const profileData = await profileRes.json();
+              if (profileData && profileData.id) {
+                setDeltaExchangeUserId(profileData.id);
+                setDeltaExchangeAccountName(profileData.account_name);
+                localStorage.setItem("delta_exchange_user_id", profileData.id);
+                localStorage.setItem("delta_exchange_account_name", profileData.account_name || "Delta User");
+              }
+            }
+          } catch (err) {
+            console.error("Failed to fetch Delta profile:", err);
+          }
+
           setDeltaExchangeIsConnected(true);
           setIsDeltaExchangeDialogOpen(false);
           toast({
@@ -4429,6 +4453,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const handleDeltaExchangeDisconnect = () => {
     localStorage.removeItem("delta_exchange_api_key");
     localStorage.removeItem("delta_exchange_api_secret");
+    localStorage.removeItem("delta_exchange_user_id");
+    localStorage.removeItem("delta_exchange_account_name");
+    setDeltaExchangeUserId(null);
+    setDeltaExchangeAccountName(null);
     setDeltaExchangeIsConnected(false);
     toast({
       title: "Disconnected",
