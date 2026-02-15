@@ -20595,15 +20595,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <p className="text-[10px] text-slate-500">
                                     Create your API keys at: https://www.delta.exchange/app/account/manageapikeys
                                   </p>
-                                  <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 w-fit group hover:border-orange-200 dark:hover:border-orange-900/40 transition-colors">
+                                  <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-orange-200 dark:hover:border-orange-900/40 transition-colors">
                                     <span className="text-[10px] text-slate-500 font-medium">Whitelisted IP:</span>
-                                    <code className="text-[10px] font-mono text-orange-600 dark:text-orange-400 font-bold">13.235.138.82</code>
+                                    <code className="text-[10px] font-mono text-orange-600 dark:text-orange-400 font-bold">{window.location.hostname}</code>
                                     <Button
                                       size="icon"
                                       variant="ghost"
                                       className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 ml-0.5"
                                       onClick={() => {
-                                        navigator.clipboard.writeText("13.235.138.82");
+                                        navigator.clipboard.writeText(window.location.hostname);
                                         toast({
                                           title: "Copied",
                                           description: "IP address copied to clipboard",
