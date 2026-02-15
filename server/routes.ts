@@ -21951,12 +21951,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       if (response.data.success) {
-        // Delta Exchange India profile response structure
+        // Delta Exchange India profile response structure - matching exactly with official documentation
         const result = response.data.result || {};
         res.json({
-          id: result.id || result.user_id,
-          account_name: result.account_name || result.first_name || result.username || "Delta User",
+          id: result.id,
+          account_name: result.account_name,
           email: result.email,
+          first_name: result.first_name,
+          last_name: result.last_name,
+          country: result.country,
           ...result
         });
       } else {

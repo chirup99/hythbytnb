@@ -4395,8 +4395,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       })
       .then(res => res.json())
       .then(data => {
-        if (data && (data.id || data.user_id)) {
-          const userId = data.id || data.user_id;
+        if (data && data.id) {
+          const userId = data.id;
           const accountName = data.account_name || "Delta User";
           setDeltaExchangeUserId(userId);
           setDeltaExchangeAccountName(accountName);
