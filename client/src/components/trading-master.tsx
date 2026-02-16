@@ -5596,14 +5596,10 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         {/* Window Switches */}
         <div className="bg-muted/30 border-b border-border px-6 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 max-w-4xl">
+          <TabsList className="grid w-full grid-cols-4 max-w-3xl">
             <TabsTrigger value="main" className="flex items-center gap-2" data-testid="button-tab-main">
               <BarChart3 className="h-4 w-4" />
               Main
-            </TabsTrigger>
-            <TabsTrigger value="trade" className="flex items-center gap-2" data-testid="button-tab-trade">
-              <TrendingUp className="h-4 w-4" />
-              Trade
             </TabsTrigger>
             <TabsTrigger value="backtest" className="flex items-center gap-2" data-testid="button-tab-backtest">
               <Target className="h-4 w-4" />
