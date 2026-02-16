@@ -8589,9 +8589,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                 <Button variant="outline" size="sm" className="text-gray-600 dark:text-gray-300" data-testid="button-sort-by">
                   Sort by
                 </Button>
-                <Button variant="outline" size="sm" className="text-gray-600 dark:text-gray-300" data-testid="button-filters">
-                  Filters
-                </Button>
                 <Button variant="outline" size="sm" className="text-gray-600 dark:text-gray-300" data-testid="button-my-strategies">
                   My Strategies
                 </Button>
