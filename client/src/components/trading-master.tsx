@@ -5790,7 +5790,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         </div>
         
         {/* Orders Section (Visual Chart) */}
-        <div>
+        <div className="w-full mb-4">
           <Card className="bg-slate-900 dark:bg-slate-900 border-slate-700 h-full">
             <CardContent className="p-4 h-full flex flex-col">
               <div className="flex items-center justify-between mb-3">
@@ -6332,9 +6332,9 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
           </Card>
         </div>
 
-        {/* Notes AI Section */}
-        <div>
-          <Card className="bg-slate-900 dark:bg-slate-900 border-slate-700 h-full">
+        {/* Notes AI Section - Floating */}
+        <div className="fixed bottom-4 right-4 z-[100] w-[350px] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out">
+          <Card className="bg-slate-900/95 dark:bg-slate-900/95 border-slate-700 h-full backdrop-blur-sm overflow-hidden flex flex-col">
             <CardContent className="p-4 h-full flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
