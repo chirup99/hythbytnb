@@ -2564,7 +2564,9 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
   
   // OHLC specific controls with smart date selection
   const [showOhlcDialog, setShowOhlcDialog] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [ohlcSymbol, setOhlcSymbol] = useState('NSE:ICICIBANK-EQ');
+  const [ohlcTimeframe, setOhlcTimeframe] = useState('1'); 
   const smartDate = getSmartTradingDate();
   const [ohlcFromDate, setOhlcFromDate] = useState(format(smartDate, 'yyyy-MM-dd'));
   const [ohlcToDate, setOhlcToDate] = useState(format(smartDate, 'yyyy-MM-dd'));
