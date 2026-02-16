@@ -2563,9 +2563,8 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
   };
   
   // OHLC specific controls with smart date selection
+  const [showOhlcDialog, setShowOhlcDialog] = useState(false);
   const [ohlcSymbol, setOhlcSymbol] = useState('NSE:ICICIBANK-EQ');
-  const [ohlcTimeframe, setOhlcTimeframe] = useState('1'); // Start with 1-minute like Historical Data tab
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const smartDate = getSmartTradingDate();
   const [ohlcFromDate, setOhlcFromDate] = useState(format(smartDate, 'yyyy-MM-dd'));
   const [ohlcToDate, setOhlcToDate] = useState(format(smartDate, 'yyyy-MM-dd'));
@@ -5625,8 +5624,8 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
       {/* Bottom Section - OHLC Chart + Orders + Notes AI */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        {/* Trading by Timeframe - OHLC Data (50%) */}
-        <div>
+        {/* Trading by Timeframe - OHLC Data (50%) - HIDDEN AND MOVED TO DIALOG */}
+        <div className="hidden">
           <Card className="bg-slate-900 dark:bg-slate-900 border-slate-700">
           <CardContent className="p-4">
               <div className="flex items-center justify-between mb-3">
@@ -5934,6 +5933,116 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   >
                     <Download className="h-3 w-3" />
                   </Button>
+
+                  {/* OHLC Dialog Button */}
+                  <Dialog open={showOhlcDialog} onOpenChange={setShowOhlcDialog}>
+                    <DialogTrigger asChild>
+                      <Button 
+                        variant="outline"
+                        size="sm"
+                        className="h-8 px-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700"
+                        title="View OHLC Data"
+                        data-testid="button-view-ohlc-dialog"
+                      >
+                        <BarChart3 className="h-3 w-3" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col bg-slate-900 border-slate-700">
+                      <DialogHeader>
+                        <DialogTitle className="text-white flex items-center gap-2">
+                          <BarChart3 className="h-5 w-5 text-purple-500" />
+                          OHLC Data - {ohlcSymbol.replace('NSE:', '').replace('-EQ', '').replace('-INDEX', '')} ({ohlcTimeframe}m)
+                        </DialogTitle>
+                      </DialogHeader>
+                      
+                      <div className="flex-1 overflow-hidden py-4">
+                        {/* Date Range Picker inside Dialog */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                          <div className="flex items-center gap-3">
+                            <Label className="text-slate-300 text-xs font-medium min-w-[40px]">From:</Label>
+                            <Input
+                              type="date"
+                              value={ohlcFromDate}
+                              onChange={(e) => setOhlcFromDate(e.target.value)}
+                              className="flex-1 h-8 bg-slate-700 border-slate-600 text-slate-200 text-xs"
+                            />
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Label className="text-slate-300 text-xs font-medium min-w-[40px]">To:</Label>
+                            <Input
+                              type="date"
+                              value={ohlcToDate}
+                              onChange={(e) => setOhlcToDate(e.target.value)}
+                              className="flex-1 h-8 bg-slate-700 border-slate-600 text-slate-200 text-xs"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Fetch Button in Dialog */}
+                        <div className="flex justify-end mb-4">
+                          <Button 
+                            onClick={handleFetchOhlcData}
+                            disabled={fetchOhlcData.isPending}
+                            size="sm"
+                            className="bg-green-600 hover:bg-green-700 text-white"
+                          >
+                            {fetchOhlcData.isPending ? <RefreshCw className="h-3 w-3 animate-spin mr-2" /> : <Check className="h-3 w-3 mr-2" />}
+                            Fetch Data
+                          </Button>
+                        </div>
+
+                        {/* OHLC Table inside Dialog */}
+                        {fetchOhlcData.isPending ? (
+                          <div className="h-96 flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800/30">
+                            <div className="text-slate-400 text-sm flex items-center gap-2">
+                              <RefreshCw className="animate-spin w-4 h-4 text-purple-500" />
+                              Loading OHLC data...
+                            </div>
+                          </div>
+                        ) : displayOhlcData && displayOhlcData.candles && displayOhlcData.candles.length > 0 ? (
+                          <div className="h-[500px] overflow-auto border border-slate-700 rounded-lg custom-thin-scrollbar bg-slate-800/20">
+                            <Table>
+                              <TableHeader className="sticky top-0 z-10 bg-slate-900 shadow-sm">
+                                <TableRow className="border-slate-700">
+                                  <TableHead className="text-slate-300 min-w-[140px]">Date/Time</TableHead>
+                                  <TableHead className="text-right text-slate-300">Open</TableHead>
+                                  <TableHead className="text-right text-slate-300">High</TableHead>
+                                  <TableHead className="text-right text-slate-300">Low</TableHead>
+                                  <TableHead className="text-right text-slate-300">Close</TableHead>
+                                  <TableHead className="text-right text-slate-300">Volume</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {displayOhlcData.candles.map((candle: any, index: number) => (
+                                  <TableRow key={index} className="border-slate-700 hover:bg-slate-700/50 transition-colors">
+                                    <TableCell className="font-medium text-slate-300 text-xs font-mono">
+                                      {new Date(candle.timestamp * 1000).toLocaleString('en-US', {
+                                        month: '2-digit', day: '2-digit', year: 'numeric',
+                                        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+                                      })}
+                                    </TableCell>
+                                    <TableCell className="text-right text-slate-300">{candle.open.toFixed(2)}</TableCell>
+                                    <TableCell className="text-right text-slate-300">{candle.high.toFixed(2)}</TableCell>
+                                    <TableCell className="text-right text-slate-300">{candle.low.toFixed(2)}</TableCell>
+                                    <TableCell className="text-right text-slate-300">{candle.close.toFixed(2)}</TableCell>
+                                    <TableCell className="text-right text-slate-300">{candle.volume.toLocaleString()}</TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </div>
+                        ) : (
+                          <div className="h-96 flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800/30">
+                            <div className="text-slate-400 text-sm text-center">
+                              <BarChart3 className="h-8 w-8 mx-auto mb-2 opacity-20" />
+                              <p>No OHLC data loaded</p>
+                              <p className="text-xs mt-1">Select a range and click "Fetch"</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </DialogContent>
+                  </Dialog>
 
                   {transformationMode === 5 && (
                     <div className="flex items-center gap-2 bg-green-600 text-white px-3 py-1 rounded-md text-sm font-medium animate-pulse">
