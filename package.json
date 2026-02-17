@@ -64,6 +64,7 @@
     "@uppy/dashboard": "^5.0.1",
     "@uppy/react": "^5.0.2",
     "amazon-cognito-identity-js": "^6.3.16",
+    "archiver": "^7.0.1",
     "aws-amplify": "^6.15.9",
     "aws-jwt-verify": "^5.1.1",
     "axios": "^1.11.0",
