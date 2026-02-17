@@ -6026,20 +6026,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   >
                     <RefreshCw className={cn("h-4 w-4", fetchOhlcData.isPending && "animate-spin")} />
                   </Button>
-
-                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
-
-                  <Button 
-                    onClick={() => setShowOhlcDialog(true)}
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 px-2 text-slate-300 hover:bg-slate-800"
-                    title="OHLC Data"
-                    data-testid="button-open-ohlc-dialog"
-                  >
-                    <Table2 className="h-4 w-4 mr-1" />
-                    <span className="text-xs hidden md:inline">OHLC</span>
-                  </Button>
                   
                   <div className="h-4 w-[1px] bg-slate-700 mx-1" />
 
