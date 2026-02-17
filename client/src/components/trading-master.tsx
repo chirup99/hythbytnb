@@ -4446,6 +4446,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
   const [sidebarTempNotesContent, setSidebarTempNotesContent] = useState(notesContent);
 
   // 🎯 VISUAL AI MODE STATE - Toggle between Notes AI and Visual AI
+  const [isNotesAIVisible, setIsNotesAIVisible] = useState(false);
   const [isVisualAIMode, setIsVisualAIMode] = useState(false);
   const [isSidebarVisualAIMode, setIsSidebarVisualAIMode] = useState(false);
   
@@ -6346,12 +6347,17 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                 <span className="text-[11px] font-medium text-gray-600">18</span>
               </div>
             </div>
-            <div className="px-3 py-2 flex items-center justify-center">
-              <ChevronDown className="w-4 h-4 text-gray-900" />
+            <div 
+              className="px-3 py-2 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors rounded-r-md border-l border-gray-200"
+              onClick={() => setIsNotesAIVisible(!isNotesAIVisible)}
+              data-testid="button-toggle-notes-ai-visibility"
+            >
+              <ChevronDown className={cn("w-4 h-4 text-gray-900 transition-transform duration-200", isNotesAIVisible && "rotate-180")} />
             </div>
           </div>
-
-          <Card className="bg-slate-900/95 dark:bg-slate-900/95 border-slate-700 h-full backdrop-blur-sm overflow-hidden flex flex-col">
+          
+          {isNotesAIVisible && (
+            <Card className="bg-slate-900/95 dark:bg-slate-900/95 border-slate-700 h-full backdrop-blur-sm overflow-hidden flex flex-col">
             <CardContent className="p-4 h-full flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
