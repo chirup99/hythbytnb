@@ -7322,6 +7322,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
               </div>
             </CardContent>
           </Card>
+          )}
         </div>
       </div>
           </TabsContent>
