@@ -2295,7 +2295,7 @@ export function MinimalChart({
   return (
     <div className="w-full h-full bg-[#131722] rounded-lg overflow-hidden relative">
       {/* Vertical Sidebar Controls */}
-      {!hideControls && (
+      {!hideControls && isManualPointMode && (
         <div className="absolute top-2 left-2 z-10 flex flex-col gap-2">
         <button
           onClick={() => {

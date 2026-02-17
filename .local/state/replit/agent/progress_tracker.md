@@ -123,3 +123,5 @@
 [x] 123. UI: Fixed OHLC data display for light mode and removed duplicate buttons from Trading Master chart. All items marked [x] complete.
 [x] 124. Session recovery (Feb 17, #11) - Reinstalled dotenv, restarted workflow. Server verified running with Angel One connected and live WebSocket data streaming.
 [x] 125. UI: Set Visual AI (Manual Point Mode) to default OFF on Trading Master tab chart. Updated `client/src/components/minimal-chart.tsx` to initialize `isManualPointMode` state to `false`. All items marked [x] complete.
+[x] 126. UI: Conditionally hide Visual AI control buttons (Reset, Select) when isManualPointMode is false to declutter the chart interface. All items marked [x] complete.
+[x] 127. Import Completion: Finalized the project migration and import from Replit Agent to Replit environment. All tasks verified and functional.
