@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, TrendingDown, Calendar, Download, Check, ChevronsUpDown, ChevronDown, ChevronUp, Search, MessageCircle, MessageSquare, Send, X, BarChart3, BookOpen, Target, CircleDot, Filter, RefreshCw, Play, MoreVertical, Trash2, Plus, Edit, Share2, Copy, ThumbsUp, Code, Shuffle, ToggleLeft, ToggleRight, Sparkles, FileText, AlertCircle, Settings, Maximize2 } from "lucide-react";
+import { TrendingUp, TrendingDown, Calendar, Download, Check, ChevronsUpDown, ChevronDown, ChevronUp, Search, MessageCircle, MessageSquare, Send, X, BarChart3, BookOpen, Target, CircleDot, Filter, RefreshCw, Play, MoreVertical, Trash2, Plus, Edit, Share2, Copy, ThumbsUp, Code, Shuffle, ToggleLeft, ToggleRight, Sparkles, FileText, AlertCircle, Settings, Maximize2, Table2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, ReferenceLine, AreaChart, Area } from 'recharts';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -6004,6 +6004,20 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                 </div>
 
                 <div className="flex items-center gap-1">
+                  <Button 
+                    onClick={() => setShowOhlcDialog(true)}
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 px-2 text-slate-300 hover:bg-slate-800"
+                    title="OHLC Data"
+                    data-testid="button-open-ohlc-dialog"
+                  >
+                    <Table2 className="h-4 w-4 mr-1" />
+                    <span className="text-xs hidden md:inline">OHLC</span>
+                  </Button>
+
+                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
+
                   <Button 
                     onClick={handleFetchOhlcData}
                     variant="ghost"
