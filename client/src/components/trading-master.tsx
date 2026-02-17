@@ -6027,6 +6027,20 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   >
                     <RefreshCw className={cn("h-4 w-4", fetchOhlcData.isPending && "animate-spin")} />
                   </Button>
+
+                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
+
+                  <Button 
+                    onClick={() => setShowOhlcDialog(true)}
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 px-2 text-slate-300 hover:bg-slate-800"
+                    title="OHLC Data"
+                    data-testid="button-open-ohlc-dialog"
+                  >
+                    <Table2 className="h-4 w-4 mr-1" />
+                    <span className="text-xs hidden md:inline">OHLC</span>
+                  </Button>
                   
                   <div className="h-4 w-[1px] bg-slate-700 mx-1" />
 
@@ -7107,6 +7121,57 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         </div>
       </div>
           </TabsContent>
+
+      {/* OHLC Data Dialog */}
+      <Dialog open={showOhlcDialog} onOpenChange={setShowOhlcDialog}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto custom-thin-scrollbar">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Table2 className="h-5 w-5 text-blue-500" />
+              OHLC Data - {ohlcSymbol}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            {ohlcData && ohlcData.candles && ohlcData.candles.length > 0 ? (
+              <div className="overflow-x-auto border border-slate-700 rounded-lg">
+                <table className="w-full text-sm">
+                  <thead className="bg-slate-800">
+                    <tr className="border-b border-slate-700">
+                      <th className="text-left px-4 py-2 text-slate-400 font-medium">Time</th>
+                      <th className="text-right px-4 py-2 text-slate-400 font-medium">Open</th>
+                      <th className="text-right px-4 py-2 text-green-400 font-medium">High</th>
+                      <th className="text-right px-4 py-2 text-red-400 font-medium">Low</th>
+                      <th className="text-right px-4 py-2 text-blue-400 font-medium">Close</th>
+                      <th className="text-right px-4 py-2 text-slate-400 font-medium">Volume</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {ohlcData.candles.map((candle: any, index: number) => {
+                      const candleTime = new Date(candle.timestamp * 1000);
+                      const timeStr = candleTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+                      const dateStr = candleTime.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+                      return (
+                        <tr key={index} className="border-b border-slate-700/50 hover:bg-slate-800/50">
+                          <td className="px-4 py-2 text-slate-300 font-mono">{dateStr} {timeStr}</td>
+                          <td className="text-right px-4 py-2 text-white font-mono">₹{candle.open?.toFixed(2)}</td>
+                          <td className="text-right px-4 py-2 text-green-400 font-mono">₹{candle.high?.toFixed(2)}</td>
+                          <td className="text-right px-4 py-2 text-red-400 font-mono">₹{candle.low?.toFixed(2)}</td>
+                          <td className="text-right px-4 py-2 text-blue-400 font-mono">₹{candle.close?.toFixed(2)}</td>
+                          <td className="text-right px-4 py-2 text-slate-400 font-mono">{candle.volume?.toLocaleString()}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="text-center py-10 text-slate-400">
+                No OHLC data available. Please fetch data first.
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Custom Timeframe Dialog */}
       <Dialog open={showCustomTimeframe} onOpenChange={setShowCustomTimeframe}>
