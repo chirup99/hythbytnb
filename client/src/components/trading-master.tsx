@@ -5818,84 +5818,86 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         {/* Orders Section (Visual Chart) */}
         <div className="w-full mb-4">
           <Card className="bg-slate-900 dark:bg-slate-900 border-slate-700 h-full">
-            <CardContent className="p-4 h-full flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  
-                  {/* Symbol Search Combobox */}
-                  <Popover open={openSymbolSearch} onOpenChange={setOpenSymbolSearch}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={openSymbolSearch}
-                        className="w-40 h-8 justify-between bg-white dark:bg-black border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-xs px-2"
-                      >
-                        {ohlcSymbol
-                          ? stockSymbols.find((symbol) => symbol.value === ohlcSymbol)?.label || ohlcSymbol
-                          : "Select symbol..."}
-                        <ChevronsUpDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-72 p-0 bg-white dark:bg-black border-gray-300 dark:border-gray-700">
-                      <Command>
-                        <CommandInput
-                          placeholder="Search stocks..."
-                          value={symbolSearchValue}
-                          onValueChange={setSymbolSearchValue}
-                          className="text-xs bg-white dark:bg-black text-gray-900 dark:text-white border-none"
-                        />
-                        <CommandList className="bg-white dark:bg-black">
-                          <CommandEmpty className="text-gray-900 dark:text-white py-3 text-center text-xs">No stock found.</CommandEmpty>
-                          <CommandGroup className="bg-white dark:bg-black">
-                            {stockSymbols
-                              .filter((symbol) => 
-                                symbol.label.toLowerCase().includes(symbolSearchValue.toLowerCase()) ||
-                                symbol.value.toLowerCase().includes(symbolSearchValue.toLowerCase())
-                              )
-                              .map((symbol) => (
-                                <CommandItem
-                                  key={symbol.value}
-                                  value={symbol.value}
-                                  onSelect={(currentValue) => {
-                                    setOhlcSymbol(currentValue === ohlcSymbol ? "" : currentValue);
-                                    setOpenSymbolSearch(false);
-                                    setSymbolSearchValue("");
-                                  }}
-                                  className="flex items-center px-2 py-1.5 text-xs text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 cursor-pointer"
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-3 w-3 flex-shrink-0",
-                                      ohlcSymbol === symbol.value ? "opacity-100" : "opacity-0"
-                                    )}
-                                  />
-                                  <span className="truncate">{symbol.label}</span>
-                                </CommandItem>
-                              ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+            <CardContent className="p-0 h-full flex flex-col overflow-hidden">
+              <div className="flex items-center justify-between p-2 border-b border-slate-700 bg-slate-900/50">
+                <div className="flex items-center gap-1">
+                  <div className="flex items-center mr-2">
+                    <Search className="h-4 w-4 text-slate-400 mr-2" />
+                    
+                    {/* Symbol Search Combobox */}
+                    <Popover open={openSymbolSearch} onOpenChange={setOpenSymbolSearch}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="h-8 px-2 text-sm font-bold text-white hover:bg-slate-800"
+                        >
+                          {ohlcSymbol
+                            ? stockSymbols.find((symbol) => symbol.value === ohlcSymbol)?.label.split(' ')[0] || ohlcSymbol
+                            : "Select symbol..."}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-72 p-0 bg-slate-900 border-slate-700">
+                        <Command>
+                          <CommandInput
+                            placeholder="Search stocks..."
+                            value={symbolSearchValue}
+                            onValueChange={setSymbolSearchValue}
+                            className="text-xs bg-slate-900 text-white border-none"
+                          />
+                          <CommandList className="bg-slate-900">
+                            <CommandEmpty className="text-white py-3 text-center text-xs">No stock found.</CommandEmpty>
+                            <CommandGroup className="bg-slate-900">
+                              {stockSymbols
+                                .filter((symbol) => 
+                                  symbol.label.toLowerCase().includes(symbolSearchValue.toLowerCase()) ||
+                                  symbol.value.toLowerCase().includes(symbolSearchValue.toLowerCase())
+                                )
+                                .map((symbol) => (
+                                  <CommandItem
+                                    key={symbol.value}
+                                    value={symbol.value}
+                                    onSelect={(currentValue) => {
+                                      setOhlcSymbol(currentValue === ohlcSymbol ? "" : currentValue);
+                                      setOpenSymbolSearch(false);
+                                      setSymbolSearchValue("");
+                                    }}
+                                    className="flex items-center px-2 py-1.5 text-xs text-white hover:bg-slate-800 cursor-pointer"
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-3 w-3 flex-shrink-0",
+                                        ohlcSymbol === symbol.value ? "opacity-100" : "opacity-0"
+                                      )}
+                                    />
+                                    <span className="truncate">{symbol.label}</span>
+                                  </CommandItem>
+                                ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
 
                   {/* Timeframe Select with Custom option */}
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
-                        variant="outline"
-                        className="w-20 h-8 justify-between bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-slate-300 text-xs px-2"
+                        variant="ghost"
+                        className="h-8 px-2 text-xs font-medium text-slate-300 hover:bg-slate-800"
                       >
                         {getAllTimeframes().find(tf => tf.value === ohlcTimeframe)?.label || ohlcTimeframe}
-                        <ChevronsUpDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
+                        <ChevronDown className="ml-1 h-3 w-3 opacity-50" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-40 p-1 bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600">
+                    <PopoverContent className="w-40 p-1 bg-slate-900 border-slate-700">
                       <div className="grid gap-1">
                         {getAllTimeframes().map((timeframe) => (
-                          <div key={timeframe.value} className="flex items-center justify-between px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700 group">
+                          <div key={timeframe.value} className="flex items-center justify-between px-2 py-1 rounded hover:bg-slate-800 group">
                             <button 
-                              className="flex-1 text-left text-xs text-gray-900 dark:text-slate-300"
+                              className="flex-1 text-left text-xs text-slate-300"
                               onClick={() => {
                                 setOhlcTimeframe(timeframe.value);
                               }}
@@ -5904,7 +5906,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                             </button>
                             {timeframe.deletable && (
                               <button
-                                className="ml-1 w-4 h-4 flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-900 rounded text-red-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="ml-1 w-4 h-4 flex items-center justify-center hover:bg-red-900 rounded text-red-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   deleteTimeframe(timeframe.value);
@@ -5916,9 +5918,9 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                             )}
                           </div>
                         ))}
-                        <div className="border-t border-gray-200 dark:border-slate-600 mt-1 pt-1">
+                        <div className="border-t border-slate-700 mt-1 pt-1">
                           <button 
-                            className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-slate-700 text-xs text-gray-900 dark:text-slate-300"
+                            className="w-full text-left px-2 py-1 rounded hover:bg-slate-800 text-xs text-slate-300"
                             onClick={() => setShowCustomTimeframe(true)}
                           >
                             + Add Custom
@@ -5928,401 +5930,125 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     </PopoverContent>
                   </Popover>
 
-                  {/* Calendar Icon Button - Hidden on Desktop */}
-                  <Button 
-                    onClick={() => setShowDatePicker(!showDatePicker)}
-                    variant="outline"
-                    size="sm"
-                    className={`h-8 px-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 md:hidden ${showDatePicker ? 'bg-gray-100 dark:bg-slate-700' : ''}`}
-                    title="Select Date Range"
-                  >
-                    <Calendar className="h-3 w-3" />
-                  </Button>
+                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
 
-                  {/* Fetch Button - Icon Only */}
-                  <Button 
-                    onClick={handleFetchOhlcData}
-                    disabled={fetchOhlcData.isPending}
-                    size="sm"
-                    className="h-8 px-2 bg-green-600 hover:bg-green-700"
-                    title={fetchOhlcData.isPending ? 'Fetching...' : 'Fetch Data'}
-                  >
-                    <Check className="h-3 w-3" />
-                  </Button>
-
-                  {/* Download Button */}
-                  <Button 
-                    onClick={handleDownloadOhlcData}
-                    disabled={!ohlcData || !ohlcData.candles || ohlcData.candles.length === 0}
-                    variant="outline"
-                    size="sm"
-                    className="h-8 px-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700"
-                    title="Download OHLC CSV"
-                  >
-                    <Download className="h-3 w-3" />
-                  </Button>
-
-                  {/* OHLC Dialog Button */}
-                  <Dialog open={showOhlcDialog} onOpenChange={setShowOhlcDialog}>
-                    <DialogTrigger asChild>
-                      <Button 
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700"
-                        title="View OHLC Data"
-                        data-testid="button-view-ohlc-dialog"
-                      >
-                        <BarChart3 className="h-3 w-3" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col bg-slate-900 border-slate-700">
-                      <DialogHeader>
-                        <DialogTitle className="text-white flex items-center gap-2">
-                          <BarChart3 className="h-5 w-5 text-purple-500" />
-                          OHLC Data - {ohlcSymbol.replace('NSE:', '').replace('-EQ', '').replace('-INDEX', '')} ({ohlcTimeframe}m)
-                        </DialogTitle>
-                      </DialogHeader>
-                      
-                      <div className="flex-1 overflow-hidden py-4">
-                        {/* Date Range Picker inside Dialog */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
-                          <div className="flex items-center gap-3">
-                            <Label className="text-slate-300 text-xs font-medium min-w-[40px]">From:</Label>
-                            <Input
-                              type="date"
-                              value={ohlcFromDate}
-                              onChange={(e) => setOhlcFromDate(e.target.value)}
-                              className="flex-1 h-8 bg-slate-700 border-slate-600 text-slate-200 text-xs"
-                            />
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <Label className="text-slate-300 text-xs font-medium min-w-[40px]">To:</Label>
-                            <Input
-                              type="date"
-                              value={ohlcToDate}
-                              onChange={(e) => setOhlcToDate(e.target.value)}
-                              className="flex-1 h-8 bg-slate-700 border-slate-600 text-slate-200 text-xs"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Fetch Button in Dialog */}
-                        <div className="flex justify-end mb-4">
-                          <Button 
-                            onClick={handleFetchOhlcData}
-                            disabled={fetchOhlcData.isPending}
-                            size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-white"
-                          >
-                            {fetchOhlcData.isPending ? <RefreshCw className="h-3 w-3 animate-spin mr-2" /> : <Check className="h-3 w-3 mr-2" />}
-                            Fetch Data
-                          </Button>
-                        </div>
-
-                        {/* OHLC Table inside Dialog */}
-                        {fetchOhlcData.isPending ? (
-                          <div className="h-96 flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800/30">
-                            <div className="text-slate-400 text-sm flex items-center gap-2">
-                              <RefreshCw className="animate-spin w-4 h-4 text-purple-500" />
-                              Loading OHLC data...
-                            </div>
-                          </div>
-                        ) : displayOhlcData && displayOhlcData.candles && displayOhlcData.candles.length > 0 ? (
-                          <div className="h-[500px] overflow-auto border border-slate-700 rounded-lg custom-thin-scrollbar bg-slate-800/20">
-                            <Table>
-                              <TableHeader className="sticky top-0 z-10 bg-slate-900 shadow-sm">
-                                <TableRow className="border-slate-700">
-                                  <TableHead className="text-slate-300 min-w-[140px]">Date/Time</TableHead>
-                                  <TableHead className="text-right text-slate-300">Open</TableHead>
-                                  <TableHead className="text-right text-slate-300">High</TableHead>
-                                  <TableHead className="text-right text-slate-300">Low</TableHead>
-                                  <TableHead className="text-right text-slate-300">Close</TableHead>
-                                  <TableHead className="text-right text-slate-300">Volume</TableHead>
-                                </TableRow>
-                              </TableHeader>
-                              <TableBody>
-                                {displayOhlcData.candles.map((candle: any, index: number) => (
-                                  <TableRow key={index} className="border-slate-700 hover:bg-slate-700/50 transition-colors">
-                                    <TableCell className="font-medium text-slate-300 text-xs font-mono">
-                                      {new Date(candle.timestamp * 1000).toLocaleString('en-US', {
-                                        month: '2-digit', day: '2-digit', year: 'numeric',
-                                        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
-                                      })}
-                                    </TableCell>
-                                    <TableCell className="text-right text-slate-300">{candle.open.toFixed(2)}</TableCell>
-                                    <TableCell className="text-right text-slate-300">{candle.high.toFixed(2)}</TableCell>
-                                    <TableCell className="text-right text-slate-300">{candle.low.toFixed(2)}</TableCell>
-                                    <TableCell className="text-right text-slate-300">{candle.close.toFixed(2)}</TableCell>
-                                    <TableCell className="text-right text-slate-300">{candle.volume.toLocaleString()}</TableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                          </div>
-                        ) : (
-                          <div className="h-96 flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800/30">
-                            <div className="text-slate-400 text-sm text-center">
-                              <BarChart3 className="h-8 w-8 mx-auto mb-2 opacity-20" />
-                              <p>No OHLC data loaded</p>
-                              <p className="text-xs mt-1">Select a range and click "Fetch"</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-
-                  {transformationMode === 5 && (
-                    <div className="flex items-center gap-2 bg-green-600 text-white px-3 py-1 rounded-md text-sm font-medium animate-pulse">
-                      <span className="text-lg">📍</span>
-                      <span>Click any candle to generate mock future data</span>
-                    </div>
-                  )}
-                  {/* Active Indicators Display */}
-                  {Object.values(indicators).some(arr => arr.length > 0) && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-400">Active:</span>
-                      <div className="flex gap-1 flex-wrap">
-                        {indicators.sma.map((sma) => (
-                          <Badge 
-                            key={sma.id} 
-                            variant="secondary" 
-                            className="text-xs bg-yellow-400/20 text-yellow-400 border-yellow-400/30 flex items-center gap-1"
-                          >
-                            SMA({sma.period})
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIndicators(prev => ({
-                                  ...prev,
-                                  sma: prev.sma.filter(s => s.id !== sma.id)
-                                }));
-                              }}
-                              className="ml-1 text-yellow-400 hover:text-yellow-200"
-                              data-testid={`remove-sma-${sma.id}`}
-                            >
-                              ✕
-                            </button>
-                          </Badge>
-                        ))}
-                        {indicators.ema.map((ema) => (
-                          <Badge 
-                            key={ema.id} 
-                            variant="secondary" 
-                            className="text-xs bg-blue-400/20 text-blue-400 border-blue-400/30 flex items-center gap-1"
-                          >
-                            EMA({ema.period})
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIndicators(prev => ({
-                                  ...prev,
-                                  ema: prev.ema.filter(e => e.id !== ema.id)
-                                }));
-                              }}
-                              className="ml-1 text-blue-400 hover:text-blue-200"
-                              data-testid={`remove-ema-${ema.id}`}
-                            >
-                              ✕
-                            </button>
-                          </Badge>
-                        ))}
-                        {indicators.ma.map((ma) => (
-                          <Badge 
-                            key={ma.id} 
-                            variant="secondary" 
-                            className="text-xs bg-green-400/20 text-green-400 border-green-400/30 flex items-center gap-1"
-                          >
-                            MA({ma.period})
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIndicators(prev => ({
-                                  ...prev,
-                                  ma: prev.ma.filter(m => m.id !== ma.id)
-                                }));
-                              }}
-                              className="ml-1 text-green-400 hover:text-green-200"
-                              data-testid={`remove-ma-${ma.id}`}
-                            >
-                              ✕
-                            </button>
-                          </Badge>
-                        ))}
-                        {indicators.rsi.map((rsi) => (
-                          <Badge 
-                            key={rsi.id} 
-                            variant="secondary" 
-                            className="text-xs bg-orange-400/20 text-orange-400 border-orange-400/30 flex items-center gap-1"
-                          >
-                            RSI({rsi.period})
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIndicators(prev => ({
-                                  ...prev,
-                                  rsi: prev.rsi.filter(r => r.id !== rsi.id)
-                                }));
-                              }}
-                              className="ml-1 text-orange-400 hover:text-orange-200"
-                              data-testid={`remove-rsi-${rsi.id}`}
-                            >
-                              ✕
-                            </button>
-                          </Badge>
-                        ))}
-                        {indicators.bollinger.map((bollinger) => (
-                          <Badge 
-                            key={bollinger.id} 
-                            variant="secondary" 
-                            className="text-xs bg-pink-400/20 text-pink-400 border-pink-400/30 flex items-center gap-1"
-                          >
-                            BB({bollinger.period})
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIndicators(prev => ({
-                                  ...prev,
-                                  bollinger: prev.bollinger.filter(b => b.id !== bollinger.id)
-                                }));
-                              }}
-                              className="ml-1 text-pink-400 hover:text-pink-200"
-                              data-testid={`remove-bollinger-${bollinger.id}`}
-                            >
-                              ✕
-                            </button>
-                          </Badge>
-                        ))}
-                        {indicators.macd.map((macd) => (
-                          <Badge 
-                            key={macd.id} 
-                            variant="secondary" 
-                            className="text-xs bg-purple-400/20 text-purple-400 border-purple-400/30 flex items-center gap-1"
-                          >
-                            MACD({macd.fast},{macd.slow})
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIndicators(prev => ({
-                                  ...prev,
-                                  macd: prev.macd.filter(m => m.id !== macd.id)
-                                }));
-                              }}
-                              className="ml-1 text-purple-400 hover:text-purple-200"
-                              data-testid={`remove-macd-${macd.id}`}
-                            >
-                              ✕
-                            </button>
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div className="flex gap-2">
-
-                  {/* 🎯 BRAND NEW: Custom Pattern Dropdown with Perfect Delete Function */}
+                  {/* Pattern Dropdown */}
                   <div className="relative">
                     <button
                       onClick={() => setIsPatternDropdownOpen(!isPatternDropdownOpen)}
-                      className="w-48 h-8 bg-green-600 hover:bg-green-700 text-white border border-green-500 rounded-md px-3 flex items-center justify-between text-sm font-medium"
+                      className="h-8 bg-transparent hover:bg-slate-800 text-slate-300 rounded-md px-2 flex items-center gap-1 text-xs font-medium transition-colors"
                       data-testid="button-pattern-dropdown"
                     >
-                      <span>{selectedPattern && savedPatterns.find(p => p.id === selectedPattern)?.name || "Pattern ▼"}</span>
-                      <ChevronDown className="w-4 h-4" />
+                      <span>{selectedPattern && savedPatterns.find(p => p.id === selectedPattern)?.name || "Pattern"}</span>
+                      <ChevronDown className="w-3 h-3 opacity-50" />
                     </button>
                     
                     {isPatternDropdownOpen && (
-                      <div className="absolute top-full left-0 w-48 mt-1 bg-slate-800 border border-slate-600 rounded-md shadow-lg z-50">
-                        {/* Clear Pattern Option */}
+                      <div className="absolute top-full left-0 w-48 mt-1 bg-slate-900 border border-slate-700 rounded-md shadow-lg z-50">
                         <button
                           onClick={() => {
-                            console.log('🧹 Clear Pattern: Removing all patterns from chart');
                             setSelectedPattern('');
                             setIsPatternDropdownOpen(false);
-                            
-                            // SUPPRESS AUTO-DETECTION to prevent immediate repopulation
                             setSuppressAutoDetectionUntilInteraction(true);
-                            console.log('🚫 Auto-detection suppressed until next user interaction');
-                            
-                            // 🎯 FIXED: Clear all chart points and patterns using correct function name  
-                            if ((window as any).clearAll) {
-                              (window as any).clearAll();
-                            }
-                            
-                            // Clear all pattern overlays and detections  
+                            if ((window as any).clearAll) (window as any).clearAll();
                             setPatternOverlays([]);
                             setRealTimeMatches([]);
                             setDetectedPatterns([]);
-                            
-                            // Clear visual AI points and rays
                             setVisualAISelectedPoints([]);
                             setVisualAIHorizontalRays([]);
-                            
-                            // Reset chart to original state
-                            toast({
-                              title: "🧹 Chart Cleared",
-                              description: "All patterns removed from chart. Chart restored to original state.",
-                            });
+                            toast({ title: "🧹 Chart Cleared", description: "All patterns removed." });
                           }}
-                          className="w-full px-3 py-2 text-left text-white hover:bg-slate-700 text-sm border-b border-slate-600"
-                          data-testid="option-clear-pattern"
+                          className="w-full px-3 py-2 text-left text-white hover:bg-slate-800 text-xs border-b border-slate-700"
                         >
                           Clear Pattern
                         </button>
-                        
-                        {/* Pattern List with Delete Function */}
                         {savedPatterns.map(pattern => (
-                          <div key={pattern.id} className="group flex items-center justify-between px-3 py-2 text-white hover:bg-slate-700">
+                          <div key={pattern.id} className="group flex items-center justify-between px-3 py-2 text-white hover:bg-slate-800">
                             <button
                               onClick={() => {
-                                console.log('🎯 Pattern selected for application:', pattern.id);
                                 setSelectedPattern(pattern.id);
                                 setIsPatternDropdownOpen(false);
                                 handle4CPatternSelect(pattern);
-                                
-                                // Re-enable auto-detection when pattern is applied
                                 setSuppressAutoDetectionUntilInteraction(false);
-                                toast({
-                                  title: "🎯 Pattern Applied",
-                                  description: `Pattern "${pattern.name}" has been applied to the chart.`,
-                                });
+                                toast({ title: "🎯 Pattern Applied", description: `Pattern "${pattern.name}" applied.` });
                               }}
-                              className="flex items-center gap-2 text-left text-sm flex-1"
-                              data-testid={`option-pattern-${pattern.id}`}
+                              className="flex items-center gap-2 text-left text-xs flex-1"
                             >
                               <div className="w-2 h-2 rounded-full bg-green-400"></div>
                               {pattern.name}
                             </button>
-                            
-                            {/* PERFECT DELETE BUTTON - NO INTERFERENCE */}
                             <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                console.log('🗑️ PERFECT DELETE CLICKED - Pattern:', pattern.name, 'ID:', pattern.id);
-                                deletePattern(pattern.id);
-                                // Keep dropdown open to see immediate result
-                              }}
-                              className="w-4 h-4 flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-900 rounded text-red-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity ml-2"
-                              title="Delete pattern"
-                              data-testid={`delete-pattern-${pattern.id}`}
+                              onClick={(e) => { e.stopPropagation(); deletePattern(pattern.id); }}
+                              className="w-4 h-4 flex items-center justify-center hover:bg-red-900 rounded text-red-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity ml-2"
                             >
                               ×
                             </button>
                           </div>
                         ))}
-                        
-                        {savedPatterns.length === 0 && (
-                          <div className="px-3 py-4 text-slate-400 text-sm text-center">
-                            No saved patterns
-                          </div>
-                        )}
                       </div>
                     )}
                   </div>
 
-                  {/* ✅ PURPLE PATTERN DROPDOWN AUTOMATICALLY DETECTS - No separate orange button needed */}
+                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
 
+                  <Button 
+                    onClick={() => {}} 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 px-2 text-slate-300 hover:bg-slate-800"
+                    title="Indicators"
+                  >
+                    <BarChart3 className="h-4 w-4 mr-1" />
+                    <span className="text-xs hidden md:inline">Indicators</span>
+                  </Button>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <Button 
+                    onClick={handleFetchOhlcData}
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 text-slate-300 hover:bg-slate-800"
+                    title="Refresh"
+                  >
+                    <RefreshCw className={cn("h-4 w-4", fetchOhlcData.isPending && "animate-spin")} />
+                  </Button>
+                  
+                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
+
+                  <Button 
+                    onClick={() => {}} 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 w-8 p-0 text-slate-300 hover:bg-slate-800"
+                    title="Settings"
+                  >
+                    <Settings className="h-4 w-4" />
+                  </Button>
+                  
+                  <Button 
+                    onClick={() => {}} 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 w-8 p-0 text-slate-300 hover:bg-slate-800"
+                    title="Fullscreen"
+                  >
+                    <Maximize2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Price Info Bar */}
+              <div className="flex items-center gap-4 px-3 py-1 bg-slate-900 border-b border-slate-800 overflow-x-auto no-scrollbar whitespace-nowrap">
+                <div className="flex items-center gap-2 text-[11px]">
+                  <span className="text-green-500">O</span><span className="text-slate-300 font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0).toFixed(2)}</span>
+                  <span className="text-green-500">H</span><span className="text-slate-300 font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.high || 0).toFixed(2)}</span>
+                  <span className="text-red-500">L</span><span className="text-slate-300 font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.low || 0).toFixed(2)}</span>
+                  <span className="text-red-500">C</span><span className="text-slate-300 font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0).toFixed(2)}</span>
+                  <span className={cn("font-mono font-bold ml-1", (ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) >= (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0) ? "text-green-500" : "text-red-500")}>
+                    {((ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) - (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0)).toFixed(2)}
+                    ({(((ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) - (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0)) / (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 1) * 100).toFixed(2)}%)
+                  </span>
                 </div>
               </div>
               
