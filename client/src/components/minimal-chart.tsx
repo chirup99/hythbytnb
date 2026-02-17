@@ -527,7 +527,8 @@ export function MinimalChart({
 
   // Update manual point mode when enablePointSelection prop changes
   useEffect(() => {
-    setIsManualPointMode(enablePointSelection || false);
+    // Force off by default even if prop suggests otherwise
+    setIsManualPointMode(false);
   }, [enablePointSelection]);
 
   useEffect(() => {
@@ -544,10 +545,8 @@ export function MinimalChart({
 
   // 🎯 FIXED: Only disable manual mode when enablePointSelection becomes false, not based on points
   useEffect(() => {
-    if (!enablePointSelection) {
-      setIsManualPointMode(false);
-    }
-    // Do not auto-disable when points exist; keep manual mode under user control
+    // Explicitly set to false to ensure it starts OFF
+    setIsManualPointMode(false);
   }, [enablePointSelection]);
   
   // 🎯 FIXED: Keep manual mode ref synchronized to prevent closure drift
