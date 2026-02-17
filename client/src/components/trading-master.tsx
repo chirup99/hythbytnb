@@ -6329,7 +6329,28 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         </div>
 
         {/* Notes AI Section - Floating */}
-        <div className="fixed bottom-4 right-4 z-[100] w-[350px] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out">
+        <div className="fixed bottom-4 right-4 z-[100] w-[350px] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out flex flex-col gap-2 items-end">
+          {/* Fork Floating Button - Relocated to Main Tab */}
+          <div className="flex items-center bg-white rounded-lg border border-gray-200 shadow-lg h-10 overflow-hidden cursor-default pointer-events-none select-none">
+            <div className="flex items-center gap-2 px-3 py-2 border-r border-gray-200">
+              <svg 
+                viewBox="0 0 16 16" 
+                fill="currentColor" 
+                className="w-4 h-4 text-gray-500"
+                aria-hidden="true"
+              >
+                <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 10a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"></path>
+              </svg>
+              <span className="text-sm font-semibold text-gray-900">Fork</span>
+              <div className="flex items-center justify-center px-1.5 py-0.5 rounded border border-gray-200 bg-gray-50 min-w-[24px]">
+                <span className="text-[11px] font-medium text-gray-600">18</span>
+              </div>
+            </div>
+            <div className="px-3 py-2 flex items-center justify-center">
+              <ChevronDown className="w-4 h-4 text-gray-900" />
+            </div>
+          </div>
+
           <Card className="bg-slate-900/95 dark:bg-slate-900/95 border-slate-700 h-full backdrop-blur-sm overflow-hidden flex flex-col">
             <CardContent className="p-4 h-full flex flex-col">
               <div className="flex items-center justify-between mb-3">
@@ -9478,27 +9499,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   </div>
                 </div>
 
-                <div className="h-96 relative">
-                  {/* Fork Floating Button */}
-                  <div className="absolute bottom-4 right-4 z-[100] flex items-center bg-white rounded-lg border border-gray-200 shadow-lg h-10 overflow-hidden cursor-default pointer-events-none select-none">
-                    <div className="flex items-center gap-2 px-3 py-2 border-r border-gray-200">
-                      <svg 
-                        viewBox="0 0 16 16" 
-                        fill="currentColor" 
-                        className="w-4 h-4 text-gray-500"
-                        aria-hidden="true"
-                      >
-                        <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 10a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"></path>
-                      </svg>
-                      <span className="text-sm font-semibold text-gray-900">Fork</span>
-                      <div className="flex items-center justify-center px-1.5 py-0.5 rounded border border-gray-200 bg-gray-50 min-w-[24px]">
-                        <span className="text-[11px] font-medium text-gray-600">18</span>
-                      </div>
-                    </div>
-                    <div className="px-3 py-2 flex items-center justify-center">
-                      <ChevronDown className="w-4 h-4 text-gray-900" />
-                    </div>
-                  </div>
+                <div className="h-96">
                   {isSidebarVisualAIMode ? (
                     // 🎯 SIDEBAR CLEAN CHART - No window, just chart
                     <div className="h-full p-2">
