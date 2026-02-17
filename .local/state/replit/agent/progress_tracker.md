@@ -115,3 +115,4 @@
 [x] 115. Improved Notes AI visibility logic: The window now automatically closes when clicking outside of it. The "Fork" button is also hidden when the Notes AI window is active to prevent UI overlap. All items marked [x] complete.
 [x] 116. Session recovery (Feb 17, #4) - Reinstalled packages, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 117. Session recovery (Feb 17, #5) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
+[x] 118. Session recovery (Feb 17, #6) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
