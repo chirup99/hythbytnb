@@ -111,4 +111,4 @@
 [x] 111. Session recovery (Feb 17) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 112. Session recovery (Feb 17, #2) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live data.
 [x] 113. Session recovery (Feb 17, #3) - Reinstalled dotenv, restarted workflow, verified server running with live data streaming.
-[x] 114. Implemented toggle visibility for Notes AI window in Trading Master dashboard. Added state control and interactive chevron toggle button. All items marked [x] complete.
+[x] 114. Implemented toggle visibility for Notes AI window in Trading Master dashboard. Made the entire "Fork" button container (including the chevron icon) clickable for better user experience. All items marked [x] complete.

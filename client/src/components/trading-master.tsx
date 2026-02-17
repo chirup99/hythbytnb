@@ -6332,8 +6332,12 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         {/* Notes AI Section - Floating */}
         <div className="fixed bottom-4 right-4 z-[100] w-[350px] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out flex flex-col gap-2 items-end">
           {/* Fork Floating Button - Relocated to Main Tab */}
-          <div className="flex items-center bg-white rounded-lg border border-gray-200 shadow-lg h-10 overflow-hidden cursor-default pointer-events-none select-none">
-            <div className="flex items-center gap-2 px-3 py-2 border-r border-gray-200">
+          <div 
+            className="flex items-center bg-white rounded-lg border border-gray-200 shadow-lg h-10 overflow-hidden cursor-pointer hover:bg-gray-50 transition-colors"
+            onClick={() => setIsNotesAIVisible(!isNotesAIVisible)}
+            data-testid="button-toggle-notes-ai-visibility"
+          >
+            <div className="flex items-center gap-2 px-3 py-2 border-r border-gray-200 pointer-events-none">
               <svg 
                 viewBox="0 0 16 16" 
                 fill="currentColor" 
@@ -6347,11 +6351,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                 <span className="text-[11px] font-medium text-gray-600">18</span>
               </div>
             </div>
-            <div 
-              className="px-3 py-2 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors rounded-r-md border-l border-gray-200"
-              onClick={() => setIsNotesAIVisible(!isNotesAIVisible)}
-              data-testid="button-toggle-notes-ai-visibility"
-            >
+            <div className="px-3 py-2 flex items-center justify-center pointer-events-none">
               <ChevronDown className={cn("w-4 h-4 text-gray-900 transition-transform duration-200", isNotesAIVisible && "rotate-180")} />
             </div>
           </div>
