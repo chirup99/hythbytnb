@@ -5628,7 +5628,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 max-w-3xl">
             <TabsTrigger value="main" className="flex items-center gap-2" data-testid="button-tab-main">
-              <BarChart3 className="h-4 w-4" />
               Main
             </TabsTrigger>
             <TabsTrigger value="backtest" className="flex items-center gap-2" data-testid="button-tab-backtest">
@@ -7138,11 +7137,11 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   <thead className="bg-slate-800">
                     <tr className="border-b border-slate-700">
                       <th className="text-left px-4 py-2 text-slate-400 font-medium">Time</th>
-                      <th className="text-right px-4 py-2 text-slate-400 font-medium">Open</th>
-                      <th className="text-right px-4 py-2 text-green-400 font-medium">High</th>
-                      <th className="text-right px-4 py-2 text-red-400 font-medium">Low</th>
-                      <th className="text-right px-4 py-2 text-blue-400 font-medium">Close</th>
-                      <th className="text-right px-4 py-2 text-slate-400 font-medium">Volume</th>
+                      <th className="text-right px-4 py-2 text-slate-500 dark:text-slate-400 font-medium">Open</th>
+                      <th className="text-right px-4 py-2 text-green-600 dark:text-green-400 font-medium">High</th>
+                      <th className="text-right px-4 py-2 text-red-600 dark:text-red-400 font-medium">Low</th>
+                      <th className="text-right px-4 py-2 text-blue-600 dark:text-blue-400 font-medium">Close</th>
+                      <th className="text-right px-4 py-2 text-slate-500 dark:text-slate-400 font-medium">Volume</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -7154,10 +7153,10 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                         <tr key={index} className="border-b border-slate-700/50 hover:bg-slate-800/50">
                           <td className="px-4 py-2 text-slate-700 dark:text-slate-300 font-mono">{dateStr} {timeStr}</td>
                           <td className="text-right px-4 py-2 text-slate-900 dark:text-white font-mono">₹{candle.open?.toFixed(2)}</td>
-                          <td className="text-right px-4 py-2 text-green-400 font-mono">₹{candle.high?.toFixed(2)}</td>
-                          <td className="text-right px-4 py-2 text-red-400 font-mono">₹{candle.low?.toFixed(2)}</td>
-                          <td className="text-right px-4 py-2 text-blue-400 font-mono">₹{candle.close?.toFixed(2)}</td>
-                          <td className="text-right px-4 py-2 text-slate-400 font-mono">{candle.volume?.toLocaleString()}</td>
+                          <td className="text-right px-4 py-2 text-green-600 dark:text-green-400 font-mono">₹{candle.high?.toFixed(2)}</td>
+                          <td className="text-right px-4 py-2 text-red-600 dark:text-red-400 font-mono">₹{candle.low?.toFixed(2)}</td>
+                          <td className="text-right px-4 py-2 text-blue-600 dark:text-blue-400 font-mono">₹{candle.close?.toFixed(2)}</td>
+                          <td className="text-right px-4 py-2 text-slate-600 dark:text-slate-400 font-mono">{candle.volume?.toLocaleString()}</td>
                         </tr>
                       );
                     })}
@@ -7338,10 +7337,10 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                                   <tr className="border-b border-slate-200 dark:border-slate-700">
                                     <th className="text-left px-2 py-1.5 text-slate-500 dark:text-slate-400 font-medium">Time</th>
                                     <th className="text-right px-2 py-1.5 text-slate-500 dark:text-slate-400 font-medium">Open</th>
-                                    <th className="text-right px-2 py-1.5 text-green-400 font-medium">High</th>
-                                    <th className="text-right px-2 py-1.5 text-red-400 font-medium">Low</th>
-                                    <th className="text-right px-2 py-1.5 text-purple-400 font-medium">Close</th>
-                                    <th className="text-right px-2 py-1.5 text-slate-400 font-medium">Volume</th>
+                                    <th className="text-right px-2 py-1.5 text-green-600 dark:text-green-400 font-medium">High</th>
+                                    <th className="text-right px-2 py-1.5 text-red-600 dark:text-red-400 font-medium">Low</th>
+                                    <th className="text-right px-2 py-1.5 text-blue-600 dark:text-blue-400 font-medium">Close</th>
+                                    <th className="text-right px-2 py-1.5 text-slate-500 dark:text-slate-400 font-medium">Volume</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -7369,12 +7368,12 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                                           <span className="text-slate-500 dark:text-slate-500">{dateStr}</span> {timeStr}
                                         </td>
                                         <td className="text-right px-2 py-1 text-slate-900 dark:text-white font-mono">₹{candle.open?.toFixed(2)}</td>
-                                        <td className="text-right px-2 py-1 text-green-400 font-mono">₹{candle.high?.toFixed(2)}</td>
-                                        <td className="text-right px-2 py-1 text-red-400 font-mono">₹{candle.low?.toFixed(2)}</td>
-                                        <td className={`text-right px-2 py-1 font-mono font-medium ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+                                        <td className="text-right px-2 py-1 text-green-600 dark:text-green-400 font-mono">₹{candle.high?.toFixed(2)}</td>
+                                        <td className="text-right px-2 py-1 text-red-600 dark:text-red-400 font-mono">₹{candle.low?.toFixed(2)}</td>
+                                        <td className={`text-right px-2 py-1 font-mono font-medium ${isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                                           ₹{candle.close?.toFixed(2)}
                                         </td>
-                                        <td className="text-right px-2 py-1 text-slate-400 font-mono">
+                                        <td className="text-right px-2 py-1 text-slate-600 dark:text-slate-400 font-mono">
                                           {candle.volume ? candle.volume.toLocaleString() : '-'}
                                         </td>
                                       </tr>
