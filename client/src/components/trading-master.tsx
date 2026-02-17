@@ -4447,6 +4447,18 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
   // 🎯 VISUAL AI MODE STATE - Toggle between Notes AI and Visual AI
   const [isNotesAIVisible, setIsNotesAIVisible] = useState(false);
+  const notesRef = useRef<HTMLDivElement>(null);
+
+  // Click outside handler for Notes AI
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (isNotesAIVisible && notesRef.current && !notesRef.current.contains(event.target as Node)) {
+        setIsNotesAIVisible(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isNotesAIVisible]);
   const [isVisualAIMode, setIsVisualAIMode] = useState(false);
   const [isSidebarVisualAIMode, setIsSidebarVisualAIMode] = useState(false);
   
@@ -6330,7 +6342,10 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         </div>
 
         {/* Notes AI Section - Floating */}
-        <div className="fixed bottom-4 right-4 z-[100] w-[350px] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out flex flex-col gap-2 items-end">
+        <div 
+          ref={notesRef}
+          className="fixed bottom-4 right-4 z-[100] w-[350px] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out flex flex-col gap-2 items-end"
+        >
           {/* Fork Floating Button - Relocated to Main Tab */}
           <div 
             className="flex items-center bg-white rounded-lg border border-gray-200 shadow-lg h-10 overflow-hidden cursor-pointer hover:bg-gray-50 transition-colors"
