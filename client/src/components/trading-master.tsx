@@ -7152,8 +7152,8 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                       const dateStr = candleTime.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
                       return (
                         <tr key={index} className="border-b border-slate-700/50 hover:bg-slate-800/50">
-                          <td className="px-4 py-2 text-slate-300 font-mono">{dateStr} {timeStr}</td>
-                          <td className="text-right px-4 py-2 text-white font-mono">₹{candle.open?.toFixed(2)}</td>
+                          <td className="px-4 py-2 text-slate-700 dark:text-slate-300 font-mono">{dateStr} {timeStr}</td>
+                          <td className="text-right px-4 py-2 text-slate-900 dark:text-white font-mono">₹{candle.open?.toFixed(2)}</td>
                           <td className="text-right px-4 py-2 text-green-400 font-mono">₹{candle.high?.toFixed(2)}</td>
                           <td className="text-right px-4 py-2 text-red-400 font-mono">₹{candle.low?.toFixed(2)}</td>
                           <td className="text-right px-4 py-2 text-blue-400 font-mono">₹{candle.close?.toFixed(2)}</td>
@@ -7275,10 +7275,10 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     >
                       <div className="flex items-center gap-2">
                         <BarChart3 className="h-4 w-4 text-orange-400" />
-                        <span className="text-sm font-semibold text-white">OHLC Data</span>
+                        <span className="text-sm font-semibold text-slate-900 dark:text-white">OHLC Data</span>
                         <span className="text-[10px] px-1.5 py-0.5 bg-orange-500/20 text-orange-400 rounded font-medium">Angel One</span>
                         {ohlcSymbol && (
-                          <span className="text-xs text-slate-400">({ohlcSymbol})</span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400">({ohlcSymbol})</span>
                         )}
                       </div>
                       
@@ -7286,7 +7286,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                         {/* Quick Stats when collapsed */}
                         {!isTradeOhlcExpanded && ohlcData && ohlcData.candles && ohlcData.candles.length > 0 && (
                           <div className="flex items-center gap-3 text-xs">
-                            <span className="text-slate-400">O: <span className="text-white">₹{ohlcData.candles[0]?.open?.toFixed(2)}</span></span>
+                            <span className="text-slate-500 dark:text-slate-400">O: <span className="text-slate-900 dark:text-white">₹{ohlcData.candles[0]?.open?.toFixed(2)}</span></span>
                             <span className="text-green-400">H: ₹{Math.max(...ohlcData.candles.map((c: any) => c.high || 0)).toFixed(2)}</span>
                             <span className="text-red-400">L: ₹{Math.min(...ohlcData.candles.map((c: any) => c.low || Infinity)).toFixed(2)}</span>
                             <span className="text-purple-400">C: ₹{ohlcData.candles[ohlcData.candles.length - 1]?.close?.toFixed(2)}</span>
@@ -7316,9 +7316,9 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                         ) : ohlcData && ohlcData.candles && ohlcData.candles.length > 0 ? (
                           <>
                             {/* Stock Info Header with Summary Stats */}
-                            <div className="flex items-center justify-between text-xs text-slate-400 border-b border-slate-700 pb-2 mb-2">
+                            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700 pb-2 mb-2">
                               <div className="flex items-center gap-3">
-                                <span className="font-medium text-white">{ohlcSymbol || 'NIFTY50'}</span>
+                                <span className="font-medium text-slate-900 dark:text-white">{ohlcSymbol || 'NIFTY50'}</span>
                                 <span className="text-orange-400">{ohlcTimeframe}</span>
                                 <span>{ohlcData.candles.length} candles</span>
                               </div>
@@ -7335,9 +7335,9 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                             <div className="overflow-x-auto overflow-y-auto max-h-48 border border-slate-700 rounded-lg custom-thin-scrollbar">
                               <table className="w-full text-xs">
                                 <thead className="sticky top-0 bg-slate-800 z-10">
-                                  <tr className="border-b border-slate-700">
-                                    <th className="text-left px-2 py-1.5 text-slate-400 font-medium">Time</th>
-                                    <th className="text-right px-2 py-1.5 text-slate-400 font-medium">Open</th>
+                                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                                    <th className="text-left px-2 py-1.5 text-slate-500 dark:text-slate-400 font-medium">Time</th>
+                                    <th className="text-right px-2 py-1.5 text-slate-500 dark:text-slate-400 font-medium">Open</th>
                                     <th className="text-right px-2 py-1.5 text-green-400 font-medium">High</th>
                                     <th className="text-right px-2 py-1.5 text-red-400 font-medium">Low</th>
                                     <th className="text-right px-2 py-1.5 text-purple-400 font-medium">Close</th>
@@ -7365,10 +7365,10 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                                         className={`border-b border-slate-700/50 hover:bg-slate-700/30 ${index % 2 === 0 ? 'bg-slate-800/30' : ''}`}
                                         data-testid={`row-ohlc-candle-${index}`}
                                       >
-                                        <td className="px-2 py-1 text-slate-300 font-mono whitespace-nowrap">
-                                          <span className="text-slate-500">{dateStr}</span> {timeStr}
+                                        <td className="px-2 py-1 text-slate-700 dark:text-slate-300 font-mono whitespace-nowrap">
+                                          <span className="text-slate-500 dark:text-slate-500">{dateStr}</span> {timeStr}
                                         </td>
-                                        <td className="text-right px-2 py-1 text-white font-mono">₹{candle.open?.toFixed(2)}</td>
+                                        <td className="text-right px-2 py-1 text-slate-900 dark:text-white font-mono">₹{candle.open?.toFixed(2)}</td>
                                         <td className="text-right px-2 py-1 text-green-400 font-mono">₹{candle.high?.toFixed(2)}</td>
                                         <td className="text-right px-2 py-1 text-red-400 font-mono">₹{candle.low?.toFixed(2)}</td>
                                         <td className={`text-right px-2 py-1 font-mono font-medium ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
