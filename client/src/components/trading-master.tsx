@@ -6427,7 +6427,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     className={`text-xs h-8 px-2 py-0 ${
                       isAIMode 
                         ? "bg-purple-600 hover:bg-purple-700 text-white" 
-                        : "text-gray-400 hover:text-white hover:bg-slate-800"
+                        : "hidden"
                     }`}
                     data-testid="button-toggle-ai"
                   >
