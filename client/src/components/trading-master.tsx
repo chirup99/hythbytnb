@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, TrendingDown, Calendar, Download, Check, ChevronsUpDown, ChevronDown, ChevronUp, Search, MessageCircle, MessageSquare, Send, X, BarChart3, BookOpen, Target, CircleDot, Filter, RefreshCw, Play, MoreVertical, Trash2, Plus, Edit, Share2, Copy, ThumbsUp, Code, Shuffle, ToggleLeft, ToggleRight, Sparkles, FileText, AlertCircle, Settings, Maximize2, Table2 } from "lucide-react";
+import { TrendingUp, TrendingDown, Calendar, Download, Check, ChevronsUpDown, ChevronDown, ChevronUp, Search, MessageCircle, MessageSquare, Send, X, BarChart3, BookOpen, Target, CircleDot, Filter, RefreshCw, Play, MoreVertical, Trash2, Plus, Edit, Share2, Copy, ThumbsUp, Code, Shuffle, ToggleLeft, ToggleRight, Sparkles, FileText, AlertCircle, Settings, Maximize2, Minimize2, Table2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, ReferenceLine, AreaChart, Area } from 'recharts';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -6040,13 +6040,13 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   </Button>
                   
                   <Button 
-                    onClick={() => {}} 
+                    onClick={() => setIsChartExpanded(!isChartExpanded)} 
                     variant="ghost" 
                     size="sm" 
                     className="h-8 w-8 p-0 text-slate-300 hover:bg-slate-800"
-                    title="Fullscreen"
+                    title={isChartExpanded ? "Minimize" : "Fullscreen"}
                   >
-                    <Maximize2 className="h-4 w-4" />
+                    {isChartExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                   </Button>
                 </div>
               </div>
@@ -6075,9 +6075,11 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
 
                 <MinimalChart 
-                  height={320}
+                  height={isChartExpanded ? 800 : 450}
                   ohlcData={displayOhlcData?.candles || []}
                   symbol={ohlcSymbol}
+                  isExpanded={isChartExpanded}
+                  onChartExpand={() => setIsChartExpanded(!isChartExpanded)}
                   isInteractiveMode={transformationMode === 5}
                   onCandleClick={handleChartCandleClick}
                   selectionLineIndex={selectionLineIndex}
