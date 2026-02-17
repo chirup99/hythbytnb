@@ -4447,6 +4447,23 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
   // 🎯 VISUAL AI MODE STATE - Toggle between Notes AI and Visual AI
   const [isNotesAIVisible, setIsNotesAIVisible] = useState(false);
+  const [forkMessageIndex, setForkMessageIndex] = useState(0);
+
+  const forkMessages = [
+    { text: "FOMO: Nifty jumping +50 pts!", icon: <AlertCircle className="w-3 h-3 text-red-500" /> },
+    { text: "Risk: 2% rule active", icon: <Target className="w-3 h-3 text-blue-500" /> },
+    { text: "Mistake: Revenge trading", icon: <X className="w-3 h-3 text-orange-500" /> },
+    { text: "Loss: -15% on last trade", icon: <TrendingDown className="w-3 h-3 text-red-400" /> },
+    { text: "AI: Bearish Divergence", icon: <Sparkles className="w-3 h-3 text-purple-500" /> },
+    { text: "Timezone: NY Open soon", icon: <Calendar className="w-3 h-3 text-green-500" /> }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setForkMessageIndex((prev) => (prev + 1) % forkMessages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [forkMessages.length]);
   const notesRef = useRef<HTMLDivElement>(null);
 
   // Click outside handler for Notes AI
@@ -6346,29 +6363,32 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
           ref={notesRef}
           className="fixed bottom-4 right-4 z-[100] w-[350px] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out flex flex-col gap-2 items-end"
         >
-          {/* Fork Floating Button - Relocated to Main Tab */}
+          {/* Fork Floating Button - Animated Rotating Messages */}
           {!isNotesAIVisible && (
             <div 
-              className="flex items-center bg-white rounded-lg border border-gray-200 shadow-lg h-10 overflow-hidden cursor-pointer hover:bg-gray-50 transition-colors"
+              className="flex items-center bg-white dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700 shadow-lg h-10 overflow-hidden cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors w-[280px]"
               onClick={() => setIsNotesAIVisible(!isNotesAIVisible)}
               data-testid="button-toggle-notes-ai-visibility"
             >
-              <div className="flex items-center gap-2 px-3 py-2 border-r border-gray-200 pointer-events-none">
+              <div className="flex items-center gap-2 px-3 py-2 border-r border-gray-200 dark:border-slate-700 pointer-events-none bg-gray-50 dark:bg-slate-800/50">
                 <svg 
                   viewBox="0 0 16 16" 
                   fill="currentColor" 
-                  className="w-4 h-4 text-gray-500"
+                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
                   aria-hidden="true"
                 >
                   <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 10a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"></path>
                 </svg>
-                <span className="text-sm font-semibold text-gray-900">Fork</span>
-                <div className="flex items-center justify-center px-1.5 py-0.5 rounded border border-gray-200 bg-gray-50 min-w-[24px]">
-                  <span className="text-[11px] font-medium text-gray-600">18</span>
-                </div>
+                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">Fork</span>
               </div>
-              <div className="px-3 py-2 flex items-center justify-center pointer-events-none">
-                <ChevronDown className={cn("w-4 h-4 text-gray-900 transition-transform duration-200", isNotesAIVisible && "rotate-180")} />
+              <div className="flex-1 px-3 py-2 flex items-center justify-between pointer-events-none overflow-hidden bg-white dark:bg-slate-900">
+                <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-500 min-w-0" key={forkMessageIndex}>
+                  {forkMessages[forkMessageIndex].icon}
+                  <span className="text-[11px] font-medium text-gray-600 dark:text-gray-300 truncate">
+                    {forkMessages[forkMessageIndex].text}
+                  </span>
+                </div>
+                <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0", isNotesAIVisible && "rotate-180")} />
               </div>
             </div>
           )}
