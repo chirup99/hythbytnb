@@ -6366,14 +6366,26 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
           {/* Fork Floating Button - Animated Rotating Messages */}
           {!isNotesAIVisible && (
             <div 
-              className="flex items-center bg-white dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700 shadow-lg h-10 overflow-hidden cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors w-[280px]"
-              onClick={() => setIsNotesAIVisible(!isNotesAIVisible)}
+              className="flex items-center bg-white dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700 shadow-lg h-10 overflow-hidden cursor-default w-[280px]"
               data-testid="button-toggle-notes-ai-visibility"
             >
-              <div className="flex items-center gap-2 px-3 py-2 border-r border-gray-200 dark:border-slate-700 pointer-events-none bg-gray-50 dark:bg-slate-800/50">
+              <div 
+                className="flex items-center gap-2 px-3 py-2 border-r border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors bg-gray-50 dark:bg-slate-800/50"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsVisualAIMode(false);
+                  setIsNotesAIVisible(true);
+                }}
+              >
                 <Edit className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               </div>
-              <div className="flex-1 px-3 py-2 flex items-center justify-between pointer-events-none overflow-hidden bg-white dark:bg-slate-900">
+              <div 
+                className="flex-1 px-3 py-2 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors overflow-hidden bg-white dark:bg-slate-900"
+                onClick={() => {
+                  setIsVisualAIMode(true);
+                  setIsNotesAIVisible(true);
+                }}
+              >
                 <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-500 min-w-0" key={forkMessageIndex}>
                   {forkMessages[forkMessageIndex].icon}
                   <span className="text-[11px] font-medium text-gray-600 dark:text-gray-300 truncate">
