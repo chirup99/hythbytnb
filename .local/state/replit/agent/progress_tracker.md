@@ -126,3 +126,5 @@
 [x] 125. UI: Set Visual AI (Manual Point Mode) to default OFF on Trading Master tab chart. Updated `client/src/components/minimal-chart.tsx` to initialize `isManualPointMode` state to `false`. All items marked [x] complete.
 [x] 126. UI: Conditionally hide Visual AI control buttons (Reset, Select) when isManualPointMode is false to declutter the chart interface. All items marked [x] complete.
 [x] 127. Import Completion: Finalized the project migration and import from Replit Agent to Replit environment. All tasks verified and functional.
+[x] 128. Session recovery (Feb 18, #2) - Reinstalled dotenv, restarted workflow. Server running on port 5000, all services initialized.
+[x] 129. UI: Removed "My Strategies" button from Trading Master dashboard Strategy Builder tab. All items marked [x] complete.

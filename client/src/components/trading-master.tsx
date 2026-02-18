@@ -8453,9 +8453,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                 <Button variant="outline" size="sm" className="text-gray-600 dark:text-gray-300" data-testid="button-sort-by">
                   Sort by
                 </Button>
-                <Button variant="outline" size="sm" className="text-gray-600 dark:text-gray-300" data-testid="button-my-strategies">
-                  My Strategies
-                </Button>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" className="text-gray-600 dark:text-gray-300" data-testid="button-visual-chart" onClick={() => setIsOrdersOpen(true)}>
