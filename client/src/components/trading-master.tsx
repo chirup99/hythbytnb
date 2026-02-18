@@ -5993,16 +5993,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
                   <div className="h-4 w-[1px] bg-slate-700 mx-1" />
 
-                  <Button 
-                    onClick={() => {}} 
-                    variant="ghost" 
-                    size="sm" 
-                    className="h-8 px-2 text-slate-300 hover:bg-slate-800"
-                    title="Indicators"
-                  >
-                    <BarChart3 className="h-4 w-4 mr-1" />
-                    <span className="text-xs hidden md:inline">Indicators</span>
-                  </Button>
                 </div>
 
                 <div className="flex items-center gap-1">
@@ -6032,15 +6022,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   
                   <div className="h-4 w-[1px] bg-slate-700 mx-1" />
 
-                  <Button 
-                    onClick={() => {}} 
-                    variant="ghost" 
-                    size="sm" 
-                    className="h-8 w-8 p-0 text-slate-300 hover:bg-slate-800"
-                    title="Settings"
-                  >
-                    <Settings className="h-4 w-4" />
-                  </Button>
                   
                   <Button 
                     onClick={() => setIsChartExpanded(!isChartExpanded)} 
