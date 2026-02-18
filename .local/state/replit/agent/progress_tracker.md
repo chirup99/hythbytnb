@@ -129,3 +129,5 @@
 [x] 128. Session recovery (Feb 18, #2) - Reinstalled dotenv, restarted workflow. Server running on port 5000, all services initialized.
 [x] 129. UI: Removed "My Strategies" button from Trading Master dashboard Strategy Builder tab. All items marked [x] complete.
 [x] 130. UI: Removed "Indicators" and "Settings" buttons from Trading Master chart header. All items marked [x] complete.
+[x] 131. UI: Removed "Fullscreen" button from Trading Master chart header as requested. All items marked [x] complete.
+[x] 132. Bug Fix: Fixed timeframe sync issue on Trading Master chart. Changing timeframe now correctly triggers a new data fetch. All items marked [x] complete.

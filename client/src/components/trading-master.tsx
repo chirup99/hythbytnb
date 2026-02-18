@@ -5902,6 +5902,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                               className="flex-1 text-left text-xs text-slate-300"
                               onClick={() => {
                                 setOhlcTimeframe(timeframe.value);
+                                setTimeout(() => handleFetchOhlcData(), 0);
                               }}
                             >
                               {timeframe.label}
@@ -6023,15 +6024,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   <div className="h-4 w-[1px] bg-slate-700 mx-1" />
 
                   
-                  <Button 
-                    onClick={() => setIsChartExpanded(!isChartExpanded)} 
-                    variant="ghost" 
-                    size="sm" 
-                    className="h-8 w-8 p-0 text-slate-300 hover:bg-slate-800"
-                    title={isChartExpanded ? "Minimize" : "Fullscreen"}
-                  >
-                    {isChartExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                  </Button>
                 </div>
               </div>
 
