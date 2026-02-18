@@ -5650,7 +5650,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
       </div>
 
       {/* Bottom Section - OHLC Chart + Orders + Notes AI */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {/* Trading by Timeframe - OHLC Data (50%) - HIDDEN AND MOVED TO DIALOG */}
         <div className="hidden">
           <Card className="bg-slate-900 dark:bg-slate-900 border-slate-700">
@@ -6075,7 +6075,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
 
                 <MinimalChart 
-                  height={isChartExpanded ? 800 : 450}
+                  height={isChartExpanded ? 800 : 600}
                   ohlcData={displayOhlcData?.candles || []}
                   symbol={ohlcSymbol}
                   isExpanded={isChartExpanded}
