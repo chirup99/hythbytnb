@@ -121,6 +121,7 @@
 [x] 121. Session recovery (Feb 17, #9) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
 [x] 122. Session recovery (Feb 17, #10) - Reinstalled dotenv, restarted workflow. Server running on port 5000, Angel One authenticated, WebSocket streaming live BANKNIFTY/SENSEX/GOLD data. All items marked [x] complete.
 [x] 123. UI: Fixed OHLC data display for light mode and removed duplicate buttons from Trading Master chart. All items marked [x] complete.
+[x] 124. Session recovery (Feb 18) - Reinstalled dotenv, configured workflow with webview output, restarted workflow. Server running on port 5000, Angel One auto-connecting, all services initialized (WebSocket, Dhan, Upstox, NLP Agent, Gemini AI, DynamoDB tables). All items marked [x] complete.
 [x] 124. Session recovery (Feb 17, #11) - Reinstalled dotenv, restarted workflow. Server verified running with Angel One connected and live WebSocket data streaming.
 [x] 125. UI: Set Visual AI (Manual Point Mode) to default OFF on Trading Master tab chart. Updated `client/src/components/minimal-chart.tsx` to initialize `isManualPointMode` state to `false`. All items marked [x] complete.
 [x] 126. UI: Conditionally hide Visual AI control buttons (Reset, Select) when isManualPointMode is false to declutter the chart interface. All items marked [x] complete.
