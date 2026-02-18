@@ -5644,7 +5644,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="main" className="p-3 md:p-6 space-y-4">
+          <TabsContent value="main" className="ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 p-3 md:p-6 space-y-4 mt-[0px] mb-[0px] pt-[0px] pb-[0px] pl-[0px] pr-[0px]">
       {/* Middle Section - Traffic Only */}
       <div className="grid grid-cols-1 gap-4">
       </div>
