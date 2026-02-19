@@ -6098,7 +6098,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
           ref={notesRef}
           className={cn(
             "fixed bottom-4 right-4 z-[100] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out flex flex-col gap-2 items-end",
-            isNotesAIVisible ? "w-[350px]" : (isBarCollapsed ? "w-10" : "w-[315px]")
+            isNotesAIVisible ? "w-[350px]" : (isBarCollapsed ? "w-10" : "w-[270px]")
           )}
         >
           {/* Fork Floating Button - Animated Rotating Messages */}
@@ -6106,7 +6106,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
             <div 
               className={cn(
                 "flex items-center bg-white dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700 shadow-lg h-10 overflow-hidden cursor-default transition-all duration-300",
-                isBarCollapsed ? "w-10" : "w-[310px]"
+                isBarCollapsed ? "w-10" : "w-[265px]"
               )}
               data-testid="button-toggle-notes-ai-visibility"
             >
