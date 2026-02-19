@@ -20458,67 +20458,67 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {/* Groww */}
                           <Button
                             variant="outline"
-                            className="w-full h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 relative"
-                            onClick={() => window.open('https://groww.in/', '_blank')}
+                            className="w-full h-10 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 cursor-not-allowed opacity-70 relative hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                            disabled
                           >
-                            <img src="https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw" alt="Groww" className="w-4 h-4 mr-2 rounded-full" />
+                            <img src="https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw" alt="Groww" className="w-4 h-4 mr-2 rounded-full grayscale opacity-50" />
                             Groww
-                            <span className="absolute top-1 right-1 text-[8px] font-bold text-violet-500 uppercase tracking-tighter opacity-70">Coming Soon</span>
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
                           </Button>
 
                           {/* Fyers */}
                           <Button
                             variant="outline"
-                            className="w-full h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 relative"
-                            onClick={() => window.open('https://fyers.in/', '_blank')}
+                            className="w-full h-10 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 cursor-not-allowed opacity-70 relative hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                            disabled
                           >
-                            <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="w-4 h-4 mr-2 rounded-full" />
+                            <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="w-4 h-4 mr-2 rounded-full grayscale opacity-50" />
                             Fyers
-                            <span className="absolute top-1 right-1 text-[8px] font-bold text-violet-500 uppercase tracking-tighter opacity-70">Coming Soon</span>
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
                           </Button>
 
                           {/* ICICI Securities */}
                           <Button
                             variant="outline"
-                            className="w-full h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 relative"
-                            onClick={() => window.open('https://www.icicidirect.com/', '_blank')}
+                            className="w-full h-10 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 cursor-not-allowed opacity-70 relative hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                            disabled
                           >
-                            <img src="https://play-lh.googleusercontent.com/RqpvFiLwp9Vz8dY3QZplf7IZ0ZzCCjH9CVXlO61FIrCUQQCDfSrvPufjDw6sfbjTKg=w240-h480-rw" alt="ICICI Securities" className="w-4 h-4 mr-2 rounded-full" />
+                            <img src="https://play-lh.googleusercontent.com/RqpvFiLwp9Vz8dY3QZplf7IZ0ZzCCjH9CVXlO61FIrCUQQCDfSrvPufjDw6sfbjTKg=w240-h480-rw" alt="ICICI Securities" className="w-4 h-4 mr-2 rounded-full grayscale opacity-50" />
                             ICICI Securities
-                            <span className="absolute top-1 right-1 text-[8px] font-bold text-violet-500 uppercase tracking-tighter opacity-70">Coming Soon</span>
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
                           </Button>
 
                           {/* Alice Blue */}
                           <Button
                             variant="outline"
-                            className="w-full h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 relative"
-                            onClick={() => window.open('https://www.aliceblueonline.com/', '_blank')}
+                            className="w-full h-10 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 cursor-not-allowed opacity-70 relative hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                            disabled
                           >
-                            <img src="https://play-lh.googleusercontent.com/tVA2zP_nU106-0ySk0z_5aJlbv1AC-IVBEnF5qcGnhk1dzoA0m0-lqTC45lnkQ-ZVpC_5CL-JCxgPMNlWLbV98g=w240-h480-rw" alt="Alice Blue" className="w-4 h-4 mr-2 rounded-full" />
+                            <img src="https://play-lh.googleusercontent.com/tVA2zP_nU106-0ySk0z_5aJlbv1AC-IVBEnF5qcGnhk1dzoA0m0-lqTC45lnkQ-ZVpC_5CL-JCxgPMNlWLbV98g=w240-h480-rw" alt="Alice Blue" className="w-4 h-4 mr-2 rounded-full grayscale opacity-50" />
                             Alice Blue
-                            <span className="absolute top-1 right-1 text-[8px] font-bold text-violet-500 uppercase tracking-tighter opacity-70">Coming Soon</span>
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
                           </Button>
 
                           {/* 5 Paisa */}
                           <Button
                             variant="outline"
-                            className="w-full h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 relative"
-                            onClick={() => window.open('https://www.5paisa.com/', '_blank')}
+                            className="w-full h-10 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 cursor-not-allowed opacity-70 relative hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                            disabled
                           >
-                            <img src="https://play-lh.googleusercontent.com/-MNspIooJf9VXXApEo8Z1eaokA5k5Be7TcgKeWSwBZGTRcsKZTVWkEcCzHq5ntAcsI0=s48-rw" alt="5 Paisa" className="w-4 h-4 mr-2 rounded-full" />
+                            <img src="https://play-lh.googleusercontent.com/-MNspIooJf9VXXApEo8Z1eaokA5k5Be7TcgKeWSwBZGTRcsKZTVWkEcCzHq5ntAcsI0=s48-rw" alt="5 Paisa" className="w-4 h-4 mr-2 rounded-full grayscale opacity-50" />
                             5 Paisa
-                            <span className="absolute top-1 right-1 text-[8px] font-bold text-violet-500 uppercase tracking-tighter opacity-70">Coming Soon</span>
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
                           </Button>
 
                           {/* M Stock */}
                           <Button
                             variant="outline"
-                            className="w-full h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 relative"
-                            onClick={() => window.open('https://www.mstock.com/', '_blank')}
+                            className="w-full h-10 bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 cursor-not-allowed opacity-70 relative hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                            disabled
                           >
-                            <img src="https://play-lh.googleusercontent.com/wb3FdD8R_he5C0Vy4ZB3PM8VoiE3ukB_9i7v3WloUUAUdHOvfjO-ieUnqmtCj2fa120BbX7FdrWrfJHgo3wSTw=w240-h480-rw" alt="M Stock" className="w-4 h-4 mr-2 rounded-full" />
+                            <img src="https://play-lh.googleusercontent.com/wb3FdD8R_he5C0Vy4ZB3PM8VoiE3ukB_9i7v3WloUUAUdHOvfjO-ieUnqmtCj2fa120BbX7FdrWrfJHgo3wSTw=w240-h480-rw" alt="M Stock" className="w-4 h-4 mr-2 rounded-full grayscale opacity-50" />
                             M Stock
-                            <span className="absolute top-1 right-1 text-[8px] font-bold text-violet-500 uppercase tracking-tighter opacity-70">Coming Soon</span>
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
                           </Button>
                             </div>
                           )}
