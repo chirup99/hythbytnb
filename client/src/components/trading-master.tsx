@@ -5671,16 +5671,16 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
       </div>
 
       {/* Bottom Section - OHLC Chart + Orders + Notes AI */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-2 p-2">
         {/* Trading by Timeframe - OHLC Data (50%) - HIDDEN AND MOVED TO DIALOG */}
         <div className="hidden">
-          <Card className="bg-slate-900 dark:bg-slate-900 border-slate-700">
+          <Card className="bg-background border-border">
           <CardContent className="p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold text-white">OHLC Data</h3>
+                  <h3 className="text-sm font-semibold text-foreground">OHLC Data</h3>
                   {transformationMode > 0 && (
-                    <div className="flex items-center gap-1 bg-purple-600 text-white px-2 py-1 rounded-md text-xs font-bold animate-pulse">
+                    <div className="flex items-center gap-1 bg-primary text-primary-foreground px-2 py-1 rounded-md text-[10px] font-bold animate-pulse">
                       <Shuffle className="w-3 h-3" />
                       <span>MODE {transformationMode}: {['', 'INVERTED', 'REVERSED', 'INVERTED+REVERSED', 'HORIZONTAL FLIP', 'INTERACTIVE MOCK'][transformationMode]}</span>
                     </div>
@@ -5691,26 +5691,26 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
             {/* Date Range Picker */}
             {showDatePicker && (
-              <div className="grid grid-cols-1 gap-3 mb-3 p-3 bg-gray-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-600">
+              <div className="grid grid-cols-1 gap-2 mb-2 p-2 bg-muted/30 rounded-md border border-border">
                 <div className="flex items-center gap-3">
-                  <Label className="text-gray-700 dark:text-slate-300 text-xs font-medium min-w-[40px]">From:</Label>
+                  <Label className="text-muted-foreground text-[10px] font-medium min-w-[40px]">From:</Label>
                   <Input
                     type="date"
                     value={ohlcFromDate}
                     onChange={(e) => setOhlcFromDate(e.target.value)}
-                    className="flex-1 h-8 bg-white dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-slate-300 text-xs"
+                    className="flex-1 h-7 bg-background border-input text-foreground text-[10px]"
                   />
                 </div>
                 <div className="flex items-center gap-3">
-                  <Label className="text-gray-700 dark:text-slate-300 text-xs font-medium min-w-[40px]">To:</Label>
+                  <Label className="text-muted-foreground text-[10px] font-medium min-w-[40px]">To:</Label>
                   <Input
                     type="date"
                     value={ohlcToDate}
                     onChange={(e) => setOhlcToDate(e.target.value)}
-                    className="flex-1 h-8 bg-white dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-slate-300 text-xs"
+                    className="flex-1 h-7 bg-background border-input text-foreground text-[10px]"
                   />
                 </div>
-                <div className="text-xs text-gray-600 dark:text-slate-400 text-center">
+                <div className="text-[10px] text-muted-foreground text-center">
                   {ohlcFromDate === ohlcToDate ? (
                     <div>
                       <div>📅 Single day: {ohlcFromDate}</div>
@@ -5731,36 +5731,36 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
             {/* Loading State */}
             {fetchOhlcData.isPending ? (
-              <div className="h-96 border border-slate-700 rounded-lg bg-slate-800/30 flex items-center justify-center">
-                <div className="text-slate-400 text-sm flex items-center gap-2">
-                  <div className="animate-spin w-4 h-4 border-2 border-slate-600 border-t-purple-500 rounded-full"></div>
+              <div className="h-96 border border-border rounded-lg bg-muted/10 flex items-center justify-center">
+                <div className="text-muted-foreground text-sm flex items-center gap-2">
+                  <div className="animate-spin w-4 h-4 border-2 border-muted border-t-primary rounded-full"></div>
                   Loading 1-minute OHLC data...
                 </div>
               </div>
             ) : displayOhlcData && displayOhlcData.candles && displayOhlcData.candles.length > 0 ? (
-              <div className="h-96 overflow-auto border border-slate-700 relative custom-thin-scrollbar">
+              <div className="h-96 overflow-auto border border-border relative custom-thin-scrollbar">
                 {/* 🔥 TRANSFORMATION MODE INDICATOR */}
                 {transformationMode > 0 && (
-                  <div className="absolute top-2 right-2 z-10 bg-purple-600 text-white px-2 py-1 rounded-md text-xs font-bold shadow-lg animate-pulse">
+                  <div className="absolute top-2 right-2 z-10 bg-primary text-primary-foreground px-2 py-1 rounded-md text-[10px] font-bold shadow-lg animate-pulse">
                     🔀 MODE {transformationMode}: {['', 'INVERTED', 'REVERSED', 'INV+REV', 'H-FLIP', 'INTERACTIVE'][transformationMode]}
                   </div>
                 )}
                   <Table>
-                    <TableHeader className="sticky top-0 z-10">
-                      <TableRow className="border-slate-700">
-                        <TableHead className="text-slate-300 min-w-[140px]">Date/Time</TableHead>
-                        <TableHead className="text-right text-slate-300 min-w-[80px]">Open</TableHead>
-                        <TableHead className="text-right text-slate-300 min-w-[80px]">High</TableHead>
-                        <TableHead className="text-right text-slate-300 min-w-[80px]">Low</TableHead>
-                        <TableHead className="text-right text-slate-300 min-w-[80px]">Close</TableHead>
-                        <TableHead className="text-right text-slate-300 min-w-[90px]">Volume</TableHead>
-                        <TableHead className="text-center text-slate-300 min-w-[100px]">Sentiment</TableHead>
+                    <TableHeader className="sticky top-0 z-10 bg-background">
+                      <TableRow className="border-border">
+                        <TableHead className="text-muted-foreground min-w-[140px] text-[10px] h-8">Date/Time</TableHead>
+                        <TableHead className="text-right text-muted-foreground min-w-[80px] text-[10px] h-8">Open</TableHead>
+                        <TableHead className="text-right text-muted-foreground min-w-[80px] text-[10px] h-8">High</TableHead>
+                        <TableHead className="text-right text-muted-foreground min-w-[80px] text-[10px] h-8">Low</TableHead>
+                        <TableHead className="text-right text-muted-foreground min-w-[80px] text-[10px] h-8">Close</TableHead>
+                        <TableHead className="text-right text-muted-foreground min-w-[90px] text-[10px] h-8">Volume</TableHead>
+                        <TableHead className="text-center text-muted-foreground min-w-[100px] text-[10px] h-8">Sentiment</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {displayOhlcData.candles.map((candle: any, index: number) => (
-                        <TableRow key={index} className="border-slate-700 hover:bg-slate-700/50">
-                          <TableCell className="font-medium text-slate-300 text-xs font-mono">
+                        <TableRow key={index} className="border-border hover:bg-muted/50 h-8">
+                          <TableCell className="font-medium text-foreground text-[10px] font-mono py-1">
                             {new Date(candle.timestamp * 1000).toLocaleString('en-US', {
                               month: '2-digit',
                               day: '2-digit', 
@@ -5771,50 +5771,42 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                               hour12: true
                             })}
                           </TableCell>
-                          <TableCell className="text-right text-slate-300">
+                          <TableCell className="text-right text-foreground text-[10px] py-1">
                             {candle.open.toFixed(2)}
                           </TableCell>
-                          <TableCell className="text-right text-slate-300">
+                          <TableCell className="text-right text-foreground text-[10px] py-1">
                             {candle.high.toFixed(2)}
                           </TableCell>
-                          <TableCell className="text-right text-slate-300">
+                          <TableCell className="text-right text-foreground text-[10px] py-1">
                             {candle.low.toFixed(2)}
                           </TableCell>
-                          <TableCell className="text-right text-slate-300">
+                          <TableCell className="text-right text-foreground text-[10px] py-1">
                             {candle.close.toFixed(2)}
                           </TableCell>
-                          <TableCell className="text-right text-slate-300">
+                          <TableCell className="text-right text-foreground text-[10px] py-1">
                             {candle.volume.toLocaleString()}
                           </TableCell>
-                          <TableCell className="text-center">
+                          <TableCell className="text-center py-1">
                             {isAnalyzingSentiment ? (
                               <div className="flex items-center justify-center space-x-1">
-                                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-purple-500"></div>
-                                <span className="text-xs text-slate-400">Analyzing...</span>
+                                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-primary"></div>
+                                <span className="text-[10px] text-muted-foreground">Analyzing...</span>
                               </div>
                             ) : sentimentAnalysis[index] ? (
                               <div className="space-y-1">
-                                <div className={`text-xs font-semibold px-2 py-1 rounded ${
-                                  sentimentAnalysis[index].signal === 'BUY' ? 'bg-green-100 text-green-800' :
-                                  sentimentAnalysis[index].signal === 'SELL' ? 'bg-red-100 text-red-800' :
-                                  'bg-gray-100 text-gray-800'
+                                <div className={`text-[10px] font-semibold px-2 py-0.5 rounded ${
+                                  sentimentAnalysis[index].signal === 'BUY' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' :
+                                  sentimentAnalysis[index].signal === 'SELL' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' :
+                                  'bg-muted text-muted-foreground'
                                 }`}>
                                   {sentimentAnalysis[index].signal}
                                 </div>
-                                <div className="text-xs text-slate-400">
+                                <div className="text-[10px] text-muted-foreground">
                                   {sentimentAnalysis[index].confidence}%
-                                </div>
-                                <div className="w-full bg-slate-700 rounded-full h-1">
-                                  <div 
-                                    className={`h-1 rounded-full ${
-                                      sentimentAnalysis[index].score > 0 ? 'bg-green-500' : 'bg-red-500'
-                                    }`}
-                                    style={{ width: `${Math.abs(sentimentAnalysis[index].score) * 100}%` }}
-                                  ></div>
                                 </div>
                               </div>
                             ) : (
-                              <span className="text-xs text-slate-400">-</span>
+                              <span className="text-[10px] text-muted-foreground">-</span>
                             )}
                           </TableCell>
                         </TableRow>
@@ -5823,8 +5815,8 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                   </Table>
                 </div>
             ) : (
-              <div className="h-96 border border-slate-700 rounded-lg bg-slate-800/30 flex items-center justify-center">
-                <div className="text-slate-400 text-sm text-center">
+              <div className="h-96 border border-border rounded-lg bg-muted/10 flex items-center justify-center">
+                <div className="text-muted-foreground text-sm text-center">
                   <div>No OHLC data loaded</div>
                   <div className="text-xs mt-1">Click "Fetch" to load 1-minute data</div>
                 </div>
@@ -5836,37 +5828,37 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         </div>
         
         {/* Orders Section (Visual Chart) */}
-        <div className="w-full mb-4">
-          <Card className="bg-slate-900 dark:bg-slate-900 border-slate-700 h-full">
+        <div className="w-full mb-0">
+          <Card className="bg-background border-border h-full shadow-none rounded-md">
             <CardContent className="p-0 h-full flex flex-col overflow-hidden">
-              <div className="flex items-center justify-between p-2 border-b border-slate-700 bg-slate-900/50">
+              <div className="flex items-center justify-between p-1.5 border-b border-border bg-muted/20">
                 <div className="flex items-center gap-1">
-                  <div className="flex items-center mr-2">
-                    <Search className="h-4 w-4 text-slate-400 mr-2" />
+                  <div className="flex items-center mr-1">
+                    <Search className="h-3.5 w-3.5 text-muted-foreground mr-1.5" />
                     
                     {/* Symbol Search Combobox */}
                     <Popover open={openSymbolSearch} onOpenChange={setOpenSymbolSearch}>
                       <PopoverTrigger asChild>
                         <Button
                           variant="ghost"
-                          className="h-8 px-2 text-sm font-bold text-white hover:bg-slate-800"
+                          className="h-7 px-1.5 text-xs font-bold text-foreground hover:bg-muted"
                         >
                           {ohlcSymbol
                             ? stockSymbols.find((symbol) => symbol.value === ohlcSymbol)?.label.split(' ')[0] || ohlcSymbol
                             : "Select symbol..."}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-72 p-0 bg-slate-900 border-slate-700">
+                      <PopoverContent className="w-72 p-0 bg-popover border-border">
                         <Command>
                           <CommandInput
                             placeholder="Search stocks..."
                             value={symbolSearchValue}
                             onValueChange={setSymbolSearchValue}
-                            className="text-xs bg-slate-900 text-white border-none"
+                            className="text-xs bg-transparent text-foreground border-none"
                           />
-                          <CommandList className="bg-slate-900">
-                            <CommandEmpty className="text-white py-3 text-center text-xs">No stock found.</CommandEmpty>
-                            <CommandGroup className="bg-slate-900">
+                          <CommandList className="bg-transparent">
+                            <CommandEmpty className="text-foreground py-3 text-center text-xs">No stock found.</CommandEmpty>
+                            <CommandGroup className="bg-transparent">
                               {stockSymbols
                                 .filter((symbol) => 
                                   symbol.label.toLowerCase().includes(symbolSearchValue.toLowerCase()) ||
@@ -5881,7 +5873,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                                       setOpenSymbolSearch(false);
                                       setSymbolSearchValue("");
                                     }}
-                                    className="flex items-center px-2 py-1.5 text-xs text-white hover:bg-slate-800 cursor-pointer"
+                                    className="flex items-center px-2 py-1.5 text-xs text-foreground hover:bg-muted cursor-pointer"
                                   >
                                     <Check
                                       className={cn(
@@ -5899,25 +5891,25 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     </Popover>
                   </div>
 
-                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
+                  <div className="h-4 w-[1px] bg-border mx-1" />
 
                   {/* Timeframe Select with Custom option */}
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant="ghost"
-                        className="h-8 px-2 text-xs font-medium text-slate-300 hover:bg-slate-800"
+                        className="h-7 px-1.5 text-[10px] font-medium text-muted-foreground hover:bg-muted"
                       >
                         {getAllTimeframes().find(tf => tf.value === ohlcTimeframe)?.label || ohlcTimeframe}
-                        <ChevronDown className="ml-1 h-3 w-3 opacity-50" />
+                        <ChevronDown className="ml-0.5 h-3 w-3 opacity-50" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-40 p-1 bg-slate-900 border-slate-700">
+                    <PopoverContent className="w-40 p-1 bg-popover border-border">
                       <div className="grid gap-1">
                         {getAllTimeframes().map((timeframe) => (
-                          <div key={timeframe.value} className="flex items-center justify-between px-2 py-1 rounded hover:bg-slate-800 group">
+                          <div key={timeframe.value} className="flex items-center justify-between px-2 py-1 rounded hover:bg-muted group">
                             <button 
-                              className="flex-1 text-left text-xs text-slate-300"
+                              className="flex-1 text-left text-[10px] text-foreground"
                               onClick={() => {
                                 setOhlcTimeframe(timeframe.value);
                                 setTimeout(() => handleFetchOhlcData(), 0);
@@ -5927,7 +5919,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                             </button>
                             {timeframe.deletable && (
                               <button
-                                className="ml-1 w-4 h-4 flex items-center justify-center hover:bg-red-900 rounded text-red-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="ml-1 w-4 h-4 flex items-center justify-center hover:bg-destructive/20 rounded text-destructive text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   deleteTimeframe(timeframe.value);
@@ -5939,9 +5931,9 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                             )}
                           </div>
                         ))}
-                        <div className="border-t border-slate-700 mt-1 pt-1">
+                        <div className="border-t border-border mt-1 pt-1">
                           <button 
-                            className="w-full text-left px-2 py-1 rounded hover:bg-slate-800 text-xs text-slate-300"
+                            className="w-full text-left px-2 py-1 rounded hover:bg-muted text-[10px] text-foreground"
                             onClick={() => setShowCustomTimeframe(true)}
                           >
                             + Add Custom
@@ -5951,21 +5943,21 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     </PopoverContent>
                   </Popover>
 
-                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
+                  <div className="h-4 w-[1px] bg-border mx-1" />
 
                   {/* Pattern Dropdown */}
                   <div className="relative">
                     <button
                       onClick={() => setIsPatternDropdownOpen(!isPatternDropdownOpen)}
-                      className="h-8 bg-transparent hover:bg-slate-800 text-slate-300 rounded-md px-2 flex items-center gap-1 text-xs font-medium transition-colors"
+                      className="h-7 bg-transparent hover:bg-muted text-muted-foreground rounded-md px-1.5 flex items-center gap-1 text-[10px] font-medium transition-colors"
                       data-testid="button-pattern-dropdown"
                     >
                       <span>{selectedPattern && savedPatterns.find(p => p.id === selectedPattern)?.name || "Pattern"}</span>
-                      <ChevronDown className="w-3 h-3 opacity-50" />
+                      <ChevronDown className="w-2.5 h-2.5 opacity-50" />
                     </button>
                     
                     {isPatternDropdownOpen && (
-                      <div className="absolute top-full left-0 w-48 mt-1 bg-slate-900 border border-slate-700 rounded-md shadow-lg z-50">
+                      <div className="absolute top-full left-0 w-48 mt-1 bg-popover border border-border rounded-md shadow-lg z-50">
                         <button
                           onClick={() => {
                             setSelectedPattern('');
@@ -5979,12 +5971,12 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                             setVisualAIHorizontalRays([]);
                             toast({ title: "🧹 Chart Cleared", description: "All patterns removed." });
                           }}
-                          className="w-full px-3 py-2 text-left text-white hover:bg-slate-800 text-xs border-b border-slate-700"
+                          className="w-full px-3 py-2 text-left text-foreground hover:bg-muted text-[10px] border-b border-border"
                         >
                           Clear Pattern
                         </button>
                         {savedPatterns.map(pattern => (
-                          <div key={pattern.id} className="group flex items-center justify-between px-3 py-2 text-white hover:bg-slate-800">
+                          <div key={pattern.id} className="group flex items-center justify-between px-3 py-2 text-foreground hover:bg-muted">
                             <button
                               onClick={() => {
                                 setSelectedPattern(pattern.id);
@@ -5993,14 +5985,14 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                                 setSuppressAutoDetectionUntilInteraction(false);
                                 toast({ title: "🎯 Pattern Applied", description: `Pattern "${pattern.name}" applied.` });
                               }}
-                              className="flex items-center gap-2 text-left text-xs flex-1"
+                              className="flex items-center gap-2 text-left text-[10px] flex-1"
                             >
-                              <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                              <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
                               {pattern.name}
                             </button>
                             <button
                               onClick={(e) => { e.stopPropagation(); deletePattern(pattern.id); }}
-                              className="w-4 h-4 flex items-center justify-center hover:bg-red-900 rounded text-red-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity ml-2"
+                              className="w-4 h-4 flex items-center justify-center hover:bg-destructive/20 rounded text-destructive text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity ml-2"
                             >
                               ×
                             </button>
@@ -6010,7 +6002,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     )}
                   </div>
 
-                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
+                  <div className="h-4 w-[1px] bg-border mx-1" />
 
                 </div>
 
@@ -6019,40 +6011,40 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     onClick={() => setShowOhlcDialog(true)}
                     variant="ghost"
                     size="sm"
-                    className="h-8 px-2 text-slate-300 hover:bg-slate-800"
+                    className="h-7 px-1.5 text-muted-foreground hover:bg-muted"
                     title="OHLC Data"
                     data-testid="button-open-ohlc-dialog"
                   >
-                    <Table2 className="h-4 w-4 mr-1" />
-                    <span className="text-xs hidden md:inline">OHLC</span>
+                    <Table2 className="h-3.5 w-3.5 mr-1" />
+                    <span className="text-[10px] hidden md:inline">OHLC</span>
                   </Button>
 
-                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
+                  <div className="h-4 w-[1px] bg-border mx-1" />
 
                   <Button 
                     onClick={handleFetchOhlcData}
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-slate-300 hover:bg-slate-800"
+                    className="h-7 w-7 p-0 text-muted-foreground hover:bg-muted"
                     title="Refresh"
                   >
-                    <RefreshCw className={cn("h-4 w-4", fetchOhlcData.isPending && "animate-spin")} />
+                    <RefreshCw className={cn("h-3.5 w-3.5", fetchOhlcData.isPending && "animate-spin")} />
                   </Button>
                   
-                  <div className="h-4 w-[1px] bg-slate-700 mx-1" />
+                  <div className="h-4 w-[1px] bg-border mx-1" />
 
                   
                 </div>
               </div>
 
               {/* Price Info Bar */}
-              <div className="flex items-center gap-4 px-3 py-1 bg-slate-900 border-b border-slate-800 overflow-x-auto no-scrollbar whitespace-nowrap">
-                <div className="flex items-center gap-2 text-[11px]">
-                  <span className="text-green-500">O</span><span className="text-slate-300 font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0).toFixed(2)}</span>
-                  <span className="text-green-500">H</span><span className="text-slate-300 font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.high || 0).toFixed(2)}</span>
-                  <span className="text-red-500">L</span><span className="text-slate-300 font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.low || 0).toFixed(2)}</span>
-                  <span className="text-red-500">C</span><span className="text-slate-300 font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0).toFixed(2)}</span>
-                  <span className={cn("font-mono font-bold ml-1", (ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) >= (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0) ? "text-green-500" : "text-red-500")}>
+              <div className="flex items-center gap-3 px-3 py-1 bg-muted/10 border-b border-border overflow-x-auto no-scrollbar whitespace-nowrap">
+                <div className="flex items-center gap-3 text-[10px]">
+                  <span className="text-muted-foreground"><span className="text-green-500 font-bold mr-0.5">O</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0).toFixed(2)}</span></span>
+                  <span className="text-muted-foreground"><span className="text-green-500 font-bold mr-0.5">H</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.high || 0).toFixed(2)}</span></span>
+                  <span className="text-muted-foreground"><span className="text-red-500 font-bold mr-0.5">L</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.low || 0).toFixed(2)}</span></span>
+                  <span className="text-muted-foreground"><span className="text-red-500 font-bold mr-0.5">C</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0).toFixed(2)}</span></span>
+                  <span className={cn("font-mono font-bold ml-1", (ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) >= (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400")}>
                     {((ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) - (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0)).toFixed(2)}
                     ({(((ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) - (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0)) / (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 1) * 100).toFixed(2)}%)
                   </span>
@@ -6060,9 +6052,9 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
               </div>
               
               {/* Visual Chart Window */}
-              <div className="flex-1 relative">
+              <div className="flex-1 relative bg-background">
                 {transformationMode === 5 && selectionLineIndex !== null && (
-                  <div className="absolute top-2 left-2 z-20 bg-green-600 text-white px-2 py-1 rounded-md text-xs font-bold shadow-lg">
+                  <div className="absolute top-2 left-2 z-20 bg-primary text-primary-foreground px-2 py-1 rounded-md text-[10px] font-bold shadow-lg">
                     📍 Selection: Candle {selectionLineIndex + 1} | 🎲 Mock: {mockCandlesFromIndex.length} candles
                   </div>
                 )}
@@ -6097,65 +6089,70 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         <div 
           ref={notesRef}
           className={cn(
-            "fixed bottom-4 right-4 z-[100] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out flex flex-col gap-2 items-end",
-            isNotesAIVisible ? "w-[350px]" : (isBarCollapsed ? "w-10" : "w-[270px]")
+            "fixed bottom-4 right-4 z-[100] max-h-[500px] shadow-sm transition-all duration-300 ease-in-out flex flex-col gap-2 items-end",
+            isNotesAIVisible ? "w-[320px]" : (isBarCollapsed ? "w-8" : "w-[240px]")
           )}
         >
           {/* Fork Floating Button - Animated Rotating Messages */}
           {!isNotesAIVisible && (
             <div 
               className={cn(
-                "flex items-center bg-white dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700 shadow-lg h-10 overflow-hidden cursor-default transition-all duration-300",
-                isBarCollapsed ? "w-10" : "w-[265px]"
+                "flex items-center bg-background rounded-md border border-border shadow-sm h-8 overflow-hidden cursor-default transition-all duration-300",
+                isBarCollapsed ? "w-8" : "w-[235px]"
               )}
               data-testid="button-toggle-notes-ai-visibility"
             >
               {isBarCollapsed ? (
                 <div 
-                  className="flex items-center justify-center w-10 h-10 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+                  className="flex items-center justify-center w-8 h-8 cursor-pointer hover:bg-muted transition-colors"
                   onClick={() => setIsBarCollapsed(false)}
                   title="Expand"
                 >
-                  <ChevronLeft className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <ChevronLeft className="w-4 h-4 text-muted-foreground" />
                 </div>
               ) : (
                 <>
                   <div 
-                    className="flex items-center gap-2 px-3 py-2 border-r border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors bg-gray-50 dark:bg-slate-800/50"
+                    className="flex items-center gap-2 px-2 py-1.5 border-r border-border cursor-pointer hover:bg-muted transition-colors bg-muted/30"
                     onClick={(e) => {
                       e.stopPropagation();
                       setIsVisualAIMode(false);
                       setIsNotesAIVisible(true);
                     }}
                   >
-                    <Edit className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                    <Edit className="w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                   <div 
-                    className="flex-1 px-3 py-2 flex items-center justify-between transition-colors overflow-hidden bg-white dark:bg-slate-900"
+                    className="flex-1 px-2 py-1.5 flex items-center justify-between transition-colors overflow-hidden bg-background"
                   >
                     <div 
-                      className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-500 min-w-0 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded px-1 transition-colors" 
+                      className="flex items-center gap-1.5 animate-in fade-in slide-in-from-right-4 duration-500 min-w-0 cursor-pointer hover:bg-muted/50 rounded px-1 transition-colors" 
                       key={forkMessageIndex}
                       onClick={() => setShowInsightTooltip(!showInsightTooltip)}
                       id="insight-trigger"
                     >
                       {forkMessages[forkMessageIndex].icon}
-                      <span className="text-[11px] font-medium text-gray-600 dark:text-gray-300 truncate">
+                      <span className="text-[10px] font-medium text-muted-foreground truncate">
                         {forkMessages[forkMessageIndex].text}
                       </span>
                     </div>
                     {showInsightTooltip && (
                       <div 
                         id="insight-tooltip"
-                        className="fixed bottom-[70px] right-4 z-[110] w-[280px] bg-slate-900 border border-slate-700 rounded-lg shadow-2xl animate-in fade-in zoom-in duration-200 overflow-hidden"
+                        className="fixed bottom-[60px] right-4 z-[110] w-[260px] bg-popover border border-border rounded-md shadow-lg animate-in fade-in zoom-in duration-200 overflow-hidden"
                       >
-                        <div className="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
-                          <div className="flex items-center gap-2">
-                            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                            <span className="text-[11px] font-semibold text-slate-200 uppercase tracking-wider">AI Insight Analysis</span>
+                        <div className="p-2 border-b border-border flex items-center justify-between bg-muted/20">
+                          <div className="flex items-center gap-1.5">
+                            <Sparkles className="w-3 h-3 text-primary" />
+                            <span className="text-[10px] font-semibold text-foreground uppercase tracking-wider">AI Insight Analysis</span>
                           </div>
                           <button 
                             onClick={() => setShowInsightTooltip(false)}
+                            className="text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            <span className="text-xs">×</span>
+                          </button>
+                        </div>
                             className="text-slate-500 hover:text-white transition-colors"
                           >
                             <X className="w-3.5 h-3.5" />
