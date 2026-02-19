@@ -13166,9 +13166,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   <div className="relative h-48 rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-800 p-6 cursor-pointer hover:scale-105 transition-transform duration-300">
                     <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/20 to-transparent"></div>
                     <div className="relative z-10 h-full flex flex-col justify-center items-center text-center">
-                      <div className="text-6xl mb-4">🎓</div>
-                      <div className="text-white text-2xl font-bold">Courses</div>
-                      <div className="text-white/80 text-sm mt-2">Training Programs</div>
+                      <div className="text-6xl mb-4">💎</div>
+                      <div className="text-white text-2xl font-bold">Exclusive Skills</div>
+                      <div className="text-white/80 text-sm mt-2">Financial Mastery</div>
                     </div>
                   </div>
 
