@@ -288,7 +288,10 @@ function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Desktop: Fixed Vertical Navigation (hidden on mobile) */}
-      <div className="hidden md:flex fixed right-0 top-0 w-20 h-full bg-gray-950 border-l border-gray-800 flex-col items-center py-6 space-y-6 z-50 translate-x-full hover:translate-x-0 transition-transform duration-300 group">
+      <div className={cn(
+        "hidden md:flex fixed right-0 top-0 w-20 h-full bg-gray-950 border-l border-gray-800 flex-col items-center py-6 space-y-6 z-50 transition-transform duration-300 group",
+        location === "/voice" ? "translate-x-[calc(100%-4px)] hover:translate-x-0" : "translate-x-full hover:translate-x-0"
+      )}>
         {/* Invisible trigger area that stays on screen to detect hover */}
         <div className="absolute right-0 top-0 w-4 h-full -left-4" />
         {navigation.map((item) => {
