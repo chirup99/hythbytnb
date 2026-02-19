@@ -6098,7 +6098,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
             <div 
               className={cn(
                 "flex items-center bg-background rounded-md border border-border shadow-sm h-8 overflow-hidden cursor-default transition-all duration-300",
-                isBarCollapsed ? "w-8" : "w-[235px]"
+                isBarCollapsed ? "w-8" : "min-w-[235px] w-auto"
               )}
               data-testid="button-toggle-notes-ai-visibility"
             >
