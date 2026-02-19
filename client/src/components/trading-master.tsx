@@ -6153,11 +6153,6 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                             <span className="text-xs">×</span>
                           </button>
                         </div>
-                            className="text-slate-500 hover:text-white transition-colors"
-                          >
-                            <X className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
                         <div className="p-4 space-y-4">
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
@@ -6243,21 +6238,21 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
           )}
           
           {isNotesAIVisible && (
-            <Card className="bg-slate-900/95 dark:bg-slate-900/95 border-slate-700 h-full backdrop-blur-sm overflow-hidden flex flex-col">
-            <CardContent className="p-4 h-full flex flex-col">
-              <div className="flex items-center justify-between mb-3">
+            <Card className="bg-background border-border h-full overflow-hidden flex flex-col shadow-none rounded-md">
+            <CardContent className="p-3 h-full flex flex-col">
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-                  <h3 className="text-sm font-medium text-slate-200">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  <h3 className="text-xs font-medium text-foreground">
                     {isVisualAIMode ? 'Visual AI' : (isAIMode ? 'AI' : 'Notes AI')}
                   </h3>
                   {isAIMode && !isVisualAIMode && (
-                    <Badge variant="outline" className="text-[10px] h-4 px-1 bg-purple-500/10 text-purple-400 border-purple-500/20">
+                    <Badge variant="outline" className="text-[9px] h-3.5 px-1 bg-primary/5 text-primary border-primary/10">
                       Social Feed
                     </Badge>
                   )}
                   {isVisualAIMode && (
-                    <Badge variant="outline" className="text-[10px] h-4 px-1 bg-blue-500/10 text-blue-400 border-blue-500/20">
+                    <Badge variant="outline" className="text-[9px] h-3.5 px-1 bg-primary/5 text-primary border-primary/10">
                       Chart Analysis
                     </Badge>
                   )}
@@ -6268,15 +6263,15 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     size="icon"
                     variant="ghost"
                     onClick={() => setIsVisualAIMode(!isVisualAIMode)}
-                    className={`h-7 w-7 ${
+                    className={`h-6 w-6 ${
                       isVisualAIMode 
-                        ? "text-blue-400 hover:text-blue-300 hover:bg-blue-900/40" 
-                        : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/40"
+                        ? "text-primary hover:bg-muted" 
+                        : "text-muted-foreground hover:bg-muted"
                     }`}
                     data-testid="button-toggle-visual-ai"
                     title={isVisualAIMode ? "Switch to Notes AI" : "Switch to Visual AI"}
                   >
-                    {isVisualAIMode ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
+                    {isVisualAIMode ? <ToggleRight className="w-3.5 h-3.5" /> : <ToggleLeft className="w-3.5 h-3.5" />}
                   </Button>
 
                   {!isVisualAIMode && (
@@ -6286,21 +6281,21 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                           size="icon"
                           variant="ghost"
                           onClick={handleCancelNotes}
-                          className="h-7 w-7 text-red-400 hover:text-red-300 hover:bg-red-900/40"
+                          className="h-6 w-6 text-destructive hover:bg-destructive/10"
                           data-testid="button-cancel-notes"
                           title="Cancel"
                         >
-                          <X className="w-4 h-4" />
+                          <X className="w-3.5 h-3.5" />
                         </Button>
                         <Button
                           size="icon"
                           variant="ghost"
                           onClick={handleSaveNotes}
-                          className="h-7 w-7 text-green-400 hover:text-green-300 hover:bg-green-900/40"
+                          className="h-6 w-6 text-green-500 hover:bg-green-500/10"
                           data-testid="button-save-notes"
                           title="Save"
                         >
-                          <Check className="w-4 h-4" />
+                          <Check className="w-3.5 h-3.5" />
                         </Button>
                       </div>
                     ) : (
@@ -6308,11 +6303,11 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                         size="icon"
                         variant="ghost"
                         onClick={handleEditNotes}
-                        className="h-7 w-7 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40"
+                        className="h-6 w-6 text-muted-foreground hover:bg-muted"
                         data-testid="button-edit-notes"
                         title="Edit Notes"
                       >
-                        <Edit className="w-4 h-4" />
+                        <Edit className="w-3.5 h-3.5" />
                       </Button>
                     )
                   )}
@@ -6321,15 +6316,15 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     size="icon"
                     variant="ghost"
                     onClick={() => setIsAIMode(!isAIMode)}
-                    className={`h-7 w-7 ml-1 ${
+                    className={`h-6 w-6 ml-1 ${
                       isAIMode 
-                        ? "text-purple-400 bg-purple-500/10 hover:bg-purple-500/20" 
-                        : "text-slate-400 hover:text-purple-400"
+                        ? "text-primary bg-primary/5 hover:bg-primary/10" 
+                        : "text-muted-foreground hover:bg-muted"
                     }`}
                     data-testid="button-toggle-ai"
                     title="AI Mode"
                   >
-                    <Sparkles className="w-4 h-4" />
+                    <Sparkles className="w-3.5 h-3.5" />
                   </Button>
                 </div>
               </div>
