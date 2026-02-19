@@ -6039,11 +6039,11 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
               {/* Price Info Bar */}
               <div className="flex items-center gap-3 px-3 py-1 bg-muted/10 border-b border-border overflow-x-auto no-scrollbar whitespace-nowrap">
-                <div className="flex items-center gap-3 text-[10px]">
-                  <span className="text-muted-foreground"><span className="text-green-500 font-bold mr-0.5">O</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0).toFixed(2)}</span></span>
-                  <span className="text-muted-foreground"><span className="text-green-500 font-bold mr-0.5">H</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.high || 0).toFixed(2)}</span></span>
-                  <span className="text-muted-foreground"><span className="text-red-500 font-bold mr-0.5">L</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.low || 0).toFixed(2)}</span></span>
-                  <span className="text-muted-foreground"><span className="text-red-500 font-bold mr-0.5">C</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0).toFixed(2)}</span></span>
+                <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+                  <span className="flex items-center gap-1"><span className="text-green-500 font-bold">O</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0).toFixed(2)}</span></span>
+                  <span className="flex items-center gap-1"><span className="text-green-500 font-bold">H</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.high || 0).toFixed(2)}</span></span>
+                  <span className="flex items-center gap-1"><span className="text-red-500 font-bold">L</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.low || 0).toFixed(2)}</span></span>
+                  <span className="flex items-center gap-1"><span className="text-red-500 font-bold">C</span><span className="font-mono">{(ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0).toFixed(2)}</span></span>
                   <span className={cn("font-mono font-bold ml-1", (ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) >= (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400")}>
                     {((ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) - (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0)).toFixed(2)}
                     ({(((ohlcData?.candles?.[ohlcData.candles.length-1]?.close || 0) - (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 0)) / (ohlcData?.candles?.[ohlcData.candles.length-1]?.open || 1) * 100).toFixed(2)}%)
@@ -6052,7 +6052,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
               </div>
               
               {/* Visual Chart Window */}
-              <div className="flex-1 relative bg-background">
+              <div className="flex-1 relative bg-background border border-border rounded-md overflow-hidden">
                 {transformationMode === 5 && selectionLineIndex !== null && (
                   <div className="absolute top-2 left-2 z-20 bg-primary text-primary-foreground px-2 py-1 rounded-md text-[10px] font-bold shadow-lg">
                     📍 Selection: Candle {selectionLineIndex + 1} | 🎲 Mock: {mockCandlesFromIndex.length} candles
@@ -6126,7 +6126,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     className="flex-1 px-2 py-1.5 flex items-center justify-between transition-colors overflow-hidden bg-background"
                   >
                     <div 
-                      className="flex items-center gap-1.5 animate-in fade-in slide-in-from-right-4 duration-500 min-w-0 cursor-pointer hover:bg-muted/50 rounded px-1 transition-colors" 
+                      className="flex items-center gap-1.5 animate-in fade-in slide-in-from-right-4 duration-500 min-w-0 cursor-pointer hover:bg-muted rounded px-1.5 py-0.5 transition-colors" 
                       key={forkMessageIndex}
                       onClick={() => setShowInsightTooltip(!showInsightTooltip)}
                       id="insight-trigger"
@@ -6156,56 +6156,56 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                         <div className="p-4 space-y-4">
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                              <span className="text-[10px] text-slate-400 uppercase font-medium">Context</span>
-                              <Badge variant="outline" className="text-[9px] h-4 bg-red-500/10 text-red-400 border-red-500/20 px-1.5">
-                                {forkMessages[forkMessageIndex].text.includes('loss') || forkMessages[forkMessageIndex].text.includes('FOMO') ? 'Negative Bias' : 'Market Insight'}
-                              </Badge>
-                            </div>
-                            <p className="text-xs text-slate-300 leading-relaxed font-medium">
-                              {forkMessages[forkMessageIndex].text.includes('FOMO') 
-                                ? "Impulsive entry detected based on rapid price movement. This often leads to buying at local tops. Recommended to wait for a retest or consolidation."
-                                : forkMessages[forkMessageIndex].text.includes('loss')
-                                ? "Last trade resulted in a loss due to tight stop-loss placement in high volatility. Psychology check: Avoid 'revenge trading' to recover quickly."
-                                : "AI analysis suggests strong momentum buildup. Monitor volume confirmation before confirming the trend continuation."}
-                            </p>
+                            <span className="text-[10px] text-muted-foreground uppercase font-medium">Context</span>
+                            <Badge variant="outline" className="text-[9px] h-4 bg-destructive/10 text-destructive border-destructive/20 px-1.5">
+                              {forkMessages[forkMessageIndex].text.includes('loss') || forkMessages[forkMessageIndex].text.includes('FOMO') ? 'Negative Bias' : 'Market Insight'}
+                            </Badge>
                           </div>
+                          <p className="text-xs text-muted-foreground leading-relaxed font-medium">
+                            {forkMessages[forkMessageIndex].text.includes('FOMO') 
+                              ? "Impulsive entry detected based on rapid price movement. This often leads to buying at local tops. Recommended to wait for a retest or consolidation."
+                              : forkMessages[forkMessageIndex].text.includes('loss')
+                              ? "Last trade resulted in a loss due to tight stop-loss placement in high volatility. Psychology check: Avoid 'revenge trading' to recover quickly."
+                              : "AI analysis suggests strong momentum buildup. Monitor volume confirmation before confirming the trend continuation."}
+                          </p>
+                        </div>
 
-                          <div className="pt-2 border-t border-slate-800">
-                            <span className="text-[10px] text-slate-400 uppercase font-medium block mb-2">Psychology Tags</span>
-                            <div className="flex flex-wrap gap-1.5">
-                              {forkMessages[forkMessageIndex].text.includes('FOMO') ? (
-                                <>
-                                  <Badge variant="secondary" className="text-[10px] bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 border-none">#Impatience</Badge>
-                                  <Badge variant="secondary" className="text-[10px] bg-red-500/10 text-red-400 hover:bg-red-500/20 border-none">#Chase</Badge>
-                                  <Badge variant="secondary" className="text-[10px] bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border-none">#MarketNoise</Badge>
-                                </>
-                              ) : forkMessages[forkMessageIndex].text.includes('loss') ? (
-                                <>
-                                  <Badge variant="secondary" className="text-[10px] bg-red-500/10 text-red-400 hover:bg-red-500/20 border-none">#Drawdown</Badge>
-                                  <Badge variant="secondary" className="text-[10px] bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 border-none">#Discipline</Badge>
-                                  <Badge variant="secondary" className="text-[10px] bg-slate-500/10 text-slate-400 hover:bg-slate-500/20 border-none">#TechnicalExit</Badge>
-                                </>
-                              ) : (
-                                <>
-                                  <Badge variant="secondary" className="text-[10px] bg-green-500/10 text-green-400 hover:bg-green-500/20 border-none">#Insight</Badge>
-                                  <Badge variant="secondary" className="text-[10px] bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border-none">#Analysis</Badge>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                          
-                          <div className="bg-blue-500/5 rounded-md p-2 border border-blue-500/10">
-                            <div className="flex items-start gap-2">
-                              <AlertCircle className="w-3 h-3 text-blue-400 mt-0.5 shrink-0" />
-                              <span className="text-[10px] text-blue-300 italic">
-                                Tip: Journal this observation to improve your execution edge.
-                              </span>
-                            </div>
+                        <div className="pt-2 border-t border-border">
+                          <span className="text-[10px] text-muted-foreground uppercase font-medium block mb-2">Psychology Tags</span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {forkMessages[forkMessageIndex].text.includes('FOMO') ? (
+                              <>
+                                <Badge variant="secondary" className="text-[10px] bg-orange-500/10 text-orange-500 hover:bg-orange-500/20 border-none">#Impatience</Badge>
+                                <Badge variant="secondary" className="text-[10px] bg-destructive/10 text-destructive hover:bg-destructive/20 border-none">#Chase</Badge>
+                                <Badge variant="secondary" className="text-[10px] bg-primary/10 text-primary hover:bg-primary/20 border-none">#MarketNoise</Badge>
+                              </>
+                            ) : forkMessages[forkMessageIndex].text.includes('loss') ? (
+                              <>
+                                <Badge variant="secondary" className="text-[10px] bg-destructive/10 text-destructive hover:bg-destructive/20 border-none">#Drawdown</Badge>
+                                <Badge variant="secondary" className="text-[10px] bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 border-none">#Discipline</Badge>
+                                <Badge variant="secondary" className="text-[10px] bg-muted text-muted-foreground border-none">#TechnicalExit</Badge>
+                              </>
+                            ) : (
+                              <>
+                                <Badge variant="secondary" className="text-[10px] bg-green-500/10 text-green-500 hover:bg-green-500/20 border-none">#Insight</Badge>
+                                <Badge variant="secondary" className="text-[10px] bg-primary/10 text-primary hover:bg-primary/20 border-none">#Analysis</Badge>
+                              </>
+                            )}
                           </div>
                         </div>
-                        <div className="bg-slate-800/30 h-1 w-full overflow-hidden">
-                          <div className="bg-blue-500 h-full w-full animate-progress-shrink origin-left"></div>
+                        
+                        <div className="bg-primary/5 rounded-md p-2 border border-primary/10">
+                          <div className="flex items-start gap-2">
+                            <AlertCircle className="w-3 h-3 text-primary mt-0.5 shrink-0" />
+                            <span className="text-[10px] text-primary italic">
+                              Tip: Journal this observation to improve your execution edge.
+                            </span>
+                          </div>
                         </div>
+                      </div>
+                      <div className="bg-muted h-1 w-full overflow-hidden">
+                        <div className="bg-primary h-full w-full animate-progress-shrink origin-left"></div>
+                      </div>
                       </div>
                     )}
                     <div className="flex items-center gap-1 ml-1">
