@@ -4447,6 +4447,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
   // 🎯 VISUAL AI MODE STATE - Toggle between Notes AI and Visual AI
   const [isNotesAIVisible, setIsNotesAIVisible] = useState(false);
+  const [isBarCollapsed, setIsBarCollapsed] = useState(false);
   const [showInsightTooltip, setShowInsightTooltip] = useState(false);
   const [forkMessageIndex, setForkMessageIndex] = useState(0);
 
@@ -6095,122 +6096,152 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
         {/* Notes AI Section - Floating */}
         <div 
           ref={notesRef}
-          className="fixed bottom-4 right-4 z-[100] w-[350px] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out flex flex-col gap-2 items-end"
+          className={cn(
+            "fixed bottom-4 right-4 z-[100] max-h-[500px] shadow-2xl transition-all duration-300 ease-in-out flex flex-col gap-2 items-end",
+            isNotesAIVisible ? "w-[350px]" : (isBarCollapsed ? "w-10" : "w-[315px]")
+          )}
         >
           {/* Fork Floating Button - Animated Rotating Messages */}
           {!isNotesAIVisible && (
             <div 
-              className="flex items-center bg-white dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700 shadow-lg h-10 overflow-hidden cursor-default w-[280px]"
+              className={cn(
+                "flex items-center bg-white dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700 shadow-lg h-10 overflow-hidden cursor-default transition-all duration-300",
+                isBarCollapsed ? "w-10" : "w-[310px]"
+              )}
               data-testid="button-toggle-notes-ai-visibility"
             >
-              <div 
-                className="flex items-center gap-2 px-3 py-2 border-r border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors bg-gray-50 dark:bg-slate-800/50"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsVisualAIMode(false);
-                  setIsNotesAIVisible(true);
-                }}
-              >
-                <Edit className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-              </div>
-              <div 
-                className="flex-1 px-3 py-2 flex items-center justify-between transition-colors overflow-hidden bg-white dark:bg-slate-900"
-              >
+              {isBarCollapsed ? (
                 <div 
-                  className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-500 min-w-0 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded px-1 transition-colors" 
-                  key={forkMessageIndex}
-                  onClick={() => setShowInsightTooltip(!showInsightTooltip)}
-                  id="insight-trigger"
+                  className="flex items-center justify-center w-10 h-10 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+                  onClick={() => setIsBarCollapsed(false)}
+                  title="Expand"
                 >
-                  {forkMessages[forkMessageIndex].icon}
-                  <span className="text-[11px] font-medium text-gray-600 dark:text-gray-300 truncate">
-                    {forkMessages[forkMessageIndex].text}
-                  </span>
+                  <ChevronLeft className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </div>
-                {showInsightTooltip && (
+              ) : (
+                <>
                   <div 
-                    id="insight-tooltip"
-                    className="fixed bottom-[70px] right-4 z-[110] w-[280px] bg-slate-900 border border-slate-700 rounded-lg shadow-2xl animate-in fade-in zoom-in duration-200 overflow-hidden"
+                    className="flex items-center gap-2 px-3 py-2 border-r border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors bg-gray-50 dark:bg-slate-800/50"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsVisualAIMode(false);
+                      setIsNotesAIVisible(true);
+                    }}
                   >
-                    <div className="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
-                      <div className="flex items-center gap-2">
-                        <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                        <span className="text-[11px] font-semibold text-slate-200 uppercase tracking-wider">AI Insight Analysis</span>
-                      </div>
-                      <button 
-                        onClick={() => setShowInsightTooltip(false)}
-                        className="text-slate-500 hover:text-white transition-colors"
+                    <Edit className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                  </div>
+                  <div 
+                    className="flex-1 px-3 py-2 flex items-center justify-between transition-colors overflow-hidden bg-white dark:bg-slate-900"
+                  >
+                    <div 
+                      className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-500 min-w-0 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded px-1 transition-colors" 
+                      key={forkMessageIndex}
+                      onClick={() => setShowInsightTooltip(!showInsightTooltip)}
+                      id="insight-trigger"
+                    >
+                      {forkMessages[forkMessageIndex].icon}
+                      <span className="text-[11px] font-medium text-gray-600 dark:text-gray-300 truncate">
+                        {forkMessages[forkMessageIndex].text}
+                      </span>
+                    </div>
+                    {showInsightTooltip && (
+                      <div 
+                        id="insight-tooltip"
+                        className="fixed bottom-[70px] right-4 z-[110] w-[280px] bg-slate-900 border border-slate-700 rounded-lg shadow-2xl animate-in fade-in zoom-in duration-200 overflow-hidden"
                       >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                    <div className="p-4 space-y-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] text-slate-400 uppercase font-medium">Context</span>
-                          <Badge variant="outline" className="text-[9px] h-4 bg-red-500/10 text-red-400 border-red-500/20 px-1.5">
-                            {forkMessages[forkMessageIndex].text.includes('loss') || forkMessages[forkMessageIndex].text.includes('FOMO') ? 'Negative Bias' : 'Market Insight'}
-                          </Badge>
+                        <div className="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                            <span className="text-[11px] font-semibold text-slate-200 uppercase tracking-wider">AI Insight Analysis</span>
+                          </div>
+                          <button 
+                            onClick={() => setShowInsightTooltip(false)}
+                            className="text-slate-500 hover:text-white transition-colors"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
                         </div>
-                        <p className="text-xs text-slate-300 leading-relaxed font-medium">
-                          {forkMessages[forkMessageIndex].text.includes('FOMO') 
-                            ? "Impulsive entry detected based on rapid price movement. This often leads to buying at local tops. Recommended to wait for a retest or consolidation."
-                            : forkMessages[forkMessageIndex].text.includes('loss')
-                            ? "Last trade resulted in a loss due to tight stop-loss placement in high volatility. Psychology check: Avoid 'revenge trading' to recover quickly."
-                            : "AI analysis suggests strong momentum buildup. Monitor volume confirmation before confirming the trend continuation."}
-                        </p>
-                      </div>
+                        <div className="p-4 space-y-4">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] text-slate-400 uppercase font-medium">Context</span>
+                              <Badge variant="outline" className="text-[9px] h-4 bg-red-500/10 text-red-400 border-red-500/20 px-1.5">
+                                {forkMessages[forkMessageIndex].text.includes('loss') || forkMessages[forkMessageIndex].text.includes('FOMO') ? 'Negative Bias' : 'Market Insight'}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                              {forkMessages[forkMessageIndex].text.includes('FOMO') 
+                                ? "Impulsive entry detected based on rapid price movement. This often leads to buying at local tops. Recommended to wait for a retest or consolidation."
+                                : forkMessages[forkMessageIndex].text.includes('loss')
+                                ? "Last trade resulted in a loss due to tight stop-loss placement in high volatility. Psychology check: Avoid 'revenge trading' to recover quickly."
+                                : "AI analysis suggests strong momentum buildup. Monitor volume confirmation before confirming the trend continuation."}
+                            </p>
+                          </div>
 
-                      <div className="pt-2 border-t border-slate-800">
-                        <span className="text-[10px] text-slate-400 uppercase font-medium block mb-2">Psychology Tags</span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {forkMessages[forkMessageIndex].text.includes('FOMO') ? (
-                            <>
-                              <Badge variant="secondary" className="text-[10px] bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 border-none">#Impatience</Badge>
-                              <Badge variant="secondary" className="text-[10px] bg-red-500/10 text-red-400 hover:bg-red-500/20 border-none">#Chase</Badge>
-                              <Badge variant="secondary" className="text-[10px] bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border-none">#MarketNoise</Badge>
-                            </>
-                          ) : forkMessages[forkMessageIndex].text.includes('loss') ? (
-                            <>
-                              <Badge variant="secondary" className="text-[10px] bg-red-500/10 text-red-400 hover:bg-red-500/20 border-none">#Drawdown</Badge>
-                              <Badge variant="secondary" className="text-[10px] bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 border-none">#Discipline</Badge>
-                              <Badge variant="secondary" className="text-[10px] bg-slate-500/10 text-slate-400 hover:bg-slate-500/20 border-none">#TechnicalExit</Badge>
-                            </>
-                          ) : (
-                            <>
-                              <Badge variant="secondary" className="text-[10px] bg-green-500/10 text-green-400 hover:bg-green-500/20 border-none">#Insight</Badge>
-                              <Badge variant="secondary" className="text-[10px] bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border-none">#Analysis</Badge>
-                            </>
-                          )}
+                          <div className="pt-2 border-t border-slate-800">
+                            <span className="text-[10px] text-slate-400 uppercase font-medium block mb-2">Psychology Tags</span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {forkMessages[forkMessageIndex].text.includes('FOMO') ? (
+                                <>
+                                  <Badge variant="secondary" className="text-[10px] bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 border-none">#Impatience</Badge>
+                                  <Badge variant="secondary" className="text-[10px] bg-red-500/10 text-red-400 hover:bg-red-500/20 border-none">#Chase</Badge>
+                                  <Badge variant="secondary" className="text-[10px] bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border-none">#MarketNoise</Badge>
+                                </>
+                              ) : forkMessages[forkMessageIndex].text.includes('loss') ? (
+                                <>
+                                  <Badge variant="secondary" className="text-[10px] bg-red-500/10 text-red-400 hover:bg-red-500/20 border-none">#Drawdown</Badge>
+                                  <Badge variant="secondary" className="text-[10px] bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 border-none">#Discipline</Badge>
+                                  <Badge variant="secondary" className="text-[10px] bg-slate-500/10 text-slate-400 hover:bg-slate-500/20 border-none">#TechnicalExit</Badge>
+                                </>
+                              ) : (
+                                <>
+                                  <Badge variant="secondary" className="text-[10px] bg-green-500/10 text-green-400 hover:bg-green-500/20 border-none">#Insight</Badge>
+                                  <Badge variant="secondary" className="text-[10px] bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border-none">#Analysis</Badge>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          
+                          <div className="bg-blue-500/5 rounded-md p-2 border border-blue-500/10">
+                            <div className="flex items-start gap-2">
+                              <AlertCircle className="w-3 h-3 text-blue-400 mt-0.5 shrink-0" />
+                              <span className="text-[10px] text-blue-300 italic">
+                                Tip: Journal this observation to improve your execution edge.
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-slate-800/30 h-1 w-full overflow-hidden">
+                          <div className="bg-blue-500 h-full w-full animate-progress-shrink origin-left"></div>
                         </div>
                       </div>
-                      
-                      <div className="bg-blue-500/5 rounded-md p-2 border border-blue-500/10">
-                        <div className="flex items-start gap-2">
-                          <AlertCircle className="w-3 h-3 text-blue-400 mt-0.5 shrink-0" />
-                          <span className="text-[10px] text-blue-300 italic">
-                            Tip: Journal this observation to improve your execution edge.
-                          </span>
-                        </div>
+                    )}
+                    <div className="flex items-center gap-1 ml-1">
+                      <div 
+                        className="cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 p-1 rounded-md transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsVisualAIMode(true);
+                          setIsNotesAIVisible(true);
+                        }}
+                        data-testid="button-open-visual-ai"
+                      >
+                        <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0", isNotesAIVisible && "rotate-180")} />
                       </div>
-                    </div>
-                    <div className="bg-slate-800/30 h-1 w-full overflow-hidden">
-                      <div className="bg-blue-500 h-full w-full animate-progress-shrink origin-left"></div>
+                      <div 
+                        className="cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 p-1 rounded-md transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsBarCollapsed(true);
+                        }}
+                        title="Collapse"
+                      >
+                        <X className="w-4 h-4 text-gray-400" />
+                      </div>
                     </div>
                   </div>
-                )}
-                <div 
-                  className="cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 p-1 rounded-md transition-colors ml-1"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsVisualAIMode(true);
-                    setIsNotesAIVisible(true);
-                  }}
-                  data-testid="button-open-visual-ai"
-                >
-                  <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0", isNotesAIVisible && "rotate-180")} />
-                </div>
-              </div>
+                </>
+              )}
             </div>
           )}
           
