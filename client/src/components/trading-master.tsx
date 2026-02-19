@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, TrendingDown, Calendar, Download, Check, ChevronsUpDown, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Search, MessageCircle, MessageSquare, Send, X, BarChart3, BookOpen, Target, CircleDot, Filter, RefreshCw, Play, MoreVertical, Trash2, Plus, Edit, Share2, Copy, ThumbsUp, Code, Shuffle, ToggleLeft, ToggleRight, Sparkles, FileText, AlertCircle, Settings, Maximize2, Minimize2, Table2 } from "lucide-react";
+import { TrendingUp, TrendingDown, Calendar, Download, Check, ChevronsUpDown, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Search, MessageCircle, MessageSquare, Send, X, BarChart3, BookOpen, Target, CircleDot, Filter, RefreshCw, Play, MoreVertical, Trash2, Plus, Edit, Share2, Copy, ThumbsUp, Code, Shuffle, ToggleLeft, ToggleRight, Sparkles, FileText, AlertCircle, Settings, Maximize2, Minimize2, Table2, Scan } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, ReferenceLine, AreaChart, Area } from 'recharts';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -5657,8 +5657,8 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
               Options
             </TabsTrigger>
             <TabsTrigger value="visualai" className="flex items-center gap-2" data-testid="button-tab-visualai">
-              <Sparkles className="h-4 w-4" />
-              Test AI
+              <Scan className="h-4 w-4" />
+              Scanner
             </TabsTrigger>
           </TabsList>
           
@@ -10690,7 +10690,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
             </Card>
           </TabsContent>
 
-          {/* Test AI Tab Content - REVOLUTIONARY PATTERN RECOGNITION ENGINE */}
+          {/* Scanner Tab Content - REVOLUTIONARY PATTERN RECOGNITION ENGINE */}
           <TabsContent value="visualai" className="p-6 space-y-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -10908,10 +10908,13 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     </div>
                   </div>
 
-                  {/* 🎨 Test AI - Pattern Recognition Engine Interface */}
+                  {/* 🎨 Scanner - Pattern Recognition Engine Interface */}
                   <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-lg p-6 border-2 border-purple-500/30 shadow-2xl">
                     <div className="text-center space-y-4">
-                      <div className="text-purple-400 text-lg font-semibold">🚀 Test AI Engine</div>
+                      <div className="text-purple-400 text-lg font-semibold flex items-center justify-center gap-2">
+                        <Scan className="w-5 h-5" />
+                        <span>🚀 Scanner Engine</span>
+                      </div>
                       <div className="text-gray-300 text-sm">Revolutionary Pattern Recognition System</div>
                       <div className="text-xs text-gray-500 bg-slate-800/50 p-3 rounded-lg">
                         Advanced AI-powered pattern detection with 75% matching threshold
