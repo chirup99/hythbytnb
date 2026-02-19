@@ -6250,86 +6250,90 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
             <CardContent className="p-4 h-full flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold text-white">
-                    {isVisualAIMode ? '📊 Visual AI' : (isAIMode ? 'AI' : 'Notes AI')}
+                  <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
+                  <h3 className="text-sm font-medium text-slate-200">
+                    {isVisualAIMode ? 'Visual AI' : (isAIMode ? 'AI' : 'Notes AI')}
                   </h3>
                   {isAIMode && !isVisualAIMode && (
-                    <Badge variant="secondary" className="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
-                      Social Feed AI
+                    <Badge variant="outline" className="text-[10px] h-4 px-1 bg-purple-500/10 text-purple-400 border-purple-500/20">
+                      Social Feed
                     </Badge>
                   )}
                   {isVisualAIMode && (
-                    <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                    <Badge variant="outline" className="text-[10px] h-4 px-1 bg-blue-500/10 text-blue-400 border-blue-500/20">
                       Chart Analysis
                     </Badge>
                   )}
                 </div>
-                <div className="flex gap-1">
+                <div className="flex items-center gap-1">
                   {/* 🎯 SLIDE TOGGLE - Switch between Notes AI and Visual AI */}
                   <Button
-                    size="sm"
+                    size="icon"
                     variant="ghost"
                     onClick={() => setIsVisualAIMode(!isVisualAIMode)}
-                    className={`text-xs h-8 px-2 py-0 ${
+                    className={`h-7 w-7 ${
                       isVisualAIMode 
-                        ? "text-blue-400 hover:text-blue-300 hover:bg-blue-950" 
-                        : "text-gray-400 hover:text-white hover:bg-slate-800"
+                        ? "text-blue-400 hover:text-blue-300 hover:bg-blue-900/40" 
+                        : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/40"
                     }`}
                     data-testid="button-toggle-visual-ai"
                     title={isVisualAIMode ? "Switch to Notes AI" : "Switch to Visual AI"}
                   >
                     {isVisualAIMode ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
                   </Button>
-                  <Button
-                    size="sm"
-                    variant={isAIMode ? "default" : "ghost"}
-                    onClick={() => setIsAIMode(!isAIMode)}
-                    className={`text-xs h-8 px-2 py-0 ${
-                      isAIMode 
-                        ? "bg-purple-600 hover:bg-purple-700 text-white" 
-                        : "hidden"
-                    }`}
-                    data-testid="button-toggle-ai"
-                  >
-                    <Sparkles className="w-6 h-6 mr-1" />
-                    AI
-                  </Button>
-                  {!isAIMode && !isVisualAIMode && (
+
+                  {!isVisualAIMode && (
                     isEditingNotes ? (
-                      <>
+                      <div className="flex items-center gap-1 ml-1">
                         <Button
-                          size="sm"
+                          size="icon"
                           variant="ghost"
                           onClick={handleCancelNotes}
-                          className="text-xs text-red-400 hover:text-red-300 hover:bg-red-950 h-6 px-2"
+                          className="h-7 w-7 text-red-400 hover:text-red-300 hover:bg-red-900/40"
                           data-testid="button-cancel-notes"
+                          title="Cancel"
                         >
-                          <X className="w-3 h-3 mr-1" />
-                          Cancel
+                          <X className="w-4 h-4" />
                         </Button>
                         <Button
-                          size="sm"
+                          size="icon"
+                          variant="ghost"
                           onClick={handleSaveNotes}
-                          className="text-xs bg-green-600 hover:bg-green-700 text-white h-6 px-2"
+                          className="h-7 w-7 text-green-400 hover:text-green-300 hover:bg-green-900/40"
                           data-testid="button-save-notes"
+                          title="Save"
                         >
-                          <Check className="w-3 h-3 mr-1" />
-                          Save
+                          <Check className="w-4 h-4" />
                         </Button>
-                      </>
+                      </div>
                     ) : (
                       <Button
-                        size="sm"
+                        size="icon"
                         variant="ghost"
                         onClick={handleEditNotes}
-                        className="text-xs text-gray-400 hover:text-white hover:bg-slate-800 h-6 px-2"
+                        className="h-7 w-7 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40"
                         data-testid="button-edit-notes"
+                        title="Edit Notes"
                       >
-                        <Edit className="w-3 h-3 mr-1" />
-                        Edit
+                        <Edit className="w-4 h-4" />
                       </Button>
                     )
                   )}
+
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => setIsAIMode(!isAIMode)}
+                    className={`h-7 w-7 ml-1 ${
+                      isAIMode 
+                        ? "text-purple-400 bg-purple-500/10 hover:bg-purple-500/20" 
+                        : "text-slate-400 hover:text-purple-400"
+                    }`}
+                    data-testid="button-toggle-ai"
+                    title="AI Mode"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
               
