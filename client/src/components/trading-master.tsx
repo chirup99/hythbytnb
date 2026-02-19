@@ -5945,6 +5945,66 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
 
                   <div className="h-4 w-[1px] bg-border mx-1" />
 
+                  {/* 📅 DATE PICKER - ICICI1minPatternOHLC style */}
+                  <div className="flex items-center gap-1">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 text-muted-foreground hover:bg-muted"
+                          title="Change Date"
+                          data-testid="button-ohlc-date-picker"
+                        >
+                          <Calendar className="h-3.5 w-3.5" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <div className="p-3 bg-popover border-border rounded-md shadow-md">
+                          <div className="space-y-3">
+                            <div className="space-y-1">
+                              <Label className="text-[10px] font-medium text-muted-foreground uppercase">Select Date Range</Label>
+                              <div className="grid grid-cols-1 gap-2">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-[10px] text-muted-foreground min-w-[30px]">From</span>
+                                  <Input
+                                    type="date"
+                                    value={ohlcFromDate}
+                                    onChange={(e) => setOhlcFromDate(e.target.value)}
+                                    className="h-7 text-[10px] bg-background border-input"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-[10px] text-muted-foreground min-w-[30px]">To</span>
+                                  <Input
+                                    type="date"
+                                    value={ohlcToDate}
+                                    onChange={(e) => setOhlcToDate(e.target.value)}
+                                    className="h-7 text-[10px] bg-background border-input"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <Button 
+                              size="sm" 
+                              className="w-full h-7 text-[10px]"
+                              onClick={() => {
+                                handleFetchOhlcData();
+                              }}
+                            >
+                              Apply Date Range
+                            </Button>
+                          </div>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                    <span className="text-[9px] font-medium text-muted-foreground whitespace-nowrap hidden sm:inline">
+                      {ohlcFromDate === ohlcToDate ? ohlcFromDate : `${ohlcFromDate}..`}
+                    </span>
+                  </div>
+
+                  <div className="h-4 w-[1px] bg-border mx-1" />
+
                   {/* Pattern Dropdown */}
                   <div className="relative">
                     <button
