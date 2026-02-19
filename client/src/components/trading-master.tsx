@@ -6097,11 +6097,7 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                 <Edit className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               </div>
               <div 
-                className="flex-1 px-3 py-2 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors overflow-hidden bg-white dark:bg-slate-900"
-                onClick={() => {
-                  setIsVisualAIMode(true);
-                  setIsNotesAIVisible(true);
-                }}
+                className="flex-1 px-3 py-2 flex items-center justify-between transition-colors overflow-hidden bg-white dark:bg-slate-900"
               >
                 <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-500 min-w-0" key={forkMessageIndex}>
                   {forkMessages[forkMessageIndex].icon}
@@ -6109,7 +6105,17 @@ Risk Warning: Past performance does not guarantee future results. Trade responsi
                     {forkMessages[forkMessageIndex].text}
                   </span>
                 </div>
-                <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0", isNotesAIVisible && "rotate-180")} />
+                <div 
+                  className="cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 p-1 rounded-md transition-colors ml-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsVisualAIMode(true);
+                    setIsNotesAIVisible(true);
+                  }}
+                  data-testid="button-open-visual-ai"
+                >
+                  <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0", isNotesAIVisible && "rotate-180")} />
+                </div>
               </div>
             </div>
           )}
