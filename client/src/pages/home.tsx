@@ -20561,6 +20561,24 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <p className="text-[10px] text-slate-500">
                                     You can generate your access token from Dhan HQ portal settings.
                                   </p>
+                                  <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
+                                    <span className="text-[10px] text-slate-500 font-medium">Postback URL:</span>
+                                    <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">https://perala.in/api/dhan/callback</code>
+                                    <Button
+                                      size="icon"
+                                      variant="ghost"
+                                      className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 ml-0.5"
+                                      onClick={() => {
+                                        navigator.clipboard.writeText("https://perala.in/api/dhan/callback");
+                                        toast({
+                                          title: "Copied",
+                                          description: "Postback URL copied to clipboard",
+                                        });
+                                      }}
+                                    >
+                                      <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                    </Button>
+                                  </div>
                                 </div>
                               </div>
                               <div className="flex justify-end gap-3 pt-2">
