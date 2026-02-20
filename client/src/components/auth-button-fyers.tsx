@@ -156,15 +156,13 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess }: 
           </div>
         )}
         
-        <div className="p-2.5 bg-blue-50/50 dark:bg-blue-900/20 rounded-lg border border-blue-100/50 dark:border-blue-800/30 flex items-center justify-between group">
-          <div className="flex flex-col min-w-0">
-            <span className="text-[9px] text-blue-600/70 dark:text-blue-400/70 font-bold uppercase tracking-wider">Redirect URL</span>
-            <code className="text-[10px] font-mono text-slate-600 dark:text-slate-400 truncate max-w-[160px]">https://perala.in/api/fyers/callback</code>
-          </div>
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 w-full group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
+          <span className="text-[10px] text-slate-500 font-medium shrink-0">Redirect URL:</span>
+          <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold truncate flex-1">https://perala.in/api/fyers/callback</code>
           <Button
             size="icon"
             variant="ghost"
-            className="h-7 w-7 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-md transition-colors shrink-0"
+            className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 shrink-0"
             onClick={() => {
               navigator.clipboard.writeText("https://perala.in/api/fyers/callback");
               toast({
@@ -173,7 +171,7 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess }: 
               });
             }}
           >
-            <Copy className="h-3.5 w-3.5 text-blue-500" />
+            <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
           </Button>
         </div>
 
