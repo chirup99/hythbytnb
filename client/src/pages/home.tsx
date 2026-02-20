@@ -20595,18 +20595,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </Dialog>
 
                           <Dialog open={isFyersDialogOpen} onOpenChange={setIsFyersDialogOpen}>
-                            <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                              <DialogHeader>
-                                <DialogTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
-                                  <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="h-5 rounded-full" />
-                                  Connect Fyers Broker
-                                </DialogTitle>
-                              </DialogHeader>
-                              <AuthButtonFyers 
-                                externalAppId={fyersAppId} 
-                                externalSecretId={fyersSecretId} 
-                                onSuccess={() => setIsFyersDialogOpen(false)} 
-                              />
+                            <DialogContent className="sm:max-w-md p-0 overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl">
+                              <div className="p-6">
+                                <AuthButtonFyers 
+                                  externalAppId={fyersAppId} 
+                                  externalSecretId={fyersSecretId} 
+                                  onSuccess={() => setIsFyersDialogOpen(false)} 
+                                />
+                              </div>
                             </DialogContent>
                           </Dialog>
 

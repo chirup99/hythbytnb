@@ -66,25 +66,22 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess }: 
 
   if (isConnected) {
     return (
-      <div className="bg-orange-50 dark:bg-orange-950 border border-orange-200 dark:border-orange-800 rounded-lg p-4 mb-6">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center space-x-3 flex-1">
-            <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center flex-shrink-0">
-              <CheckCircle2 className="text-orange-600 dark:text-orange-400 h-4 w-4" />
-            </div>
-            <div className="min-w-0">
-              <h3 className="text-sm font-medium text-orange-900 dark:text-orange-200">
-                Fyers Connected
-              </h3>
-              <p className="text-xs text-orange-700 dark:text-orange-300 truncate">
-                User: <span className="font-semibold">{userName}</span>
-              </p>
-            </div>
+      <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-800 rounded-xl p-6">
+        <div className="flex flex-col items-center text-center space-y-4">
+          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
+            <CheckCircle2 className="text-blue-600 dark:text-blue-400 h-6 w-6" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Fyers Connected
+            </h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Logged in as <span className="font-medium text-blue-600 dark:text-blue-400">{userName}</span>
+            </p>
           </div>
           <Button
             variant="outline"
-            size="sm"
-            className="border-orange-600 text-orange-600"
+            className="w-full border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-400"
             onClick={() => {
               apiRequest("POST", "/api/fyers/disconnect").then(() => {
                 queryClient.invalidateQueries({ queryKey: ["/api/fyers/status"] });
@@ -93,7 +90,7 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess }: 
             }}
           >
             <LogOut className="h-4 w-4 mr-2" />
-            Disconnect
+            Disconnect Account
           </Button>
         </div>
       </div>
@@ -101,80 +98,82 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess }: 
   }
 
   return (
-    <div className="bg-orange-50 dark:bg-orange-950/50 border border-orange-200 dark:border-orange-800 rounded-lg p-4 mb-6">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between gap-4 border-b border-orange-100 dark:border-orange-900 pb-2">
-          <div className="flex items-center space-x-3 flex-1">
-            <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center flex-shrink-0">
-              <Plug className="text-orange-600 dark:text-orange-400 h-4 w-4" />
-            </div>
-            <div className="min-w-0">
-              <h3 className="text-sm font-medium text-orange-900 dark:text-orange-200">
-                Fyers Disconnected
-              </h3>
-              <p className="text-xs text-orange-700 dark:text-orange-300">
-                Connect your Fyers account
-              </p>
-            </div>
-          </div>
+    <div className="space-y-6">
+      <div className="flex flex-col items-center text-center space-y-2">
+        <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+          <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="h-6 w-6 rounded-full" />
         </div>
-        
-        <div className="grid gap-3">
-          {!externalAppId && (
-            <div className="grid gap-1.5">
-              <label className="text-[10px] font-medium text-slate-500 uppercase">App ID</label>
-              <input
-                type="text"
-                placeholder="Enter Fyers App ID"
-                className="flex h-8 w-full rounded-md border border-slate-200 bg-white px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-                value={internalAppId}
-                onChange={(e) => setAppId(e.target.value)}
-              />
-            </div>
-          )}
-          {!externalSecretId && (
-            <div className="grid gap-1.5">
-              <label className="text-[10px] font-medium text-slate-500 uppercase">Secret ID</label>
-              <input
-                type="password"
-                placeholder="Enter Fyers Secret ID"
-                className="flex h-8 w-full rounded-md border border-slate-200 bg-white px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-                value={internalSecretId}
-                onChange={(e) => setSecretId(e.target.value)}
-              />
-            </div>
-          )}
-          
-          <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
-            <span className="text-[10px] text-slate-500 font-medium">Redirect URL:</span>
-            <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">https://perala.in/api/fyers/callback</code>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 ml-0.5"
-              onClick={() => {
-                navigator.clipboard.writeText("https://perala.in/api/fyers/callback");
-                toast({
-                  title: "Copied",
-                  description: "Redirect URL copied to clipboard",
-                });
-              }}
-            >
-              <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-            </Button>
-          </div>
+        <div>
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Connect Fyers Broker</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Enter your credentials to link your account</p>
+        </div>
+      </div>
 
+      <div className="space-y-4">
+        {!externalAppId && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">App ID</label>
+            <input
+              type="text"
+              placeholder="e.g. OXIDHUEC01-100"
+              className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 dark:bg-slate-800/50 dark:border-slate-800 px-4 py-2 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:text-white"
+              value={internalAppId}
+              onChange={(e) => setAppId(e.target.value)}
+            />
+          </div>
+        )}
+        {!externalSecretId && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Secret ID</label>
+            <input
+              type="password"
+              placeholder="••••••••••••"
+              className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 dark:bg-slate-800/50 dark:border-slate-800 px-4 py-2 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:text-white"
+              value={internalSecretId}
+              onChange={(e) => setSecretId(e.target.value)}
+            />
+          </div>
+        )}
+        
+        <div className="p-3 bg-blue-50/50 dark:bg-blue-900/20 rounded-xl border border-blue-100/50 dark:border-blue-800/30 flex items-center justify-between group">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-blue-600/70 dark:text-blue-400/70 font-bold uppercase tracking-wider">Redirect URL</span>
+            <code className="text-[11px] font-mono text-slate-600 dark:text-slate-400 truncate max-w-[200px]">https://perala.in/api/fyers/callback</code>
+          </div>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="h-8 w-8 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-lg transition-colors"
+            onClick={() => {
+              navigator.clipboard.writeText("https://perala.in/api/fyers/callback");
+              toast({
+                title: "Copied",
+                description: "Redirect URL copied to clipboard",
+              });
+            }}
+          >
+            <Copy className="h-4 w-4 text-blue-500" />
+          </Button>
+        </div>
+
+        <div className="flex gap-3 pt-2">
+          <Button 
+            variant="outline" 
+            className="flex-1 h-11 rounded-xl border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
+            onClick={() => onSuccess?.()}
+          >
+            Cancel
+          </Button>
           <Button
             onClick={() => getAuthUrlMutation.mutate()}
             disabled={getAuthUrlMutation.isPending || isStatusLoading || isRedirecting || !effectiveAppId || !effectiveSecretId}
-            size="sm"
-            className="bg-orange-600 hover:bg-orange-700 text-white w-full"
+            className="flex-1 h-11 rounded-xl bg-[#10b981] hover:bg-[#059669] text-white font-semibold transition-all shadow-lg shadow-emerald-500/20"
           >
-            {getAuthUrlMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Key className="mr-2 h-4 w-4" />}
-            Connect Account
+            {getAuthUrlMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Connect Account"}
           </Button>
         </div>
       </div>
     </div>
+  );
   );
 }
