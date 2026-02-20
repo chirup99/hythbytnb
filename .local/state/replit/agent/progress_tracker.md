@@ -7,3 +7,4 @@
 [x] 7. Update documentation and internal labels to reflect "Scanner" rebranding
 [x] 8. Fix auto-hide vertical sidebar on NeoFeed tab by adding hover trigger width
 [x] 9. Resolve dotenv module error and verify application starts successfully
+[x] 10. Re-install dotenv package and confirm application runs without errors
