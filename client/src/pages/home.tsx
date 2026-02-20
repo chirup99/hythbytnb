@@ -20472,21 +20472,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           {/* Fyers */}
                           <Button
                             variant="outline"
-                            className="w-full h-10 bg-slate-50/50 dark:bg-slate-900/20 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 cursor-not-allowed relative hover:bg-slate-50/50 dark:hover:bg-slate-900/20"
-                            disabled
-                          >
-                            <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="w-4 h-4 mr-2 rounded-full" />
-                            Fyers
-                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
-                          </Button>
-
-                          {/* Fyers */}
-                          <Button
-                            variant="outline"
-                            className="w-full h-10 bg-slate-50/50 dark:bg-slate-900/20 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 relative hover:bg-slate-100 dark:hover:bg-slate-800"
+                            className="w-full h-10 bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700 relative"
                             onClick={() => setIsFyersDialogOpen(true)}
                           >
-                            <img src="https://play-lh.googleusercontent.com/RqpvFiLwp9Vz8dY3QZplf7IZ0ZzCCjH9CVXlO61FIrCUQQCDfSrvPufjDw6sfbjTKg=w240-h480-rw" alt="Fyers" className="w-4 h-4 mr-2 rounded-full" />
+                            <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="w-4 h-4 mr-2 rounded-full" />
                             Fyers
                           </Button>
 
@@ -20609,7 +20598,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                               <DialogHeader>
                                 <DialogTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
-                                  <img src="https://play-lh.googleusercontent.com/RqpvFiLwp9Vz8dY3QZplf7IZ0ZzCCjH9CVXlO61FIrCUQQCDfSrvPufjDw6sfbjTKg=w240-h480-rw" alt="Fyers" className="h-5 rounded-full" />
+                                  <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="h-5 rounded-full" />
                                   Connect Fyers Broker
                                 </DialogTitle>
                               </DialogHeader>
