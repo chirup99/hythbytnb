@@ -4288,6 +4288,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   const [dhanAccessToken, setDhanAccessToken] = useState<string | null>(null);
   const [dhanClientName, setDhanClientName] = useState<string | null>(localStorage.getItem("dhan_client_name"));
+  const { data: fyersStatus } = useQuery({
+    queryKey: ["/api/fyers/status"],
+    refetchInterval: 5000,
+  });
+  const fyersIsConnected = fyersStatus?.connected && fyersStatus?.authenticated;
+
   const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
   const [isFyersDialogOpen, setIsFyersDialogOpen] = useState(false);
   const [fyersAppId, setFyersAppId] = useState("");
@@ -20470,14 +20476,49 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </Button>
 
                           {/* Fyers */}
-                          <Button
-                            variant="outline"
-                            className="w-full h-10 bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700 relative"
-                            onClick={() => setIsFyersDialogOpen(true)}
-                          >
-                            <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="w-4 h-4 mr-2 rounded-full" />
-                            Fyers
-                          </Button>
+                          {fyersIsConnected ? (
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                className="flex-1 h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 cursor-default"
+                              >
+                                <img 
+                                  src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" 
+                                  alt="Fyers" 
+                                  className="w-4 h-4 mr-2 rounded-full"
+                                />
+                                Fyers
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
+                                onClick={() => {
+                                  apiRequest("POST", "/api/fyers/disconnect").then(() => {
+                                    queryClient.invalidateQueries({ queryKey: ["/api/fyers/status"] });
+                                    toast({ title: "Disconnected", description: "Fyers account disconnected" });
+                                  });
+                                }}
+                                title="Disconnect Fyers"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              className={`w-full h-10 ${
+                                (zerodhaIsConnected || upstoxIsConnected || angelOneIsConnected || dhanIsConnected)
+                                  ? 'bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 dark:text-slate-600 border-slate-300 dark:border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
+                                  : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700 relative'
+                              }`}
+                              onClick={() => setIsFyersDialogOpen(true)}
+                              disabled={zerodhaIsConnected || upstoxIsConnected || angelOneIsConnected || dhanIsConnected}
+                            >
+                              <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="w-4 h-4 mr-2 rounded-full" />
+                              Fyers
+                            </Button>
+                          )}
 
                           {/* ICICI Securities */}
                           <Button
@@ -20596,13 +20637,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                           <Dialog open={isFyersDialogOpen} onOpenChange={setIsFyersDialogOpen}>
                             <DialogContent className="sm:max-w-md p-0 overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl">
-                              <div className="p-6">
-                                <AuthButtonFyers 
-                                  externalAppId={fyersAppId} 
-                                  externalSecretId={fyersSecretId} 
-                                  onSuccess={() => setIsFyersDialogOpen(false)} 
-                                />
-                              </div>
+                              {!fyersIsConnected && (
+                                <div className="p-6">
+                                  <AuthButtonFyers 
+                                    externalAppId={fyersAppId} 
+                                    externalSecretId={fyersSecretId} 
+                                    onSuccess={() => setIsFyersDialogOpen(false)} 
+                                  />
+                                </div>
+                              )}
                             </DialogContent>
                           </Dialog>
 
