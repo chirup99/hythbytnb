@@ -175,5 +175,4 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess }: 
       </div>
     </div>
   );
-  );
 }
