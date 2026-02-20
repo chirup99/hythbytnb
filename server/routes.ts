@@ -81,6 +81,7 @@ import { tradingChallengeService } from './trading-challenge-service';
 import { upstoxOAuthManager } from './upstox-oauth';
 import { angelOneOAuthManager } from './angel-one-oauth';
 import { dhanOAuthManager } from './dhan-oauth';
+import { fyersOAuthManager } from './fyers-oauth';
 
 const ANGEL_ONE_STOCK_TOKENS: { [key: string]: { token: string; exchange: string; tradingSymbol: string } } = {
   'NIFTYFIN': { token: '99926037', exchange: 'NSE', tradingSymbol: 'Nifty Fin Service' },

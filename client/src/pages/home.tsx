@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AuthButtonAngelOne, AngelOneStatus, AngelOneApiStatistics, AngelOneSystemStatus, AngelOneLiveMarketPrices } from "@/components/auth-button-angelone";
 
 import { AuthButtonUpstox } from "@/components/auth-button-upstox";
-
+import { AuthButtonFyers } from "@/components/auth-button-fyers";
 import { TradingJournalModal } from "@/components/trading-journal-modal";
 
 // REMOVED: All Fyers-related imports

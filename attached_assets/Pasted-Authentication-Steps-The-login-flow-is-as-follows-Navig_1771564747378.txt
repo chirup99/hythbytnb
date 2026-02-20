@@ -1,0 +1,120 @@
+Authentication Steps
+The login flow is as follows:
+
+Navigate to the Login API endpoint
+After successful login, user is redirected to the redirect uri with the auth_code
+POST the auth_code and appIdHash (SHA-256 of api_id + app_secret) to Validate Authcode API endpoint
+Obtain the access_token use that for all the subsequent requests
+
+
+Request Parameters for Step 1
+Request Attributes
+Attribute	Data Type	Description
+client_id	string	This is the app_id which you have received after creating the app.
+Eg: “qwerty-100”
+redirect_uri	string	This is where the user will be redirected after successful login.
+Eg: https://trade.fyers.in/api-login/redirect-uri/index.html
+This should be the same as what was provided at the time of app creation
+response_type	string	This value must always be “code”
+state	string	You send a random value. The same value will be returned after successful login to the redirect uri.
+Eg: “abcdefg”
+Response Attributes
+Attribute	Data Type	Description
+s	string	ok / error
+code	int	This is the code to identify specific responses
+message	string	This is the message to identify the specific error responses
+auth_code	string	String value which will be used to generate the access_token
+state	string	This value is returned as is from the first request
+
+
+Request samples
+cURLPythonNodeWeb modular APIC#Java
+
+Copy
+curl --location --request GET 'https://api-t1.fyers.in/api/v3/generate-authcode?client_id=SPXXXXE7-100&redirect_uri=https://trade.fyers.in/api-login/redirect-uri/index.html&response_type=code&state=sample_state'
+Request Parameters for Step 2
+Request Attributes
+Attribute	Data Type	Description
+grant_type	string	This value must always be “authorization_code
+appIdHash	string	SHA-256 of api_id + app_secret
+Eg: SHA-256 of app_id:app_secret is
+7c7120d2b5004f8de22d8dc2da0453b4d7e6211e37a4108b83712
+66ecff00498
+You can use this online tool for reference
+code	string	This is the auth_code which is received from the first step
+Response Attributes
+Attribute	Data Type	Description
+s	string	ok / error
+code	int	This is the code to identify specific responses
+message	string	This is the message to identify the specific error responses
+access_token	string	This value will be used for all the subsequent requests.
+
+
+Request samples
+cURLPythonNodeWeb modular APIC#Java
+
+Copy
+curl --location --request POST 'https://api-t1.fyers.in/api/v3/validate-authcode' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "grant_type":"authorization_code",  
+    "appIdHash":"c3efb1075ef2332b3a4ec7d44b0f05c1********************",
+    "code":"eyJ0eXAi*******.eyJpc3MiOiJhcGkubG9********.r_65Awa1kGdsNTAgD******"
+}'
+
+----------------------------------------------------------------------------------
+Sample Success Response               
+----------------------------------------------------------------------------------          
+
+{
+  's': 'ok',
+  'code': 200,
+  'message': '',
+  'access_token': 'eyJ0eXAiOi***.eyJpc3MiOiJh***.HrSubihiFKXOpUOj_7***',
+  'refresh_token': 'eyJ0eXAiO***.eyJpc3MiOiJh***.67mXADDLrrleuEH_EE***'
+}
+Refresh Token
+When we validate the auth code to generate the access token, a refresh token is also sent in the response.
+
+The refresh token has a validity of 15 days. A new access token can be generated using the refresh token as long as the refresh token is valid.
+
+The following parameters must be passed in the body for the POST request
+
+Attribute	Data Type	Description
+grant_type	string	The grant_type parameter must be set to “refresh_token”.
+appIdHash	string	SHA-256 of api_id + app_secret. Eg: SHA-256 of app_id:app_secret is c7120d2b5004f8de22d8dc2da0453b4d7e6211e37a4108b8371266ecff00498. You can use this online tool for reference (https://emn178.github.io/online-tools/sha256.html)
+refresh_token	string	The refresh token previously issued to the client from the validate auth code API
+pin	string	The user's pin
+
+
+Request samples
+cURL
+
+Copy
+curl --location --request POST 'https://api-t1.fyers.in/api/v3/validate-refresh-token' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "grant_type": "refresh_token",
+  "appIdHash": "c3efb1075ef2332b3a4ec7d44b0f05c1********************",
+  "refresh_token": "eyJ0eXAiOiJKV1***.eyJpc3MiOiJhcGkuZn***.5_Qpnd1nQXBw1T_wNJNFF***",
+  "pin": "****"
+}'
+
+----------------------------------------------------------------------------------
+Sample Success Response 
+----------------------------------------------------------------------------------
+
+{
+    "s": "ok",
+    "code": 200,
+    "message": "",
+    "access_token": "eyJ0eXAiOiJK***.eyJpc3MiOiJhcGkuZnllcnM***.IzcuRxg4tnXiULCx3***"
+}
+Best Practices
+These are the recommended best practises that you should follow while using the APIs
+
+Never share your app_secret with anyone
+Never share your access_token with anyone
+Do not provide trading permissions unless you want to use the app to place orders
+Provide a redirect_uri which is in your control rather than a public endpoint such as google.com
+You should send a random value in the state parameter and verify whether the same value has been returned to you
