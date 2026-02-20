@@ -12,23 +12,11 @@ interface FyersOAuthState {
   lastRefresh: Date | null;
 }
 
-interface FyersTokenResponse {
-  s: string;
-  code: number;
-  message: string;
-  access_token: string;
-}
-
-interface FyersProfileResponse {
-  s: string;
-  code: number;
-  message: string;
-  data: {
-    fy_id: string;
-    name: string;
-    email_id: string;
-    display_name: string;
-  };
+interface StoredOAuthState {
+  state: string;
+  appId: string;
+  secretKey: string;
+  createdAt: Date;
 }
 
 class FyersOAuthManager {
@@ -45,7 +33,7 @@ class FyersOAuthManager {
   private appId: string;
   private secretKey: string;
   private redirectUri: string;
-  private oauthStates: Map<string, { state: string; createdAt: Date }> = new Map();
+  private oauthStates: Map<string, StoredOAuthState> = new Map();
 
   constructor(appId?: string, secretKey?: string) {
     this.appId = appId || process.env.FYERS_APP_ID || '';
@@ -53,16 +41,9 @@ class FyersOAuthManager {
     this.redirectUri = `http://localhost:5000/api/fyers/callback`;
 
     console.log('🔵 [FYERS] OAuth Manager initialized');
-    if (!this.appId || !this.secretKey) {
-      console.error('🔴 [FYERS] CRITICAL: Missing Fyers credentials!');
-    }
   }
 
-  generateAuthorizationUrl(domain?: string): { url: string; state: string } {
-    if (!this.appId || !this.secretKey) {
-      throw new Error('Fyers credentials not configured.');
-    }
-
+  generateAuthorizationUrl(appId: string, secretKey: string, domain?: string): { url: string; state: string } {
     const state = crypto.randomBytes(32).toString('hex');
     let redirectUri = this.redirectUri;
     
@@ -73,27 +54,29 @@ class FyersOAuthManager {
     }
 
     const params = new URLSearchParams({
-      client_id: this.appId,
+      client_id: appId,
       redirect_uri: redirectUri,
       response_type: 'code',
       state: state,
     });
 
     const authUrl = `https://api-t1.fyers.in/api/v3/generate-authcode?${params.toString()}`;
-    this.oauthStates.set(state, { state, createdAt: new Date() });
+    this.oauthStates.set(state, { state, appId, secretKey, createdAt: new Date() });
 
     return { url: authUrl, state };
   }
 
   async exchangeCodeForToken(code: string, state: string): Promise<boolean> {
     try {
-      if (!this.oauthStates.has(state)) {
+      const storedState = this.oauthStates.get(state);
+      if (!storedState) {
         console.error('🔴 [FYERS] Invalid state parameter');
         return false;
       }
+      const { appId, secretKey } = storedState;
       this.oauthStates.delete(state);
 
-      const appIdHash = crypto.createHash('sha256').update(`${this.appId}:${this.secretKey}`).digest('hex');
+      const appIdHash = crypto.createHash('sha256').update(`${appId}:${secretKey}`).digest('hex');
 
       const response = await axios.post('https://api-t1.fyers.in/api/v3/validate-authcode', {
         grant_type: 'authorization_code',
@@ -105,9 +88,9 @@ class FyersOAuthManager {
         this.state.accessToken = response.data.access_token;
         this.state.isAuthenticated = true;
         this.state.lastRefresh = new Date();
-        this.state.tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // Fyers tokens usually last 24h
+        this.state.tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-        await this.fetchUserProfile();
+        await this.fetchUserProfile(appId, secretKey);
         return true;
       }
       return false;
@@ -117,14 +100,13 @@ class FyersOAuthManager {
     }
   }
 
-  private async fetchUserProfile(): Promise<void> {
+  private async fetchUserProfile(appId: string, secretKey: string): Promise<void> {
     try {
       if (!this.state.accessToken) return;
 
-      const appIdHash = crypto.createHash('sha256').update(`${this.appId}:${this.secretKey}`).digest('hex');
       const response = await axios.get('https://api-t1.fyers.in/api/v3/profile', {
         headers: {
-          'Authorization': `${this.appId}:${this.state.accessToken}`
+          'Authorization': `${appId}:${this.state.accessToken}`
         }
       });
 

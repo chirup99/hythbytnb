@@ -20602,55 +20602,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   Connect Fyers Broker
                                 </DialogTitle>
                               </DialogHeader>
-                              <div className="space-y-4 py-4">
-                                <div className="space-y-2">
-                                  <Label htmlFor="fyers-app-id" className="text-slate-700 dark:text-slate-300">App ID</Label>
-                                  <Input
-                                    id="fyers-app-id"
-                                    placeholder="Enter your Fyers App ID"
-                                    value={fyersAppId}
-                                    onChange={(e) => setFyersAppId(e.target.value)}
-                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label htmlFor="fyers-secret-id" className="text-slate-700 dark:text-slate-300">Secret ID</Label>
-                                  <Input
-                                    id="fyers-secret-id"
-                                    type="password"
-                                    placeholder="Enter your Fyers Secret ID"
-                                    value={fyersSecretId}
-                                    onChange={(e) => setFyersSecretId(e.target.value)}
-                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                                  />
-                                  <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
-                                    <span className="text-[10px] text-slate-500 font-medium">Redirect URL:</span>
-                                    <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">https://perala.in/api/fyers/callback</code>
-                                    <Button
-                                      size="icon"
-                                      variant="ghost"
-                                      className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 ml-0.5"
-                                      onClick={() => {
-                                        navigator.clipboard.writeText("https://perala.in/api/fyers/callback");
-                                        toast({
-                                          title: "Copied",
-                                          description: "Redirect URL copied to clipboard",
-                                        });
-                                      }}
-                                    >
-                                      <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                                    </Button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex justify-end gap-3 pt-2">
-                                <Button variant="outline" onClick={() => setIsFyersDialogOpen(false)}>
-                                  Cancel
-                                </Button>
-                                <Button onClick={() => setIsFyersDialogOpen(false)} className="bg-green-600 hover:bg-green-700 text-white">
-                                  Connect Account
-                                </Button>
-                              </div>
+                              <AuthButtonFyers 
+                                externalAppId={fyersAppId} 
+                                externalSecretId={fyersSecretId} 
+                                onSuccess={() => setIsFyersDialogOpen(false)} 
+                              />
                             </DialogContent>
                           </Dialog>
 

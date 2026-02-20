@@ -21736,6 +21736,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ========================================
+  // FYERS OAUTH 2.0 IMPLEMENTATION
+  // ========================================
+
+  app.post("/api/fyers/auth-url", (req, res) => {
+    try {
+      const { appId, secretId } = req.body;
+      if (!appId || !secretId) {
+        return res.status(400).json({ error: "App ID and Secret ID are required" });
+      }
+      const domain = req.get('host') || 'localhost:5000';
+      const { url, state } = fyersOAuthManager.generateAuthorizationUrl(appId, secretId, domain);
+      res.json({ url, state });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.get("/api/fyers/status", (req, res) => {
+    res.json(fyersOAuthManager.getStatus());
+  });
+
+  app.get("/api/fyers/callback", async (req, res) => {
+    const { auth_code, state } = req.query;
+
+    if (!auth_code || !state) {
+      return res.redirect("/?error=missing_parameters");
+    }
+
+    const success = await fyersOAuthManager.exchangeCodeForToken(auth_code as string, state as string);
+    if (success) {
+      res.redirect("/?broker=fyers&connected=true");
+    } else {
+      res.redirect("/?broker=fyers&connected=false");
+    }
+  });
+
+  app.post("/api/fyers/disconnect", (req, res) => {
+    try {
+      fyersOAuthManager.disconnect();
+      res.json({ success: true, message: "Disconnected from Fyers" });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // ========================================
   // UPSTOX OAUTH 2.0 (using OAuth Manager)
   // NOTE: Using /api/upstox/* endpoints below
   // ========================================
@@ -21783,6 +21829,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
       authentication: 'Bearer token in Authorization header',
       note: 'All data is fetched in real-time from Zerodha API'
     });
+  });
+
+  // ========================================
+  // FYERS OAUTH 2.0 IMPLEMENTATION
+  // ========================================
+
+  app.post("/api/fyers/auth-url", (req, res) => {
+    try {
+      const { appId, secretId } = req.body;
+      if (!appId || !secretId) {
+        return res.status(400).json({ error: "App ID and Secret ID are required" });
+      }
+      const domain = req.get('host') || 'localhost:5000';
+      const { url, state } = fyersOAuthManager.generateAuthorizationUrl(appId, secretId, domain);
+      res.json({ url, state });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.get("/api/fyers/status", (req, res) => {
+    res.json(fyersOAuthManager.getStatus());
+  });
+
+  app.get("/api/fyers/callback", async (req, res) => {
+    const { auth_code, state } = req.query;
+
+    if (!auth_code || !state) {
+      return res.redirect("/?error=missing_parameters");
+    }
+
+    const success = await fyersOAuthManager.exchangeCodeForToken(auth_code as string, state as string);
+    if (success) {
+      res.redirect("/?broker=fyers&connected=true");
+    } else {
+      res.redirect("/?broker=fyers&connected=false");
+    }
+  });
+
+  app.post("/api/fyers/disconnect", (req, res) => {
+    try {
+      fyersOAuthManager.disconnect();
+      res.json({ success: true, message: "Disconnected from Fyers" });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
   });
 
   // ========================================
