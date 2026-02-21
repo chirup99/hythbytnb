@@ -5739,6 +5739,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             endpoint = '/api/broker/zerodha/positions';
             token = zerodhaAccessToken;
             broker = 'Zerodha';
+
+            // Add API Key to query or headers for Zerodha
+            const apiKey = localStorage.getItem("zerodha_api_key");
+            if (apiKey) {
+              endpoint += `?api_key=${encodeURIComponent(apiKey)}`;
+            }
           } else if (upstoxAccessToken) {
             endpoint = '/api/broker/upstox/positions';
             token = upstoxAccessToken;
@@ -5846,6 +5852,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             endpoint = '/api/broker/zerodha/trades';
             token = zerodhaAccessToken;
             broker = 'Zerodha';
+
+            // Add API Key to query or headers for Zerodha
+            const apiKey = localStorage.getItem("zerodha_api_key");
+            if (apiKey) {
+              endpoint += `?api_key=${encodeURIComponent(apiKey)}`;
+            }
           } else if (upstoxAccessToken) {
             endpoint = '/api/broker/upstox/trades';
             token = upstoxAccessToken;
@@ -5895,8 +5907,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     if (showOrderModal && (zerodhaAccessToken || upstoxAccessToken)) {
       const fetchBrokerFunds = async () => {
         try {
-          const endpoint = zerodhaAccessToken ? '/api/broker/zerodha/margins' : '/api/broker/upstox/margins';
+          let endpoint = zerodhaAccessToken ? '/api/broker/zerodha/margins' : '/api/broker/upstox/margins';
           const token = zerodhaAccessToken || upstoxAccessToken;
+
+          // Add API Key to query or headers for Zerodha
+          if (zerodhaAccessToken) {
+            const apiKey = localStorage.getItem("zerodha_api_key");
+            if (apiKey) {
+              endpoint += `?api_key=${encodeURIComponent(apiKey)}`;
+            }
+          }
+
           const response = await fetch(endpoint, {
             headers: { 'Authorization': `Bearer ${token}` }
           });

@@ -21260,7 +21260,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // STEP 3: Fetch trades from Zerodha
   app.get('/api/broker/zerodha/trades', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
-    const apiKey = req.headers['x-api-key'] as string || process.env.ZERODHA_API_KEY;
+    const apiKey = req.headers['x-api-key'] as string || req.query.api_key as string || process.env.ZERODHA_API_KEY;
     
     if (!accessToken || !apiKey) {
       return res.status(401).json({ 
@@ -21365,7 +21365,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Fetch Zerodha positions
   app.get('/api/broker/zerodha/positions', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
-    const apiKey = req.headers['x-api-key'] as string || process.env.ZERODHA_API_KEY;
+    const apiKey = req.headers['x-api-key'] as string || req.query.api_key as string || process.env.ZERODHA_API_KEY;
     
     if (!accessToken || !apiKey) {
       return res.status(401).json({ 
