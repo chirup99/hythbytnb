@@ -20636,15 +20636,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           </Dialog>
 
                           <Dialog open={isFyersDialogOpen} onOpenChange={setIsFyersDialogOpen}>
-                            <DialogContent className="sm:max-w-md p-0 overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl">
+                            <DialogContent className="sm:max-w-md p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl">
                               {!fyersIsConnected && (
-                                <div className="p-6">
-                                  <AuthButtonFyers 
-                                    externalAppId={fyersAppId} 
-                                    externalSecretId={fyersSecretId} 
-                                    onSuccess={() => setIsFyersDialogOpen(false)} 
-                                  />
-                                </div>
+                                <AuthButtonFyers 
+                                  externalAppId={fyersAppId} 
+                                  externalSecretId={fyersSecretId} 
+                                  onSuccess={() => setIsFyersDialogOpen(false)} 
+                                  onClose={() => setIsFyersDialogOpen(false)}
+                                />
                               )}
                             </DialogContent>
                           </Dialog>
