@@ -12,3 +12,4 @@
 [x] 12. Update Zerodha integration to use API keys from user input dialog
 [x] 13. Implement dynamic Zerodha API credentials dialog for user security
 [x] 14. Synchronize Zerodha connection UI with other brokers and update progress tracker
+[x] 15. Fix dotenv package missing error and verify application restarts cleanly
