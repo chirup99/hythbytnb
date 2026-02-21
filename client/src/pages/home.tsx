@@ -19913,6 +19913,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       className="h-4 w-4"
                                     />
                                   </Button>
+                                )}
                                 {fyersIsConnected && (
                                   <Button
                                     variant="ghost"
