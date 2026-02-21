@@ -4719,9 +4719,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       if (!zerodhaClientId || !zerodhaUserName) {
         const fetchZerodhaProfile = async () => {
           try {
+            const apiKey = localStorage.getItem("zerodha_api_key");
             const response = await fetch('/api/broker/zerodha/profile', {
               headers: {
-                'Authorization': `Bearer ${zerodhaAccessToken}`
+                'Authorization': `Bearer ${zerodhaAccessToken}`,
+                'x-api-key': apiKey || ""
               }
             });
             if (response.ok) {
@@ -4767,8 +4769,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         // Fetch trades
         setTimeout(() => {
           setZerodhaTradesLoading(true);
+          const apiKey = localStorage.getItem("zerodha_api_key");
           fetch("/api/broker/zerodha/trades", {
-            headers: { "Authorization": `Bearer ${zerodhaToken}` }
+            headers: { 
+              "Authorization": `Bearer ${zerodhaToken}`,
+              "x-api-key": apiKey || ""
+            }
           })
             .then(res => res.json())
             .then(data => {
@@ -4825,8 +4831,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         // Fetch trades
         setTimeout(() => {
           // Also fetch profile
+          const apiKey = localStorage.getItem("zerodha_api_key");
           fetch("/api/broker/zerodha/profile", {
-            headers: { "Authorization": `Bearer ${token}` }
+            headers: { 
+              "Authorization": `Bearer ${token}`,
+              "x-api-key": apiKey || ""
+            }
           })
             .then(res => res.json())
             .then(data => {
@@ -4843,8 +4853,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
           console.log('📡 [ZERODHA] Fetching trades with token...');
           setZerodhaTradesLoading(true);
+          const apiKeyForTrades = localStorage.getItem("zerodha_api_key");
           fetch("/api/broker/zerodha/trades", {
-            headers: { "Authorization": `Bearer ${token}` }
+            headers: { 
+              "Authorization": `Bearer ${token}`,
+              "x-api-key": apiKeyForTrades || ""
+            }
           })
             .then(res => res.json())
             .then(data => {
@@ -4913,12 +4927,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       localStorage.setItem("zerodha_api_key", zerodhaApiKeyInput);
       localStorage.setItem("zerodha_api_secret", zerodhaApiSecretInput);
 
-      const redirectUrl = `https://kite.zerodha.com/connect/login?v=3&api_key=${zerodhaApiKeyInput}`;
-      window.location.href = redirectUrl;
+      // Fetch the login URL from backend passing the API key and secret
+      const response = await fetch(`/api/broker/zerodha/login-url?api_key=${encodeURIComponent(zerodhaApiKeyInput)}&api_secret=${encodeURIComponent(zerodhaApiSecretInput)}`);
+      const data = await response.json();
+      
+      if (data.loginUrl) {
+        window.location.href = data.loginUrl;
+      } else {
+        throw new Error(data.message || "Failed to get login URL");
+      }
     } catch (error) {
       toast({
         title: "Connection Error",
-        description: "Failed to initiate Zerodha connection",
+        description: error instanceof Error ? error.message : "Failed to initiate Zerodha connection",
         variant: "destructive",
       });
     }

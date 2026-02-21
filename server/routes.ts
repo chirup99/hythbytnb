@@ -21139,28 +21139,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // STEP 1: Generate login URL
   app.get('/api/broker/zerodha/login-url', (req, res) => {
-    const apiKey = process.env.ZERODHA_API_KEY;
+    const apiKey = (req.query.api_key as string) || process.env.ZERODHA_API_KEY;
+    const apiSecret = (req.query.api_secret as string) || process.env.ZERODHA_SECRET;
     
     if (!apiKey) {
-      return res.status(500).json({ 
-        error: 'Zerodha API key not configured',
-        message: 'ZERODHA_API_KEY environment variable not set'
+      return res.status(400).json({ 
+        error: 'Zerodha API key not provided',
+        message: 'Please provide api_key in query or set ZERODHA_API_KEY environment variable'
       });
     }
 
-    // CRITICAL: For this to work, you MUST register the callback URL in Zerodha dashboard:
-    // 1. Go to https://developers.kite.trade
-    // 2. Click on your app
-    // 3. Find "Redirect URL" section
-    // 4. Add this URL: https://YOUR_APP_DOMAIN/api/broker/zerodha/callback
-    // 5. Save
-    // WITHOUT this step, Zerodha will skip the login page and go straight to authorize
-    
+    // Store secret in session or temporary cache if needed, but for redirect flow
+    // we'll pass it back in the callback if we can or just rely on the user having it in the dialog
+    // Zerodha doesn't support passing custom state easily that returns.
+    // However, we can use a cookie to store the secret temporarily for the callback.
+    if (apiSecret) {
+      res.cookie('zerodha_api_secret', apiSecret, { maxAge: 900000, httpOnly: true, sameSite: 'lax', secure: true });
+      res.cookie('zerodha_api_key', apiKey, { maxAge: 900000, httpOnly: true, sameSite: 'lax', secure: true });
+    }
+
     const callbackUrl = `${req.protocol}://${req.get('host')}/api/broker/zerodha/callback`;
     const loginUrl = `https://kite.zerodha.com/connect/login?v=3&api_key=${apiKey}`;
     
     console.log('🔗 [Zerodha] Login URL:', loginUrl);
-    console.log('📝 [Zerodha] Expected callback URL (register in dashboard):', callbackUrl);
+    console.log('📝 [Zerodha] Expected callback URL:', callbackUrl);
     
     res.json({ 
       loginUrl,
@@ -21169,7 +21171,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // STEP 2: Handle Zerodha callback - user redirected here after login
+  // STEP 2: Handle Zerodha callback
   app.get('/api/broker/zerodha/callback', async (req, res) => {
     const requestToken = req.query.request_token as string;
     
@@ -21177,16 +21179,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error('❌ [Zerodha] Missing request_token in callback');
       return res.status(400).json({ 
         error: 'No request token received',
-        message: 'Callback URL may not be registered in Zerodha dashboard. Go to https://developers.kite.trade → Redirect URL section and register: ' + `${req.protocol}://${req.get('host')}/api/broker/zerodha/callback`
+        message: 'Callback URL may not be registered in Zerodha dashboard.'
       });
     }
 
     try {
-      const apiKey = process.env.ZERODHA_API_KEY;
-      const apiSecret = process.env.ZERODHA_SECRET;
+      const apiKey = req.cookies?.zerodha_api_key || process.env.ZERODHA_API_KEY;
+      const apiSecret = req.cookies?.zerodha_api_secret || process.env.ZERODHA_SECRET;
 
       if (!apiKey || !apiSecret) {
-        throw new Error('Zerodha credentials not configured');
+        throw new Error('Zerodha credentials not found. Please ensure API Key and Secret are entered in the dialog.');
       }
 
       // Generate checksum: SHA256(api_key + request_token + api_secret)
@@ -21248,7 +21250,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // STEP 3: Fetch trades from Zerodha
   app.get('/api/broker/zerodha/trades', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
-    const apiKey = process.env.ZERODHA_API_KEY;
+    const apiKey = req.headers['x-api-key'] as string || process.env.ZERODHA_API_KEY;
     
     if (!accessToken || !apiKey) {
       return res.status(401).json({ 
@@ -21353,7 +21355,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Fetch Zerodha positions
   app.get('/api/broker/zerodha/positions', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
-    const apiKey = process.env.ZERODHA_API_KEY;
+    const apiKey = req.headers['x-api-key'] as string || process.env.ZERODHA_API_KEY;
     
     if (!accessToken || !apiKey) {
       return res.status(401).json({ 
@@ -21436,7 +21438,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get Zerodha broker margins (available funds)
   app.get('/api/broker/zerodha/margins', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
-    const apiKey = process.env.ZERODHA_API_KEY;
+    const apiKey = req.headers['x-api-key'] as string || process.env.ZERODHA_API_KEY;
     
     if (!accessToken || !apiKey) {
       return res.status(401).json({ success: false, availableCash: 0, error: 'Unauthorized' });
@@ -21679,7 +21681,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/broker/zerodha/profile', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
-    const apiKey = process.env.ZERODHA_API_KEY;
+    const apiKey = req.headers['x-api-key'] as string || process.env.ZERODHA_API_KEY;
     
     if (!accessToken || !apiKey) {
       return res.status(401).json({ 
