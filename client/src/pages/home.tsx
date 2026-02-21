@@ -4296,6 +4296,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
   const [isFyersDialogOpen, setIsFyersDialogOpen] = useState(false);
+  const [isZerodhaDialogOpen, setIsZerodhaDialogOpen] = useState(false);
+  const [zerodhaApiKeyInput, setZerodhaApiKeyInput] = useState("");
+  const [zerodhaApiSecretInput, setZerodhaApiSecretInput] = useState("");
+  const [showZerodhaSecret, setShowZerodhaSecret] = useState(false);
   const [fyersAppId, setFyersAppId] = useState("");
   const [fyersSecretId, setFyersSecretId] = useState("");
   const [isDeltaExchangeDialogOpen, setIsDeltaExchangeDialogOpen] = useState(false);
@@ -4891,53 +4895,32 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  const handleZerodhaConnect = async () => {
+  const handleZerodhaConnect = () => {
+    setIsZerodhaDialogOpen(true);
+  };
+
+  const submitZerodhaCredentials = async () => {
+    if (!zerodhaApiKeyInput || !zerodhaApiSecretInput) {
+      toast({
+        title: "Error",
+        description: "Please enter both API Key and API Secret",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      console.log('🔷 Starting Zerodha OAuth flow...');
-      const response = await fetch('/api/broker/zerodha/login-url');
-      const data = await response.json();
-      
-      if (data.error) {
-        alert('Setup Error:\n' + data.message + '\n\nSteps to fix:\n1. Go to https://developers.kite.trade\n2. Click your app\n3. Find "Redirect URL" and register:\nhttps://YOUR_APP_DOMAIN/api/broker/zerodha/callback\n4. Save and try again');
-        return;
-      }
-      
-      const { loginUrl } = data;
-      console.log('🔗 Zerodha login URL:', loginUrl);
-      
-      const popup = window.open(
-        loginUrl,
-        'zerodha_oauth',
-        'width=600,height=800,resizable=yes,scrollbars=yes'
-      );
-      
-      if (!popup) {
-        console.warn('❌ Popup blocked, falling back to main window');
-        alert('Popup blocked. Please enable popups and try again.');
-        return;
-      }
-      
-      console.log('✅ Popup opened, waiting for OAuth callback...');
-      
-      // Monitor popup closing
-      let checkCount = 0;
-      const monitorPopup = setInterval(() => {
-        checkCount++;
-        if (popup.closed) {
-          clearInterval(monitorPopup);
-          console.log('⚠️ Zerodha popup closed');
-          return;
-        }
-        if (checkCount > 300) {
-          clearInterval(monitorPopup);
-          popup.close();
-          console.log('⚠️ Zerodha popup timeout');
-        }
-      }, 1000);
-      
+      localStorage.setItem("zerodha_api_key", zerodhaApiKeyInput);
+      localStorage.setItem("zerodha_api_secret", zerodhaApiSecretInput);
+
+      const redirectUrl = `https://kite.zerodha.com/connect/login?v=3&api_key=${zerodhaApiKeyInput}`;
+      window.location.href = redirectUrl;
     } catch (error) {
-      console.error('❌ Zerodha error:', error);
-      alert('Error: ' + (error instanceof Error ? error.message : 'Failed to connect'));
+      toast({
+        title: "Connection Error",
+        description: "Failed to initiate Zerodha connection",
+        variant: "destructive",
+      });
     }
   };
 
@@ -20701,6 +20684,66 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   Cancel
                                 </Button>
                                 <Button onClick={submitDhanCredentials} className="bg-green-600 hover:bg-green-700 text-white">
+                                  Connect Account
+                                </Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+
+                          <Dialog open={isZerodhaDialogOpen} onOpenChange={setIsZerodhaDialogOpen}>
+                            <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                              <DialogHeader>
+                                <DialogTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+                                  <img src="https://kite.zerodha.com/static/images/kite-logo.svg" alt="Zerodha" className="h-5" />
+                                  Connect Zerodha Broker
+                                </DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4 py-4">
+                                <div className="space-y-2">
+                                  <Label htmlFor="zerodha-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
+                                  <Input
+                                    id="zerodha-api-key"
+                                    placeholder="Enter your Zerodha API Key"
+                                    value={zerodhaApiKeyInput}
+                                    onChange={(e) => {
+                                      setZerodhaApiKeyInput(e.target.value);
+                                    }}
+                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="zerodha-api-secret" className="text-slate-700 dark:text-slate-300">API Secret</Label>
+                                  <div className="relative">
+                                    <Input
+                                      id="zerodha-api-secret"
+                                      type={showZerodhaSecret ? "text" : "password"}
+                                      placeholder="Enter your Zerodha API Secret"
+                                      value={zerodhaApiSecretInput}
+                                      onChange={(e) => {
+                                        setZerodhaApiSecretInput(e.target.value);
+                                      }}
+                                      className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="icon"
+                                      className="absolute right-0 top-0 h-10 w-10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-transparent"
+                                      onClick={() => setShowZerodhaSecret(!showZerodhaSecret)}
+                                    >
+                                      {showZerodhaSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </Button>
+                                  </div>
+                                  <p className="text-[10px] text-slate-500">
+                                    Generate API keys at: <a href="https://developers.kite.trade" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://developers.kite.trade</a>
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex justify-end gap-3 pt-2">
+                                <Button variant="outline" onClick={() => setIsZerodhaDialogOpen(false)}>
+                                  Cancel
+                                </Button>
+                                <Button onClick={submitZerodhaCredentials} className="bg-blue-600 hover:bg-blue-700 text-white">
                                   Connect Account
                                 </Button>
                               </div>
