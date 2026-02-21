@@ -378,10 +378,10 @@ export function BrokerData(props: BrokerDataProps) {
                           const bStatus = String(b.status || "Open").toUpperCase().trim(); 
                           return (aStatus === "OPEN" ? 0 : 999) - (bStatus === "OPEN" ? 0 : 999); 
                         }).map((pos, index) => {
-                          const entryPrice = (pos.entryPrice || pos.entry_price || 0) as number;
-                          const currentPrice = (pos.currentPrice || pos.current_price || 0) as number;
-                          const qty = (pos.qty || pos.quantity || 0) as number;
-                          const unrealizedPnl = (currentPrice - entryPrice) * qty;
+                          const entryPrice = (pos.entryPrice || pos.entry_price || pos.avgPrice || 0) as number;
+                          const currentPrice = (pos.currentPrice || pos.current_price || pos.ltp || 0) as number;
+                          const qty = (pos.qty || pos.quantity || pos.netQty || 0) as number;
+                          const unrealizedPnl = pos.unrealizedPnl !== undefined ? pos.unrealizedPnl : (currentPrice - entryPrice) * qty;
                           const status = String(pos.status || "Open").toUpperCase().trim();
                           const isClosed = status === "CLOSED";
                           const returnPercent = (entryPrice > 0 && !isClosed) ? ((currentPrice - entryPrice) / entryPrice) * 100 : 0;

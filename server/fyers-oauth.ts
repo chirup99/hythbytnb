@@ -142,14 +142,25 @@ class FyersOAuthManager {
       });
 
       if (response.data.s === 'ok') {
+        // Map Fyers statuses to our app's internal status based on documentation
+        const statusMap: Record<number, string> = {
+          1: 'CANCELLED',
+          2: 'COMPLETE',
+          4: 'TRANSIT',
+          5: 'REJECTED',
+          6: 'PENDING',
+          7: 'EXPIRED'
+        };
+
         return response.data.data.orderBook.map((order: any) => ({
+          id: order.id,
           time: order.orderDateTime,
           order: order.side === 1 ? "BUY" : "SELL",
           symbol: order.symbol,
-          type: order.type === 1 ? "LIMIT" : "MARKET",
+          type: order.type === 1 ? "LIMIT" : order.type === 2 ? "MARKET" : order.type === 3 ? "SL-M" : "SL-L",
           qty: order.qty,
           price: order.tradedPrice || order.limitPrice,
-          status: order.status === 2 ? "COMPLETE" : order.status === 1 ? "PENDING" : order.status === 5 ? "REJECTED" : "CANCELLED"
+          status: statusMap[order.status] || 'PENDING'
         }));
       }
       return [];
@@ -175,6 +186,9 @@ class FyersOAuthManager {
           entryPrice: pos.avgPrice,
           currentPrice: pos.ltp,
           qty: pos.netQty,
+          realizedPnl: pos.realized_profit,
+          unrealizedPnl: pos.unrealized_profit,
+          totalPnl: pos.pl,
           status: pos.netQty !== 0 ? "OPEN" : "CLOSED"
         }));
       }
