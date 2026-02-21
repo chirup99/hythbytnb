@@ -4357,6 +4357,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [deltaExchangePositionsData, setDeltaExchangePositionsData] = useState<any[]>([]);
   const [deltaExchangeFetching, setDeltaExchangeFetching] = useState(false);
 
+  const { data: fyersOrders, isLoading: fetchingFyersOrders } = useQuery({
+    queryKey: ["/api/broker/fyers/orders"],
+    enabled: !!fyersIsConnected,
+    refetchInterval: 30000,
+  });
+
+  const { data: fyersPositions, isLoading: fetchingFyersPositions } = useQuery({
+    queryKey: ["/api/broker/fyers/positions"],
+    enabled: !!fyersIsConnected,
+    refetchInterval: 30000,
+  });
+
   useEffect(() => {
     const fetchDeltaData = async () => {
       if (deltaExchangeIsConnected && deltaExchangeApiKey && deltaExchangeApiSecret) {
@@ -22722,8 +22734,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           deltaExchangeIsConnected={deltaExchangeIsConnected}
           deltaExchangeApiKey={deltaExchangeApiKey}
           deltaExchangeApiSecret={deltaExchangeApiSecret}
-          brokerOrders={zerodhaAccessToken ? brokerOrders : upstoxAccessToken ? brokerOrders : dhanAccessToken ? brokerOrders : deltaExchangeIsConnected ? (deltaExchangeTradesData || []) : []}
-          fetchingBrokerOrders={zerodhaAccessToken ? fetchingBrokerOrders : upstoxAccessToken ? fetchingBrokerOrders : dhanAccessToken ? (fetchingBrokerOrders || false) : deltaExchangeFetching}
+          fyersStatus={fyersStatus}
+          brokerOrders={zerodhaAccessToken ? brokerOrders : upstoxAccessToken ? brokerOrders : dhanAccessToken ? brokerOrders : deltaExchangeIsConnected ? (deltaExchangeTradesData || []) : fyersIsConnected ? (fyersOrders || []) : []}
+          fetchingBrokerOrders={zerodhaAccessToken ? fetchingBrokerOrders : upstoxAccessToken ? fetchingBrokerOrders : dhanAccessToken ? (fetchingBrokerOrders || false) : deltaExchangeIsConnected ? deltaExchangeFetching : fetchingFyersOrders}
           zerodhaAccessToken={zerodhaAccessToken}
           recordAllBrokerOrders={recordAllBrokerOrders}
           upstoxAccessToken={upstoxAccessToken}
@@ -22732,8 +22745,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           dhanAccessToken={dhanAccessToken}
           dhanUserId={dhanClientIdInput}
           dhanClientName={dhanClientName || "Dhan User"}
-          brokerPositions={zerodhaAccessToken ? brokerPositions : upstoxAccessToken ? brokerPositions : dhanAccessToken ? brokerPositions : deltaExchangeIsConnected ? (deltaExchangePositionsData || []) : []}
-          fetchingBrokerPositions={zerodhaAccessToken ? fetchingBrokerPositions : upstoxAccessToken ? fetchingBrokerPositions : dhanAccessToken ? (fetchingBrokerPositions || false) : deltaExchangeFetching}
+          brokerPositions={zerodhaAccessToken ? brokerPositions : upstoxAccessToken ? brokerPositions : dhanAccessToken ? brokerPositions : deltaExchangeIsConnected ? (deltaExchangePositionsData || []) : fyersIsConnected ? (fyersPositions || []) : []}
+          fetchingBrokerPositions={zerodhaAccessToken ? fetchingBrokerPositions : upstoxAccessToken ? fetchingBrokerPositions : dhanAccessToken ? (fetchingBrokerPositions || false) : deltaExchangeIsConnected ? deltaExchangeFetching : fetchingFyersPositions}
           showBrokerImportModal={showBrokerImportModal} 
           setShowBrokerImportModal={setShowBrokerImportModal} 
           handleBrokerImport={handleBrokerImport} 
