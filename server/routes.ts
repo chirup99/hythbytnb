@@ -21154,8 +21154,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Zerodha doesn't support passing custom state easily that returns.
     // However, we can use a cookie to store the secret temporarily for the callback.
     if (apiSecret) {
-      res.cookie('zerodha_api_secret', apiSecret, { maxAge: 900000, httpOnly: true, sameSite: 'lax', secure: true });
-      res.cookie('zerodha_api_key', apiKey, { maxAge: 900000, httpOnly: true, sameSite: 'lax', secure: true });
+      res.cookie('zerodha_api_secret', apiSecret, { 
+        maxAge: 900000, 
+        httpOnly: true, 
+        sameSite: 'none', 
+        secure: true 
+      });
+      res.cookie('zerodha_api_key', apiKey, { 
+        maxAge: 900000, 
+        httpOnly: true, 
+        sameSite: 'none', 
+        secure: true 
+      });
     }
 
     const callbackUrl = `${req.protocol}://${req.get('host')}/api/broker/zerodha/callback`;

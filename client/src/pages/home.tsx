@@ -5272,8 +5272,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     
     setZerodhaTradesLoading(true);
     try {
+      const apiKey = localStorage.getItem("zerodha_api_key");
       const response = await fetch('/api/broker/zerodha/trades', {
-        headers: { 'Authorization': `Bearer ${zerodhaAccessToken}` }
+        headers: { 
+          'Authorization': `Bearer ${zerodhaAccessToken}`,
+          'x-api-key': apiKey || ""
+        }
       });
       const { trades } = await response.json();
       setZerodhaTradesData(trades);

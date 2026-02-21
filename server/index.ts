@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import fileUpload from 'express-fileupload';
+import cookieParser from 'cookie-parser';
 import path from "path";
 import fs from "fs";
 import { registerRoutes } from "./routes";
@@ -143,6 +144,8 @@ app.use(fileUpload({
   abortOnLimit: true,
   createParentPath: true
 }));
+
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   const start = Date.now();
