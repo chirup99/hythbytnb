@@ -4311,12 +4311,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       });
   }, []);
   const [deltaExchangeIsConnected, setDeltaExchangeIsConnected] = useState(false);
-  const [deltaExchangeApiKey, setDeltaExchangeApiKey] = useState("");
-  const [deltaExchangeApiSecret, setDeltaExchangeApiSecret] = useState("");
-  const [deltaExchangeUserId, setDeltaExchangeUserId] = useState<string | null>(localStorage.getItem("delta_exchange_user_id"));
-  const [deltaExchangeAccountName, setDeltaExchangeAccountName] = useState<string | null>(localStorage.getItem("delta_exchange_account_name"));
+  const [deltaExchangeApiKey, setDeltaExchangeApiKey] = useState(localStorage.getItem("delta_api_key") || "");
+  const [deltaExchangeApiSecret, setDeltaExchangeApiSecret] = useState(localStorage.getItem("delta_api_secret") || "");
+  const [showDeltaSecret, setShowDeltaSecret] = useState(false);
   const [dhanClientIdInput, setDhanClientIdInput] = useState(localStorage.getItem("dhan_client_id") || "");
-  const [dhanTokenInput, setDhanTokenInput] = useState("");
+  const [dhanTokenInput, setDhanTokenInput] = useState(localStorage.getItem("dhan_access_token") || "");
+  const [showDhanToken, setShowDhanToken] = useState(false);
 
   useEffect(() => {
     const checkDhanInit = async () => {
@@ -20642,22 +20642,39 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     id="dhan-client-id"
                                     placeholder="Enter your Dhan Client ID"
                                     value={dhanClientIdInput}
-                                    onChange={(e) => setDhanClientIdInput(e.target.value)}
+                                    onChange={(e) => {
+                                      setDhanClientIdInput(e.target.value);
+                                      localStorage.setItem("dhan_client_id", e.target.value);
+                                    }}
                                     className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                                   />
                                 </div>
                                 <div className="space-y-2">
                                   <Label htmlFor="dhan-access-token" className="text-slate-700 dark:text-slate-300">Access Token</Label>
-                                  <Input
-                                    id="dhan-access-token"
-                                    type="password"
-                                    placeholder="Enter your Dhan Access Token"
-                                    value={dhanTokenInput}
-                                    onChange={(e) => setDhanTokenInput(e.target.value)}
-                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                                  />
+                                  <div className="relative">
+                                    <Input
+                                      id="dhan-access-token"
+                                      type={showDhanToken ? "text" : "password"}
+                                      placeholder="Enter your Dhan Access Token"
+                                      value={dhanTokenInput}
+                                      onChange={(e) => {
+                                        setDhanTokenInput(e.target.value);
+                                        localStorage.setItem("dhan_access_token", e.target.value);
+                                      }}
+                                      className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="icon"
+                                      className="absolute right-0 top-0 h-10 w-10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-transparent"
+                                      onClick={() => setShowDhanToken(!showDhanToken)}
+                                    >
+                                      {showDhanToken ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </Button>
+                                  </div>
                                   <p className="text-[10px] text-slate-500">
-                                    You can generate your access token from Dhan HQ portal settings.
+                                    Generate token at: <a href="https://hq.dhan.co/settings/api" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://hq.dhan.co/settings/api</a>
                                   </p>
                                   <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
                                     <span className="text-[10px] text-slate-500 font-medium">Postback URL:</span>
@@ -20718,24 +20735,41 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     id="delta-api-key"
                                     placeholder="Enter your Delta Exchange API Key"
                                     value={deltaExchangeApiKey}
-                                    onChange={(e) => setDeltaExchangeApiKey(e.target.value)}
+                                    onChange={(e) => {
+                                      setDeltaExchangeApiKey(e.target.value);
+                                      localStorage.setItem("delta_api_key", e.target.value);
+                                    }}
                                     className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                                     data-testid="input-delta-api-key"
                                   />
                                 </div>
                                 <div className="space-y-2">
                                   <Label htmlFor="delta-api-secret" className="text-slate-700 dark:text-slate-300">API Secret</Label>
-                                  <Input
-                                    id="delta-api-secret"
-                                    type="password"
-                                    placeholder="Enter your Delta Exchange API Secret"
-                                    value={deltaExchangeApiSecret}
-                                    onChange={(e) => setDeltaExchangeApiSecret(e.target.value)}
-                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                                    data-testid="input-delta-api-secret"
-                                  />
+                                  <div className="relative">
+                                    <Input
+                                      id="delta-api-secret"
+                                      type={showDeltaSecret ? "text" : "password"}
+                                      placeholder="Enter your Delta Exchange API Secret"
+                                      value={deltaExchangeApiSecret}
+                                      onChange={(e) => {
+                                        setDeltaExchangeApiSecret(e.target.value);
+                                        localStorage.setItem("delta_api_secret", e.target.value);
+                                      }}
+                                      className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
+                                      data-testid="input-delta-api-secret"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="icon"
+                                      className="absolute right-0 top-0 h-10 w-10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-transparent"
+                                      onClick={() => setShowDeltaSecret(!showDeltaSecret)}
+                                    >
+                                      {showDeltaSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </Button>
+                                  </div>
                                   <p className="text-[10px] text-slate-500">
-                                    Create your API keys at: https://www.delta.exchange/app/account/manageapikeys
+                                    Create your API keys at: <a href="https://www.delta.exchange/app/account/manageapikeys" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">https://www.delta.exchange/app/account/manageapikeys</a>
                                   </p>
                                   <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-orange-200 dark:hover:border-orange-900/40 transition-colors">
                                     <span className="text-[10px] text-slate-500 font-medium">Whitelisted IP:</span>
