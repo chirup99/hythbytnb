@@ -21448,10 +21448,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get Zerodha broker margins (available funds)
   app.get('/api/broker/zerodha/margins', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
-    const apiKey = req.headers['x-api-key'] as string || process.env.ZERODHA_API_KEY;
+    const apiKey = req.headers['x-api-key'] as string || req.query.api_key as string || process.env.ZERODHA_API_KEY;
     
     if (!accessToken || !apiKey) {
-      return res.status(401).json({ success: false, availableCash: 0, error: 'Unauthorized' });
+      return res.status(401).json({ success: false, availableCash: 0, error: 'Unauthorized: Missing API Key or Access Token' });
     }
 
     try {

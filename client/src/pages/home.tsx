@@ -5949,6 +5949,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             endpoint = '/api/broker/zerodha/margins';
             token = zerodhaAccessToken;
             broker = 'Zerodha';
+            
+            // Add API Key to query or headers for Zerodha
+            const apiKey = localStorage.getItem("zerodha_api_key");
+            if (apiKey) {
+              endpoint += `?api_key=${encodeURIComponent(apiKey)}`;
+            }
           } else if (upstoxAccessToken) {
             endpoint = '/api/broker/upstox/margins';
             token = upstoxAccessToken;
