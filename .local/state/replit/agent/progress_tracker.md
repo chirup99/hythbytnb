@@ -9,4 +9,5 @@
 [x] 9. Resolve dotenv module error and verify application starts successfully
 [x] 10. Re-install dotenv package and confirm application runs without errors
 [x] 11. Add Fyers "Orders & Positions" button to Trade History header
-[x] 12. Connect Fyers backend endpoints for Orders & Positions dialog
+[x] 13. Implement dynamic Zerodha API credentials dialog for user security
+[x] 14. Synchronize Zerodha connection UI with other brokers and update progress tracker
