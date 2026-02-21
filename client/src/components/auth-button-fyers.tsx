@@ -117,11 +117,6 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
           <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="h-5 w-5 rounded-full" />
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Connect Fyers Broker</h3>
         </div>
-        {onClose && (
-          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={onClose}>
-            <X className="h-4 w-4" />
-          </Button>
-        )}
       </div>
       
       <p className="text-xs text-slate-500 dark:text-slate-400 leading-tight">Enter credentials to link your account</p>
@@ -166,23 +161,37 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
           </div>
         )}
         
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 w-full group hover:border-emerald-200 dark:hover:border-emerald-900/40 transition-colors">
-          <span className="text-[10px] text-slate-500 font-medium shrink-0">Redirect URL:</span>
-          <code className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold truncate flex-1">https://perala.in/api/fyers/callback</code>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 shrink-0"
-            onClick={() => {
-              navigator.clipboard.writeText("https://perala.in/api/fyers/callback");
-              toast({
-                title: "Copied",
-                description: "Redirect URL copied",
-              });
-            }}
-          >
-            <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-emerald-500 transition-colors" />
-          </Button>
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 w-full group hover:border-emerald-200 dark:hover:border-emerald-900/40 transition-colors">
+            <span className="text-[10px] text-slate-500 font-medium shrink-0">Redirect URL:</span>
+            <code className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold truncate flex-1">https://perala.in/api/fyers/callback</code>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 shrink-0"
+              onClick={() => {
+                navigator.clipboard.writeText("https://perala.in/api/fyers/callback");
+                toast({
+                  title: "Copied",
+                  description: "Redirect URL copied",
+                });
+              }}
+            >
+              <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-emerald-500 transition-colors" />
+            </Button>
+          </div>
+
+          <p className="text-[10px] text-slate-500">
+            Create your app id, secret id from{" "}
+            <a 
+              href="https://myapi.fyers.in/dashboard" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 underline font-medium"
+            >
+              https://myapi.fyers.in/dashboard
+            </a>
+          </p>
         </div>
       </div>
 
