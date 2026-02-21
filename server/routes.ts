@@ -22465,6 +22465,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Fyers status endpoint
+  app.get('/api/fyers/status', (req, res) => {
+    res.json(fyersOAuthManager.getStatus());
+  });
+
+  // Get Fyers orders
+  app.get('/api/broker/fyers/orders', async (req, res) => {
+    try {
+      const orders = await fyersOAuthManager.getOrders();
+      res.json(orders);
+    } catch (error: any) {
+      console.error('🔴 [FYERS] Error fetching orders:', error.message);
+      res.status(500).json({ error: 'Failed to fetch orders' });
+    }
+  });
+
+  // Get Fyers positions
+  app.get('/api/broker/fyers/positions', async (req, res) => {
+    try {
+      const positions = await fyersOAuthManager.getPositions();
+      res.json(positions);
+    } catch (error: any) {
+      console.error('🔴 [FYERS] Error fetching positions:', error.message);
+      res.status(500).json({ error: 'Failed to fetch positions' });
+    }
+  });
+
   // Get Dhan trades
   app.get('/api/broker/dhan/trades', async (req, res) => {
     try {

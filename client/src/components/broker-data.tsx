@@ -60,6 +60,7 @@ interface BrokerDataProps {
   deltaExchangeUserId?: string | null;
   deltaExchangeAccountName?: string | null;
   brokerFunds: number | null;
+  fyersStatus?: any;
 }
 
 export function BrokerData(props: BrokerDataProps) {
@@ -76,13 +77,15 @@ export function BrokerData(props: BrokerDataProps) {
     brokerSearchInput, setBrokerSearchInput, showBrokerSuggestions, setShowBrokerSuggestions,
     filteredBrokers, buildModeData, setBuildModeData, allColumnsFilledForSave, missingColumns,
     saveFormatToUniversalLibrary, currentUser, getCognitoToken, setSavedFormats, importDataTextareaRef,
-    brokerFunds
+    brokerFunds,
+    fyersStatus
   } = props;
 
   const queryClient = useQueryClient();
 
-  const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken || deltaExchangeIsConnected;
-  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : deltaExchangeIsConnected ? 'delta' : null;
+  const isFyersConnected = fyersStatus?.connected && fyersStatus?.authenticated;
+  const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken || deltaExchangeIsConnected || isFyersConnected;
+  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : deltaExchangeIsConnected ? 'delta' : isFyersConnected ? 'fyers' : null;
 
   // Refresh Dhan profile every 10 seconds if connected
   useEffect(() => {
@@ -215,8 +218,14 @@ export function BrokerData(props: BrokerDataProps) {
                       <span>id: {showUserId ? (deltaExchangeUserId && deltaExchangeUserId !== "Fetching..." ? deltaExchangeUserId : "N/A") : "••••••"} | {showUserId ? (deltaExchangeAccountName && deltaExchangeAccountName !== "Delta User" ? deltaExchangeAccountName : "Delta User") : "•••••"}</span>
                     </>
                   )}
+                  {activeBroker === 'fyers' && (
+                    <>
+                      <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="w-3 h-3 rounded-full" />
+                      <span>id: {showUserId ? (fyersStatus?.userId || "N/A") : "••••••"} | {showUserId ? (fyersStatus?.userName || "Fyers User") : "•••••"}</span>
+                    </>
+                  )}
                 </div>
-                {(activeBroker === 'zerodha' || activeBroker === 'upstox' || activeBroker === 'dhan' || activeBroker === 'delta') && (
+                {(activeBroker === 'zerodha' || activeBroker === 'upstox' || activeBroker === 'dhan' || activeBroker === 'delta' || activeBroker === 'fyers') && (
                   <button onClick={() => setShowUserId(!showUserId)} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors" data-testid="button-toggle-user-id" title={showUserId ? "Hide ID" : "Show ID"}>
                     {showUserId ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                   </button>

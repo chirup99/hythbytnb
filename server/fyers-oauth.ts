@@ -131,6 +131,60 @@ class FyersOAuthManager {
     };
   }
 
+  async getOrders(): Promise<any[]> {
+    try {
+      if (!this.state.accessToken || !this.state.userId) return [];
+
+      const response = await axios.get('https://api-t1.fyers.in/api/v3/orders', {
+        headers: {
+          'Authorization': `${this.appId}:${this.state.accessToken}`
+        }
+      });
+
+      if (response.data.s === 'ok') {
+        return response.data.data.orderBook.map((order: any) => ({
+          time: order.orderDateTime,
+          order: order.side === 1 ? "BUY" : "SELL",
+          symbol: order.symbol,
+          type: order.type === 1 ? "LIMIT" : "MARKET",
+          qty: order.qty,
+          price: order.tradedPrice || order.limitPrice,
+          status: order.status === 2 ? "COMPLETE" : order.status === 1 ? "PENDING" : order.status === 5 ? "REJECTED" : "CANCELLED"
+        }));
+      }
+      return [];
+    } catch (error: any) {
+      console.error('🔴 [FYERS] Orders fetch error:', error.message);
+      return [];
+    }
+  }
+
+  async getPositions(): Promise<any[]> {
+    try {
+      if (!this.state.accessToken || !this.state.userId) return [];
+
+      const response = await axios.get('https://api-t1.fyers.in/api/v3/positions', {
+        headers: {
+          'Authorization': `${this.appId}:${this.state.accessToken}`
+        }
+      });
+
+      if (response.data.s === 'ok') {
+        return response.data.netPositions.map((pos: any) => ({
+          symbol: pos.symbol,
+          entryPrice: pos.avgPrice,
+          currentPrice: pos.ltp,
+          qty: pos.netQty,
+          status: pos.netQty !== 0 ? "OPEN" : "CLOSED"
+        }));
+      }
+      return [];
+    } catch (error: any) {
+      console.error('🔴 [FYERS] Positions fetch error:', error.message);
+      return [];
+    }
+  }
+
   disconnect(): void {
     this.state = {
       accessToken: null,
