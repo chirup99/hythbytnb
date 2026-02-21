@@ -20674,7 +20674,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </Button>
                                   </div>
                                   <p className="text-[10px] text-slate-500">
-                                    Generate token at: <a href="https://hq.dhan.co/settings/api" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://hq.dhan.co/settings/api</a>
+                                    Generate token at: <a href="https://web.dhan.co/index/profile" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://web.dhan.co/index/profile</a>
                                   </p>
                                   <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
                                     <span className="text-[10px] text-slate-500 font-medium">Postback URL:</span>
