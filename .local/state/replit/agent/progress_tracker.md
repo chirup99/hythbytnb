@@ -8,3 +8,5 @@
 [x] 8. Fix auto-hide vertical sidebar on NeoFeed tab by adding hover trigger width
 [x] 9. Resolve dotenv module error and verify application starts successfully
 [x] 10. Re-install dotenv package and confirm application runs without errors
+[x] 11. Add Fyers "Orders & Positions" button to Trade History header
+[x] 12. Connect Fyers backend endpoints for Orders & Positions dialog

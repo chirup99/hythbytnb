@@ -5731,9 +5731,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             endpoint = '/api/broker/dhan/positions';
             token = dhanAccessToken;
             broker = 'Dhan';
+          } else if (fyersIsConnected) {
+            endpoint = '/api/fyers/positions';
+            token = 'fyers_connected';
+            broker = 'Fyers';
           }
           
-          if (!endpoint || !token) return;
+          if (!endpoint) return;
           
           const res = await fetch(endpoint, {
             headers: { 'Authorization': `Bearer ${token}` }
@@ -5834,9 +5838,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             endpoint = '/api/broker/dhan/trades';
             token = dhanAccessToken;
             broker = 'Dhan';
+          } else if (fyersIsConnected) {
+            endpoint = '/api/fyers/trades';
+            token = 'fyers_connected';
+            broker = 'Fyers';
           }
           
-          if (!endpoint || !token) return;
+          if (!endpoint) return;
           
           const res = await fetch(endpoint, {
             headers: { 'Authorization': `Bearer ${token}` }
@@ -5933,9 +5941,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
             endpoint = '/api/broker/dhan/margins';
             token = dhanAccessToken;
             broker = 'Dhan';
+          } else if (fyersIsConnected) {
+            endpoint = '/api/fyers/positions';
+            token = 'fyers_connected';
+            broker = 'Fyers';
           }
           
-          if (!endpoint || !token) return;
+          if (!endpoint) return;
           
           const response = await fetch(endpoint, {
             headers: { 'Authorization': `Bearer ${token}` }
@@ -19901,6 +19913,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       className="h-4 w-4"
                                     />
                                   </Button>
+                                {fyersIsConnected && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-7 px-2 text-xs shrink-0"
+                                    onClick={() => setShowOrderModal(true)}
+                                    data-testid="button-broker-orders-fyers-mobile"
+                                  >
+                                    <img 
+                                      src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" 
+                                      alt="Fyers" 
+                                      className="h-4 w-4 rounded-full"
+                                    />
+                                  </Button>
                                 )}
                               </div>
                             </div>
@@ -20062,6 +20088,22 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <img 
                                   src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" 
                                   alt="Delta Exchange" 
+                                  className="h-4 w-4 rounded-full"
+                                />
+                              </Button>
+                            )}
+                            {fyersIsConnected && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs"
+                                onClick={() => setShowOrderModal(true)}
+                                data-testid="button-broker-orders-fyers"
+                                title="View Orders & Positions (Fyers)"
+                              >
+                                <img 
+                                  src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" 
+                                  alt="Fyers" 
                                   className="h-4 w-4 rounded-full"
                                 />
                               </Button>
