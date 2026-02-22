@@ -21128,7 +21128,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // 
   // FLOW:
   // 1. User clicks "Connect Zerodha" button
-  // 2. Frontend calls GET /api/broker/zerodha/login-url
+  // 2. Frontend calls GET /api/zerodha/login-url
   // 3. Backend returns proper login URL
   // 4. Frontend opens login URL in new window
   // 5. User logs in at kite.zerodha.com and grants permissions
@@ -21138,7 +21138,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ========================================
 
   // STEP 1: Generate login URL
-  app.get('/api/broker/zerodha/login-url', (req, res) => {
+  app.get('/api/zerodha/login-url', (req, res) => {
     const apiKey = (req.query.api_key as string) || process.env.ZERODHA_API_KEY;
     const apiSecret = (req.query.api_secret as string) || process.env.ZERODHA_SECRET;
     
@@ -21168,7 +21168,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
 
-    const callbackUrl = `${req.protocol}://${req.get('host')}/api/broker/zerodha/callback`;
+    const callbackUrl = `${req.protocol}://${req.get('host')}/api/zerodha/callback`;
     const loginUrl = `https://kite.zerodha.com/connect/login?v=3&api_key=${apiKey}`;
     
     console.log('🔗 [Zerodha] Login URL:', loginUrl);
@@ -21182,7 +21182,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // STEP 2: Handle Zerodha callback
-  app.get('/api/broker/zerodha/callback', async (req, res) => {
+  app.get('/api/zerodha/callback', async (req, res) => {
     const requestToken = req.query.request_token as string;
     
     if (!requestToken) {
@@ -21258,7 +21258,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // STEP 3: Fetch trades from Zerodha
-  app.get('/api/broker/zerodha/trades', async (req, res) => {
+  app.get('/api/zerodha/trades', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
     const apiKey = req.headers['x-api-key'] as string || req.query.api_key as string || process.env.ZERODHA_API_KEY;
     
@@ -21363,7 +21363,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Fetch Zerodha positions
-  app.get('/api/broker/zerodha/positions', async (req, res) => {
+  app.get('/api/zerodha/positions', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
     const apiKey = req.headers['x-api-key'] as string || req.query.api_key as string || process.env.ZERODHA_API_KEY;
     
@@ -21446,7 +21446,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // STEP 4: Fetch Zerodha profile details
 
   // Get Zerodha broker margins (available funds)
-  app.get('/api/broker/zerodha/margins', async (req, res) => {
+  app.get('/api/zerodha/margins', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
     const apiKey = req.headers['x-api-key'] as string || req.query.api_key as string || process.env.ZERODHA_API_KEY;
     
@@ -21689,7 +21689,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/broker/zerodha/profile', async (req, res) => {
+  app.get('/api/zerodha/profile', async (req, res) => {
     const accessToken = req.headers.authorization?.split(' ')[1];
     const apiKey = req.headers['x-api-key'] as string || process.env.ZERODHA_API_KEY;
     
@@ -21799,14 +21799,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ========================================
 
   // DEBUG: Show what data Zerodha is fetching
-  app.get('/api/broker/zerodha/debug', (req, res) => {
+  app.get('/api/zerodha/debug', (req, res) => {
     res.json({
       status: 'Zerodha Integration Active',
       endpoints: {
-        'GET /api/broker/zerodha/login-url': 'Generates Zerodha login URL',
-        'GET /api/broker/zerodha/callback': 'Handles OAuth callback and exchanges token',
-        'GET /api/broker/zerodha/trades': 'Fetches orders from https://api.kite.trade/orders',
-        'GET /api/broker/zerodha/profile': 'Fetches user profile from https://api.kite.trade/user/profile'
+        'GET /api/zerodha/login-url': 'Generates Zerodha login URL',
+        'GET /api/zerodha/callback': 'Handles OAuth callback and exchanges token',
+        'GET /api/zerodha/trades': 'Fetches orders from https://api.kite.trade/orders',
+        'GET /api/zerodha/profile': 'Fetches user profile from https://api.kite.trade/user/profile'
       },
       dataFetched: {
         trades: {

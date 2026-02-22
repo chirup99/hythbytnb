@@ -4724,7 +4724,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         const fetchZerodhaProfile = async () => {
           try {
             const apiKey = localStorage.getItem("zerodha_api_key");
-            const response = await fetch('/api/broker/zerodha/profile', {
+            const response = await fetch('/api/zerodha/profile', {
               headers: {
                 'Authorization': `Bearer ${zerodhaAccessToken}`,
                 'x-api-key': apiKey || ""
@@ -4774,7 +4774,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         setTimeout(() => {
           setZerodhaTradesLoading(true);
           const apiKey = localStorage.getItem("zerodha_api_key");
-          fetch("/api/broker/zerodha/trades", {
+          fetch("/api/zerodha/trades", {
             headers: { 
               "Authorization": `Bearer ${zerodhaToken}`,
               "x-api-key": apiKey || ""
@@ -4836,7 +4836,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         setTimeout(() => {
           // Also fetch profile
           const apiKey = localStorage.getItem("zerodha_api_key");
-          fetch("/api/broker/zerodha/profile", {
+          fetch("/api/zerodha/profile", {
             headers: { 
               "Authorization": `Bearer ${token}`,
               "x-api-key": apiKey || ""
@@ -4858,7 +4858,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           console.log('📡 [ZERODHA] Fetching trades with token...');
           setZerodhaTradesLoading(true);
           const apiKeyForTrades = localStorage.getItem("zerodha_api_key");
-          fetch("/api/broker/zerodha/trades", {
+          fetch("/api/zerodha/trades", {
             headers: { 
               "Authorization": `Bearer ${token}`,
               "x-api-key": apiKeyForTrades || ""
@@ -4932,7 +4932,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       localStorage.setItem("zerodha_api_secret", zerodhaApiSecretInput);
 
       // Fetch the login URL from backend passing the API key and secret
-      const response = await fetch(`/api/broker/zerodha/login-url?api_key=${encodeURIComponent(zerodhaApiKeyInput)}&api_secret=${encodeURIComponent(zerodhaApiSecretInput)}`);
+      const response = await fetch(`/api/zerodha/login-url?api_key=${encodeURIComponent(zerodhaApiKeyInput)}&api_secret=${encodeURIComponent(zerodhaApiSecretInput)}`);
       const data = await response.json();
       
       if (data.loginUrl) {
@@ -5294,7 +5294,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     setZerodhaTradesLoading(true);
     try {
       const apiKey = localStorage.getItem("zerodha_api_key");
-      const response = await fetch('/api/broker/zerodha/trades', {
+      const response = await fetch('/api/zerodha/trades', {
         headers: { 
           'Authorization': `Bearer ${zerodhaAccessToken}`,
           'x-api-key': apiKey || ""
@@ -5757,7 +5757,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           let broker = '';
           
           if (zerodhaAccessToken) {
-            endpoint = '/api/broker/zerodha/positions';
+            endpoint = '/api/zerodha/positions';
             token = zerodhaAccessToken;
             broker = 'Zerodha';
 
@@ -5870,7 +5870,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           let broker = '';
           
           if (zerodhaAccessToken) {
-            endpoint = '/api/broker/zerodha/trades';
+            endpoint = '/api/zerodha/trades';
             token = zerodhaAccessToken;
             broker = 'Zerodha';
 
@@ -5928,7 +5928,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     if (showOrderModal && (zerodhaAccessToken || upstoxAccessToken)) {
       const fetchBrokerFunds = async () => {
         try {
-          let endpoint = zerodhaAccessToken ? '/api/broker/zerodha/margins' : '/api/broker/upstox/margins';
+          let endpoint = zerodhaAccessToken ? '/api/zerodha/margins' : '/api/broker/upstox/margins';
           const token = zerodhaAccessToken || upstoxAccessToken;
 
           // Add API Key to query or headers for Zerodha
@@ -5988,7 +5988,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           let broker = '';
           
           if (zerodhaAccessToken) {
-            endpoint = '/api/broker/zerodha/margins';
+            endpoint = '/api/zerodha/margins';
             token = zerodhaAccessToken;
             broker = 'Zerodha';
             
@@ -20803,9 +20803,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       {showDhanToken ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </Button>
                                   </div>
-                                  <p className="text-[10px] text-slate-500">
-                                    Generate token at: <a href="https://web.dhan.co/index/profile" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://web.dhan.co/index/profile</a>
-                                  </p>
                                   <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
                                     <span className="text-[10px] text-slate-500 font-medium">Postback URL:</span>
                                     <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">https://perala.in/api/dhan/callback</code>
@@ -20826,6 +20823,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </div>
                                 </div>
                               </div>
+                                  <p className="text-[10px] text-slate-500 mt-2">
+                                    Generate token at: <a href="https://web.dhan.co/index/profile" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://web.dhan.co/index/profile</a>
+                                  </p>
                               <div className="flex justify-end gap-3 pt-2">
                                 <Button variant="outline" onClick={() => setIsDhanDialogOpen(false)}>
                                   Cancel
@@ -20883,13 +20883,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </div>
                                   <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
                                     <span className="text-[10px] text-slate-500 font-medium">Redirect URL:</span>
-                                    <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">{window.location.protocol}//{window.location.host}/api/broker/zerodha/callback</code>
+                                    <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">{window.location.protocol}//{window.location.host}/api/zerodha/callback</code>
                                     <Button
                                       size="icon"
                                       variant="ghost"
                                       className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 ml-0.5"
                                       onClick={() => {
-                                        navigator.clipboard.writeText(`${window.location.protocol}//${window.location.host}/api/broker/zerodha/callback`);
+                                        navigator.clipboard.writeText(`${window.location.protocol}//${window.location.host}/api/zerodha/callback`);
                                         toast({
                                           title: "Copied",
                                           description: "Redirect URL copied to clipboard",

@@ -24,7 +24,7 @@ export default function ZerodhaDebug() {
     setError('');
     
     try {
-      const response = await fetch('/api/broker/zerodha/profile', {
+      const response = await fetch('/api/zerodha/profile', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

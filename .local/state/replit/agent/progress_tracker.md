@@ -15,3 +15,5 @@
 [x] 15. Fix dotenv package missing error and verify application restarts cleanly
 [x] 16. Implement Upstox connection dialog with API key/secret fields to match Zerodha
 [x] 17. Re-install dotenv and verify application import is complete
+[x] 18. Fix Zerodha redirect URL by removing /broker from path
+[x] 19. Adjust Dhan dialog layout to move token generation link below postback URL box
