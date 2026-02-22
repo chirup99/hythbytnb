@@ -24,3 +24,4 @@
 [x] 24. Reorder broker buttons: Move Fyers above Groww (Coming Soon)
 [x] 25. Re-install dotenv package and verify application running
 [x] 26. Re-install dotenv package and verify application running (session recovery)
+[x] 27. Implement Angel One connection dialog with API Key and Client Code fields
