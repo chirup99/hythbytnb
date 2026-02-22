@@ -119,7 +119,7 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
         </div>
       </div>
       
-      <div className="space-y-4 py-2">
+      <div className="space-y-4 py-4">
         {!externalAppId && (
           <div className="space-y-2">
             <Label htmlFor="fyers-app-id" className="text-slate-700 dark:text-slate-300">App ID</Label>
@@ -160,9 +160,9 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
         )}
         
         <div className="space-y-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 w-full group hover:border-emerald-200 dark:hover:border-emerald-900/40 transition-colors overflow-hidden">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 w-full group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors overflow-hidden">
             <span className="text-[10px] text-slate-500 font-medium shrink-0">Redirect URL:</span>
-            <code className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold truncate flex-1 min-w-0">{window.location.protocol}//{window.location.host}/api/fyers/callback</code>
+            <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold truncate flex-1 min-w-0">{window.location.protocol}//{window.location.host}/api/fyers/callback</code>
             <Button
               size="icon"
               variant="ghost"
@@ -175,7 +175,7 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
                 });
               }}
             >
-              <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-emerald-500 transition-colors" />
+              <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
             </Button>
           </div>
 
@@ -185,7 +185,7 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
               href="https://myapi.fyers.in/dashboard" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 underline font-medium"
+              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline font-medium"
             >
               https://myapi.fyers.in/dashboard
             </a>
@@ -200,10 +200,10 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
         <Button
           onClick={() => getAuthUrlMutation.mutate()}
           disabled={getAuthUrlMutation.isPending || isStatusLoading || isRedirecting || !effectiveAppId || !effectiveSecretId}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white"
+          className="bg-blue-600 hover:bg-blue-700 text-white"
         >
           {getAuthUrlMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-          Connect
+          Connect Account
         </Button>
       </div>
     </div>
