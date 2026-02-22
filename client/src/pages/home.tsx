@@ -14084,7 +14084,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <X className="h-4 w-4" />
                                 </Button>
                               </div>
-                            ) : (
+                            ) : null}
+                            {/* Angel One connect button and dialog removed from dashboard */}
+                            {false && (
                               <Button
                                 onClick={() => setIsAngelOneDialogOpen(true)}
                                 variant="outline"
@@ -14104,6 +14106,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 Connect Angel One
                               </Button>
                             )}
+                            {false && (
                             <Dialog open={isAngelOneDialogOpen} onOpenChange={setIsAngelOneDialogOpen}>
                                 <DialogContent className="sm:max-w-[425px]">
                                   <DialogHeader>
@@ -14183,6 +14186,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </DialogFooter>
                                 </DialogContent>
                               </Dialog>
+                            )}
 
                   {/* Angel One Status - Compact */}
                   <Card className="hover-elevate">
