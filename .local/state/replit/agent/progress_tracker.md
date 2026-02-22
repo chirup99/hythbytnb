@@ -14,3 +14,4 @@
 [x] 14. Synchronize Zerodha connection UI with other brokers and update progress tracker
 [x] 15. Fix dotenv package missing error and verify application restarts cleanly
 [x] 16. Implement Upstox connection dialog with API key/secret fields to match Zerodha
+[x] 17. Re-install dotenv and verify application import is complete
