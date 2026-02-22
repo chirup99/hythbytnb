@@ -20588,28 +20588,29 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </DialogHeader>
                                   <div className="space-y-4 py-4">
                                     <div className="space-y-2">
-                                      <Label htmlFor="angelone-client-code" className="text-slate-700 dark:text-slate-300">Client Code</Label>
+                                      <Label htmlFor="angelone-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
                                       <Input
-                                        id="angelone-client-code"
-                                        placeholder="Enter your Angel One Client Code"
-                                        value={angelOneClientCodeInput}
-                                        onChange={(e) => setAngelOneClientCodeInput(e.target.value)}
+                                    <div className="space-y-2">
+                                      <Label htmlFor="angelone-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
+                                      <Input
+                                        id="angelone-api-key"
+                                        placeholder="Enter your Angel One API Key"
+                                        value={angelOneApiKeyInput}
+                                        onChange={(e) => setAngelOneApiKeyInput(e.target.value)}
                                         className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                                       />
                                     </div>
                                     <div className="space-y-2">
-                                      <Label htmlFor="angelone-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
+                                      <Label htmlFor="angelone-api-secret" className="text-slate-700 dark:text-slate-300">API Secret</Label>
                                       <div className="relative">
                                         <Input
-                                          id="angelone-api-key"
+                                          id="angelone-api-secret"
                                           type={showAngelOneSecret ? "text" : "password"}
-                                          placeholder="Enter your Angel One API Key"
-                                          value={angelOneApiKeyInput}
-                                          onChange={(e) => setAngelOneApiKeyInput(e.target.value)}
+                                          placeholder="Enter your Angel One API Secret"
+                                          value={angelOneClientCodeInput}
+                                          onChange={(e) => setAngelOneClientCodeInput(e.target.value)}
                                           className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
                                         />
-                                        <Button
-                                          type="button"
                                           variant="ghost"
                                           size="icon"
                                           className="absolute right-0 top-0 h-10 w-10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-transparent"
