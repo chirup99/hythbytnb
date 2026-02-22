@@ -114,7 +114,7 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="h-5 w-5 rounded-full" />
+          <img src="https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw" alt="Fyers" className="h-5 rounded-full" />
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Connect Fyers Broker</h3>
         </div>
       </div>
@@ -122,10 +122,10 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
       <div className="space-y-4 py-4">
         {!externalAppId && (
           <div className="space-y-2">
-            <Label htmlFor="fyers-app-id" className="text-slate-700 dark:text-slate-300">App ID</Label>
+            <Label htmlFor="fyers-app-id" className="text-slate-700 dark:text-slate-300">API Key</Label>
             <Input
               id="fyers-app-id"
-              placeholder="e.g. OXIDHUEC01-100"
+              placeholder="Enter your Fyers API Key"
               className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
               value={internalAppId}
               onChange={(e) => setAppId(e.target.value)}
@@ -135,12 +135,12 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
         )}
         {!externalSecretId && (
           <div className="space-y-2">
-            <Label htmlFor="fyers-secret-id" className="text-slate-700 dark:text-slate-300">Secret ID</Label>
+            <Label htmlFor="fyers-secret-id" className="text-slate-700 dark:text-slate-300">API Secret</Label>
             <div className="relative">
               <Input
                 id="fyers-secret-id"
                 type={showSecret ? "text" : "password"}
-                placeholder="Enter your Fyers Secret ID"
+                placeholder="Enter your Fyers API Secret"
                 className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
                 value={internalSecretId}
                 onChange={(e) => setSecretId(e.target.value)}
@@ -162,7 +162,9 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
         <div className="space-y-3">
           <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 w-full group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors overflow-hidden">
             <span className="text-[10px] text-slate-500 font-medium shrink-0">Redirect URL:</span>
-            <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold truncate flex-1 min-w-0">{window.location.protocol}//{window.location.host}/api/fyers/callback</code>
+            <div className="flex-1 min-w-0 overflow-hidden">
+              <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold truncate block">{window.location.protocol}//{window.location.host}/api/fyers/callback</code>
+            </div>
             <Button
               size="icon"
               variant="ghost"
@@ -180,7 +182,7 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
           </div>
 
           <p className="text-[10px] text-slate-500">
-            Create your app id, secret id from{" "}
+            Generate API keys at:{" "}
             <a 
               href="https://myapi.fyers.in/dashboard" 
               target="_blank" 
