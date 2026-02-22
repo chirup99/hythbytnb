@@ -17,4 +17,5 @@
 [x] 17. Re-install dotenv and verify application import is complete
 [x] 18. Fix Zerodha redirect URL by removing /broker from path
 [x] 19. Adjust Dhan dialog layout to move token generation link below postback URL box
+[x] 22. Move Dhan token generation link inside the content area below postback URL box
 [x] 21. Move Delta Exchange API key link below whitelisted IP box

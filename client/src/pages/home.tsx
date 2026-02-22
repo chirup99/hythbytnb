@@ -20821,11 +20821,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                                     </Button>
                                   </div>
-                                </div>
-                              </div>
                                   <p className="text-[10px] text-slate-500 mt-2">
                                     Generate token at: <a href="https://web.dhan.co/index/profile" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://web.dhan.co/index/profile</a>
                                   </p>
+                                </div>
+                              </div>
                               <div className="flex justify-end gap-3 pt-2">
                                 <Button variant="outline" onClick={() => setIsDhanDialogOpen(false)}>
                                   Cancel
