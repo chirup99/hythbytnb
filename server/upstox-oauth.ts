@@ -41,8 +41,8 @@ class UpstoxOAuthManager {
     lastRefresh: null,
   };
 
-  private apiKey: string;
-  private apiSecret: string;
+  private apiKey: string = '';
+  private apiSecret: string = '';
   private redirectUri: string;
   private oauthStates: Map<string, { state: string; createdAt: Date }> = new Map();
 
@@ -54,14 +54,13 @@ class UpstoxOAuthManager {
     this.redirectUri = `http://localhost:5000/api/upstox/callback`;
 
     console.log('🔵 [UPSTOX] OAuth Manager initialized');
-    console.log(`🔵 [UPSTOX] API Key loaded: ${this.apiKey ? '✅ YES' : '❌ NO'}`);
-    console.log(`🔵 [UPSTOX] API Secret loaded: ${this.apiSecret ? '✅ YES' : '❌ NO'}`);
-    console.log(`🔵 [UPSTOX] Default Redirect URI: ${this.redirectUri}`);
-    
-    if (!this.apiKey || !this.apiSecret) {
-      console.error('🔴 [UPSTOX] CRITICAL: Missing Upstox credentials!');
-      console.error('🔴 [UPSTOX] Please set UPSTOX_API_KEY and UPSTOX_API_SECRET environment variables');
-    }
+  }
+
+  // Update credentials dynamically
+  setCredentials(apiKey: string, apiSecret: string) {
+    console.log('🔵 [UPSTOX] Updating credentials dynamically');
+    this.apiKey = apiKey;
+    this.apiSecret = apiSecret;
   }
 
   // Generate OAuth authorization URL with dynamic domain support

@@ -4297,9 +4297,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
   const [isFyersDialogOpen, setIsFyersDialogOpen] = useState(false);
   const [isZerodhaDialogOpen, setIsZerodhaDialogOpen] = useState(false);
+  const [isUpstoxDialogOpen, setIsUpstoxDialogOpen] = useState(false);
   const [zerodhaApiKeyInput, setZerodhaApiKeyInput] = useState("");
   const [zerodhaApiSecretInput, setZerodhaApiSecretInput] = useState("");
+  const [upstoxApiKeyInput, setUpstoxApiKeyInput] = useState("");
+  const [upstoxApiSecretInput, setUpstoxApiSecretInput] = useState("");
   const [showZerodhaSecret, setShowZerodhaSecret] = useState(false);
+  const [showUpstoxSecret, setShowUpstoxSecret] = useState(false);
   const [fyersAppId, setFyersAppId] = useState("");
   const [fyersSecretId, setFyersSecretId] = useState("");
   const [isDeltaExchangeDialogOpen, setIsDeltaExchangeDialogOpen] = useState(false);
@@ -4947,8 +4951,24 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   const handleUpstoxConnect = async () => {
     try {
-      console.log('🔵 Starting Upstox OAuth flow...');
-      const response = await fetch('/api/upstox/auth-url');
+      if (!upstoxApiKeyInput || !upstoxApiSecretInput) {
+        toast({
+          title: "Error",
+          description: "API Key and API Secret are required",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      console.log('🔵 Saving Upstox credentials and starting OAuth flow...');
+      localStorage.setItem("upstox_api_key", upstoxApiKeyInput);
+      localStorage.setItem("upstox_api_secret", upstoxApiSecretInput);
+
+      const response = await fetch('/api/upstox/auth-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey: upstoxApiKeyInput, apiSecret: upstoxApiSecretInput })
+      });
       const data = await response.json();
       
       if (!data.authUrl) {
@@ -4956,6 +4976,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         return;
       }
       
+      setIsUpstoxDialogOpen(false);
       console.log('🔗 Upstox auth URL:', data.authUrl);
       
       const popup = window.open(
@@ -20458,20 +20479,94 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </Button>
                             </div>
                           ) : (
-                            <Button
-                              variant="outline"
-                              className={`w-full h-10 ${
-                                (zerodhaIsConnected || angelOneIsConnected || dhanIsConnected)
-                                  ? 'bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 dark:text-slate-600 border-slate-300 dark:border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
-                                  : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
-                              }`}
-                              data-testid="button-upstox-dialog"
-                              onClick={handleUpstoxConnect}
-                              disabled={zerodhaIsConnected || angelOneIsConnected || dhanIsConnected}
-                            >
-                              <img src="https://assets.upstox.com/content/assets/images/cms/202494/MediumWordmark_UP(WhiteOnPurple).png" alt="Upstox" className="h-4 mr-2" />
-                              Upstox
-                            </Button>
+                            <Dialog open={isUpstoxDialogOpen} onOpenChange={setIsUpstoxDialogOpen}>
+                              <DialogTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  className={`w-full h-10 ${
+                                    (zerodhaIsConnected || angelOneIsConnected || dhanIsConnected)
+                                      ? 'bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 dark:text-slate-600 border-slate-300 dark:border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
+                                      : 'bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700'
+                                  }`}
+                                  data-testid="button-upstox-dialog"
+                                  disabled={zerodhaIsConnected || angelOneIsConnected || dhanIsConnected}
+                                >
+                                  <img src="https://assets.upstox.com/content/assets/images/cms/202494/MediumWordmark_UP(WhiteOnPurple).png" alt="Upstox" className="h-4 mr-2" />
+                                  Upstox
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                                <DialogHeader>
+                                  <DialogTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+                                    <img src="https://assets.upstox.com/content/assets/images/cms/202494/MediumWordmark_UP(WhiteOnPurple).png" alt="Upstox" className="h-5" />
+                                    Connect Upstox Broker
+                                  </DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-4 py-4">
+                                  <div className="space-y-2">
+                                    <Label htmlFor="upstox-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
+                                    <Input
+                                      id="upstox-api-key"
+                                      placeholder="Enter your Upstox API Key"
+                                      value={upstoxApiKeyInput}
+                                      onChange={(e) => setUpstoxApiKeyInput(e.target.value)}
+                                      className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="upstox-api-secret" className="text-slate-700 dark:text-slate-300">API Secret</Label>
+                                    <div className="relative">
+                                      <Input
+                                        id="upstox-api-secret"
+                                        type={showUpstoxSecret ? "text" : "password"}
+                                        placeholder="Enter your Upstox API Secret"
+                                        value={upstoxApiSecretInput}
+                                        onChange={(e) => setUpstoxApiSecretInput(e.target.value)}
+                                        className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
+                                      />
+                                      <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        className="absolute right-0 top-0 h-10 w-10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-transparent"
+                                        onClick={() => setShowUpstoxSecret(!showUpstoxSecret)}
+                                      >
+                                        {showUpstoxSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                      </Button>
+                                    </div>
+                                    <p className="text-[10px] text-slate-500">
+                                      Generate API keys at: <a href="https://account.upstox.com/developer/apps" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://account.upstox.com/developer/apps</a>
+                                    </p>
+                                    <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
+                                      <span className="text-[10px] text-slate-500 font-medium">Redirect URL:</span>
+                                      <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">{window.location.protocol}//{window.location.host}/api/upstox/callback</code>
+                                      <Button
+                                        size="icon"
+                                        variant="ghost"
+                                        className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 ml-0.5"
+                                        onClick={() => {
+                                          navigator.clipboard.writeText(`${window.location.protocol}//${window.location.host}/api/upstox/callback`);
+                                          toast({
+                                            title: "Copied",
+                                            description: "Redirect URL copied to clipboard",
+                                          });
+                                        }}
+                                      >
+                                        <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="flex justify-end gap-3 pt-2">
+                                  <Button variant="outline" onClick={() => setIsUpstoxDialogOpen(false)}>
+                                    Cancel
+                                  </Button>
+                                  <Button onClick={handleUpstoxConnect} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                    Connect Account
+                                  </Button>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
                           )}
                           {angelOneIsConnected ? (
                             <div className="flex items-center gap-2">

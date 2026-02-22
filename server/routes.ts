@@ -21894,8 +21894,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ========================================
 
   // Get authorization URL for Upstox OAuth flow (with dynamic domain support)
-  app.get('/api/upstox/auth-url', (req, res) => {
+  app.post('/api/upstox/auth-url', (req, res) => {
     try {
+      const { apiKey, apiSecret } = req.body;
+      if (apiKey && apiSecret) {
+        upstoxOAuthManager.setCredentials(apiKey, apiSecret);
+      }
       // Get the current domain from request headers for dynamic OAuth redirect
       const currentDomain = req.get('host') || 'localhost:5000';
       console.log(`🔵 [UPSTOX] Auth URL requested from domain: ${currentDomain}`);
