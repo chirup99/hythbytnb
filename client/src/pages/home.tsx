@@ -20534,9 +20534,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         {showUpstoxSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                       </Button>
                                     </div>
-                                    <p className="text-[10px] text-slate-500">
-                                      Generate API keys at: <a href="https://account.upstox.com/developer/apps" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://account.upstox.com/developer/apps</a>
-                                    </p>
                                     <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
                                       <span className="text-[10px] text-slate-500 font-medium">Redirect URL:</span>
                                       <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">{window.location.protocol}//{window.location.host}/api/upstox/callback</code>
@@ -20555,6 +20552,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                                       </Button>
                                     </div>
+                                    <p className="text-[10px] text-slate-500 mt-2">
+                                      Generate API keys at: <a href="https://account.upstox.com/developer/apps" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://account.upstox.com/developer/apps</a>
+                                    </p>
                                   </div>
                                 </div>
                                 <div className="flex justify-end gap-3 pt-2">
@@ -20881,9 +20881,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       {showZerodhaSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </Button>
                                   </div>
-                                  <p className="text-[10px] text-slate-500">
-                                    Generate API keys at: <a href="https://developers.kite.trade" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://developers.kite.trade</a>
-                                  </p>
                                   <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors">
                                     <span className="text-[10px] text-slate-500 font-medium">Redirect URL:</span>
                                     <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">{window.location.protocol}//{window.location.host}/api/broker/zerodha/callback</code>
@@ -20902,6 +20899,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                                     </Button>
                                   </div>
+                                  <p className="text-[10px] text-slate-500 mt-2">
+                                    Generate API keys at: <a href="https://developers.kite.trade" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://developers.kite.trade</a>
+                                  </p>
                                 </div>
                               </div>
                               <div className="flex justify-end gap-3 pt-2">
