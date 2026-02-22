@@ -20649,17 +20649,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </Button>
                           )}
 
-                          {/* Groww */}
-                          <Button
-                            variant="outline"
-                            className="w-full h-10 bg-slate-50/50 dark:bg-slate-900/20 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 cursor-not-allowed relative hover:bg-slate-50/50 dark:hover:bg-slate-900/20"
-                            disabled
-                          >
-                            <img src="https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw" alt="Groww" className="w-4 h-4 mr-2 rounded-full" />
-                            Groww
-                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
-                          </Button>
-
                           {/* Fyers */}
                           {fyersIsConnected ? (
                             <div className="flex items-center gap-2">
@@ -20704,6 +20693,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               Fyers
                             </Button>
                           )}
+
+                          {/* Groww */}
+                          <Button
+                            variant="outline"
+                            className="w-full h-10 bg-slate-50/50 dark:bg-slate-900/20 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 cursor-not-allowed relative hover:bg-slate-50/50 dark:hover:bg-slate-900/20"
+                            disabled
+                          >
+                            <img src="https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw" alt="Groww" className="w-4 h-4 mr-2 rounded-full" />
+                            Groww
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
+                          </Button>
 
                           {/* ICICI Securities */}
                           <Button

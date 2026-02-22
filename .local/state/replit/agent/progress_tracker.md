@@ -21,3 +21,4 @@
 [x] 21. Move Delta Exchange API key link below whitelisted IP box
 [x] 22. Use dynamic host for Dhan Postback URL
 [x] 23. Use dynamic host for Fyers Redirect URL
+[x] 24. Reorder broker buttons: Move Fyers above Groww (Coming Soon)
