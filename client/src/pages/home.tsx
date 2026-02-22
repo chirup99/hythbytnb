@@ -20976,9 +20976,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       {showDeltaSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </Button>
                                   </div>
-                                  <p className="text-[10px] text-slate-500">
-                                    Create your API keys at: <a href="https://www.delta.exchange/app/account/manageapikeys" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">https://www.delta.exchange/app/account/manageapikeys</a>
-                                  </p>
                                   <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-fit group hover:border-orange-200 dark:hover:border-orange-900/40 transition-colors">
                                     <span className="text-[10px] text-slate-500 font-medium">Whitelisted IP:</span>
                                     <code className="text-[10px] font-mono text-orange-600 dark:text-orange-400 font-bold">{deltaWhitelistedIP}</code>
@@ -20997,6 +20994,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-orange-500 transition-colors" />
                                     </Button>
                                   </div>
+                                  <p className="text-[10px] text-slate-500">
+                                    Create your API keys at: <a href="https://www.delta.exchange/app/account/manageapikeys" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">https://www.delta.exchange/app/account/manageapikeys</a>
+                                  </p>
                                 </div>
                               </div>
                               <div className="flex justify-end gap-3 pt-2">
