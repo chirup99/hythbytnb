@@ -122,10 +122,10 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
       <div className="space-y-4 py-4">
         {!externalAppId && (
           <div className="space-y-2">
-            <Label htmlFor="fyers-app-id" className="text-slate-700 dark:text-slate-300">API Key</Label>
+            <Label htmlFor="fyers-app-id" className="text-slate-700 dark:text-slate-300">App ID</Label>
             <Input
               id="fyers-app-id"
-              placeholder="Enter your Fyers API Key"
+              placeholder="Enter your Fyers App ID"
               className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
               value={internalAppId}
               onChange={(e) => setAppId(e.target.value)}
@@ -135,12 +135,12 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
         )}
         {!externalSecretId && (
           <div className="space-y-2">
-            <Label htmlFor="fyers-secret-id" className="text-slate-700 dark:text-slate-300">API Secret</Label>
+            <Label htmlFor="fyers-secret-id" className="text-slate-700 dark:text-slate-300">Secret ID</Label>
             <div className="relative">
               <Input
                 id="fyers-secret-id"
                 type={showSecret ? "text" : "password"}
-                placeholder="Enter your Fyers API Secret"
+                placeholder="Enter your Fyers Secret ID"
                 className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
                 value={internalSecretId}
                 onChange={(e) => setSecretId(e.target.value)}
