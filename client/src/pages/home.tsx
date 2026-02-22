@@ -5096,47 +5096,71 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   const handleAngelOneConnect = async () => {
     try {
-      if (!angelOneClientCodeInput || !angelOneApiKeyInput) {
-        toast({
-          title: "Error",
-          description: "Please enter both Client Code and API Key",
-          variant: "destructive"
-        });
+      console.log("🔶 Starting Angel One OAuth flow...");
+      
+      // Get the authorization URL from the backend
+      const response = await fetch("/api/angelone/auth-url");
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.message || "Failed to get authorization URL");
+      }
+      
+      const authUrl = data.authUrl;
+      
+      // Open the login page in a popup
+      const width = 600;
+      const height = 700;
+      const left = window.screenX + (window.outerWidth - width) / 2;
+      const top = window.screenY + (window.outerHeight - height) / 2;
+      
+      const popup = window.open(
+        authUrl,
+        "AngelOneLogin",
+        `width=${width},height=${height},left=${left},top=${top},status=no,menubar=no,toolbar=no`
+      );
+      
+      if (!popup) {
+        alert("Please allow popups to connect your Angel One account");
         return;
       }
 
-      console.log("🔶 Connecting to Angel One with provided credentials...");
-      
-      const response = await fetch("/api/broker/angelone/connect", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          clientCode: angelOneClientCodeInput,
-          apiKey: angelOneApiKeyInput
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        localStorage.setItem("angel_one_client_code", angelOneClientCodeInput);
-        localStorage.setItem("angel_one_api_key", angelOneApiKeyInput);
-        
-        if (data.token) {
-          localStorage.setItem("angel_one_token", data.token);
-          setAngelOneAccessToken(data.token);
+      // Listen for messages from the OAuth callback popup
+      const messageListener = (event: MessageEvent) => {
+        if (event.data.type === "ANGELONE_AUTH_SUCCESS") {
+          console.log("✅ Angel One authentication successful!");
+          
+          localStorage.setItem("angel_one_token", event.data.token);
+          localStorage.setItem("angel_one_client_code", event.data.clientCode || "");
+          
+          if (event.data.refreshToken) {
+            localStorage.setItem("angel_one_refresh_token", event.data.refreshToken);
+          }
+          
+          setAngelOneAccessToken(event.data.token);
+          setAngelOneIsConnected(true);
+          setIsAngelOneDialogOpen(false);
+          
+          window.removeEventListener("message", messageListener);
+          
+          toast({
+            title: "Success",
+            description: "Angel One connected successfully!",
+          });
         }
-        
-        setAngelOneIsConnected(true);
-        setIsAngelOneDialogOpen(false);
-        toast({ title: "Success", description: `Connected to Angel One (${angelOneClientCodeInput})` });
-      } else {
-        toast({ 
-          variant: "destructive", 
-          title: "Connection Failed", 
-          description: data.error || "Failed to connect to Angel One" 
-        });
-      }
+      };
+
+      window.addEventListener("message", messageListener);
+      
+      // Monitor popup closing and cleanup
+      const monitorPopup = setInterval(() => {
+        if (popup.closed) {
+          clearInterval(monitorPopup);
+          window.removeEventListener("message", messageListener);
+          console.log('⚠️ Angel One popup closed');
+        }
+      }, 1000);
+      
     } catch (error) {
       console.error("❌ Angel One error:", error);
       toast({ 
