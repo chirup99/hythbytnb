@@ -20590,9 +20590,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <div className="space-y-2">
                                       <Label htmlFor="angelone-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
                                       <Input
-                                    <div className="space-y-2">
-                                      <Label htmlFor="angelone-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
-                                      <Input
                                         id="angelone-api-key"
                                         placeholder="Enter your Angel One API Key"
                                         value={angelOneApiKeyInput}
@@ -20611,6 +20608,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           onChange={(e) => setAngelOneClientCodeInput(e.target.value)}
                                           className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
                                         />
+                                        <Button
+                                          type="button"
                                           variant="ghost"
                                           size="icon"
                                           className="absolute right-0 top-0 h-10 w-10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-transparent"
@@ -20654,7 +20653,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </div>
                                 </DialogContent>
                               </Dialog>
-
                               {angelOneIsConnected ? (
                             <div className="flex items-center gap-2">
                               <Button
@@ -23052,16 +23050,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           setShowUserId={setShowUserId} 
           zerodhaClientId={zerodhaClientId} 
           zerodhaUserName={zerodhaUserName} 
-          brokerOrders={brokerOrders} 
-          fetchingBrokerOrders={fetchingBrokerOrders} 
-          zerodhaAccessToken={zerodhaAccessToken} 
-          recordAllBrokerOrders={recordAllBrokerOrders} 
-          upstoxAccessToken={upstoxAccessToken}
-          upstoxUserId={upstoxUserId}
-          upstoxUserName={upstoxUserName}
-          dhanAccessToken={dhanAccessToken}
-          dhanUserId={dhanClientIdInput}
-          dhanClientName={dhanClientName || "Dhan User"}
           deltaExchangeIsConnected={deltaExchangeIsConnected}
           deltaExchangeApiKey={deltaExchangeApiKey}
           deltaExchangeApiSecret={deltaExchangeApiSecret}
