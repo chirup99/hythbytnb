@@ -119,8 +119,6 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
         </div>
       </div>
       
-      <p className="text-xs text-slate-500 dark:text-slate-400 leading-tight">Enter credentials to link your account</p>
-
       <div className="space-y-4 py-2">
         {!externalAppId && (
           <div className="space-y-2">
