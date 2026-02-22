@@ -4295,6 +4295,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const fyersIsConnected = fyersStatus?.connected && fyersStatus?.authenticated;
 
   const [isDhanDialogOpen, setIsDhanDialogOpen] = useState(false);
+  const [isAngelOneDialogOpen, setIsAngelOneDialogOpen] = useState(false);
   const [isFyersDialogOpen, setIsFyersDialogOpen] = useState(false);
   const [isZerodhaDialogOpen, setIsZerodhaDialogOpen] = useState(false);
   const [isUpstoxDialogOpen, setIsUpstoxDialogOpen] = useState(false);
@@ -4302,8 +4303,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [zerodhaApiSecretInput, setZerodhaApiSecretInput] = useState("");
   const [upstoxApiKeyInput, setUpstoxApiKeyInput] = useState("");
   const [upstoxApiSecretInput, setUpstoxApiSecretInput] = useState("");
+  const [angelOneApiKeyInput, setAngelOneApiKeyInput] = useState("");
+  const [angelOneClientCodeInput, setAngelOneClientCodeInput] = useState("");
   const [showZerodhaSecret, setShowZerodhaSecret] = useState(false);
   const [showUpstoxSecret, setShowUpstoxSecret] = useState(false);
+  const [showAngelOneSecret, setShowAngelOneSecret] = useState(false);
   const [fyersAppId, setFyersAppId] = useState("");
   const [fyersSecretId, setFyersSecretId] = useState("");
   const [isDeltaExchangeDialogOpen, setIsDeltaExchangeDialogOpen] = useState(false);
@@ -20570,7 +20574,83 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </DialogContent>
                             </Dialog>
                           )}
-                          {angelOneIsConnected ? (
+                              <Dialog open={isAngelOneDialogOpen} onOpenChange={setIsAngelOneDialogOpen}>
+                                <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                                  <DialogHeader>
+                                    <DialogTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+                                      <img src="https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701" alt="Angel One" className="h-5" />
+                                      Connect Angel One Broker
+                                    </DialogTitle>
+                                  </DialogHeader>
+                                  <div className="space-y-4 py-4">
+                                    <div className="space-y-2">
+                                      <Label htmlFor="angelone-client-code" className="text-slate-700 dark:text-slate-300">Client Code</Label>
+                                      <Input
+                                        id="angelone-client-code"
+                                        placeholder="Enter your Angel One Client Code"
+                                        value={angelOneClientCodeInput}
+                                        onChange={(e) => setAngelOneClientCodeInput(e.target.value)}
+                                        className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="angelone-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
+                                      <div className="relative">
+                                        <Input
+                                          id="angelone-api-key"
+                                          type={showAngelOneSecret ? "text" : "password"}
+                                          placeholder="Enter your Angel One API Key"
+                                          value={angelOneApiKeyInput}
+                                          onChange={(e) => setAngelOneApiKeyInput(e.target.value)}
+                                          className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
+                                        />
+                                        <Button
+                                          type="button"
+                                          variant="ghost"
+                                          size="icon"
+                                          className="absolute right-0 top-0 h-10 w-10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-transparent"
+                                          onClick={() => setShowAngelOneSecret(!showAngelOneSecret)}
+                                        >
+                                          {showAngelOneSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                        </Button>
+                                      </div>
+                                      <div className="flex items-center gap-2 mt-1 px-2 py-1 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 w-full group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors overflow-hidden">
+                                        <span className="text-[10px] text-slate-500 font-medium shrink-0">Redirect URL:</span>
+                                        <div className="flex-1 min-w-0 overflow-hidden">
+                                          <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold truncate block max-w-[200px]">{window.location.protocol}//{window.location.host}/api/angelone/callback</code>
+                                        </div>
+                                        <Button
+                                          size="icon"
+                                          variant="ghost"
+                                          className="h-4 w-4 hover:bg-slate-200 dark:hover:bg-slate-800 shrink-0 ml-0.5"
+                                          onClick={() => {
+                                            navigator.clipboard.writeText(`${window.location.protocol}//${window.location.host}/api/angelone/callback`);
+                                            toast({
+                                              title: "Copied",
+                                              description: "Redirect URL copied to clipboard",
+                                            });
+                                          }}
+                                        >
+                                          <Copy className="h-2.5 w-2.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                        </Button>
+                                      </div>
+                                      <p className="text-[10px] text-slate-500 mt-2">
+                                        Generate API keys at: <a href="https://smartapi.angelone.in" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://smartapi.angelone.in</a>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-end gap-3 pt-2">
+                                    <Button variant="outline" onClick={() => setIsAngelOneDialogOpen(false)}>
+                                      Cancel
+                                    </Button>
+                                    <Button onClick={handleAngelOneConnect} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                      Connect Account
+                                    </Button>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+
+                              {angelOneIsConnected ? (
                             <div className="flex items-center gap-2">
                               <Button
                                 variant="outline"
@@ -20603,7 +20683,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
                               }`}
                               data-testid="button-angelone-dialog"
-                              onClick={handleAngelOneConnect}
+                              onClick={() => setIsAngelOneDialogOpen(true)}
                               disabled={zerodhaIsConnected || upstoxIsConnected || dhanIsConnected}
                             >
                               <img src="https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701" alt="Angel One" className="h-4 mr-2" />
