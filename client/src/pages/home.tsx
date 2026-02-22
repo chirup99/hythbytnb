@@ -11131,6 +11131,38 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   }, [isDemoMode, activeTab, heatmapYear]);
 
   // Calculate total duration of all closed trades
+  const calculateAverageDuration = (trades: any[]) => {
+    if (!trades || trades.length === 0) return "0m";
+    
+    let totalSeconds = 0;
+    let tradesWithDuration = 0;
+    
+    trades.forEach(trade => {
+      if (trade.duration) {
+        // Parse duration like "13m 3s" or "6m 11s" or "45s"
+        const minutesMatch = trade.duration.match(/(\d+)m/);
+        const secondsMatch = trade.duration.match(/(\d+)s/);
+        
+        const minutes = minutesMatch ? parseInt(minutesMatch[1]) : 0;
+        const seconds = secondsMatch ? parseInt(secondsMatch[1]) : 0;
+        
+        totalSeconds += (minutes * 60) + seconds;
+        tradesWithDuration++;
+      }
+    });
+    
+    if (tradesWithDuration === 0) return "0m";
+    
+    const avgSecondsTotal = Math.round(totalSeconds / tradesWithDuration);
+    const avgMinutes = Math.floor(avgSecondsTotal / 60);
+    const avgSeconds = avgSecondsTotal % 60;
+    
+    if (avgMinutes > 0) {
+      return `${avgMinutes}m ${avgSeconds}s`;
+    }
+    return `${avgSeconds}s`;
+  };
+
   const calculateTotalDuration = (trades: any[]) => {
     let totalMinutes = 0;
 
@@ -20232,9 +20264,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             >
                               <Info className="h-4 w-4 text-slate-600 dark:text-slate-400" />
                             </Button>
-                            <div className="h-7 px-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700 rounded-md flex items-center justify-center text-xs font-semibold text-blue-600 dark:text-blue-300">
+                            <div className="h-7 px-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700 rounded-md flex items-center justify-center text-xs font-semibold text-blue-600 dark:text-blue-300" title="Average Trade Duration">
                               <Timer className="h-4 w-4 mr-1.5" />
-                              {calculateTotalDuration(tradeHistoryData)}
+                              {calculateAverageDuration(tradeHistoryData)}
                             </div>
                           </div>
                         </div>
