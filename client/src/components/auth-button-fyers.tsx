@@ -163,7 +163,7 @@ export function AuthButtonFyers({ externalAppId, externalSecretId, onSuccess, on
           <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 w-full group hover:border-blue-200 dark:hover:border-blue-900/40 transition-colors overflow-hidden">
             <span className="text-[10px] text-slate-500 font-medium shrink-0">Redirect URL:</span>
             <div className="flex-1 min-w-0 overflow-hidden">
-              <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold truncate block">{window.location.protocol}//{window.location.host}/api/fyers/callback</code>
+              <code className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold truncate block max-w-[200px]">{window.location.protocol}//{window.location.host}/api/fyers/callback</code>
             </div>
             <Button
               size="icon"
