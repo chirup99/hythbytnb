@@ -14080,6 +14080,85 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 Connect Angel One
                               </Button>
                             )}
+                            <Dialog open={isAngelOneDialogOpen} onOpenChange={setIsAngelOneDialogOpen}>
+                                <DialogContent className="sm:max-w-[425px]">
+                                  <DialogHeader>
+                                    <DialogTitle className="flex items-center gap-2">
+                                      <img 
+                                        src="https://www.angelone.in/wp-content/uploads/2023/10/angel-one-logo.png" 
+                                        alt="Angel One" 
+                                        className="h-5"
+                                      />
+                                      Connect Angel One
+                                    </DialogTitle>
+                                    <DialogDescription>
+                                      Enter your Angel One API credentials to link your account.
+                                    </DialogDescription>
+                                  </DialogHeader>
+                                  <div className="grid gap-4 py-4">
+                                    <div className="space-y-2">
+                                      <Label htmlFor="clientCode">Client Code</Label>
+                                      <Input
+                                        id="clientCode"
+                                        placeholder="P176266"
+                                        value={angelOneClientCodeInput}
+                                        onChange={(e) => setAngelOneClientCodeInput(e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="apiKey">API Key</Label>
+                                      <div className="relative">
+                                        <Input
+                                          id="apiKey"
+                                          type={showAngelOneSecret ? "text" : "password"}
+                                          placeholder="Enter your API Key"
+                                          value={angelOneApiKeyInput}
+                                          onChange={(e) => setAngelOneApiKeyInput(e.target.value)}
+                                        />
+                                        <Button
+                                          variant="ghost"
+                                          size="icon"
+                                          className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                                          onClick={() => setShowAngelOneSecret(!showAngelOneSecret)}
+                                        >
+                                          {showAngelOneSecret ? (
+                                            <EyeOff className="h-4 w-4 text-muted-foreground" />
+                                          ) : (
+                                            <Eye className="h-4 w-4 text-muted-foreground" />
+                                          )}
+                                        </Button>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2">
+                                      <div className="flex items-center justify-between">
+                                        <span className="text-[10px] font-medium text-muted-foreground uppercase">Redirect URL</span>
+                                        <Button 
+                                          variant="ghost" 
+                                          size="sm" 
+                                          className="h-6 px-2 text-[10px]"
+                                          onClick={() => {
+                                            const url = `${window.location.origin}/api/broker/angelone/callback`;
+                                            navigator.clipboard.writeText(url);
+                                            toast({ title: "Copied!", description: "Redirect URL copied to clipboard" });
+                                          }}
+                                        >
+                                          <Copy className="h-3 w-3 mr-1" />
+                                          Copy
+                                        </Button>
+                                      </div>
+                                      <code className="text-[10px] break-all text-slate-600 dark:text-slate-400">
+                                        {window.location.origin}/api/broker/angelone/callback
+                                      </code>
+                                    </div>
+                                  </div>
+                                  <DialogFooter>
+                                    <Button onClick={handleAngelOneConnect} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                                      Connect Account
+                                    </Button>
+                                  </DialogFooter>
+                                </DialogContent>
+                              </Dialog>
 
                   {/* Angel One Status - Compact */}
                   <Card className="hover-elevate">
