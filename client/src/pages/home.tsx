@@ -14180,7 +14180,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                   </div>
                                   <DialogFooter>
-                                    <Button onClick={handleAngelOneConnect} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                                    <Button 
+                                      onClick={handleAngelOneConnect} 
+                                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                      disabled={!angelOneApiKeyInput || !angelOneClientCodeInput}
+                                    >
                                       Connect Account
                                     </Button>
                                   </DialogFooter>
@@ -20575,7 +20579,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <Button variant="outline" onClick={() => setIsUpstoxDialogOpen(false)}>
                                     Cancel
                                   </Button>
-                                  <Button onClick={handleUpstoxConnect} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                  <Button 
+                                    onClick={handleUpstoxConnect} 
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    disabled={!upstoxApiKeyInput || !upstoxApiSecretInput}
+                                  >
                                     Connect Account
                                   </Button>
                                 </div>
@@ -20651,7 +20659,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     <Button variant="outline" onClick={() => setIsAngelOneDialogOpen(false)}>
                                       Cancel
                                     </Button>
-                                    <Button onClick={handleAngelOneConnect} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                    <Button 
+                                      onClick={handleAngelOneConnect} 
+                                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                                      disabled={!angelOneApiKeyInput || !angelOneClientCodeInput}
+                                    >
                                       Connect Account
                                     </Button>
                                   </div>
@@ -20915,14 +20927,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </p>
                                 </div>
                               </div>
-                              <div className="flex justify-end gap-3 pt-2">
-                                <Button variant="outline" onClick={() => setIsDhanDialogOpen(false)}>
-                                  Cancel
-                                </Button>
-                                <Button onClick={submitDhanCredentials} className="bg-green-600 hover:bg-green-700 text-white">
-                                  Connect Account
-                                </Button>
-                              </div>
+                                <div className="flex justify-end gap-3 pt-2">
+                                  <Button variant="outline" onClick={() => setIsDhanDialogOpen(false)}>
+                                    Cancel
+                                  </Button>
+                                  <Button 
+                                    onClick={submitDhanCredentials} 
+                                    className="bg-green-600 hover:bg-green-700 text-white"
+                                    disabled={!dhanClientIdInput || !dhanTokenInput}
+                                  >
+                                    Connect Account
+                                  </Button>
+                                </div>
                             </DialogContent>
                           </Dialog>
 
@@ -20999,7 +21015,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <Button variant="outline" onClick={() => setIsZerodhaDialogOpen(false)}>
                                   Cancel
                                 </Button>
-                                <Button onClick={submitZerodhaCredentials} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                <Button 
+                                  onClick={submitZerodhaCredentials} 
+                                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                                  disabled={!zerodhaApiKeyInput || !zerodhaApiSecretInput}
+                                >
                                   Connect Account
                                 </Button>
                               </div>
@@ -21094,7 +21114,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 <Button variant="outline" onClick={() => setIsDeltaExchangeDialogOpen(false)}>
                                   Cancel
                                 </Button>
-                                <Button onClick={handleDeltaExchangeConnect} className="bg-orange-600 hover:bg-orange-700 text-white">
+                                <Button 
+                                  onClick={handleDeltaExchangeConnect} 
+                                  className="bg-orange-600 hover:bg-orange-700 text-white"
+                                  disabled={!deltaExchangeApiKey || !deltaExchangeApiSecret}
+                                >
                                   Connect Account
                                 </Button>
                               </div>
