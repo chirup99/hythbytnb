@@ -22390,22 +22390,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           {tag.winRate.toFixed(1)}%
                                         </span>
                                       </div>
-                                      <div className="flex items-center justify-between border-t border-slate-50 dark:border-slate-700/50 pt-2 mt-2">
-                                        <div className="flex flex-col">
-                                          <span className="text-[9px] uppercase tracking-tighter text-slate-400 font-bold">Avg Duration</span>
-                                          <div className="flex items-center gap-1">
-                                            <Clock className="w-3 h-3 text-slate-400" />
-                                            <span className="text-[10px] font-semibold text-slate-500">
-                                              {tag.avgDuration > 0 ? (
-                                                tag.avgDuration < 1 ? 
-                                                  `${Math.round(tag.avgDuration * 60)}s` : 
-                                                  tag.avgDuration < 60 ? 
-                                                    `${Math.round(tag.avgDuration)}m` : 
-                                                    `${Math.floor(tag.avgDuration / 60)}h ${Math.round(tag.avgDuration % 60)}m`
-                                              ) : "--"}
-                                            </span>
-                                          </div>
-                                        </div>
+                                      <div className="flex items-center justify-end border-t border-slate-50 dark:border-slate-700/50 pt-2 mt-2">
                                         <div className="text-right">
                                           <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter ${
                                             tag.tradingStyle === 'Scalper' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
