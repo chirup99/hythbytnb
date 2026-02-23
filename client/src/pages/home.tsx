@@ -22197,7 +22197,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <div className="text-xs font-bold text-white">{progress.toFixed(1)}%</div>
                                         </div>
                                       </div>
-                                      <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                                      <div className="h-2 bg-white/20 rounded-full overflow-hidden relative">
+                                        {/* Animated Tortoise */}
+                                        <motion.div
+                                          initial={false}
+                                          animate={{ left: `${progress}%` }}
+                                          transition={{ type: "spring", stiffness: 50, damping: 20 }}
+                                          className="absolute top-0 -ml-2 z-10 flex items-center justify-center h-full"
+                                          style={{ left: `${progress}%` }}
+                                        >
+                                          <span className="text-[10px] leading-none filter drop-shadow-sm transform -scale-x-100">🐢</span>
+                                        </motion.div>
+
                                         <div 
                                           className={`h-full bg-white transition-all duration-1000 ${isTargetMet ? 'opacity-100' : 'opacity-60'}`}
                                           style={{ width: `${progress}%` }}
