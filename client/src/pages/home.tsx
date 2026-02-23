@@ -22393,48 +22393,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <div className="flex items-center justify-between border-t border-slate-50 dark:border-slate-700/50 pt-2 mt-2">
                                         <div className="flex flex-col">
                                           <span className="text-[9px] uppercase tracking-tighter text-slate-400 font-bold">Avg Duration</span>
-                                          <span className="text-[10px] font-semibold text-slate-500">
-                                            {(() => {
-                                              const tagTrades = Object.values(filteredHeatmapData).filter((day: any) => {
-                                                const dayData = day?.tradingData || day;
-                                                return dayData.tradingTags?.some((t: string) => 
-                                                  t.toLowerCase().trim() === tag.tag.toLowerCase().trim()
-                                                );
-                                              });
-
-                                              const validDurations = tagTrades
-                                                .map((day: any) => {
-                                                  const dayData = day?.tradingData || day;
-                                                  return dayData.performanceMetrics?.avgDuration || dayData.performanceMetrics?.duration;
-                                                })
-                                                .filter(Boolean);
-
-                                              if (validDurations.length === 0) return "--";
-
-                                              const parseDuration = (dur: string) => {
-                                                if (typeof dur !== 'string') return 0;
-                                                const match = dur.match(/(\d+h)?\s*(\d+m)?\s*(\d+s)?/);
-                                                if (!match) return 0;
-                                                const h = parseInt(match[1]) || 0;
-                                                const m = parseInt(match[2]) || 0;
-                                                const s = parseInt(match[3]) || 0;
-                                                return h * 3600 + m * 60 + s;
-                                              };
-
-                                              // Calculation follows these steps:
-                                              // 1. Tag Filtering: It looks through all your trading days and finds only those that have the specific tag.
-                                              // 2. Duration Extraction: For those specific days, it tries to read the avgDuration value from performance metrics.
-                                              // 3. Parsing: It converts time strings (like "1h 20m") into total seconds.
-                                              // 4. Averaging: It sums up the total seconds across all valid days and divides by the number of days.
-                                              // 5. Formatting: Finally, it converts the average seconds back into a readable format like "5m 30s".
-                                              const totalSeconds = validDurations.reduce((acc, dur) => acc + parseDuration(dur), 0);
-                                              const avgSeconds = Math.round(totalSeconds / validDurations.length);
-                                              
-                                              const mins = Math.floor(avgSeconds / 60);
-                                              const secs = avgSeconds % 60;
-                                              return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
-                                            })()}
-                                          </span>
+                                          <div className="flex items-center gap-1">
+                                            <Clock className="w-3 h-3 text-slate-400" />
+                                            <span className="text-[10px] font-semibold text-slate-500">
+                                              {tag.avgDuration > 0 ? (
+                                                tag.avgDuration < 1 ? 
+                                                  `${Math.round(tag.avgDuration * 60)}s` : 
+                                                  tag.avgDuration < 60 ? 
+                                                    `${Math.round(tag.avgDuration)}m` : 
+                                                    `${Math.floor(tag.avgDuration / 60)}h ${Math.round(tag.avgDuration % 60)}m`
+                                              ) : "--"}
+                                            </span>
+                                          </div>
                                         </div>
                                         <div className="text-right">
                                           <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter ${
