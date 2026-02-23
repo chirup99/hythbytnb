@@ -22401,30 +22401,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               if (tagTrades.length === 0) return "--";
 
                                               // Calculation follows these steps:
-                                              // 1. Tag Filtering: It looks through all your trading days and finds only those that have the specific tag (done above).
+                                              // 1. Tag Filtering: It looks through all your trading days and finds only those that have the specific tag.
                                               // 2. Duration Extraction: For those specific days, it tries to read the avgDuration value from performance metrics.
-                                              const validDurations = tagTrades
-                                                .map((day: any) => (day?.tradingData || day).performanceMetrics?.avgDuration)
-                                                .filter(dur => dur && dur !== "--" && dur !== "-" && dur !== "0s");
-
-                                              if (validDurations.length === 0) return "--";
-
                                               // 3. Parsing: It converts time strings (like "1h 20m") into total seconds.
-                                              const parseDuration = (dur: string) => {
-                                                if (!dur || typeof dur !== 'string') return 0;
-                                                const h = dur.match(/(\d+)h/);
-                                                const m = dur.match(/(\d+)m/);
-                                                const s = dur.match(/(\d+)s/);
-                                                return (h ? parseInt(h[1]) * 3600 : 0) + 
-                                                       (m ? parseInt(m[1]) * 60 : 0) + 
-                                                       (s ? parseInt(s[1]) : 0);
-                                              };
-
                                               // 4. Averaging: It sums up the total seconds across all valid days and divides by the number of days.
+                                              // 5. Formatting: Finally, it converts the average seconds back into a readable format like "5m 30s".
                                               const totalSeconds = validDurations.reduce((acc, dur) => acc + parseDuration(dur), 0);
                                               const avgSeconds = Math.round(totalSeconds / validDurations.length);
                                               
-                                              // 5. Formatting: Finally, it converts the average seconds back into a readable format like "5m 30s".
                                               const mins = Math.floor(avgSeconds / 60);
                                               const secs = avgSeconds % 60;
                                               return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
