@@ -22389,7 +22389,28 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <div className="flex items-center justify-between border-t border-slate-50 dark:border-slate-700/50 pt-2 mt-2">
                                         <div className="flex flex-col">
                                           <span className="text-[9px] uppercase tracking-tighter text-slate-400 font-bold">Avg Duration</span>
-                                          <span className="text-[10px] font-semibold text-slate-500">{tag.avgDuration > 0 ? tag.avgDuration.toFixed(0) + 'm' : '--'}</span>
+                                          <span className="text-[10px] font-semibold text-slate-500">
+                                            {(() => {
+                                              const tagTrades = Object.values(filteredHeatmapData).flatMap((day: any) => 
+                                                day.tradingTags?.some((t: string) => t.toLowerCase().trim() === tag.tag.toLowerCase().trim()) 
+                                                  ? (day.trades || []) 
+                                                  : []
+                                              );
+                                              const sellTrades = tagTrades.filter((t: any) => t.order === "SELL" && t.duration);
+                                              if (sellTrades.length === 0) return "--";
+                                              
+                                              const totalSeconds = sellTrades.reduce((acc: number, t: any) => {
+                                                const m = t.duration.match(/(\d+)m/);
+                                                const s = t.duration.match(/(\d+)s/);
+                                                return acc + (m ? parseInt(m[1]) * 60 : 0) + (s ? parseInt(s[1]) : 0);
+                                              }, 0);
+                                              
+                                              const avgSeconds = Math.round(totalSeconds / sellTrades.length);
+                                              const mins = Math.floor(avgSeconds / 60);
+                                              const secs = avgSeconds % 60;
+                                              return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+                                            })()}
+                                          </span>
                                         </div>
                                         <div className="text-right">
                                           <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter ${
