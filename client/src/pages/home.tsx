@@ -10293,6 +10293,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     return "5min";
   });
   const [isIndicatorDropdownOpen, setIsIndicatorDropdownOpen] = useState(false);
+  const [targetPeriod, setTargetPeriod] = useState<'weekly' | 'monthly'>('weekly');
+  const [targetAmount, setTargetAmount] = useState(20000);
   const [isCustomTimeframeDialogOpen, setIsCustomTimeframeDialogOpen] = useState(false);
   const [customTimeframeInput, setCustomTimeframeInput] = useState("");
 
@@ -22120,6 +22122,95 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     )}%`,
                                   }}
                                 ></div>
+                              </div>
+
+                              {/* Weekly/Monthly Target Slider */}
+                              <div className="pt-4 mt-2 border-t border-white/10 space-y-3">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-bold opacity-90 uppercase tracking-wider">Target Period</span>
+                                  <div className="flex bg-white/10 p-0.5 rounded-lg">
+                                    <button 
+                                      onClick={() => setTargetPeriod('weekly')}
+                                      className={`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${targetPeriod === 'weekly' ? 'bg-white text-emerald-600 shadow-sm' : 'text-white hover:bg-white/5'}`}
+                                    >
+                                      Weekly
+                                    </button>
+                                    <button 
+                                      onClick={() => setTargetPeriod('monthly')}
+                                      className={`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${targetPeriod === 'monthly' ? 'bg-white text-emerald-600 shadow-sm' : 'text-white hover:bg-white/5'}`}
+                                    >
+                                      Monthly
+                                    </button>
+                                  </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                  <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider opacity-90">
+                                    <span>{targetPeriod} Target</span>
+                                    <span>₹{targetAmount.toLocaleString()}</span>
+                                  </div>
+                                  <input 
+                                    type="range" 
+                                    min="5000" 
+                                    max="200000" 
+                                    step="5000" 
+                                    value={targetAmount}
+                                    onChange={(e) => setTargetAmount(parseInt(e.target.value))}
+                                    className="w-full h-1.5 bg-white/20 rounded-lg appearance-none cursor-pointer accent-white"
+                                  />
+                                </div>
+
+                                {(() => {
+                                  // Calculate Period P&L
+                                  const now = new Date();
+                                  const startOfPeriod = new Date(now);
+                                  if (targetPeriod === 'weekly') {
+                                    const day = now.getDay();
+                                    const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+                                    startOfPeriod.setDate(diff);
+                                  } else {
+                                    startOfPeriod.setDate(1);
+                                  }
+                                  startOfPeriod.setHours(0, 0, 0, 0);
+
+                                  const periodPnL = Object.entries(filteredHeatmapData)
+                                    .filter(([dateStr]) => new Date(dateStr) >= startOfPeriod)
+                                    .reduce((sum, [, data]: [string, any]) => {
+                                      const metrics = data?.tradingData?.performanceMetrics || data?.performanceMetrics;
+                                      return sum + (metrics?.netPnL || 0);
+                                    }, 0);
+
+                                  const progress = Math.max(0, Math.min(100, (periodPnL / targetAmount) * 100));
+                                  const isTargetMet = periodPnL >= targetAmount;
+
+                                  return (
+                                    <div className="space-y-2 pt-1">
+                                      <div className="flex justify-between items-end">
+                                        <div className="space-y-0.5">
+                                          <span className="text-[10px] font-bold opacity-70 uppercase tracking-wider">Current {targetPeriod === 'weekly' ? 'Week' : 'Month'}</span>
+                                          <div className="text-sm font-bold text-white">
+                                            ₹{periodPnL.toLocaleString()}
+                                          </div>
+                                        </div>
+                                        <div className="text-right">
+                                          <span className="text-[10px] font-bold opacity-70 uppercase tracking-wider">Progress</span>
+                                          <div className="text-xs font-bold text-white">{progress.toFixed(1)}%</div>
+                                        </div>
+                                      </div>
+                                      <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                                        <div 
+                                          className={`h-full bg-white transition-all duration-1000 ${isTargetMet ? 'opacity-100' : 'opacity-60'}`}
+                                          style={{ width: `${progress}%` }}
+                                        />
+                                      </div>
+                                      {isTargetMet && (
+                                        <div className="flex items-center gap-1 text-[10px] font-bold text-white uppercase tracking-tighter animate-bounce">
+                                          <Trophy className="w-3 h-3" /> Target Achieved!
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })()}
                               </div>
                             </div>
                           </div>
