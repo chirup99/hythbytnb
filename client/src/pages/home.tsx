@@ -1942,22 +1942,9 @@ const getFullApiUrl = (path: string): string => {
 };
 
 export default function Home() {
-  const [isTortoiseFacingRight, setIsTortoiseFacingRight] = useState(true);
-  const prevProgressRef = useRef(0);
-
-  useEffect(() => {
-    // Re-calculate or track the progress here to determine direction
-    // This is a simplified version; in a real app, you might pass progress in
-    const currentProgress = progress; // Assuming progress is available in scope or passed as dependency
-    if (currentProgress > prevProgressRef.current + 0.1) {
-      setIsTortoiseFacingRight(true);
-    } else if (currentProgress < prevProgressRef.current - 0.1) {
-      setIsTortoiseFacingRight(false);
-    }
-    prevProgressRef.current = currentProgress;
-  }, [progress]);
-
   const [activeVoiceProfileId, setActiveVoiceProfileId] = useState<string>(() => { if (typeof window !== 'undefined') { return localStorage.getItem('activeVoiceProfileId') || 'ravi'; } return 'ravi'; });
+  const prevProgressRef = useRef(0);
+  const isTortoiseFacingRightRef = useRef(true);
 
   useEffect(() => { localStorage.setItem('activeVoiceProfileId', activeVoiceProfileId); }, [activeVoiceProfileId]);
   const [location, setLocation] = useLocation();
@@ -22198,6 +22185,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   const progress = Math.max(0, Math.min(100, (periodPnL / targetAmount) * 100));
                                   const isTargetMet = periodPnL >= targetAmount;
 
+                                  // Track tortoise direction
+                                  if (progress > prevProgressRef.current + 0.1) {
+                                    isTortoiseFacingRightRef.current = true;
+                                  } else if (progress < prevProgressRef.current - 0.1) {
+                                    isTortoiseFacingRightRef.current = false;
+                                  }
+                                  prevProgressRef.current = progress;
+
                                   return (
                                     <div className="space-y-2 pt-1">
                                       <div className="flex justify-between items-end">
@@ -22221,7 +22216,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           className="absolute -top-6 -ml-2 z-10 flex items-center justify-center h-6"
                                           style={{ left: `${progress}%` }}
                                         >
-                                          <span className={`text-sm leading-none filter drop-shadow-sm transform ${isTortoiseFacingRight ? '-scale-x-100' : ''}`}>🐢</span>
+                                          <span className={`text-sm leading-none filter drop-shadow-sm transform ${isTortoiseFacingRightRef.current ? '-scale-x-100' : ''}`}>🐢</span>
                                         </motion.div>
 
                                         <div 
