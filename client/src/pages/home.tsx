@@ -1942,6 +1942,21 @@ const getFullApiUrl = (path: string): string => {
 };
 
 export default function Home() {
+  const [isTortoiseFacingRight, setIsTortoiseFacingRight] = useState(true);
+  const prevProgressRef = useRef(0);
+
+  useEffect(() => {
+    // Re-calculate or track the progress here to determine direction
+    // This is a simplified version; in a real app, you might pass progress in
+    const currentProgress = progress; // Assuming progress is available in scope or passed as dependency
+    if (currentProgress > prevProgressRef.current + 0.1) {
+      setIsTortoiseFacingRight(true);
+    } else if (currentProgress < prevProgressRef.current - 0.1) {
+      setIsTortoiseFacingRight(false);
+    }
+    prevProgressRef.current = currentProgress;
+  }, [progress]);
+
   const [activeVoiceProfileId, setActiveVoiceProfileId] = useState<string>(() => { if (typeof window !== 'undefined') { return localStorage.getItem('activeVoiceProfileId') || 'ravi'; } return 'ravi'; });
 
   useEffect(() => { localStorage.setItem('activeVoiceProfileId', activeVoiceProfileId); }, [activeVoiceProfileId]);
@@ -22206,7 +22221,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           className="absolute -top-6 -ml-2 z-10 flex items-center justify-center h-6"
                                           style={{ left: `${progress}%` }}
                                         >
-                                          <span className="text-sm leading-none filter drop-shadow-sm transform -scale-x-100">🐢</span>
+                                          <span className={`text-sm leading-none filter drop-shadow-sm transform ${isTortoiseFacingRight ? '-scale-x-100' : ''}`}>🐢</span>
                                         </motion.div>
 
                                         <div 
