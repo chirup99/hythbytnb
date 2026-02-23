@@ -21861,12 +21861,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   {(() => {
                     // Calculate comprehensive insights from all trading data
                     const calculateTradingInsights = (data = tradingDataByDate) => {
-                      const allData = Object.values(filteredHeatmapData).filter(
-                        (data: any) =>
-                          data &&
-                          data.tradeHistory &&
-                          Array.isArray(data.tradeHistory) &&
-                          data.tradeHistory.length > 0,
+                      const allData = Object.values(data).filter(
+                        (data: any) => {
+                          const d = data?.tradingData || data;
+                          return d &&
+                                 d.tradeHistory &&
+                                 Array.isArray(d.tradeHistory) &&
+                                 d.tradeHistory.length > 0;
+                        }
                       );
 
                       if (allData.length === 0) {
@@ -21887,7 +21889,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       const tagStats: any = {};
                       const dailyStats: any[] = [];
 
-                      allData.forEach((dayData: any, index: number) => {
+                      allData.forEach((data: any, index: number) => {
+                        const dayData = data?.tradingData || data;
                         const trades = dayData.tradeHistory || [];
                         const tags = dayData.tradingTags || [];
                         const metrics = dayData.performanceMetrics;
@@ -21926,7 +21929,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           stats.tradingDays++;
 
                           if (metrics) {
-                            stats.totalTrades += metrics.totalTrades || 0;
+                            const dayTrades = metrics.totalTrades || 1;
+                            stats.totalTrades += dayTrades;
                             stats.wins += metrics.winningTrades || 0;
                             stats.losses += metrics.losingTrades || 0;
                             stats.totalPnL += metrics.netPnL || 0;
@@ -21934,7 +21938,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             // Track duration if available (assuming duration in minutes)
                             const duration = metrics.avgDuration || metrics.duration || 0;
                             if (duration > 0) {
-                              stats.totalDuration += duration;
+                              stats.totalDuration += (duration * dayTrades);
                               stats.durations.push(duration);
                             }
                             stats.bestDay = Math.max(
@@ -22398,7 +22402,24 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                 );
                                               });
 
-                                              if (tagTrades.length === 0) return "--";
+                                              const validDurations = tagTrades
+                                                .map((day: any) => {
+                                                  const dayData = day?.tradingData || day;
+                                                  return dayData.performanceMetrics?.avgDuration || dayData.performanceMetrics?.duration;
+                                                })
+                                                .filter(Boolean);
+
+                                              if (validDurations.length === 0) return "--";
+
+                                              const parseDuration = (dur: string) => {
+                                                if (typeof dur !== 'string') return 0;
+                                                const match = dur.match(/(\d+h)?\s*(\d+m)?\s*(\d+s)?/);
+                                                if (!match) return 0;
+                                                const h = parseInt(match[1]) || 0;
+                                                const m = parseInt(match[2]) || 0;
+                                                const s = parseInt(match[3]) || 0;
+                                                return h * 3600 + m * 60 + s;
+                                              };
 
                                               // Calculation follows these steps:
                                               // 1. Tag Filtering: It looks through all your trading days and finds only those that have the specific tag.
