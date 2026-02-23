@@ -22345,53 +22345,130 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </div>
 
                             {insights.topPerformers.length > 0 ? (
-                              <div className="flex overflow-x-auto gap-4 pb-4 snap-x no-scrollbar -mx-2 px-2 scroll-smooth">
-                                {insights.topPerformers
-                                  .map((tag: any, idx: number) => (
-                                    <div 
-                                      key={tag.tag} 
-                                      className="flex-shrink-0 w-[240px] snap-start bg-white dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all"
-                                    >
-                                      <div className="flex items-center justify-between w-full mb-3">
-                                        <span className="text-sm font-bold text-slate-800 dark:text-slate-200 truncate pr-2">
-                                          {(tag.displayTag || tag.tag).toUpperCase()}
-                                        </span>
-                                        <span
-                                          className={`text-sm font-bold ${
-                                            tag.totalPnL >= 0
-                                              ? "text-emerald-600"
-                                              : "text-red-500"
-                                          }`}
-                                        >
-                                          {tag.totalPnL >= 0 ? "+" : ""}₹
-                                          {Math.abs(
-                                            tag.totalPnL,
-                                          ).toLocaleString()}
-                                        </span>
+                              <div className="space-y-6">
+                                <div className="flex overflow-x-auto gap-4 pb-4 snap-x no-scrollbar -mx-2 px-2 scroll-smooth">
+                                  {insights.topPerformers
+                                    .map((tag: any, idx: number) => (
+                                      <div 
+                                        key={tag.tag} 
+                                        className="flex-shrink-0 w-[240px] snap-start bg-white dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all"
+                                      >
+                                        <div className="flex items-center justify-between w-full mb-3">
+                                          <span className="text-sm font-bold text-slate-800 dark:text-slate-200 truncate pr-2">
+                                            {(tag.displayTag || tag.tag).toUpperCase()}
+                                          </span>
+                                          <span
+                                            className={`text-sm font-bold ${
+                                              tag.totalPnL >= 0
+                                                ? "text-emerald-600"
+                                                : "text-red-500"
+                                            }`}
+                                          >
+                                            {tag.totalPnL >= 0 ? "+" : ""}₹
+                                            {Math.abs(
+                                              tag.totalPnL,
+                                            ).toLocaleString()}
+                                          </span>
+                                        </div>
+                                        <div className="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full mb-2">
+                                          <div
+                                            className={`h-2 rounded-full transition-all duration-1000 ${
+                                              tag.totalPnL >= 0
+                                                ? "bg-gradient-to-r from-emerald-400 to-green-500"
+                                                : "bg-gradient-to-r from-red-400 to-rose-500"
+                                            }`}
+                                            style={{
+                                              width: `${Math.min(
+                                                tag.winRate,
+                                                100,
+                                              )}%`,
+                                            }}
+                                          ></div>
+                                        </div>
+                                        <div className="flex items-center justify-between mb-1">
+                                          <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Success Rate</span>
+                                          <span className="text-xs font-bold text-slate-600 dark:text-slate-400">
+                                            {tag.winRate.toFixed(1)}%
+                                          </span>
+                                        </div>
                                       </div>
-                                      <div className="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full mb-2">
-                                        <div
-                                          className={`h-2 rounded-full transition-all duration-1000 ${
-                                            tag.totalPnL >= 0
-                                              ? "bg-gradient-to-r from-emerald-400 to-green-500"
-                                              : "bg-gradient-to-r from-red-400 to-rose-500"
-                                          }`}
-                                          style={{
-                                            width: `${Math.min(
-                                              tag.winRate,
-                                              100,
-                                            )}%`,
-                                          }}
-                                        ></div>
+                                    ))}
+                                </div>
+
+                                {/* Tag Performance Trend Chart */}
+                                <div className="bg-white dark:bg-slate-800/50 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm">
+                                  <div className="flex items-center justify-between mb-6">
+                                    <div className="flex items-center gap-3">
+                                      <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
+                                        <TrendingUp className="w-4 h-4 text-indigo-500" />
                                       </div>
-                                      <div className="flex items-center justify-between mb-1">
-                                        <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Success Rate</span>
-                                        <span className="text-xs font-bold text-slate-600 dark:text-slate-400">
-                                          {tag.winRate.toFixed(1)}%
-                                        </span>
+                                      <h4 className="font-bold text-slate-800 dark:text-slate-200">Tag Performance Trends</h4>
+                                    </div>
+                                    <div className="flex gap-2">
+                                      <div className="flex items-center gap-1.5">
+                                        <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                        <span className="text-[10px] uppercase font-bold text-slate-400">Profitable</span>
+                                      </div>
+                                      <div className="flex items-center gap-1.5">
+                                        <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                                        <span className="text-[10px] uppercase font-bold text-slate-400">Losing</span>
                                       </div>
                                     </div>
-                                  ))}
+                                  </div>
+                                  
+                                  <div className="h-[200px] w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                      <AreaChart
+                                        data={insights.topPerformers.map((tag: any) => ({
+                                          name: (tag.displayTag || tag.tag).toUpperCase(),
+                                          pnl: tag.totalPnL,
+                                          winRate: tag.winRate
+                                        }))}
+                                        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                                      >
+                                        <defs>
+                                          <linearGradient id="pnlGradient" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                                            <stop offset="95%" stopColor="#ef4444" stopOpacity={0.3}/>
+                                          </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.1)" />
+                                        <XAxis 
+                                          dataKey="name" 
+                                          axisLine={false} 
+                                          tickLine={false} 
+                                          tick={{ fontSize: 10, fontWeight: 600, fill: '#94a3b8' }}
+                                          dy={10}
+                                        />
+                                        <YAxis 
+                                          axisLine={false} 
+                                          tickLine={false} 
+                                          tick={{ fontSize: 10, fontWeight: 600, fill: '#94a3b8' }}
+                                          tickFormatter={(value) => `₹${Math.abs(value) >= 1000 ? (value/1000).toFixed(0) + 'k' : value}`}
+                                        />
+                                        <Tooltip
+                                          contentStyle={{
+                                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                                            border: 'none',
+                                            borderRadius: '12px',
+                                            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                                            color: '#fff'
+                                          }}
+                                          itemStyle={{ color: '#fff' }}
+                                          formatter={(value: number) => [`₹${value.toLocaleString()}`, 'P&L']}
+                                        />
+                                        <Area
+                                          type="monotone"
+                                          dataKey="pnl"
+                                          stroke="#6366f1"
+                                          strokeWidth={3}
+                                          fill="url(#pnlGradient)"
+                                          animationDuration={1500}
+                                        />
+                                      </AreaChart>
+                                    </ResponsiveContainer>
+                                  </div>
+                                </div>
                               </div>
                             ) : (
                               <div className="flex items-center justify-center h-32 text-slate-500 dark:text-slate-400">
