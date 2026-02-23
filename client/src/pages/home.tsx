@@ -22400,20 +22400,25 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                 return hasTag ? (dayData.trades || []) : [];
                                               });
                                               
-                                              const sellTrades = tagTrades.filter((t: any) => 
-                                                t.order === "SELL" && 
-                                                t.duration && 
-                                                t.duration !== "--" &&
-                                                t.duration !== "-"
-                                              );
+                                              const sellTrades = tagTrades.filter((t: any) => {
+                                                const isSell = t.order?.toUpperCase() === "SELL" || t.type?.toUpperCase() === "SELL";
+                                                const hasDuration = t.duration && 
+                                                                  t.duration !== "--" &&
+                                                                  t.duration !== "-" &&
+                                                                  t.duration !== "0s";
+                                                return isSell && hasDuration;
+                                              });
                                               
                                               if (sellTrades.length === 0) return "--";
                                               
                                               const parseDuration = (dur: string) => {
-                                                if (!dur) return 0;
+                                                if (!dur || typeof dur !== 'string') return 0;
+                                                const h = dur.match(/(\d+)h/);
                                                 const m = dur.match(/(\d+)m/);
                                                 const s = dur.match(/(\d+)s/);
-                                                return (m ? parseInt(m[1]) * 60 : 0) + (s ? parseInt(s[1]) : 0);
+                                                return (h ? parseInt(h[1]) * 3600 : 0) + 
+                                                       (m ? parseInt(m[1]) * 60 : 0) + 
+                                                       (s ? parseInt(s[1]) : 0);
                                               };
                                               
                                               const totalSeconds = sellTrades.reduce((acc: number, t: any) => 

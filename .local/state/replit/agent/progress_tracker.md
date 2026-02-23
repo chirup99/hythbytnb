@@ -36,3 +36,4 @@
 [x] 35. Re-install dotenv package and verify application running (complete)
 [x] 36. Fix Avg Duration calculation in Top Tags window
 [x] 37. Re-install dotenv package and verify application running (import complete)
+[x] 38. Update progress tracker with latest fixes and explain Avg Duration logic
