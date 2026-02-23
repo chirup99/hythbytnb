@@ -22396,7 +22396,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 </div>
 
                                 {/* Tag Performance Trend Chart */}
-                                <div className="bg-white dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-700 shadow-sm">
+                                <div className="bg-white dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-700 shadow-sm mt-[1px] mb-[1px] pt-[1px] pb-[1px] pl-[4px] pr-[4px] text-left font-normal">
                                   <div className="flex items-center justify-between mb-4">
                                     <div className="flex items-center gap-2">
                                       <TrendingUp className="w-3.5 h-3.5 text-indigo-500" />
