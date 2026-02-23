@@ -22390,18 +22390,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           {tag.winRate.toFixed(1)}%
                                         </span>
                                       </div>
-                                      <div className="flex items-center justify-end border-t border-slate-50 dark:border-slate-700/50 pt-2 mt-2">
-                                        <div className="text-right">
-                                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter ${
-                                            tag.tradingStyle === 'Scalper' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
-                                            tag.tradingStyle === 'Intraday' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' :
-                                            tag.tradingStyle === 'Emotional Panic Exit' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' :
-                                            'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
-                                          }`}>
-                                            {tag.tradingStyle}
-                                          </span>
-                                        </div>
-                                      </div>
                                     </div>
                                   ))}
                               </div>
