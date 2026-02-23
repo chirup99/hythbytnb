@@ -22421,7 +22421,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           name: (tag.displayTag || tag.tag).toUpperCase(),
                                           pnl: tag.totalPnL
                                         }))}
-                                        margin={{ top: 5, right: 5, left: -20, bottom: 0 }}
+                                        margin={{ top: 0, right: 5, left: -20, bottom: 0 }}
                                       >
                                         <defs>
                                           <linearGradient id="pnlGradient" x1="0" y1="0" x2="0" y2="1">
