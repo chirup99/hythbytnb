@@ -22391,26 +22391,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <span className="text-[9px] uppercase tracking-tighter text-slate-400 font-bold">Avg Duration</span>
                                           <span className="text-[10px] font-semibold text-slate-500">
                                             {(() => {
-                                              const tagTrades = Object.values(filteredHeatmapData).flatMap((day: any) => {
-                                                // Handle both wrapped (AWS) and unwrapped formats
+                                              const tagTrades = Object.values(filteredHeatmapData).filter((day: any) => {
                                                 const dayData = day?.tradingData || day;
-                                                const hasTag = dayData.tradingTags?.some((t: string) => 
+                                                return dayData.tradingTags?.some((t: string) => 
                                                   t.toLowerCase().trim() === tag.tag.toLowerCase().trim()
                                                 );
-                                                return hasTag ? (dayData.trades || []) : [];
                                               });
-                                              
-                                              const sellTrades = tagTrades.filter((t: any) => {
-                                                const isSell = t.order?.toUpperCase() === "SELL" || t.type?.toUpperCase() === "SELL";
-                                                const hasDuration = t.duration && 
-                                                                  t.duration !== "--" &&
-                                                                  t.duration !== "-" &&
-                                                                  t.duration !== "0s";
-                                                return isSell && hasDuration;
-                                              });
-                                              
-                                              if (sellTrades.length === 0) return "--";
-                                              
+
+                                              if (tagTrades.length === 0) return "--";
+
                                               const parseDuration = (dur: string) => {
                                                 if (!dur || typeof dur !== 'string') return 0;
                                                 const h = dur.match(/(\d+)h/);
@@ -22420,12 +22409,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                        (m ? parseInt(m[1]) * 60 : 0) + 
                                                        (s ? parseInt(s[1]) : 0);
                                               };
+
+                                              const validDurations = tagTrades
+                                                .map((day: any) => (day?.tradingData || day).performanceMetrics?.avgDuration)
+                                                .filter(dur => dur && dur !== "--" && dur !== "-" && dur !== "0s");
+
+                                              if (validDurations.length === 0) return "--";
+
+                                              const totalSeconds = validDurations.reduce((acc, dur) => acc + parseDuration(dur), 0);
+                                              const avgSeconds = Math.round(totalSeconds / validDurations.length);
                                               
-                                              const totalSeconds = sellTrades.reduce((acc: number, t: any) => 
-                                                acc + parseDuration(t.duration), 0
-                                              );
-                                              
-                                              const avgSeconds = Math.round(totalSeconds / sellTrades.length);
                                               const mins = Math.floor(avgSeconds / 60);
                                               const secs = avgSeconds % 60;
                                               return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
