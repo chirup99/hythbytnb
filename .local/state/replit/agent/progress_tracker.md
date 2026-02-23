@@ -34,3 +34,4 @@
 [x] 33. Re-install dotenv package and verify application running (this session)
 [x] 34. Re-install dotenv package and verify application running (final migration)
 [x] 35. Re-install dotenv package and verify application running (complete)
+[x] 36. Fix Avg Duration calculation in Top Tags window

@@ -22391,19 +22391,34 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <span className="text-[9px] uppercase tracking-tighter text-slate-400 font-bold">Avg Duration</span>
                                           <span className="text-[10px] font-semibold text-slate-500">
                                             {(() => {
-                                              const tagTrades = Object.values(filteredHeatmapData).flatMap((day: any) => 
-                                                day.tradingTags?.some((t: string) => t.toLowerCase().trim() === tag.tag.toLowerCase().trim()) 
-                                                  ? (day.trades || []) 
-                                                  : []
+                                              const tagTrades = Object.values(filteredHeatmapData).flatMap((day: any) => {
+                                                // Handle both wrapped (AWS) and unwrapped formats
+                                                const dayData = day?.tradingData || day;
+                                                const hasTag = dayData.tradingTags?.some((t: string) => 
+                                                  t.toLowerCase().trim() === tag.tag.toLowerCase().trim()
+                                                );
+                                                return hasTag ? (dayData.trades || []) : [];
+                                              });
+                                              
+                                              const sellTrades = tagTrades.filter((t: any) => 
+                                                t.order === "SELL" && 
+                                                t.duration && 
+                                                t.duration !== "--" &&
+                                                t.duration !== "-"
                                               );
-                                              const sellTrades = tagTrades.filter((t: any) => t.order === "SELL" && t.duration);
+                                              
                                               if (sellTrades.length === 0) return "--";
                                               
-                                              const totalSeconds = sellTrades.reduce((acc: number, t: any) => {
-                                                const m = t.duration.match(/(\d+)m/);
-                                                const s = t.duration.match(/(\d+)s/);
-                                                return acc + (m ? parseInt(m[1]) * 60 : 0) + (s ? parseInt(s[1]) : 0);
-                                              }, 0);
+                                              const parseDuration = (dur: string) => {
+                                                if (!dur) return 0;
+                                                const m = dur.match(/(\d+)m/);
+                                                const s = dur.match(/(\d+)s/);
+                                                return (m ? parseInt(m[1]) * 60 : 0) + (s ? parseInt(s[1]) : 0);
+                                              };
+                                              
+                                              const totalSeconds = sellTrades.reduce((acc: number, t: any) => 
+                                                acc + parseDuration(t.duration), 0
+                                              );
                                               
                                               const avgSeconds = Math.round(totalSeconds / sellTrades.length);
                                               const mins = Math.floor(avgSeconds / 60);
