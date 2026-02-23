@@ -11138,7 +11138,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     let tradesWithDuration = 0;
     
     trades.forEach(trade => {
-      if (trade.duration) {
+      if (trade.duration && trade.order === "SELL") {
         // Parse duration like "13m 3s" or "6m 11s" or "45s"
         const minutesMatch = trade.duration.match(/(\d+)m/);
         const secondsMatch = trade.duration.match(/(\d+)s/);
@@ -20265,6 +20265,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <Info className="h-4 w-4 text-slate-600 dark:text-slate-400" />
                             </Button>
                             <div className="h-7 px-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700 rounded-md flex items-center justify-center text-xs font-semibold text-blue-600 dark:text-blue-300" title="Average Trade Duration">
+                              <span className="mr-1">Avg</span>
                               <Timer className="h-4 w-4 mr-1.5" />
                               {calculateAverageDuration(tradeHistoryData)}
                             </div>
