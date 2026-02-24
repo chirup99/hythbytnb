@@ -2488,6 +2488,7 @@ export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchResults, setSearchResults] = useState("");
   const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const [isSearchInputActive, setIsSearchInputActive] = useState(false);
   const [isReportLoading, setIsReportLoading] = useState(false);
   const [isWatchlistLoading, setIsWatchlistLoading] = useState(false);
   const [searchResultsNews, setSearchResultsNews] = useState<any[]>([]);
@@ -15163,6 +15164,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <Input
                           placeholder="Search stocks, technical analysis, social feed, news, journal, alerts, or ask AI anything..."
                           value={searchQuery}
+                          disabled={!isSearchInputActive}
                           onFocus={() => setIsSearchActive(true)}
                           onChange={(e) => {
                             const value = e.target.value;
@@ -15178,13 +15180,28 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             isSearchActive
                               ? "h-14 rounded-xl"
                               : "h-12 rounded-2xl"
-                          }`}
+                          } ${!isSearchInputActive ? 'cursor-not-allowed opacity-50' : ''}`}
                         />
                         <Button
                           size="sm"
-                          className="absolute right-2 top-1/2 -translate-y-1/2 bg-gray-700 hover:bg-gray-600 text-gray-300 h-6 w-6 p-0"
-                          onClick={() => handleSearch()}
-                          disabled={!searchQuery.trim() || isSearchLoading}
+                          className={`absolute right-2 top-1/2 -translate-y-1/2 transition-all duration-300 h-8 w-8 p-0 ${
+                            isSearchInputActive 
+                              ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20" 
+                              : "bg-gray-700 hover:bg-gray-600 text-gray-300"
+                          }`}
+                          onClick={() => {
+                            if (!isSearchInputActive) {
+                              setIsSearchInputActive(true);
+                              // Small delay to ensure input is enabled before focusing
+                              setTimeout(() => {
+                                const input = document.querySelector('input[placeholder*="Search stocks"]');
+                                if (input instanceof HTMLInputElement) input.focus();
+                              }, 10);
+                            } else {
+                              handleSearch();
+                            }
+                          }}
+                          disabled={isSearchLoading || (isSearchInputActive && !searchQuery.trim())}
                         >
                           {isSearchLoading ? (
                             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -15203,6 +15220,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             <Input
                               placeholder="New search..."
                               value={searchQuery}
+                              disabled={!isSearchInputActive}
                               onChange={(e) => {
                                 const value = e.target.value;
                                 setSearchQuery(value);
@@ -15212,13 +15230,27 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   await handleSearch();
                                 }
                               }}
-                              className="flex-1 bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-400 h-10 text-sm"
+                              className={`flex-1 bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-400 h-10 text-sm ${!isSearchInputActive ? 'cursor-not-allowed opacity-50' : ''}`}
                             />
                             <Button
                               size="sm"
-                              className="bg-gray-700 hover:bg-gray-600 text-gray-300 h-10 px-4"
-                              onClick={() => handleSearch()}
-                              disabled={!searchQuery.trim() || isSearchLoading}
+                              className={`h-10 px-4 transition-all duration-300 ${
+                                isSearchInputActive 
+                                  ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20" 
+                                  : "bg-gray-700 hover:bg-gray-600 text-gray-300"
+                              }`}
+                              onClick={() => {
+                                if (!isSearchInputActive) {
+                                  setIsSearchInputActive(true);
+                                  setTimeout(() => {
+                                    const input = document.querySelector('input[placeholder="New search..."]');
+                                    if (input instanceof HTMLInputElement) input.focus();
+                                  }, 10);
+                                } else {
+                                  handleSearch();
+                                }
+                              }}
+                              disabled={isSearchLoading || (isSearchInputActive && !searchQuery.trim())}
                             >
                               {isSearchLoading ? (
                                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
