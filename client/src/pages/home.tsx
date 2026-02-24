@@ -12144,7 +12144,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       return sum + (price * qty);
     }, 0);
 
-    const pnlPercentage = totalMarginUsed > 0 ? (netPnL / totalMarginUsed) * 100 : 0;
+    const pnlPercentage = tradeHistoryData.length > 0 ? (netPnL / (totalMarginUsed / tradeHistoryData.length)) * 100 : 0;
 
     return {
       totalTrades,
