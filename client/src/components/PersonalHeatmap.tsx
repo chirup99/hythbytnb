@@ -1420,6 +1420,14 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
                         pnlPercentage = dayData.performanceMetrics.pnlPercentage;
                       }
 
+                      // Generate P&L data for line chart
+                      const trades = dayData?.tradeHistory || dayData?.tradingData?.tradeHistory || [];
+                      const pnlData = trades.map((t: any) => {
+                        if (typeof t.pnl === 'number') return t.pnl;
+                        if (typeof t.pnl === 'string') return parseFloat(t.pnl.replace(/[₹,+]/g, '')) || 0;
+                        return 0;
+                      });
+
                       return (
                         <>
                           <div className="flex flex-col items-end">
@@ -1430,8 +1438,39 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
                               </span>
                               {pnlPercentage !== null && (
                                 <span className={`text-[10px] font-medium leading-none ${pnlPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                  ({pnlPercentage >= 0 ? '+' : ''}{pnlPercentage.toFixed(2)}%)
+                                  {pnlPercentage >= 0 ? '+' : ''}{pnlPercentage.toFixed(2)}%
                                 </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">Trend</span>
+                            <div className="h-4 w-12 flex items-center justify-center">
+                              {pnlData.length > 0 ? (
+                                <svg width="48" height="16" className="overflow-visible">
+                                  {(() => {
+                                    const min = Math.min(...pnlData, 0);
+                                    const max = Math.max(...pnlData, 0);
+                                    const range = max - min || 1;
+                                    const points = pnlData.map((val: number, i: number) => {
+                                      const x = (i / (pnlData.length - 1 || 1)) * 48;
+                                      const y = 16 - ((val - min) / range) * 16;
+                                      return `${x},${y}`;
+                                    }).join(' ');
+                                    return (
+                                      <polyline
+                                        points={points}
+                                        fill="none"
+                                        stroke={pnlValue >= 0 ? "#16a34a" : "#dc2626"}
+                                        strokeWidth="1.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    );
+                                  })()}
+                                </svg>
+                              ) : (
+                                <div className="h-[1px] w-full bg-gray-200" />
                               )}
                             </div>
                           </div>
