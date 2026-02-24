@@ -1394,8 +1394,8 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
                 >
                   <span className="text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">
                     {currentDate.toLocaleDateString('en-US', { 
-                      weekday: 'short', 
-                      month: 'short', 
+                      weekday: 'long', 
+                      month: 'long', 
                       day: 'numeric',
                       year: isFeedMode ? undefined : 'numeric'
                     })}
@@ -1447,7 +1447,7 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
             )}
 
             {/* Social Feed Icon - beside 3-dot menu */}
-            {!isRangeSelectMode && !isPublicView && (
+            {!isRangeSelectMode && (
               <Button
                 variant={isFeedMode ? "secondary" : "ghost"}
                 size="icon"
