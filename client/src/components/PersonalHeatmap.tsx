@@ -1384,26 +1384,57 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
               </Button>
             ) : (
               // Normal mode - show formatted current date
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleSelectRangeClick}
-                className="h-8 px-2 hover-elevate flex-shrink"
-                data-testid="button-select-date-range"
-              >
-                <span className="text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">
-                  {currentDate.toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    month: 'long', 
-                    day: 'numeric', 
-                    year: 'numeric' 
-                  })}
-                </span>
-              </Button>
+              <div className={`flex items-center ${isFeedMode ? 'w-full' : 'gap-1'}`}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSelectRangeClick}
+                  className="h-8 px-2 hover-elevate flex-shrink"
+                  data-testid="button-select-date-range"
+                >
+                  <span className="text-xs text-gray-900 dark:text-gray-100 whitespace-nowrap">
+                    {currentDate.toLocaleDateString('en-US', { 
+                      weekday: 'short', 
+                      month: 'short', 
+                      day: 'numeric',
+                      year: isFeedMode ? undefined : 'numeric'
+                    })}
+                  </span>
+                </Button>
+
+                {isFeedMode && (
+                  <div className="flex items-center gap-6 ml-auto pr-2">
+                    <div className="flex flex-col items-end">
+                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">P&L</span>
+                      <span className={`text-xs font-bold leading-none ${calculatePnL(heatmapData[currentDate.toISOString().split('T')[0]]) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        ₹{Math.floor(calculatePnL(heatmapData[currentDate.toISOString().split('T')[0]])).toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">Total Trades</span>
+                      <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
+                        {heatmapData[currentDate.toISOString().split('T')[0]]?.tradeHistory?.length || 0}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">Avg Duration</span>
+                      <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
+                        {heatmapData[currentDate.toISOString().split('T')[0]]?.performanceMetrics?.avgDuration || '0m'}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">Win%</span>
+                      <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
+                        {heatmapData[currentDate.toISOString().split('T')[0]]?.performanceMetrics?.winRate || '0'}%
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
 
-            {/* Right arrow - always show in normal mode */}
-            {!isRangeSelectMode && (
+            {/* Right arrow - always show in normal mode, but hide in feed mode */}
+            {!isRangeSelectMode && !isFeedMode && (
               <Button
                 variant="ghost"
                 size="icon"
