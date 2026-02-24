@@ -299,11 +299,13 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
       return;
     }
 
-    // If in delete mode, select the date for deletion
-    if (isDeleteMode) {
-      // Toggle selection - if already selected, deselect it
-      setSelectedDateForDelete(prev => prev === dateKey ? null : dateKey);
-      return;
+    // If in feed mode, update the current date to show its stats in the header
+    if (isFeedMode) {
+      setCurrentDate(date);
+      console.log(`📱 FeedMode: Date selected: ${dateKey}, updating header stats...`);
+      // Optional: you can also call onDateSelect if the parent needs to know
+      // but for the header stats in this component, setCurrentDate is enough
+      // because the header uses heatmapData[currentDate.toISOString().split('T')[0]]
     }
 
     console.log(`🔥 PersonalHeatmap: Date clicked: ${dateKey}, fetching FRESH data from Firebase...`);
