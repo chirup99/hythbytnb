@@ -33,7 +33,7 @@
 [x] 32. Remove Angel One connect button and dialog from Trading Dashboard
 [x] 33. Re-install dotenv package and verify application running (this session)
 [x] 34. Re-install dotenv package and verify application running (final migration)
-[x] 35. Re-install dotenv package and verify application running (complete)
+[x_ 35. Re-install dotenv package and verify application running (complete)
 [x] 36. Fix Avg Duration calculation in Top Tags window
 [x] 37. Re-install dotenv package and verify application running (import complete)
 [x] 38. Update progress tracker with latest fixes and explain Avg Duration logic
@@ -48,4 +48,4 @@
 [x] 47. Re-install dotenv package and verify application running (current session - Feb 24, 2026)
 [x] 48. Re-install dotenv package and verify application running (final - Feb 24, 2026)
 [x] 49. Re-install dotenv package and verify application running (import session - Feb 24, 2026)
-[x] 50. Add social feed icon to tradebook beside 3-dot menu
+[x] 50. Add social feed icon to tradebook beside 3-dot menu using Layout icon to match image template

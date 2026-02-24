@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, X, MoreVertical, Edit2, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, MoreVertical, Edit2, Layout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -1414,7 +1414,7 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
                 className="h-8 w-8 ml-1"
                 data-testid="button-social-feed"
               >
-                <Users className="w-4 h-4" />
+                <Layout className="w-4 h-4" />
               </Button>
             )}
 
