@@ -1411,19 +1411,19 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
                       </span>
                     </div>
                     <div className="flex flex-col items-end">
-                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">Total Trades</span>
+                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">TOTAL TRADES</span>
                       <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
                         {heatmapData[currentDate.toISOString().split('T')[0]]?.tradeHistory?.length || 0}
                       </span>
                     </div>
                     <div className="flex flex-col items-end">
-                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">Avg Duration</span>
+                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">AVG DURATION</span>
                       <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
                         {heatmapData[currentDate.toISOString().split('T')[0]]?.performanceMetrics?.avgDuration || '0m'}
                       </span>
                     </div>
                     <div className="flex flex-col items-end">
-                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">Win%</span>
+                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">WIN%</span>
                       <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
                         {heatmapData[currentDate.toISOString().split('T')[0]]?.performanceMetrics?.winRate || '0'}%
                       </span>
