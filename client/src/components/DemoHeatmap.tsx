@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, X, MoreVertical } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, MoreVertical, Layout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -1579,26 +1579,36 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
 
             {/* 3-dot menu - show when not in range select mode AND not in public view */}
             {!isRangeSelectMode && !isPublicView && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 ml-1"
-                    data-testid="button-calendar-menu"
-                  >
-                    <MoreVertical className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40">
-                  <DropdownMenuItem onClick={handleMoveDateClick} data-testid="menu-item-move-date">
-                    Move date
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleDeleteClick} data-testid="menu-item-delete">
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="flex items-center gap-1 ml-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  data-testid="button-social-feed"
+                >
+                  <Layout className="w-4 h-4" />
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      data-testid="button-calendar-menu"
+                    >
+                      <MoreVertical className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-40">
+                    <DropdownMenuItem onClick={handleMoveDateClick} data-testid="menu-item-move-date">
+                      Move date
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleDeleteClick} data-testid="menu-item-delete">
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             )}
           </div>
         )}
