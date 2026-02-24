@@ -12135,6 +12135,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     const closedTrades = winningTrades + losingTrades;
     const winRate = closedTrades > 0 ? (winningTrades / closedTrades) * 100 : 0;
 
+    // Calculate Margin Capital and P&L %
+    // Margin is calculated as (Price * Qty) for each trade. 
+    // For simplicity, we'll sum the absolute value of investment per trade to find "Total Capital Used"
+    const totalMarginUsed = tradeHistoryData.reduce((sum, trade) => {
+      const price = parseFloat(trade.price) || 0;
+      const qty = parseInt(trade.qty) || 0;
+      return sum + (price * qty);
+    }, 0);
+
+    const pnlPercentage = totalMarginUsed > 0 ? (netPnL / totalMarginUsed) * 100 : 0;
+
     return {
       totalTrades,
       winningTrades,
@@ -12143,6 +12154,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       totalLoss,
       netPnL,
       winRate: winRate.toFixed(1),
+      totalMarginUsed,
+      pnlPercentage: pnlPercentage.toFixed(2),
     };
   }, [tradeHistoryData]);
 
@@ -19294,6 +19307,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   {performanceMetrics.netPnL.toLocaleString(
                                     "en-IN",
                                   )}
+                                </p>
+                                <p className={`text-[10px] font-medium ${
+                                  parseFloat(performanceMetrics.pnlPercentage) >= 0
+                                    ? "text-green-500"
+                                    : "text-red-500"
+                                }`}>
+                                  ({performanceMetrics.pnlPercentage}%)
                                 </p>
                               </div>
                             </div>
