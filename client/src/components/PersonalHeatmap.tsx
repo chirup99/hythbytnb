@@ -1406,30 +1406,40 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
 
                 {isFeedMode && (
                   <div className="flex items-center gap-6 ml-auto pr-2">
-                    <div className="flex flex-col items-end">
-                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">P&L</span>
-                      <span className={`text-xs font-bold leading-none ${calculatePnL(heatmapData[currentDate.toISOString().split('T')[0]]) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        ₹{Math.floor(calculatePnL(heatmapData[currentDate.toISOString().split('T')[0]])).toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex flex-col items-end">
-                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">TOTAL TRADES</span>
-                      <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
-                        {heatmapData[currentDate.toISOString().split('T')[0]]?.tradeHistory?.length || 0}
-                      </span>
-                    </div>
-                    <div className="flex flex-col items-end">
-                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">AVG DURATION</span>
-                      <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
-                        {heatmapData[currentDate.toISOString().split('T')[0]]?.performanceMetrics?.avgDuration || '0m'}
-                      </span>
-                    </div>
-                    <div className="flex flex-col items-end">
-                      <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">WIN%</span>
-                      <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
-                        {heatmapData[currentDate.toISOString().split('T')[0]]?.performanceMetrics?.winRate || '0'}%
-                      </span>
-                    </div>
+                    {(() => {
+                      const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+                      const dayData = heatmapData[dateKey];
+                      const pnlValue = calculatePnL(dayData);
+                      
+                      return (
+                        <>
+                          <div className="flex flex-col items-end">
+                            <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">P&L</span>
+                            <span className={`text-xs font-bold leading-none ${pnlValue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                              ₹{Math.floor(pnlValue).toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">TOTAL TRADES</span>
+                            <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
+                              {dayData?.tradeHistory?.length || dayData?.tradingData?.tradeHistory?.length || 0}
+                            </span>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">AVG DURATION</span>
+                            <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
+                              {dayData?.performanceMetrics?.avgDuration || dayData?.tradingData?.performanceMetrics?.avgDuration || '0m'}
+                            </span>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            <span className="text-[10px] uppercase text-gray-500 font-medium leading-none mb-1">WIN%</span>
+                            <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">
+                              {dayData?.performanceMetrics?.winRate || dayData?.tradingData?.performanceMetrics?.winRate || '0'}%
+                            </span>
+                          </div>
+                        </>
+                      );
+                    })()}
                   </div>
                 )}
               </div>
