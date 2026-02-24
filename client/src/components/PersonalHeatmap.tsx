@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, X, MoreVertical, Edit2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, MoreVertical, Edit2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -1403,6 +1403,18 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
                 data-testid="button-next-year"
               >
                 <ChevronRight className="w-4 h-4" />
+              </Button>
+            )}
+
+            {/* Social Feed Icon - beside 3-dot menu */}
+            {!isRangeSelectMode && !isPublicView && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 ml-1"
+                data-testid="button-social-feed"
+              >
+                <Users className="w-4 h-4" />
               </Button>
             )}
 
