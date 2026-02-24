@@ -104,6 +104,7 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
   const [isEditMode, setIsEditMode] = useState(false);
   const [isRangeSelectMode, setIsRangeSelectMode] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [isFeedMode, setIsFeedMode] = useState(false);
   const [selectedDateForDelete, setSelectedDateForDelete] = useState<string | null>(null);
   const [selectedDatesForEdit, setSelectedDatesForEdit] = useState<string[]>([]);
   const [selectedDatesForRange, setSelectedDatesForRange] = useState<string[]>([]);
@@ -194,6 +195,14 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
         setIsLoading(false);
       });
   }, [userId, refreshKey, refreshTrigger]); // Add refreshKey and refreshTrigger to dependencies
+
+  // Handle "Feed" menu item click
+  const handleFeedClick = () => {
+    setIsFeedMode(!isFeedMode);
+    setIsEditMode(false);
+    setIsRangeSelectMode(false);
+    setIsDeleteMode(false);
+  };
 
   // Filter heatmap data based on selected date range
   const getFilteredData = (): Record<string, any> => {
@@ -1409,17 +1418,18 @@ export function PersonalHeatmap({ userId, onDateSelect, selectedDate, onDataUpda
             {/* Social Feed Icon - beside 3-dot menu */}
             {!isRangeSelectMode && !isPublicView && (
               <Button
-                variant="ghost"
+                variant={isFeedMode ? "secondary" : "ghost"}
                 size="icon"
-                className="h-8 w-8 ml-1"
+                onClick={handleFeedClick}
+                className={`h-8 w-8 ml-1 ${isFeedMode ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300' : ''}`}
                 data-testid="button-social-feed"
               >
                 <Layout className="w-4 h-4" />
               </Button>
             )}
 
-            {/* 3-dot menu - only show when not in range select mode and not in public view */}
-            {!isRangeSelectMode && !isPublicView && (
+            {/* 3-dot menu - only show when not in range select mode and not in public view and not in feed mode */}
+            {!isRangeSelectMode && !isPublicView && !isFeedMode && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
