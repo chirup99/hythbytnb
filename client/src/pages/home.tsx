@@ -15180,7 +15180,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             isSearchActive
                               ? "h-14 rounded-xl"
                               : "h-12 rounded-2xl"
-                          } ${!isSearchInputActive ? 'cursor-not-allowed opacity-50' : ''}`}
+                          } ${!isSearchInputActive ? 'cursor-not-allowed' : ''}`}
                         />
                         <Button
                           size="sm"
@@ -15230,7 +15230,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   await handleSearch();
                                 }
                               }}
-                              className={`flex-1 bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-400 h-10 text-sm ${!isSearchInputActive ? 'cursor-not-allowed opacity-50' : ''}`}
+                              className={`flex-1 bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-400 h-10 text-sm ${!isSearchInputActive ? 'cursor-not-allowed' : ''}`}
                             />
                             <Button
                               size="sm"
