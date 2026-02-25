@@ -12135,6 +12135,32 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     const closedTrades = winningTrades + losingTrades;
     const winRate = closedTrades > 0 ? (winningTrades / closedTrades) * 100 : 0;
 
+    // Calculate Max % and Min % with durations
+    let maxPnLPercent = 0;
+    let minPnLPercent = 0;
+    let maxPnLDuration = "-";
+    let minPnLDuration = "-";
+
+    tradeHistoryData.forEach((trade) => {
+      const pnlStr = (trade.pnl || "").replace(/[₹,+\s]/g, "");
+      const pnlValue = parseFloat(pnlStr) || 0;
+      const price = parseFloat(trade.price) || 0;
+      const qty = parseInt(trade.qty) || 0;
+      const margin = price * qty;
+
+      if (margin > 0) {
+        const percent = (pnlValue / margin) * 100;
+        if (percent > maxPnLPercent) {
+          maxPnLPercent = percent;
+          maxPnLDuration = trade.duration || "-";
+        }
+        if (percent < minPnLPercent) {
+          minPnLPercent = percent;
+          minPnLDuration = trade.duration || "-";
+        }
+      }
+    });
+
     // Calculate Margin Capital and P&L %
     // Margin is calculated as (Price * Qty) for each trade. 
     // For simplicity, we'll sum the absolute value of investment per trade to find "Total Capital Used"
@@ -12156,6 +12182,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       winRate: winRate.toFixed(1),
       totalMarginUsed,
       pnlPercentage: pnlPercentage.toFixed(2),
+      maxPnLPercent: maxPnLPercent.toFixed(2),
+      minPnLPercent: minPnLPercent.toFixed(2),
+      maxPnLDuration,
+      minPnLDuration,
     };
   }, [tradeHistoryData]);
 
@@ -19275,29 +19305,53 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         {/* Top 30% - Performance Insights */}
                         <div className="h-[30%] border-b border-gray-200 dark:border-gray-700">
                           <CardContent className="p-2 h-full">
-                            <div className="grid grid-cols-3 gap-2 text-xs">
-                              <div className="text-center">
-                                <p className="text-gray-600 dark:text-gray-400">
+                            <div className="grid grid-cols-5 gap-1 text-center items-start">
+                              <div>
+                                <p className="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-medium">
                                   Total Trades
                                 </p>
-                                <p className="text-base font-bold text-gray-800 dark:text-white">
+                                <p className="text-sm font-bold text-gray-800 dark:text-white mt-0.5">
                                   {performanceMetrics.totalTrades}
                                 </p>
                               </div>
-                              <div className="text-center">
-                                <p className="text-gray-600 dark:text-gray-400">
+                              <div>
+                                <p className="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-medium">
                                   Win Rate
                                 </p>
-                                <p className="text-xl font-bold text-green-600">
+                                <p className="text-sm font-bold text-green-600 mt-0.5">
                                   {performanceMetrics.winRate}%
                                 </p>
                               </div>
-                              <div className="text-center">
-                                <p className="text-gray-600 dark:text-gray-400 text-xs">
+                              <div>
+                                <p className="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-medium">
+                                  Max %
+                                </p>
+                                <p className="text-sm font-bold text-green-600 mt-0.5">
+                                  {performanceMetrics.maxPnLPercent}%
+                                </p>
+                                <div className="flex items-center justify-center gap-0.5 text-[9px] text-gray-400 mt-0.5">
+                                  <Clock className="w-2 h-2" />
+                                  <span>{performanceMetrics.maxPnLDuration}</span>
+                                </div>
+                              </div>
+                              <div>
+                                <p className="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-medium">
+                                  Min %
+                                </p>
+                                <p className="text-sm font-bold text-red-600 mt-0.5">
+                                  {performanceMetrics.minPnLPercent}%
+                                </p>
+                                <div className="flex items-center justify-center gap-0.5 text-[9px] text-gray-400 mt-0.5">
+                                  <Clock className="w-2 h-2" />
+                                  <span>{performanceMetrics.minPnLDuration}</span>
+                                </div>
+                              </div>
+                              <div>
+                                <p className="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-medium">
                                   Net P&L
                                 </p>
                                 <p
-                                  className={`text-xl font-bold ${
+                                  className={`text-sm font-bold mt-0.5 ${
                                     performanceMetrics.netPnL >= 0
                                       ? "text-green-600"
                                       : "text-red-600"
@@ -19308,7 +19362,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     "en-IN",
                                   )}
                                 </p>
-                                <p className={`text-[10px] font-medium ${
+                                <p className={`text-[9px] font-medium ${
                                   parseFloat(performanceMetrics.pnlPercentage) >= 0
                                     ? "text-green-500"
                                     : "text-red-500"
