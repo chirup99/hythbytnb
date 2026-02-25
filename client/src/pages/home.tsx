@@ -9620,7 +9620,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     console.log(`🗓️ [HEATMAP CHART] Rendering with ${heatmapChartData.length} candles for date: ${heatmapSelectedDate}`);
 
     // Defer chart creation until layout is ready
-    requestAnimationFrame(() => {
+    const timer = setTimeout(() => {
       if (!heatmapChartContainerRef.current) return;
 
       try {
@@ -9640,6 +9640,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         const containerHeight = heatmapChartContainerRef.current.clientHeight || 400;
 
         console.log('🗓️ [HEATMAP CHART] Container dimensions:', { containerWidth, containerHeight });
+
+        if (containerHeight === 0) {
+          console.warn('🗓️ [HEATMAP CHART] Container height is 0, chart might not be visible');
+        }
 
         const chart = createChart(heatmapChartContainerRef.current, {
           layout: {
@@ -9904,9 +9908,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       } catch (error) {
         console.error('🗓️ [HEATMAP CHART] Error rendering:', error instanceof Error ? error.message : String(error));
       }
-    });
+    }, 100);
 
     return () => {
+      clearTimeout(timer);
       if (heatmapChartContainerRef.current && heatmapChartRef.current) {
         window.removeEventListener('resize', () => {});
       }
