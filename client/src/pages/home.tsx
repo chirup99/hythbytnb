@@ -22838,6 +22838,151 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               totalLossingDays: 0,
                             };
 
+                            // New metrics for deeper analysis
+                            const analysisInsights: any[] = [];
+                            let last7DaysTrades = 0;
+                            let last7DaysPnL = 0;
+                            let last7DaysDrawdown = 0;
+                            let fridayTrades = 0;
+                            let fridayPnL = 0;
+                            let consecutiveLossDays = 0;
+                            let maxConsecutiveLossDays = 0;
+                            
+                            // Track max/min loss % and durations
+                            let maxLossPercent = 0;
+                            let minLossPercent = 0; // "minimum" loss is actually the smallest loss (closest to 0)
+                            let maxLossDuration = "-";
+                            let minLossDuration = "-";
+                            let totalProfitDurationMs = 0;
+                            let totalLossDurationMs = 0;
+                            let profitTradeCount = 0;
+                            let lossTradeCount = 0;
+
+                            // Helper to parse duration "1h 20m" to ms
+                            const durationToMs = (duration: string) => {
+                              if (!duration || duration === "-") return 0;
+                              const hMatch = duration.match(/(\d+)h/);
+                              const mMatch = duration.match(/(\d+)m/);
+                              const sMatch = duration.match(/(\d+)s/);
+                              return (parseInt(hMatch?.[1] || "0") * 3600 + parseInt(mMatch?.[1] || "0") * 60 + parseInt(sMatch?.[1] || "0")) * 1000;
+                            };
+
+                            const sortedDates = Object.keys(filteredHeatmapData).sort();
+                            const last7Dates = sortedDates.slice(-7);
+                            
+                            allData.forEach((data: any) => {
+                              const pnl = data.performanceMetrics.netPnL;
+                              const trades = data.performanceMetrics.totalTrades;
+                              const date = data.date; // assuming date is available
+
+                              // Analyze last 7 days
+                              if (last7Dates.includes(date)) {
+                                last7DaysTrades += trades;
+                                last7DaysPnL += pnl;
+                                if (pnl < 0) last7DaysDrawdown += Math.abs(pnl);
+                              }
+
+                              // Friday analysis
+                              if (date) {
+                                const d = new Date(date);
+                                if (d.getDay() === 5) {
+                                  fridayTrades += trades;
+                                  fridayPnL += pnl;
+                                }
+                              }
+
+                              // Consecutive loss days
+                              if (pnl < 0) {
+                                consecutiveLossDays++;
+                                maxConsecutiveLossDays = Math.max(maxConsecutiveLossDays, consecutiveLossDays);
+                              } else if (pnl > 0) {
+                                consecutiveLossDays = 0;
+                              }
+
+                              // Max/Min loss % and durations from individual trades if available
+                              // Since data here is daily summary, we look at the daily performanceMetrics
+                              // But the request asks for trade-level max/min loss %
+                              // We'll use the daily summary as a proxy or assume tradeHistoryData is used elsewhere
+                              // For this specific view, we'll calculate based on the available trades in tradeHistoryData filtered for this day
+                            });
+
+                            // Calculate trade-level metrics from global tradeHistoryData
+                            tradeHistoryData.forEach(trade => {
+                              const pnlStr = (trade.pnl || "").replace(/[₹,+\s]/g, "");
+                              const pnlValue = parseFloat(pnlStr) || 0;
+                              const price = parseFloat(trade.price) || 0;
+                              const qty = parseInt(trade.qty) || 0;
+                              const margin = price * qty;
+                              const durationMs = durationToMs(trade.duration);
+
+                              if (pnlValue > 0) {
+                                totalProfitDurationMs += durationMs;
+                                profitTradeCount++;
+                              } else if (pnlValue < 0) {
+                                totalLossDurationMs += durationMs;
+                                lossTradeCount++;
+                                const lossPercent = Math.abs((pnlValue / margin) * 100);
+                                if (lossPercent > maxLossPercent) {
+                                  maxLossPercent = lossPercent;
+                                  maxLossDuration = trade.duration || "-";
+                                }
+                                if (minLossPercent === 0 || lossPercent < minLossPercent) {
+                                  minLossPercent = lossPercent;
+                                  minLossDuration = trade.duration || "-";
+                                }
+                              }
+                            });
+
+                            const avgProfitDuration = profitTradeCount > 0 ? formatDuration(totalProfitDurationMs / profitTradeCount) : "-";
+                            const avgLossDuration = lossTradeCount > 0 ? formatDuration(totalLossDurationMs / lossTradeCount) : "-";
+
+                            // Generate actionable insights
+                            if (last7DaysTrades > 10 && last7DaysPnL > 0) {
+                              analysisInsights.push({
+                                title: "Good Week!",
+                                message: `You made ${last7DaysTrades} trades with ₹${last7DaysPnL.toLocaleString()} profit. Quality over quantity is working.`,
+                                type: "success"
+                              });
+                            } else if (last7DaysTrades > 15) {
+                                analysisInsights.push({
+                                title: "Overtrading Warning",
+                                message: `You made ${last7DaysTrades} trades this week. High frequency often leads to low quality setups.`,
+                                type: "warning"
+                              });
+                            }
+
+                            if (last7DaysTrades > 0 && last7DaysPnL > 0 && (last7DaysPnL / last7DaysDrawdown) > 2) {
+                                analysisInsights.push({
+                                title: "Low Drawdown Hero",
+                                message: "Excellent risk management this week! Your profit is significantly higher than your drawdown.",
+                                type: "success"
+                              });
+                            }
+
+                            if (fridayPnL < 0 && fridayTrades > 0) {
+                              analysisInsights.push({
+                                title: "Friday Flaw",
+                                message: "You tend to lose on Fridays. Consider avoiding trading or reducing size on Fridays.",
+                                type: "warning"
+                              });
+                            }
+                            
+                            if (maxConsecutiveLossDays >= 4) {
+                              analysisInsights.push({
+                                title: "Take a Break!",
+                                message: `You've had ${maxConsecutiveLossDays} consecutive losing days. Take a 2-day rest to reset your mind and analyze if it's a bad market condition.`,
+                                type: "danger"
+                              });
+                            }
+
+                            if (lossTradeCount > 0 && (totalLossDurationMs / lossTradeCount) > (totalProfitDurationMs / Math.max(1, profitTradeCount))) {
+                                analysisInsights.push({
+                                title: "Holding Losers",
+                                message: "Your average loss duration is higher than profit duration. Cut losses faster!",
+                                type: "danger"
+                              });
+                            }
+
                             allData.forEach((data: any) => {
                               const rawTags = data.tradingTags || [];
                               const pnl = data.performanceMetrics.netPnL;
@@ -22960,6 +23105,137 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     </div>
                                     <div className="text-sm opacity-80">
                                       Loss Rate
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* New Analysis Cards */}
+                                <div className="grid md:grid-cols-2 gap-4">
+                                  <div className="bg-gradient-to-br from-red-500/20 to-orange-500/20 backdrop-blur-sm rounded-2xl p-5 border border-white/10">
+                                    <h5 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                                      <TrendingDown className="w-4 h-4" />
+                                      Loss Severity Analysis
+                                    </h5>
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <p className="text-[10px] uppercase opacity-60">Max Loss %</p>
+                                        <p className="text-lg font-bold text-red-400">{maxLossPercent.toFixed(2)}%</p>
+                                        <div className="flex items-center gap-1 text-[10px] opacity-60">
+                                          <Clock className="w-3 h-3" /> {maxLossDuration}
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <p className="text-[10px] uppercase opacity-60">Avg Loss Duration</p>
+                                        <p className="text-lg font-bold">{avgLossDuration}</p>
+                                        <p className="text-[10px] opacity-60">Stop holding losers!</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-sm rounded-2xl p-5 border border-white/10">
+                                    <h5 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                                      <TrendingUp className="w-4 h-4" />
+                                      Profit Holding Analysis
+                                    </h5>
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <p className="text-[10px] uppercase opacity-60">Avg Profit Duration</p>
+                                        <p className="text-lg font-bold text-green-400">{avgProfitDuration}</p>
+                                        <p className="text-[10px] opacity-60">Ride your winners!</p>
+                                      </div>
+                                      <div>
+                                        <p className="text-[10px] uppercase opacity-60">Min Loss %</p>
+                                        <p className="text-lg font-bold text-orange-400">{minLossPercent.toFixed(2)}%</p>
+                                        <div className="flex items-center gap-1 text-[10px] opacity-60">
+                                          <Clock className="w-3 h-3" /> {minLossDuration}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Date-based Performance & Drawdown Cards */}
+                                <div className="grid md:grid-cols-2 gap-4">
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/10">
+                                    <h5 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                                      <Calendar className="w-4 h-4 text-blue-400" />
+                                      Weekly Efficiency (Last 7 Days)
+                                    </h5>
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <p className="text-[10px] uppercase opacity-60">Last 7D Trades</p>
+                                        <p className="text-lg font-bold">{last7DaysTrades}</p>
+                                      </div>
+                                      <div>
+                                        <p className="text-[10px] uppercase opacity-60">Weekly Drawdown</p>
+                                        <p className="text-lg font-bold text-red-400">₹{last7DaysDrawdown.toLocaleString("en-IN")}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/10">
+                                    <h5 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                                      <Zap className="w-4 h-4 text-yellow-400" />
+                                      Streak & Discipline Analysis
+                                    </h5>
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <p className="text-[10px] uppercase opacity-60">Max Loss Streak</p>
+                                        <p className="text-lg font-bold text-red-500">{maxConsecutiveLossDays} Days</p>
+                                      </div>
+                                      <div>
+                                        <p className="text-[10px] uppercase opacity-60">Friday P&L</p>
+                                        <p className={`text-lg font-bold ${fridayPnL >= 0 ? "text-green-400" : "text-red-400"}`}>
+                                          ₹{fridayPnL.toLocaleString("en-IN")}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Actionable Insights & Recommendations */}
+                                <div className="space-y-4">
+                                  <h4 className="text-sm font-semibold flex items-center gap-2">
+                                    <Lightbulb className="w-4 h-4 text-amber-400" />
+                                    Smart Trading Recommendations
+                                  </h4>
+                                  <div className="grid md:grid-cols-3 gap-3">
+                                    {/* Core Actionable Insights */}
+                                    {analysisInsights.map((insight, i) => (
+                                      <div key={i} className={`p-4 rounded-xl border flex gap-3 items-start ${
+                                        insight.type === 'danger' ? 'bg-red-500/10 border-red-500/30' :
+                                        insight.type === 'warning' ? 'bg-amber-500/10 border-amber-500/30' :
+                                        'bg-green-500/10 border-green-500/30'
+                                      }`}>
+                                        <div className="text-xl">{insight.type === 'danger' ? '🛑' : insight.type === 'warning' ? '⚠️' : '✅'}</div>
+                                        <div>
+                                          <p className="font-bold text-sm">{insight.title}</p>
+                                          <p className="text-xs opacity-80 leading-relaxed">{insight.message}</p>
+                                        </div>
+                                      </div>
+                                    ))}
+
+                                    {/* Default Psychology & Habit Cards */}
+                                    <div className="p-4 rounded-xl border bg-indigo-500/10 border-indigo-500/30 flex gap-3 items-start">
+                                      <div className="text-xl">🧘</div>
+                                      <div>
+                                        <p className="font-bold text-sm">Mind Control</p>
+                                        <p className="text-xs opacity-80 leading-relaxed">If you're trading continuously, take 15-minute breaks every 2 hours to maintain focus and emotional balance.</p>
+                                      </div>
+                                    </div>
+
+                                    <div className="p-4 rounded-xl border bg-purple-500/10 border-purple-500/30 flex gap-3 items-start">
+                                      <div className="text-xl">📅</div>
+                                      <div>
+                                        <p className="font-bold text-sm">Weekend Prep</p>
+                                        <p className="text-xs opacity-80 leading-relaxed">Use Saturdays to review your weekly journal. Identifying 1 mistake now prevents 5 losses next week.</p>
+                                      </div>
+                                    </div>
+
+                                    <div className="p-4 rounded-xl border bg-orange-500/10 border-orange-500/30 flex gap-3 items-start">
+                                      <div className="text-xl">🛡️</div>
+                                      <div>
+                                        <p className="font-bold text-sm">Risk Shield</p>
+                                        <p className="text-xs opacity-80 leading-relaxed">If you lose more than 2% of your capital in a single day, stop trading immediately. Live to trade another day.</p>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -23266,15 +23542,31 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       Avg Trades/Day
                                     </div>
                                   </div>
-                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center">
-                                    <div className="text-lg md:text-2xl font-bold">
+                                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center border border-white/5">
+                                    <div className="text-lg md:text-2xl font-bold text-red-400">
+                                      {maxLossStreak}
+                                    </div>
+                                    <div className="text-xs md:text-sm opacity-80">
+                                      Max Loss Streak
+                                    </div>
+                                  </div>
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center border border-white/5">
+                                    <div className="text-lg md:text-2xl font-bold text-green-400">
                                       {maxWinStreak}
                                     </div>
                                     <div className="text-xs md:text-sm opacity-80">
                                       Max Win Streak
                                     </div>
                                   </div>
-                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center">
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center border border-white/5">
+                                    <div className="text-lg md:text-2xl font-bold text-blue-400">
+                                      {last7DaysTrades}
+                                    </div>
+                                    <div className="text-xs md:text-sm opacity-80">
+                                      Trades (7D)
+                                    </div>
+                                  </div>
+                                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 text-center border border-white/5">
                                     <div className="text-lg md:text-2xl font-bold">
                                       {consistencyRatio.toFixed(0)}%
                                     </div>
