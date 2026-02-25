@@ -23199,7 +23199,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </h4>
                                   <div className="grid md:grid-cols-3 gap-3">
                                     {/* Core Actionable Insights */}
-                                    {analysisInsights.map((insight, i) => (
+                                    {analysisInsights.map((insight: any, i: number) => (
                                       <div key={i} className={`p-4 rounded-xl border flex gap-3 items-start ${
                                         insight.type === 'danger' ? 'bg-red-500/10 border-red-500/30' :
                                         insight.type === 'warning' ? 'bg-amber-500/10 border-amber-500/30' :
@@ -23340,6 +23340,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             }
 
                             // Calculate discipline metrics
+                            const last7Dates = Object.keys(filteredHeatmapData).sort().slice(-7);
+                            let last7DaysTrades = 0;
+                            allData.forEach((data: any) => {
+                              if (last7Dates.includes(data.date)) {
+                                last7DaysTrades += data.performanceMetrics.totalTrades;
+                              }
+                            });
+
                             const disciplineMetrics = {
                               plannedTrades: 0,
                               emotionalTrades: 0,
