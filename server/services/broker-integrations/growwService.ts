@@ -8,16 +8,30 @@ import axios from 'axios';
 
 export async function getGrowwAccessToken(apiKey: string, apiSecret: string): Promise<string> {
   try {
-    // According to Groww Trade API docs, we authenticate with API Key and Secret
-    // This typically returns a session/access token
     console.log(`🔐 Authenticating with Groww for API Key: ${apiKey.substring(0, 5)}...`);
     
-    // The actual endpoint for authentication would be called here
-    // For now, we'll return the apiKey as the token if it's already a persistent token,
-    // or perform the auth exchange.
+    // According to Groww Trade API docs, we authenticate with API Key and Secret
+    // Endpoint: POST /v1/auth/access_token
+    const response = await axios.post('https://api.groww.in/v1/auth/access_token', {
+      api_key: apiKey,
+      secret: apiSecret
+    }, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (response.data && response.data.access_token) {
+      console.log('✅ Groww authentication successful');
+      return response.data.access_token;
+    }
+    
+    // Fallback to apiKey if the provided token is already an access token
     return apiKey; 
   } catch (error: any) {
-    console.error('❌ Groww Auth Error:', error.message);
+    console.error('❌ Groww Auth Error:', error.response?.data || error.message);
+    // If it's a 404 or 401, it might be that the apiKey IS the access token (persistent)
+    if (error.response?.status === 404 || error.response?.status === 401) {
+      return apiKey;
+    }
     throw new Error(`Groww authentication failed: ${error.message}`);
   }
 }
@@ -28,7 +42,7 @@ export async function fetchGrowwFunds(accessToken: string): Promise<number> {
     // Endpoint: GET /v1/accounts/funds
     const response = await axios.get('https://api.groww.in/v1/accounts/funds', {
       headers: {
-        'X-API-KEY': accessToken,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
       }
     });
@@ -49,7 +63,7 @@ export async function fetchGrowwTrades(accessToken: string): Promise<any[]> {
     // Endpoint: GET /v1/orders
     const response = await axios.get('https://api.groww.in/v1/orders', {
       headers: {
-        'X-API-KEY': accessToken,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
       }
     });
@@ -95,7 +109,7 @@ export async function fetchGrowwPositions(accessToken: string): Promise<any[]> {
     // Endpoint: GET /v1/positions
     const response = await axios.get('https://api.groww.in/v1/positions', {
       headers: {
-        'X-API-KEY': accessToken,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
       }
     });
