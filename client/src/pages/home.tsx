@@ -20817,47 +20817,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   </div>
                                 </DialogContent>
                               </Dialog>
-                              {angelOneIsConnected ? (
-                            <div className="flex items-center gap-2">
-                              <Button
-                                variant="outline"
-                                className="flex-1 h-10 bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700 cursor-default"
-                                data-testid="button-angelone-connected-display"
-                              >
-                                <img src="https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701" alt="Angel One" className="h-4 mr-2" />
-                                Angel One
-                              </Button>
-                              <Button 
-                                variant="ghost" 
-                                size="icon" 
-                                className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
-                                onClick={() => {
-                                  localStorage.removeItem("angel_one_token");
-                                  setAngelOneAccessToken(null);
-                                  setAngelOneIsConnected(false);
-                                }}
-                                title="Disconnect Angel One"
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          ) : (
-                            <Button
-                              variant="outline"
-                              className={`w-full h-10 ${
-                                (zerodhaIsConnected || upstoxIsConnected || dhanIsConnected)
-                                  ? 'bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 dark:text-slate-600 border-slate-300 dark:border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
-                                  : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
-                              }`}
-                              data-testid="button-angelone-dialog"
-                              onClick={() => setIsAngelOneDialogOpen(true)}
-                              disabled={zerodhaIsConnected || upstoxIsConnected || dhanIsConnected}
-                            >
-                              <img src="https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701" alt="Angel One" className="h-4 mr-2" />
-                              Angel One
-                            </Button>
-                          )}
-                          {dhanIsConnected ? (
+                              {dhanIsConnected ? (
                             <div className="flex items-center gap-2">
                               <Button
                                 variant="outline"
@@ -20942,17 +20902,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               Fyers
                             </Button>
                           )}
-
-                          {/* Groww */}
-                          <Button
-                            variant="outline"
-                            className="w-full h-10 bg-slate-50/50 dark:bg-slate-900/20 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 cursor-not-allowed relative hover:bg-slate-50/50 dark:hover:bg-slate-900/20"
-                            disabled
-                          >
-                            <img src="https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw" alt="Groww" className="w-4 h-4 mr-2 rounded-full" />
-                            Groww
-                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
-                          </Button>
 
                           {/* ICICI Securities */}
                           <Button
