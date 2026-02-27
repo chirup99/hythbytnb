@@ -20375,6 +20375,22 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 />
                               </Button>
                             )}
+                            {growwIsConnected && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs"
+                                onClick={() => setShowOrderModal(true)}
+                                data-testid="button-broker-orders-groww"
+                                title="View Orders & Positions (Groww)"
+                              >
+                                <img 
+                                  src="https://groww.in/logo-groww-rectangular.svg" 
+                                  alt="Groww" 
+                                  className="h-4 w-4 rounded-full"
+                                />
+                              </Button>
+                            )}
                             <Button
                               variant="ghost"
                               size="sm"
