@@ -25,7 +25,10 @@ import {
   brokerIds,
   kiteCredentialSchema,
   dhanCredentialSchema,
+  growwCredentialSchema,
+  deltaCredentialSchema,
 } from "@shared/schema";
+import { z } from "zod";
 import { apiRequest } from "@/lib/queryClient";
 import { Loader2, CheckCircle, AlertCircle, Briefcase } from "lucide-react";
 
@@ -43,10 +46,39 @@ export function BrokerImportDialog({
   const [selectedBroker, setSelectedBroker] = useState<BrokerId | "">("");
   const [importSuccess, setImportSuccess] = useState(false);
 
+  const kiteForm = useForm<z.infer<typeof kiteCredentialSchema>>({
+    resolver: zodResolver(kiteCredentialSchema),
+    defaultValues: {
+      broker: "kite",
+      apiKey: "",
+      apiSecret: "",
+      requestToken: "",
+    },
+  });
+
+  const dhanForm = useForm<z.infer<typeof dhanCredentialSchema>>({
+    resolver: zodResolver(dhanCredentialSchema),
+    defaultValues: {
+      broker: "dhan",
+      clientId: "",
+      accessToken: "",
+    },
+  });
+
+  const deltaForm = useForm<z.infer<typeof deltaCredentialSchema>>({
+    resolver: zodResolver(deltaCredentialSchema),
+    defaultValues: {
+      broker: "delta",
+      apiKey: "",
+      apiSecret: "",
+    },
+  });
+
   const brokerLabels: Record<BrokerId, string> = {
     kite: "Kite (Zerodha)",
     dhan: "Dhan",
     groww: "Groww",
+    delta: "Delta Exchange",
   };
 
   const brokerDescriptions: Record<BrokerId, string> = {
@@ -54,6 +86,7 @@ export function BrokerImportDialog({
       "Login to Kite Connect and generate a request token from your developer dashboard.",
     dhan: "Get your access token from the Dhan trading platform settings.",
     groww: "Enter your Groww API Key and Secret from the Groww Cloud API Keys page.",
+    delta: "Enter your Delta Exchange API Key and Secret from your account settings.",
   };
 
   const growwForm = useForm<z.infer<typeof growwCredentialSchema>>({
@@ -69,6 +102,7 @@ export function BrokerImportDialog({
     if (selectedBroker === "kite") return kiteForm;
     if (selectedBroker === "dhan") return dhanForm;
     if (selectedBroker === "groww") return growwForm;
+    if (selectedBroker === "delta") return deltaForm;
     return null;
   };
 
@@ -108,6 +142,8 @@ export function BrokerImportDialog({
     setImportSuccess(false);
     kiteForm.reset();
     dhanForm.reset();
+    growwForm.reset();
+    deltaForm.reset();
     importMutation.reset();
     onOpenChange(false);
   };
@@ -216,6 +252,86 @@ export function BrokerImportDialog({
                     {kiteForm.formState.errors.requestToken && (
                       <p className="text-xs text-red-600 mt-1">
                         {kiteForm.formState.errors.requestToken.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {selectedBroker === "delta" && (
+                <div className="space-y-3">
+                  <div>
+                    <Label htmlFor="delta-api-key" className="text-sm">
+                      API Key
+                    </Label>
+                    <Input
+                      id="delta-api-key"
+                      {...deltaForm.register("apiKey")}
+                      placeholder="Enter your Delta API Key"
+                      className="mt-1"
+                      data-testid="input-delta-api-key"
+                    />
+                    {deltaForm.formState.errors.apiKey && (
+                      <p className="text-xs text-red-600 mt-1">
+                        {deltaForm.formState.errors.apiKey.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <Label htmlFor="delta-api-secret" className="text-sm">
+                      API Secret
+                    </Label>
+                    <Input
+                      id="delta-api-secret"
+                      type="password"
+                      {...deltaForm.register("apiSecret")}
+                      placeholder="Enter your Delta API Secret"
+                      className="mt-1"
+                      data-testid="input-delta-api-secret"
+                    />
+                    {deltaForm.formState.errors.apiSecret && (
+                      <p className="text-xs text-red-600 mt-1">
+                        {deltaForm.formState.errors.apiSecret.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {selectedBroker === "dhan" && (
+                <div className="space-y-3">
+                  <div>
+                    <Label htmlFor="dhan-client-id" className="text-sm">
+                      Client ID
+                    </Label>
+                    <Input
+                      id="dhan-client-id"
+                      {...dhanForm.register("clientId")}
+                      placeholder="Enter your Dhan Client ID"
+                      className="mt-1"
+                      data-testid="input-dhan-client-id"
+                    />
+                    {dhanForm.formState.errors.clientId && (
+                      <p className="text-xs text-red-600 mt-1">
+                        {dhanForm.formState.errors.clientId.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <Label htmlFor="dhan-access-token" className="text-sm">
+                      Access Token
+                    </Label>
+                    <Input
+                      id="dhan-access-token"
+                      type="password"
+                      {...dhanForm.register("accessToken")}
+                      placeholder="Enter your Dhan Access Token"
+                      className="mt-1"
+                      data-testid="input-dhan-access-token"
+                    />
+                    {dhanForm.formState.errors.accessToken && (
+                      <p className="text-xs text-red-600 mt-1">
+                        {dhanForm.formState.errors.accessToken.message}
                       </p>
                     )}
                   </div>
