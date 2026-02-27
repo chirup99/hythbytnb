@@ -11556,6 +11556,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/broker/groww/orders", async (req, res) => {
+    try {
+      const { accessToken } = req.query;
+      if (!accessToken) return res.status(400).json({ error: "Access token required" });
+      const { fetchGrowwTrades } = await import('./services/broker-integrations/growwService');
+      const orders = await fetchGrowwTrades(accessToken as string);
+      res.json({ success: true, orders });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Fyers authentication URL
   app.get("/api/auth/url", async (req, res) => {
     try {

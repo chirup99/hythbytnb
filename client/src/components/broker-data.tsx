@@ -4,7 +4,7 @@ import { Eye, EyeOff, Plus, X, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -153,6 +153,37 @@ export function BrokerData(props: BrokerDataProps) {
     return () => clearInterval(interval);
   }, [activeBroker, growwAccessToken, showOrderModal, queryClient]);
 
+  const [growwOrders, setGrowwOrders] = useState<any[]>([]);
+  const [fetchingGrowwOrders, setFetchingGrowwOrders] = useState(false);
+
+  // Refresh Groww orders every 15 seconds if connected
+  useEffect(() => {
+    if (activeBroker !== 'groww' || !showOrderModal) return;
+
+    const refreshGrowwOrders = async () => {
+      setFetchingGrowwOrders(true);
+      try {
+        const response = await apiRequest("GET", `/api/broker/groww/orders?accessToken=${encodeURIComponent(growwAccessToken || '')}`, null);
+        console.log("🔍 [GROWW] Orders refresh response:", response);
+        if (response.success && response.orders) {
+          setGrowwOrders(response.orders);
+        }
+        queryClient.invalidateQueries({ queryKey: ["/api/broker/groww/orders"] });
+      } catch (error) {
+        console.error("Error refreshing Groww orders:", error);
+      } finally {
+        setFetchingGrowwOrders(false);
+      }
+    };
+
+    refreshGrowwOrders();
+    const interval = setInterval(refreshGrowwOrders, 15000);
+    return () => clearInterval(interval);
+  }, [activeBroker, growwAccessToken, showOrderModal, queryClient]);
+
+  const displayOrders = activeBroker === 'groww' ? growwOrders : brokerOrders;
+  const isFetchingOrders = activeBroker === 'groww' ? fetchingGrowwOrders : fetchingBrokerOrders;
+
   const formatSymbol = (symbol: string) => {
     if (!symbol) return "";
     
@@ -289,14 +320,14 @@ export function BrokerData(props: BrokerDataProps) {
                       </tr>
                     </thead>
                     <tbody>
-                      {brokerOrders.length === 0 ? (
+                      {displayOrders.length === 0 ? (
                         <tr>
                           <td colSpan={7} className="px-2 py-4 text-center text-gray-500">
-                            {fetchingBrokerOrders ? 'Loading orders...' : isConnected ? 'No orders found' : 'Connect to broker to view orders'}
+                            {isFetchingOrders ? 'Loading orders...' : isConnected ? 'No orders found' : 'Connect to broker to view orders'}
                           </td>
                         </tr>
                       ) : (
-                        [...brokerOrders].sort((a, b) => { 
+                        [...displayOrders].sort((a, b) => { 
                           const aStatus = String(a.status || "").toUpperCase().trim(); 
                           const bStatus = String(b.status || "").toUpperCase().trim(); 
                           const aOrder = aStatus === "COMPLETE" || aStatus === "PENDING" ? 0 : aStatus === "REJECTED" || aStatus === "CANCELLED" ? 999 : 500; 
@@ -374,13 +405,13 @@ export function BrokerData(props: BrokerDataProps) {
                 <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700 mt-2">
                   <button
                     onClick={recordAllBrokerOrders}
-                    disabled={brokerOrders.length === 0}
+                    disabled={displayOrders.length === 0}
                     className="px-3 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded transition-colors"
                     data-testid="button-record-broker-orders"
                   >
                     Record to Journal
                   </button>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{brokerOrders.length} orders</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">{displayOrders.length} orders</span>
                 </div>
               </TabsContent>
 

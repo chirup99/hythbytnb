@@ -42,10 +42,34 @@ export async function fetchGrowwFunds(accessToken: string): Promise<number> {
 
 export async function fetchGrowwTrades(accessToken: string): Promise<any[]> {
   try {
-    console.log('📜 Fetching trades from Groww...');
+    console.log('📜 Fetching orders from Groww...');
+    // According to Groww API documentation, we use get_order_list
+    const response = await axios.get('https://api.groww.in/v1/orders', {
+      params: {
+        page: 0,
+        page_size: 100
+      },
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (response.data && response.data.order_list) {
+      return response.data.order_list.map((order: any) => ({
+        time: order.created_at,
+        order: order.transaction_type, // BUY or SELL
+        symbol: order.trading_symbol,
+        type: order.order_type, // MARKET, LIMIT, etc.
+        qty: order.quantity,
+        price: order.average_fill_price || order.price,
+        status: order.order_status, // OPEN, COMPLETED, CANCELLED, etc.
+        groww_order_id: order.groww_order_id
+      }));
+    }
     return [];
   } catch (error: any) {
-    console.error('❌ Groww Trades Error:', error.message);
+    console.error('❌ Groww Orders Error:', error.message);
     return [];
   }
 }
