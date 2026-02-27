@@ -4332,6 +4332,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [dhanClientIdInput, setDhanClientIdInput] = useState(localStorage.getItem("dhan_client_id") || "");
   const [dhanTokenInput, setDhanTokenInput] = useState(localStorage.getItem("dhan_access_token") || "");
   const [showDhanToken, setShowDhanToken] = useState(false);
+  const [isGrowwDialogOpen, setIsGrowwDialogOpen] = useState(false);
+  const [growwApiKeyInput, setGrowwApiKeyInput] = useState("");
+  const [growwApiSecretInput, setGrowwApiSecretInput] = useState("");
+  const [showGrowwSecret, setShowGrowwSecret] = useState(false);
+  const [growwIsConnected, setGrowwIsConnected] = useState(false);
 
   useEffect(() => {
     const checkDhanInit = async () => {
@@ -4365,6 +4370,36 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   }, []);
   const handleDhanConnect = async () => {
     setIsDhanDialogOpen(true);
+  };
+
+  const handleGrowwConnect = async () => {
+    setIsGrowwDialogOpen(true);
+  };
+
+  const submitGrowwCredentials = async () => {
+    if (!growwApiKeyInput || !growwApiSecretInput) {
+      toast({
+        title: "Error",
+        description: "Please enter both API Key and API Secret",
+        variant: "destructive"
+      });
+      return;
+    }
+    // Simulation logic for Groww connection
+    setGrowwIsConnected(true);
+    setIsGrowwDialogOpen(false);
+    toast({
+      title: "Connected",
+      description: "Groww account connected successfully",
+    });
+  };
+
+  const handleGrowwDisconnect = () => {
+    setGrowwIsConnected(false);
+    toast({
+      title: "Disconnected",
+      description: "Groww account disconnected",
+    });
   };
 
 
@@ -20903,6 +20938,43 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             </Button>
                           )}
 
+                          {/* Groww */}
+                          {growwIsConnected ? (
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                className="flex-1 h-10 bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 cursor-default"
+                              >
+                                <img src="https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw" alt="Groww" className="w-4 h-4 mr-2 rounded-full" />
+                                Groww
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 h-10 w-10 border border-slate-200 hover:border-red-100"
+                                onClick={handleGrowwDisconnect}
+                                title="Disconnect Groww"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button
+                              onClick={handleGrowwConnect}
+                              variant="outline"
+                              className={`w-full h-10 ${
+                                (zerodhaIsConnected || upstoxIsConnected || angelOneIsConnected || dhanIsConnected)
+                                  ? 'bg-slate-100 dark:bg-slate-900 text-slate-500 dark:text-slate-400 dark:text-slate-600 border-slate-300 dark:border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
+                                  : 'bg-white dark:bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-50 dark:hover:bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-200 dark:border-slate-700'
+                              }`}
+                              data-testid="button-groww-dialog"
+                              disabled={zerodhaIsConnected || upstoxIsConnected || angelOneIsConnected || dhanIsConnected}
+                            >
+                              <img src="https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw" alt="Groww" className="w-4 h-4 mr-2 rounded-full" />
+                              Groww
+                            </Button>
+                          )}
+
                           {/* ICICI Securities */}
                           <Button
                             variant="outline"
@@ -21032,6 +21104,126 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     onClick={submitDhanCredentials} 
                                     className="bg-green-600 hover:bg-green-700 text-white"
                                     disabled={!dhanClientIdInput || !dhanTokenInput}
+                                  >
+                                    Connect Account
+                                  </Button>
+                                </div>
+                            </DialogContent>
+                          </Dialog>
+
+                          <Dialog open={isGrowwDialogOpen} onOpenChange={setIsGrowwDialogOpen}>
+                            <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                              <DialogHeader>
+                                <DialogTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+                                  <img src="https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw" alt="Groww" className="h-5" />
+                                  Connect Groww Broker
+                                </DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4 py-4">
+                                <div className="space-y-2">
+                                  <Label htmlFor="groww-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
+                                  <Input
+                                    id="groww-api-key"
+                                    placeholder="Enter your Groww API Key"
+                                    value={growwApiKeyInput}
+                                    onChange={(e) => setGrowwApiKeyInput(e.target.value)}
+                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="groww-api-secret" className="text-slate-700 dark:text-slate-300">API Secret</Label>
+                                  <div className="relative">
+                                    <Input
+                                      id="groww-api-secret"
+                                      type={showGrowwSecret ? "text" : "password"}
+                                      placeholder="Enter your Groww API Secret"
+                                      value={growwApiSecretInput}
+                                      onChange={(e) => setGrowwApiSecretInput(e.target.value)}
+                                      className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="icon"
+                                      className="absolute right-0 top-0 h-10 w-10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-transparent"
+                                      onClick={() => setShowGrowwSecret(!showGrowwSecret)}
+                                    >
+                                      {showGrowwSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </Button>
+                                  </div>
+                                  <p className="text-[10px] text-slate-500 mt-2">
+                                    Generate API keys at: <a href="https://groww.in/trade-api/api-keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://groww.in/trade-api/api-keys</a>
+                                  </p>
+                                </div>
+                              </div>
+                                <div className="flex justify-end gap-3 pt-2">
+                                  <Button variant="outline" onClick={() => setIsGrowwDialogOpen(false)}>
+                                    Cancel
+                                  </Button>
+                                  <Button 
+                                    onClick={submitGrowwCredentials} 
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    disabled={!growwApiKeyInput || !growwApiSecretInput}
+                                  >
+                                    Connect Account
+                                  </Button>
+                                </div>
+                            </DialogContent>
+                          </Dialog>
+
+                          <Dialog open={isGrowwDialogOpen} onOpenChange={setIsGrowwDialogOpen}>
+                            <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                              <DialogHeader>
+                                <DialogTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+                                  <img src="https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw" alt="Groww" className="h-5" />
+                                  Connect Groww Broker
+                                </DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4 py-4">
+                                <div className="space-y-2">
+                                  <Label htmlFor="groww-api-key" className="text-slate-700 dark:text-slate-300">API Key</Label>
+                                  <Input
+                                    id="groww-api-key"
+                                    placeholder="Enter your Groww API Key"
+                                    value={growwApiKeyInput}
+                                    onChange={(e) => setGrowwApiKeyInput(e.target.value)}
+                                    className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="groww-api-secret" className="text-slate-700 dark:text-slate-300">API Secret</Label>
+                                  <div className="relative">
+                                    <Input
+                                      id="groww-api-secret"
+                                      type={showGrowwSecret ? "text" : "password"}
+                                      placeholder="Enter your Groww API Secret"
+                                      value={growwApiSecretInput}
+                                      onChange={(e) => setGrowwApiSecretInput(e.target.value)}
+                                      className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 pr-10"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="icon"
+                                      className="absolute right-0 top-0 h-10 w-10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-transparent"
+                                      onClick={() => setShowGrowwSecret(!showGrowwSecret)}
+                                    >
+                                      {showGrowwSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </Button>
+                                  </div>
+                                  <p className="text-[10px] text-slate-500 mt-2">
+                                    Generate API keys at: <a href="https://groww.in/trade-api/api-keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://groww.in/trade-api/api-keys</a>
+                                  </p>
+                                </div>
+                              </div>
+                                <div className="flex justify-end gap-3 pt-2">
+                                  <Button variant="outline" onClick={() => setIsGrowwDialogOpen(false)}>
+                                    Cancel
+                                  </Button>
+                                  <Button 
+                                    onClick={submitGrowwCredentials} 
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    disabled={!growwApiKeyInput || !growwApiSecretInput}
                                   >
                                     Connect Account
                                   </Button>
