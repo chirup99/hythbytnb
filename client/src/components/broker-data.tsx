@@ -24,6 +24,9 @@ interface BrokerDataProps {
   dhanUserId?: string | null;
   dhanClientId?: string | null;
   dhanClientName?: string | null;
+  growwAccessToken?: string | null;
+  growwUserId?: string | null;
+  growwUserName?: string | null;
   brokerOrders: any[];
   fetchingBrokerOrders: boolean;
   zerodhaAccessToken: string | null;
@@ -68,6 +71,7 @@ export function BrokerData(props: BrokerDataProps) {
     showOrderModal, setShowOrderModal, orderTab, setOrderTab, showUserId, setShowUserId,
     zerodhaClientId, zerodhaUserName, upstoxAccessToken, upstoxUserId, upstoxUserName,
     dhanAccessToken, dhanUserId, dhanClientId, dhanClientName,
+    growwAccessToken, growwUserId, growwUserName,
     deltaExchangeIsConnected, deltaExchangeApiKey, deltaExchangeApiSecret,
     deltaExchangeUserId, deltaExchangeAccountName,
     brokerOrders, fetchingBrokerOrders, zerodhaAccessToken,
@@ -84,8 +88,8 @@ export function BrokerData(props: BrokerDataProps) {
   const queryClient = useQueryClient();
 
   const isFyersConnected = fyersStatus?.connected && fyersStatus?.authenticated;
-  const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken || deltaExchangeIsConnected || isFyersConnected;
-  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : deltaExchangeIsConnected ? 'delta' : isFyersConnected ? 'fyers' : null;
+  const isConnected = zerodhaAccessToken || upstoxAccessToken || dhanAccessToken || growwAccessToken || deltaExchangeIsConnected || isFyersConnected;
+  const activeBroker = zerodhaAccessToken ? 'zerodha' : upstoxAccessToken ? 'upstox' : dhanAccessToken ? 'dhan' : growwAccessToken ? 'groww' : deltaExchangeIsConnected ? 'delta' : isFyersConnected ? 'fyers' : null;
 
   // Refresh Dhan profile every 10 seconds if connected
   useEffect(() => {
@@ -212,6 +216,12 @@ export function BrokerData(props: BrokerDataProps) {
                       <span>id: {showUserId ? (dhanClientId || dhanUserId || "N/A") : "••••••"} | {showUserId ? (dhanClientName || "Dhan User") : "•••••"}</span>
                     </>
                   )}
+                  {activeBroker === 'groww' && (
+                    <>
+                      <img src="https://groww.in/logo-groww-rectangular.svg" alt="Groww" className="w-4 h-4" />
+                      <span>id: {showUserId ? (growwUserId || "N/A") : "••••••"} | {showUserId ? (growwUserName || "Groww User") : "•••••"}</span>
+                    </>
+                  )}
                   {activeBroker === 'delta' && (
                     <>
                       <img src="https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw" alt="Delta Exchange" className="w-3 h-3 rounded-full" />
@@ -225,7 +235,7 @@ export function BrokerData(props: BrokerDataProps) {
                     </>
                   )}
                 </div>
-                {(activeBroker === 'zerodha' || activeBroker === 'upstox' || activeBroker === 'dhan' || activeBroker === 'delta' || activeBroker === 'fyers') && (
+                {(activeBroker === 'zerodha' || activeBroker === 'upstox' || activeBroker === 'dhan' || activeBroker === 'groww' || activeBroker === 'delta' || activeBroker === 'fyers') && (
                   <button onClick={() => setShowUserId(!showUserId)} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors" data-testid="button-toggle-user-id" title={showUserId ? "Hide ID" : "Show ID"}>
                     {showUserId ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                   </button>

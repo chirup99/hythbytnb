@@ -4337,6 +4337,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [growwApiSecretInput, setGrowwApiSecretInput] = useState("");
   const [showGrowwSecret, setShowGrowwSecret] = useState(false);
   const [growwIsConnected, setGrowwIsConnected] = useState(false);
+  const [growwAccessToken, setGrowwAccessToken] = useState<string | null>(null);
+  const [growwUserId, setGrowwUserId] = useState<string | null>(null);
+  const [growwUserName, setGrowwUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedGrowwConnected = localStorage.getItem("growwIsConnected") === "true";
+    if (storedGrowwConnected) {
+      setGrowwIsConnected(true);
+      setGrowwAccessToken(localStorage.getItem("growwAccessToken"));
+      setGrowwUserId(localStorage.getItem("growwUserId"));
+      setGrowwUserName(localStorage.getItem("growwUserName"));
+    }
+  }, []);
 
   useEffect(() => {
     const checkDhanInit = async () => {
@@ -4386,7 +4399,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       return;
     }
     // Simulation logic for Groww connection
+    const simulatedToken = "simulated_groww_token_" + Math.random().toString(36).substring(7);
+    const userId = growwApiKeyInput.substring(0, 6);
+    const userName = "Groww User";
+
+    localStorage.setItem("growwIsConnected", "true");
+    localStorage.setItem("growwAccessToken", simulatedToken);
+    localStorage.setItem("growwUserId", userId);
+    localStorage.setItem("growwUserName", userName);
+
     setGrowwIsConnected(true);
+    setGrowwAccessToken(simulatedToken);
+    setGrowwUserId(userId);
+    setGrowwUserName(userName);
     setIsGrowwDialogOpen(false);
     toast({
       title: "Connected",
@@ -4395,7 +4420,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   };
 
   const handleGrowwDisconnect = () => {
+    localStorage.removeItem("growwIsConnected");
+    localStorage.removeItem("growwAccessToken");
+    localStorage.removeItem("growwUserId");
+    localStorage.removeItem("growwUserName");
+
     setGrowwIsConnected(false);
+    setGrowwAccessToken(null);
+    setGrowwUserId(null);
+    setGrowwUserName(null);
     toast({
       title: "Disconnected",
       description: "Groww account disconnected",
@@ -23851,8 +23884,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           deltaExchangeApiKey={deltaExchangeApiKey}
           deltaExchangeApiSecret={deltaExchangeApiSecret}
           fyersStatus={fyersStatus}
-          brokerOrders={zerodhaAccessToken ? brokerOrders : upstoxAccessToken ? brokerOrders : dhanAccessToken ? brokerOrders : deltaExchangeIsConnected ? (deltaExchangeTradesData || []) : fyersIsConnected ? (fyersOrders || []) : []}
-          fetchingBrokerOrders={zerodhaAccessToken ? fetchingBrokerOrders : upstoxAccessToken ? fetchingBrokerOrders : dhanAccessToken ? (fetchingBrokerOrders || false) : deltaExchangeIsConnected ? deltaExchangeFetching : fetchingFyersOrders}
+          brokerOrders={zerodhaAccessToken ? brokerOrders : upstoxAccessToken ? brokerOrders : dhanAccessToken ? brokerOrders : growwAccessToken ? (brokerOrders || []) : deltaExchangeIsConnected ? (deltaExchangeTradesData || []) : fyersIsConnected ? (fyersOrders || []) : []}
+          fetchingBrokerOrders={zerodhaAccessToken ? fetchingBrokerOrders : upstoxAccessToken ? fetchingBrokerOrders : dhanAccessToken ? (fetchingBrokerOrders || false) : growwAccessToken ? (fetchingBrokerOrders || false) : deltaExchangeIsConnected ? deltaExchangeFetching : fetchingFyersOrders}
           zerodhaAccessToken={zerodhaAccessToken}
           recordAllBrokerOrders={recordAllBrokerOrders}
           upstoxAccessToken={upstoxAccessToken}
@@ -23861,8 +23894,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           dhanAccessToken={dhanAccessToken}
           dhanUserId={dhanClientIdInput}
           dhanClientName={dhanClientName || "Dhan User"}
-          brokerPositions={zerodhaAccessToken ? brokerPositions : upstoxAccessToken ? brokerPositions : dhanAccessToken ? brokerPositions : deltaExchangeIsConnected ? (deltaExchangePositionsData || []) : fyersIsConnected ? (fyersPositions || []) : []}
-          fetchingBrokerPositions={zerodhaAccessToken ? fetchingBrokerPositions : upstoxAccessToken ? fetchingBrokerPositions : dhanAccessToken ? (fetchingBrokerPositions || false) : deltaExchangeIsConnected ? deltaExchangeFetching : fetchingFyersPositions}
+          growwAccessToken={growwAccessToken}
+          growwUserId={growwUserId}
+          growwUserName={growwUserName || "Groww User"}
+          brokerPositions={zerodhaAccessToken ? brokerPositions : upstoxAccessToken ? brokerPositions : dhanAccessToken ? brokerPositions : growwAccessToken ? (brokerPositions || []) : deltaExchangeIsConnected ? (deltaExchangePositionsData || []) : fyersIsConnected ? (fyersPositions || []) : []}
+          fetchingBrokerPositions={zerodhaAccessToken ? fetchingBrokerPositions : upstoxAccessToken ? fetchingBrokerPositions : dhanAccessToken ? (fetchingBrokerOrders || false) : growwAccessToken ? (fetchingBrokerPositions || false) : deltaExchangeIsConnected ? deltaExchangeFetching : fetchingFyersPositions}
           showBrokerImportModal={showBrokerImportModal} 
           setShowBrokerImportModal={setShowBrokerImportModal} 
           handleBrokerImport={handleBrokerImport} 
@@ -23887,6 +23923,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           getCognitoToken={getCognitoToken} 
           setSavedFormats={setSavedFormats} 
           importDataTextareaRef={importDataTextareaRef} brokerFunds={brokerFunds} 
+          fyersStatus={fyersStatus}
         />
         {/* Broker Import Dialog */}
         <BrokerImportDialog
