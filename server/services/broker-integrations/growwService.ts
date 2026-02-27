@@ -54,18 +54,34 @@ export async function fetchGrowwTrades(accessToken: string): Promise<any[]> {
       }
     });
     
-    if (response.data && Array.isArray(response.data)) {
-      return response.data.map((order: any) => ({
-        time: order.order_time || new Date().toISOString(),
+    // The response schema from the attached document shows an object with an "order_list" array
+    if (response.data && Array.isArray(response.data.order_list)) {
+      return response.data.order_list.map((order: any) => ({
+        time: order.created_at || order.exchange_time || new Date().toISOString(),
         order: order.transaction_type, // BUY or SELL
+        symbol: order.trading_symbol,
+        type: order.order_type, // MARKET, LIMIT, etc.
+        qty: order.quantity,
+        price: order.average_fill_price || order.price,
+        status: order.order_status, // OPEN, COMPLETE, CANCELLED, etc.
+        groww_order_id: order.groww_order_id
+      }));
+    }
+    
+    // Fallback if the response is a direct array (as previously implemented)
+    if (Array.isArray(response.data)) {
+      return response.data.map((order: any) => ({
+        time: order.order_time || order.created_at || new Date().toISOString(),
+        order: order.transaction_type,
         symbol: order.trading_symbol,
         type: order.order_type,
         qty: order.quantity,
-        price: order.average_price || order.price,
+        price: order.average_price || order.average_fill_price || order.price,
         status: order.order_status,
-        groww_order_id: order.order_id
+        groww_order_id: order.order_id || order.groww_order_id
       }));
     }
+    
     return [];
   } catch (error: any) {
     console.error('❌ Groww Orders Error:', error.message);
