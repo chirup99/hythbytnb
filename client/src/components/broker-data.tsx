@@ -134,6 +134,25 @@ export function BrokerData(props: BrokerDataProps) {
     return () => clearInterval(interval);
   }, [deltaExchangeIsConnected, showOrderModal, queryClient]);
 
+  // Refresh Groww funds every 30 seconds if connected
+  useEffect(() => {
+    if (activeBroker !== 'groww' || !showOrderModal) return;
+
+    const refreshGrowwFunds = async () => {
+      try {
+        const response = await apiRequest("GET", `/api/broker/groww/funds?accessToken=${encodeURIComponent(growwAccessToken || '')}`, null);
+        console.log("🔍 [GROWW] Funds refresh response:", response);
+        queryClient.invalidateQueries({ queryKey: ["/api/broker/groww/funds"] });
+      } catch (error) {
+        console.error("Error refreshing Groww funds:", error);
+      }
+    };
+
+    refreshGrowwFunds();
+    const interval = setInterval(refreshGrowwFunds, 30000);
+    return () => clearInterval(interval);
+  }, [activeBroker, growwAccessToken, showOrderModal, queryClient]);
+
   const formatSymbol = (symbol: string) => {
     if (!symbol) return "";
     
@@ -173,6 +192,10 @@ export function BrokerData(props: BrokerDataProps) {
     return symbol;
   };
 
+  const brokerFundsValue = activeBroker === 'groww' 
+    ? (queryClient.getQueryData<{funds: number}>(["/api/broker/groww/funds"])?.funds ?? brokerFunds)
+    : brokerFunds;
+
   return (
     <>
       <Dialog open={showOrderModal} onOpenChange={setShowOrderModal}>
@@ -191,7 +214,7 @@ export function BrokerData(props: BrokerDataProps) {
             <div className="w-1/3 flex flex-col items-center justify-center">
               <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Available Funds</span>
               <span className="text-xs font-bold text-green-600 dark:text-green-400">
-                {showUserId ? (activeBroker === 'delta' ? `$${(Number(brokerFunds) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : `₹${(Number(brokerFunds) || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`) : (activeBroker === 'delta' ? "$***" : "₹***")}
+                {showUserId ? (activeBroker === 'delta' ? `$${(Number(brokerFundsValue) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : `₹${(Number(brokerFundsValue) || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`) : (activeBroker === 'delta' ? "$***" : "₹***")}
               </span>
             </div>
 

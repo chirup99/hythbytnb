@@ -1,0 +1,100 @@
+
+Margin
+This guide describes how to calculate required margin for orders and get available user margin using the SDK.
+
+Get Available User Margin
+Easily retrieve your available margin details for equity, F&O, and commodity segments using this get_available_margin_details method.
+
+Python SDK Usage
+from growwapi import GrowwAPI
+ 
+# Groww API Credentials (Replace with your actual credentials)
+API_AUTH_TOKEN = "your_token"
+ 
+# Initialize Groww API
+groww = GrowwAPI(API_AUTH_TOKEN)
+ 
+available_margin_details_response = groww.get_available_margin_details()
+print(available_margin_details_response)
+Response Payload
+All prices in rupees.
+
+{
+  "clear_cash": 96.21,
+  "net_margin_used": 1.8,
+  "brokerage_and_charges": 0.0,
+  "collateral_used": 0.0,
+  "collateral_available": 0.0,
+  "adhoc_margin": 0.0,
+  "fno_margin_details": {
+    "net_fno_margin_used": 0.0,
+    "span_margin_used": 0.0,
+    "exposure_margin_used": 0.0,
+    "future_balance_available": 94.41,
+    "option_buy_balance_available": 94.41,
+    "option_sell_balance_available": 94.41
+  },
+  "equity_margin_details": {
+    "net_equity_margin_used": -1.8,
+    "cnc_margin_used": -1.8,
+    "mis_margin_used": 0.0,
+    "cnc_balance_available": 94.41,
+    "mis_balance_available": 94.41
+  },
+  "commodity_margin_details": {
+    "commodity_span_margin": 7000,
+    "commodity_exposure_margin": 4000,
+    "commodity_tender_margin": 2000,
+    "commodity_special_margin": 1000,
+    "commodity_additional_margin": 3000,
+    "commodity_unrealised_m2m": 1500,
+    "commodity_realised_m2m": 2500
+  }
+}
+Note: Commodity orders require SPAN and Exposure margins. The margin requirement varies by:
+
+Response Schema
+Required Margin For Order
+Calculate the required margin for a single order or basket of orders using this get_order_margin_details method. Basket orders are only supported for FNO Segment.
+
+Python SDK Usage
+from growwapi import GrowwAPI
+ 
+# Groww API Credentials (Replace with your actual credentials)
+API_AUTH_TOKEN = "your_token"
+ 
+# Initialize Groww API
+groww = GrowwAPI(API_AUTH_TOKEN)
+ 
+order_details = [
+    
+    {
+        "trading_symbol": "RELIANCE",
+        "transaction_type": groww.TRANSACTION_TYPE_BUY,
+        "quantity": 1,
+        "price": 2500, # Optional: Price (include for limit orders; omit or adjust if not applicable).
+        "order_type": groww.ORDER_TYPE_LIMIT,
+        "product": groww.PRODUCT_CNC,
+        "exchange": groww.EXCHANGE_NSE
+    }
+]
+order_margin_details_response = groww.get_order_margin_details(
+  segment=groww.SEGMENT_CASH,
+  orders=order_details,
+)
+print(order_margin_details_response)
+Request Schema
+*required parameters
+
+Response Payload
+All prices in rupees.
+
+{
+  "exposure_required": 0.0, 
+  "span_required": 0.0, 
+  "option_buy_premium": 0.0, 
+  "brokerage_and_charges": 0.2, 
+  "total_requirement": 100.2, 
+  "cash_cnc_margin_required": 100.0,
+  "physical_delivery_margin_requirement": 0.0
+}

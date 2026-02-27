@@ -20,8 +20,20 @@ export async function getGrowwAccessToken(apiKey: string, apiSecret: string): Pr
 export async function fetchGrowwFunds(accessToken: string): Promise<number> {
   try {
     console.log('💰 Fetching funds from Groww...');
-    // Simulated balance for now as Groww doesn't have a simple public REST API for funds without session
-    return 25000.75;
+    // According to Groww API documentation, we use get_available_margin_details
+    // For the REST API implementation, we'll call the margin details endpoint
+    const response = await axios.get('https://api.groww.in/v1/margin/details', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (response.data && response.data.equity_margin_details) {
+      // Use cnc_balance_available or clear_cash as per documentation
+      return response.data.equity_margin_details.cnc_balance_available || response.data.clear_cash || 0;
+    }
+    return 0;
   } catch (error: any) {
     console.error('❌ Groww Funds Error:', error.message);
     return 0;
