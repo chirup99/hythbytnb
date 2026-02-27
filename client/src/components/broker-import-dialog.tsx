@@ -85,7 +85,7 @@ export function BrokerImportDialog({
     kite:
       "Login to Kite Connect and generate a request token from your developer dashboard.",
     dhan: "Get your access token from the Dhan trading platform settings.",
-    groww: "Enter your Groww API Key and Secret from the Groww Cloud API Keys page.",
+    groww: "Enter your Groww API Key and Secret from the Groww Cloud (https://groww.in/trade-api/docs/python-sdk).",
     delta: "Enter your Delta Exchange API Key and Secret from your account settings.",
   };
 

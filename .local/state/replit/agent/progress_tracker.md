@@ -72,3 +72,5 @@
 [x] 71. Import migration complete - application running successfully (Feb 27, 2026 - current session)
 [x] 72. Install dotenv package and verify application running (Feb 27, 2026 - final session)
 [x] 73. Import migration complete and all progress tracker items marked done (Feb 27, 2026)
+[x] 74. Update Groww integration to use official Trade API endpoints (Feb 27, 2026)
+[x] 75. Fix Groww authentication and data fetching logic to use API Key/Secret pattern (Feb 27, 2026)
