@@ -11519,39 +11519,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // BROKER INTEGRATIONS
   // ============================================================================
 
-  // Import trades from broker (Kite, Fyers, Dhan)
+  // Broker Integration Routes
   app.post("/api/brokers/import", async (req, res) => {
     try {
-      const validatedData = brokerImportRequestSchema.parse(req.body);
-      console.log(`📥 [BROKER-IMPORT] Importing trades from ${validatedData.broker}...`);
+      const { broker, credentials } = req.body;
+      console.log(`📥 [BROKER-IMPORT] Importing trades from ${broker}...`);
 
-      const credentialsWithBroker = { ...validatedData.credentials, broker: validatedData.broker };
-      const trades = await fetchBrokerTrades(credentialsWithBroker as any);
-
-      console.log(`✅ [BROKER-IMPORT] Successfully imported ${trades.length} trades from ${validatedData.broker}`);
-
-      res.status(200).json({
-        success: true,
-        trades,
-        message: `Successfully imported ${trades.length} trades from ${validatedData.broker}`,
-      } as BrokerTradesResponse);
-
-    } catch (error) {
-      console.error(`❌ [BROKER-IMPORT] Failed to import trades:`, error);
-
-      if (error instanceof Error && error.name === 'ZodError') {
-        return res.status(400).json({
-          success: false,
+      if (broker === 'groww') {
+        const { getGrowwAccessToken } = await import('./services/broker-integrations/growwService');
+        const accessToken = await getGrowwAccessToken(credentials.apiKey, credentials.apiSecret);
+        return res.json({
+          success: true,
+          message: "Groww authenticated successfully",
           trades: [],
-          message: "Invalid request data. Please check your credentials.",
+          accessToken
         });
       }
 
-      res.status(500).json({
-        success: false,
-        trades: [],
-        message: error instanceof Error ? error.message : "Failed to import trades from broker",
-      });
+      const trades = await fetchBrokerTrades({ ...credentials, broker } as any);
+      res.json({ success: true, trades });
+    } catch (error: any) {
+      console.error('❌ Broker import error:', error);
+      res.status(400).json({ success: false, error: error.message });
+    }
+  });
+
+  app.get("/api/broker/groww/funds", async (req, res) => {
+    try {
+      const { accessToken } = req.query;
+      if (!accessToken) return res.status(400).json({ error: "Access token required" });
+      const { fetchGrowwFunds } = await import('./services/broker-integrations/growwService');
+      const funds = await fetchGrowwFunds(accessToken as string);
+      res.json({ success: true, funds });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
     }
   });
 

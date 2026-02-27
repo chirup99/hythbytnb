@@ -801,7 +801,7 @@ export type InsertSavedPattern = z.infer<typeof insertSavedPatternSchema>;
 // ============================================================================
 
 // Broker identifiers (Fyers removed - using Angel One only)
-export const brokerIds = ['kite', 'dhan', 'delta'] as const;
+export const brokerIds = ['kite', 'dhan', 'groww', 'delta'] as const;
 export type BrokerId = typeof brokerIds[number];
 export const brokerIdSchema = z.enum(brokerIds);
 
@@ -811,6 +811,12 @@ export const kiteCredentialSchema = z.object({
   apiKey: z.string().min(1, 'API Key is required'),
   apiSecret: z.string().min(1, 'API Secret is required'),
   requestToken: z.string().min(1, 'Request Token is required'),
+});
+
+export const growwCredentialSchema = z.object({
+  broker: z.literal('groww'),
+  apiKey: z.string().min(1, 'API Key is required'),
+  apiSecret: z.string().min(1, 'API Secret is required'),
 });
 
 export const dhanCredentialSchema = z.object({
@@ -829,6 +835,7 @@ export const deltaCredentialSchema = z.object({
 export const brokerCredentialSchema = z.discriminatedUnion('broker', [
   kiteCredentialSchema,
   dhanCredentialSchema,
+  growwCredentialSchema,
   deltaCredentialSchema,
 ]);
 
@@ -836,6 +843,7 @@ export const brokerCredentialSchema = z.discriminatedUnion('broker', [
 export const brokerCredentialSchemas = {
   kite: kiteCredentialSchema,
   dhan: dhanCredentialSchema,
+  groww: growwCredentialSchema,
   delta: deltaCredentialSchema,
 } as const;
 

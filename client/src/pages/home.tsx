@@ -4398,25 +4398,56 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       });
       return;
     }
-    // Simulation logic for Groww connection
-    const simulatedToken = "simulated_groww_token_" + Math.random().toString(36).substring(7);
-    const userId = growwApiKeyInput.substring(0, 6);
-    const userName = "Groww User";
+    
+    try {
+      const response = await apiRequest("POST", "/api/brokers/import", {
+        broker: "groww",
+        credentials: {
+          apiKey: growwApiKeyInput,
+          apiSecret: growwApiSecretInput
+        }
+      });
 
-    localStorage.setItem("growwIsConnected", "true");
-    localStorage.setItem("growwAccessToken", simulatedToken);
-    localStorage.setItem("growwUserId", userId);
-    localStorage.setItem("growwUserName", userName);
+      if (response.success) {
+        const accessToken = response.accessToken;
+        const userId = growwApiKeyInput.substring(0, 6);
+        const userName = "Groww User";
 
-    setGrowwIsConnected(true);
-    setGrowwAccessToken(simulatedToken);
-    setGrowwUserId(userId);
-    setGrowwUserName(userName);
-    setIsGrowwDialogOpen(false);
-    toast({
-      title: "Connected",
-      description: "Groww account connected successfully",
-    });
+        localStorage.setItem("growwIsConnected", "true");
+        localStorage.setItem("growwAccessToken", accessToken);
+        localStorage.setItem("growwUserId", userId);
+        localStorage.setItem("growwUserName", userName);
+
+        setGrowwIsConnected(true);
+        setGrowwAccessToken(accessToken);
+        setGrowwUserId(userId);
+        setGrowwUserName(userName);
+        setIsGrowwDialogOpen(false);
+        
+        // Fetch funds after connection
+        try {
+          const fundsRes = await fetch(`/api/broker/groww/funds?accessToken=${accessToken}`);
+          const fundsData = await fundsRes.json();
+          if (fundsData.success) {
+            setBrokerFunds(fundsData.funds);
+            localStorage.setItem("zerodha_broker_funds", fundsData.funds.toString());
+          }
+        } catch (e) {
+          console.error("Failed to fetch Groww funds", e);
+        }
+
+        toast({
+          title: "Connected",
+          description: "Groww account connected successfully",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Connection Failed",
+        description: error.message || "Failed to connect to Groww",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleGrowwDisconnect = () => {

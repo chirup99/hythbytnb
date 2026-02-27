@@ -8,6 +8,7 @@ import type {
 import { fetchKiteTrades } from "./kiteService.js";
 import { fetchDhanTrades } from "./dhanService.js";
 import { fetchDeltaTrades } from "./deltaExchangeService.js";
+import { getGrowwAccessToken, fetchGrowwFunds } from "./growwService.js";
 
 export async function fetchBrokerTrades(
   credentials: BrokerCredentials
@@ -22,6 +23,9 @@ export async function fetchBrokerTrades(
         (credentials as any).apiKey,
         (credentials as any).apiSecret
       );
+    case "groww":
+      // Groww integration would go here
+      return []; 
     default:
       throw new Error(`Unsupported broker: ${(credentials as any).broker}`);
   }

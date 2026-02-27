@@ -65,3 +65,6 @@
 [x] 64. Install dotenv package and verify application running (Feb 27, 2026 - final migration)
 [x] 65. Import migration complete and progress tracker fully updated (Feb 27, 2026)
 [x] 66. Install dotenv and restart workflow - application running successfully (Feb 27, 2026 - this session)
+[x] 67. Fix Groww broker integration (Service + Routes)
+[x] 68. Implement Groww funds fetching endpoint
+[x] 69. Update frontend to handle Groww authentication and funds display

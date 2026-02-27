@@ -46,36 +46,29 @@ export function BrokerImportDialog({
   const brokerLabels: Record<BrokerId, string> = {
     kite: "Kite (Zerodha)",
     dhan: "Dhan",
+    groww: "Groww",
   };
 
   const brokerDescriptions: Record<BrokerId, string> = {
     kite:
       "Login to Kite Connect and generate a request token from your developer dashboard.",
     dhan: "Get your access token from the Dhan trading platform settings.",
+    groww: "Enter your Groww API Key and Secret from the Groww Cloud API Keys page.",
   };
 
-  const kiteForm = useForm({
-    resolver: zodResolver(kiteCredentialSchema),
+  const growwForm = useForm<z.infer<typeof growwCredentialSchema>>({
+    resolver: zodResolver(growwCredentialSchema),
     defaultValues: {
-      broker: "kite" as const,
+      broker: "groww",
       apiKey: "",
       apiSecret: "",
-      requestToken: "",
-    },
-  });
-
-  const dhanForm = useForm({
-    resolver: zodResolver(dhanCredentialSchema),
-    defaultValues: {
-      broker: "dhan" as const,
-      clientId: "",
-      accessToken: "",
     },
   });
 
   const getCurrentForm = () => {
     if (selectedBroker === "kite") return kiteForm;
     if (selectedBroker === "dhan") return dhanForm;
+    if (selectedBroker === "groww") return growwForm;
     return null;
   };
 
@@ -93,6 +86,16 @@ export function BrokerImportDialog({
     },
     onSuccess: (data) => {
       setImportSuccess(true);
+      
+      // Store Groww credentials if successful
+      if (selectedBroker === 'groww' && data.accessToken) {
+        const credentials = growwForm.getValues();
+        localStorage.setItem("growwIsConnected", "true");
+        localStorage.setItem("growwAccessToken", data.accessToken);
+        localStorage.setItem("growwUserId", credentials.apiKey.substring(0, 6));
+        localStorage.setItem("growwUserName", "Groww User");
+      }
+
       setTimeout(() => {
         onSuccess(data.trades);
         handleClose();
@@ -219,42 +222,32 @@ export function BrokerImportDialog({
                 </div>
               )}
 
-              {selectedBroker === "dhan" && (
+              {selectedBroker === "groww" && (
                 <div className="space-y-3">
                   <div>
-                    <Label htmlFor="dhan-client-id" className="text-sm">
-                      Client ID
+                    <Label htmlFor="groww-api-key" className="text-sm">
+                      API Key
                     </Label>
                     <Input
-                      id="dhan-client-id"
-                      {...dhanForm.register("clientId")}
-                      placeholder="Enter your Dhan Client ID"
+                      id="groww-api-key"
+                      {...growwForm.register("apiKey")}
+                      placeholder="Enter your Groww API Key"
                       className="mt-1"
-                      data-testid="input-dhan-client-id"
+                      data-testid="input-groww-api-key"
                     />
-                    {dhanForm.formState.errors.clientId && (
-                      <p className="text-xs text-red-600 mt-1">
-                        {dhanForm.formState.errors.clientId.message}
-                      </p>
-                    )}
                   </div>
                   <div>
-                    <Label htmlFor="dhan-access-token" className="text-sm">
-                      Access Token
+                    <Label htmlFor="groww-api-secret" className="text-sm">
+                      API Secret
                     </Label>
                     <Input
-                      id="dhan-access-token"
+                      id="groww-api-secret"
                       type="password"
-                      {...dhanForm.register("accessToken")}
-                      placeholder="Enter your Access Token"
+                      {...growwForm.register("apiSecret")}
+                      placeholder="Enter your Groww API Secret"
                       className="mt-1"
-                      data-testid="input-dhan-access-token"
+                      data-testid="input-groww-api-secret"
                     />
-                    {dhanForm.formState.errors.accessToken && (
-                      <p className="text-xs text-red-600 mt-1">
-                        {dhanForm.formState.errors.accessToken.message}
-                      </p>
-                    )}
                   </div>
                 </div>
               )}
