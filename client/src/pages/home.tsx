@@ -15557,18 +15557,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
         {/* Feedback / Request Feature Dialog */}
         <Dialog open={isFeedbackDialogOpen} onOpenChange={setIsFeedbackDialogOpen}>
-          <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 p-0 overflow-hidden rounded-2xl">
+          <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 p-0 overflow-hidden rounded-2xl [&>button]:hidden">
             <div className="relative p-6">
-              <button 
-                onClick={() => setIsFeedbackDialogOpen(false)}
-                className="absolute right-4 top-4 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Send us feedback</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    {feedbackType === "feedback" ? "Send us feedback" : "Request feature"}
+                  </h2>
                   <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
                     <button 
                       onClick={() => setFeedbackType("feedback")}
@@ -15604,7 +15599,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
               <div className="flex items-center justify-between mt-4">
                 <div className="flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
+                  {feedbackType === "feedback" && [1, 2, 3, 4, 5].map((star) => (
                     <Star 
                       key={star}
                       className={`h-5 w-5 cursor-pointer transition-colors ${star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300 dark:text-gray-700'}`}
@@ -15613,10 +15608,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   ))}
                 </div>
                 <Button 
-                  className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 rounded-xl px-6"
+                  className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-6"
                   onClick={() => setIsFeedbackDialogOpen(false)}
                 >
-                  Send feedback
+                  {feedbackType === "feedback" ? "Send feedback" : "Request feature"}
                 </Button>
               </div>
             </div>

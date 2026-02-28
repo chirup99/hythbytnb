@@ -100,3 +100,7 @@
 [x] 102. Add "Feedback or Request Feature" button to profile section (Feb 28, 2026)
 [x] 103. Implement Feedback/Request dialog with toggle, star rating, and textarea (Feb 28, 2026)
 [x] 104. Verify UI matches the requested design from the provided image (Feb 28, 2026)
+[x] 105. Remove close icon from Feedback dialog (Feb 28, 2026)
+[x] 106. Update Feedback dialog header and button text based on toggle state (Feb 28, 2026)
+[x] 107. Hide star rating in "Request" mode of Feedback dialog (Feb 28, 2026)
+[x] 108. Update Feedback dialog button to blue background (Feb 28, 2026)
