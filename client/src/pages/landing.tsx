@@ -94,7 +94,7 @@ export default function Landing() {
       const timer = setTimeout(() => {
         setShowGifFrame(false);
         setShowAccessInfo(true);
-      }, 4000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [showGifFrame]);
@@ -1140,7 +1140,7 @@ export default function Landing() {
           
           {/* GIF/Video Frame - Shown after trading notes and before early access */}
           <div className={`${!showGifFrame ? 'h-0 opacity-0 pointer-events-none' : 'h-auto opacity-100'} p-0 m-0 transition-all duration-500 ease-in-out transform ${!showGifFrame ? '-translate-y-4 scale-95' : 'translate-y-0 scale-100'}`}>
-            <div className="bg-gray-900/50 p-2 rounded-2xl border border-gray-800/50 backdrop-blur-sm overflow-hidden max-w-md w-full mx-auto aspect-square flex items-center justify-center">
+            <div className="bg-gray-900/50 p-2 rounded-2xl border border-gray-800/50 backdrop-blur-sm overflow-hidden w-[280px] h-[160px] mx-auto flex items-center justify-center">
               <video 
                 src={faceVideo} 
                 autoPlay 
