@@ -4291,6 +4291,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   const [dhanAccessToken, setDhanAccessToken] = useState<string | null>(null);
   const [dhanClientName, setDhanClientName] = useState<string | null>(localStorage.getItem("dhan_client_name"));
+  const [dhanIsConnected, setDhanIsConnected] = useState(false);
+  const [deltaExchangeIsConnected, setDeltaExchangeIsConnected] = useState(false);
+  const [growwIsConnected, setGrowwIsConnected] = useState(false);
   const { data: fyersStatus } = useQuery({
     queryKey: ["/api/fyers/status"],
     refetchInterval: 5000,
@@ -4331,7 +4334,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         setDeltaWhitelistedIP(window.location.hostname);
       });
   }, []);
-  const [deltaExchangeIsConnected, setDeltaExchangeIsConnected] = useState(false);
   const [deltaExchangeApiKey, setDeltaExchangeApiKey] = useState(localStorage.getItem("delta_api_key") || "");
   const [deltaExchangeApiSecret, setDeltaExchangeApiSecret] = useState(localStorage.getItem("delta_api_secret") || "");
   const [showDeltaSecret, setShowDeltaSecret] = useState(false);
@@ -4342,7 +4344,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [growwApiKeyInput, setGrowwApiKeyInput] = useState("");
   const [growwApiSecretInput, setGrowwApiSecretInput] = useState("");
   const [showGrowwSecret, setShowGrowwSecret] = useState(false);
-  const [growwIsConnected, setGrowwIsConnected] = useState(false);
   const [growwAccessToken, setGrowwAccessToken] = useState<string | null>(null);
   const [growwUserId, setGrowwUserId] = useState<string | null>(null);
   const [growwUserName, setGrowwUserName] = useState<string | null>(null);
@@ -4737,7 +4738,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
   
 
-  const [dhanIsConnected, setDhanIsConnected] = useState(false);
+
   // Zerodha OAuth Handlers
   // Check localStorage on mount to restore connection state
   useEffect(() => {
