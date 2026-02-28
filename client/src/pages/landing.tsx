@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
@@ -29,6 +29,7 @@ export default function Landing() {
   const [showPerformanceTrend, setShowPerformanceTrend] = useState(false);
   const [showTradingNotes, setShowTradingNotes] = useState(false);
   const [showGifFrame, setShowGifFrame] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [showTagsDropdown, setShowTagsDropdown] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([
     "FOMO",
@@ -110,6 +111,13 @@ export default function Landing() {
         setShowAccessInfo(true);
       }, 3900);
       return () => clearTimeout(timer);
+    }
+  }, [showGifFrame]);
+
+  useEffect(() => {
+    if (showGifFrame && videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => {});
     }
   }, [showGifFrame]);
 
@@ -1506,6 +1514,7 @@ export default function Landing() {
           >
             <div className="bg-gray-900/50 p-2 rounded-2xl border border-gray-800/50 backdrop-blur-sm overflow-hidden w-[280px] h-[160px] mx-auto flex items-center justify-center">
               <video
+                ref={videoRef}
                 src={faceVideo}
                 autoPlay
                 loop
