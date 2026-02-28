@@ -43,7 +43,7 @@ import TradingJournalDemo from "@/pages/trading-journal-demo";
 import MarketNews from "@/pages/market-news";
 import NeoFeedSocialFeed from "@/components/neofeed-social-feed";
 import ZerodhaDebug from "@/pages/zerodha-debug";
-import { AngelOneGlobalAutoConnect } from "@/components/auth-button-angelone";
+import { AngelOneGlobalAutoConnect } from "@/hooks/useAngelOneAutoconnect";
 import { getCognitoToken, getCognitoUser, initializeCognito } from "@/cognito";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 

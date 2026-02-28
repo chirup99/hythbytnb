@@ -11,6 +11,11 @@ interface AngelOneStatusData {
   tokenExpired?: boolean;
 }
 
+export function AngelOneGlobalAutoConnect() {
+  useAngelOneAutoconnect();
+  return null;
+}
+
 export function useAngelOneAutoconnect() {
   const hasAttemptedRef = useRef(false);
   const isConnectingRef = useRef(false);

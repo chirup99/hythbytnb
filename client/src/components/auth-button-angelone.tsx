@@ -77,20 +77,17 @@ interface LiveIndicesResponse {
   indices: LiveIndexData[];
 }
 
+import { useAngelOneAutoconnect } from "@/hooks/useAngelOneAutoconnect";
+
 // Simple Auth Button - Auto-connect using backend environment variables
 export function AuthButtonAngelOne() {
+  const { isConnected, isConnecting, status: angelStatus } = useAngelOneAutoconnect();
   const { toast } = useToast();
-  const [hasAttemptedAutoConnect, setHasAttemptedAutoConnect] = useState(false);
   const [hasWarnedAboutExpiry, setHasWarnedAboutExpiry] = useState(false);
   
   const [manualClientCode, setManualClientCode] = useState("");
   const [manualPin, setManualPin] = useState("");
   const [manualTotpSecret, setManualTotpSecret] = useState("");
-
-  const { data: angelStatus, isLoading: isStatusLoading } = useQuery<AngelOneStatusData>({
-    queryKey: ["/api/angelone/status"],
-    refetchInterval: 30000,
-  });
 
   const { data: profileData } = useQuery<{ success: boolean; profile: AngelOneProfile }>({
     queryKey: ["/api/angelone/profile"],
@@ -106,7 +103,6 @@ export function AuthButtonAngelOne() {
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/status"] });
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/profile"] });
       setHasWarnedAboutExpiry(false);
-      // Removed: toast({ title: "Connected!", description: "Angel One API connected successfully." });
     },
     onError: (error: any) => {
       toast({ title: "Connection Failed", description: error?.message || "Failed to connect. Check environment credentials.", variant: "destructive" });
@@ -130,7 +126,6 @@ export function AuthButtonAngelOne() {
       localStorage.setItem("angel_one_client_code", data.clientCode);
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/status"] });
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/profile"] });
-      // Removed: toast({ title: "Connected!", description: `Connected as ${data.clientCode} successfully.` });
     },
     onError: (error: any) => {
       toast({ title: "Manual Login Failed", description: error?.message || "Check your credentials.", variant: "destructive" });
@@ -147,7 +142,6 @@ export function AuthButtonAngelOne() {
       localStorage.removeItem("angel_one_client_code");
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/status"] });
       queryClient.invalidateQueries({ queryKey: ["/api/angelone/profile"] });
-      // Removed: toast({ title: "Disconnected", description: "Angel One API disconnected." });
     },
     onError: (error: any) => {
       toast({ title: "Error", description: error?.message || "Failed to disconnect.", variant: "destructive" });
@@ -155,11 +149,14 @@ export function AuthButtonAngelOne() {
   });
 
   useEffect(() => {
-    if (!isStatusLoading && angelStatus && !angelStatus.connected && !hasAttemptedAutoConnect && !connectMutation.isPending) {
-      setHasAttemptedAutoConnect(true);
-      connectMutation.mutate();
+    if (angelStatus?.tokenExpired && !hasWarnedAboutExpiry) {
+      setHasWarnedAboutExpiry(true);
+      toast({ title: "Session Expired", description: "Your Angel One session has expired.", variant: "destructive" });
     }
-  }, [isStatusLoading, angelStatus?.connected]);
+  }, [angelStatus?.tokenExpired]);
+
+  const isStatusLoading = isConnecting;
+
 
   useEffect(() => {
     if (angelStatus?.tokenExpired && !hasWarnedAboutExpiry) {
