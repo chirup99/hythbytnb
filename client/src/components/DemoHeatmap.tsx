@@ -1683,21 +1683,12 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
             )}
 
             <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
-              <DialogContent className="max-w-2xl p-0 overflow-hidden bg-white dark:bg-[#1a1b1e] border-none shadow-2xl">
+              <DialogContent className="max-w-xl p-0 overflow-hidden bg-white dark:bg-zinc-950 border-none shadow-2xl">
                 <div className="flex flex-col h-full">
-                  <div className="flex h-[180px]">
-                    {/* Left side: Trend Chart (Rectangle) */}
-                    <div className="w-[60%] border-r border-gray-100 dark:border-gray-800 p-4 relative overflow-hidden bg-gray-50/30 dark:bg-gray-900/10">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Avatar className="h-6 w-6 border border-gray-100 dark:border-gray-800">
-                          <AvatarImage src={currentUser?.avatarUrl} />
-                          <AvatarFallback className="bg-blue-50 text-blue-600 text-[10px] font-bold">
-                            {currentUser?.username?.substring(0, 2).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-xs font-semibold text-gray-900 dark:text-gray-100">{currentUser?.displayName || currentUser?.username}</span>
-                      </div>
-                      <div className="h-[100px] w-full flex items-center justify-center">
+                  <div className="flex h-[160px] border-b border-gray-100 dark:border-zinc-800/50">
+                    {/* Left side: Chart */}
+                    <div className="flex-1 p-6 flex flex-col justify-center">
+                      <div className="h-[80px] w-full flex items-center justify-center">
                         {(() => {
                           const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
                           const dayData = heatmapData[dateKey];
@@ -1720,10 +1711,10 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                             }).join(' ');
                             
                             return (
-                              <svg width="100%" height="80" viewBox="0 0 320 80" preserveAspectRatio="none" className="overflow-visible">
+                              <svg width="100%" height="60" viewBox="0 0 320 80" preserveAspectRatio="none" className="overflow-visible">
                                 <defs>
                                   <linearGradient id="pnlGradientPost" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor={pnlValue >= 0 ? "#22c55e" : "#ef4444"} stopOpacity="0.2" />
+                                    <stop offset="0%" stopColor={pnlValue >= 0 ? "#22c55e" : "#ef4444"} stopOpacity="0.1" />
                                     <stop offset="100%" stopColor={pnlValue >= 0 ? "#22c55e" : "#ef4444"} stopOpacity="0" />
                                   </linearGradient>
                                 </defs>
@@ -1735,7 +1726,7 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                                   points={points}
                                   fill="none"
                                   stroke={pnlValue >= 0 ? "#22c55e" : "#ef4444"}
-                                  strokeWidth="2.5"
+                                  strokeWidth="1.5"
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
                                 />
@@ -1747,25 +1738,9 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                       </div>
                     </div>
 
-                    {/* Right side: Stats & Top-right Button */}
-                    <div className="w-[40%] flex flex-col">
-                      <div className="flex justify-end p-2">
-                        <Button 
-                          className="h-7 w-7 rounded-full bg-blue-600 hover:bg-blue-700 text-white p-0 shadow-sm"
-                          onClick={() => {
-                            toast({
-                              title: "Post shared",
-                              description: "Your trading insight has been posted to the feed.",
-                            });
-                            setIsPostDialogOpen(false);
-                            setPostText("");
-                          }}
-                        >
-                          <Send className="w-3.5 h-3.5" />
-                        </Button>
-                      </div>
-                      
-                      <div className="flex-1 px-4 flex flex-col justify-center space-y-4">
+                    {/* Right side: Stats */}
+                    <div className="w-[140px] flex flex-col border-l border-gray-100 dark:border-zinc-800/50 bg-gray-50/30 dark:bg-zinc-900/10">
+                      <div className="flex-1 px-5 flex flex-col justify-center space-y-4">
                         {(() => {
                           const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
                           const dayData = heatmapData[dateKey];
@@ -1776,20 +1751,18 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                           return (
                             <>
                               <div className="flex flex-col">
-                                <span className="text-[9px] uppercase text-gray-400 font-bold tracking-wider leading-none mb-1">Total P&L</span>
-                                <span className={`text-lg font-black leading-none ${pnlValue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                <span className="text-[8px] uppercase text-gray-400 font-bold tracking-widest leading-none mb-1.5">TOTAL P&L</span>
+                                <span className={`text-base font-bold tracking-tight leading-none ${pnlValue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                   ₹{Math.floor(pnlValue).toLocaleString()}
                                 </span>
                               </div>
-                              <div className="flex gap-4">
-                                <div className="flex flex-col">
-                                  <span className="text-[9px] uppercase text-gray-400 font-bold tracking-wider leading-none mb-1">Trades</span>
-                                  <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">{totalTrades}</span>
-                                </div>
-                                <div className="flex flex-col">
-                                  <span className="text-[9px] uppercase text-gray-400 font-bold tracking-wider leading-none mb-1">Win Rate</span>
-                                  <span className="text-xs font-bold text-gray-900 dark:text-gray-100 leading-none">{winRate}%</span>
-                                </div>
+                              <div className="flex flex-col">
+                                <span className="text-[8px] uppercase text-gray-400 font-bold tracking-widest leading-none mb-1.5">TRADES</span>
+                                <span className="text-xs font-semibold text-gray-700 dark:text-zinc-300 leading-none">{totalTrades}</span>
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-[8px] uppercase text-gray-400 font-bold tracking-widest leading-none mb-1.5">WIN RATE</span>
+                                <span className="text-xs font-semibold text-gray-700 dark:text-zinc-300 leading-none">{winRate}%</span>
                               </div>
                             </>
                           );
@@ -1799,28 +1772,38 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                   </div>
 
                   {/* Bottom: Text area */}
-                  <div className="px-4 pb-4">
-                    <div className="relative">
-                      <textarea 
-                        placeholder="Share your strategy..." 
-                        value={postText}
-                        onChange={(e) => setPostText(e.target.value)}
-                        className="w-full min-h-[40px] max-h-[80px] py-2 bg-transparent border-none focus:outline-none focus:ring-0 text-sm text-gray-700 dark:text-gray-300 resize-none placeholder:text-gray-400"
-                      />
-                      <div className="flex items-center gap-2 mt-1">
-                        <Button variant="ghost" size="icon" className="h-6 w-6 text-gray-300 hover:text-blue-500">
-                          <ImageIcon className="w-3.5 h-3.5" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-6 w-6 text-gray-300 hover:text-blue-500">
-                          <Smile className="w-3.5 h-3.5" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-6 w-6 text-gray-300 hover:text-blue-500">
-                          <Paperclip className="w-3.5 h-3.5" />
-                        </Button>
-                        <div className="ml-auto flex items-center gap-1 text-[9px] text-gray-400">
-                          <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                          <span>Public</span>
+                  <div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-zinc-950">
+                    <div className="flex-1 px-6 py-4 flex flex-col">
+                      <div className="flex-1 flex">
+                        <textarea 
+                          placeholder="Add your notes..." 
+                          value={postText}
+                          onChange={(e) => setPostText(e.target.value)}
+                          className="flex-1 w-[65%] bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-gray-600 dark:text-zinc-400 resize-none placeholder:text-gray-400 leading-relaxed"
+                        />
+                        <div className="w-[35%]"></div>
+                      </div>
+                      
+                      <div className="mt-4 flex items-center justify-between border-t border-gray-100 dark:border-zinc-800/50 pt-4">
+                        <div className="flex items-center gap-1.5 text-[9px] text-gray-400 font-medium">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
+                          <span>Published to Global Feed</span>
                         </div>
+                        
+                        <Button 
+                          className="h-8 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold shadow-sm flex items-center gap-2"
+                          onClick={() => {
+                            toast({
+                              title: "Post shared",
+                              description: "Your trading insight has been posted to the feed.",
+                            });
+                            setIsPostDialogOpen(false);
+                            setPostText("");
+                          }}
+                        >
+                          <Send className="w-3 h-3" />
+                          <span>POST INSIGHT</span>
+                        </Button>
                       </div>
                     </div>
                   </div>
