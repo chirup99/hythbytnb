@@ -24241,47 +24241,49 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         />
         {/* Broker Funds Breakup Dialog */}
   <Dialog open={showBrokerBreakupDialog} onOpenChange={setShowBrokerBreakupDialog}>
-    <DialogContent className="max-w-[360px] p-0 bg-white dark:bg-[#1a1c2e] border-none rounded-[28px] shadow-2xl overflow-hidden [&>button]:hidden">
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 flex items-center justify-center">
-              <Wallet className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+    <DialogContent className="max-w-[340px] p-0 bg-white dark:bg-[#1a1c2e] border-none rounded-[24px] shadow-2xl overflow-hidden [&>button]:hidden">
+      <div className="p-5">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 flex items-center justify-center">
+              <Wallet className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <span className="text-[13px] font-black uppercase tracking-[0.1em] text-slate-800 dark:text-slate-200">Capital Breakup</span>
+            <span className="text-[11px] font-black uppercase tracking-[0.1em] text-slate-800 dark:text-slate-200">Capital Breakup</span>
           </div>
           <button 
             onClick={() => setShowBrokerBreakupDialog(false)}
             className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
         
-        <div className="space-y-3">
-          {Object.entries(allBrokerFunds).map(([brokerId, funds]) => (
-            <div key={brokerId} className="flex items-center justify-between p-4 rounded-[20px] bg-slate-50/50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-700/30 transition-all hover:bg-slate-100/50 dark:hover:bg-slate-800/40">
-              <div className="flex items-center gap-3">
+        <div className="space-y-2">
+          {Object.entries(allBrokerFunds)
+            .filter(([_, funds]) => funds > 0)
+            .map(([brokerId, funds]) => (
+            <div key={brokerId} className="flex items-center justify-between p-3 rounded-[18px] bg-slate-50/50 dark:bg-slate-800/20 border border-slate-100/30 dark:border-slate-700/20">
+              <div className="flex items-center gap-2.5">
                 <div className="relative">
-                  <div className="w-11 h-11 rounded-full bg-white dark:bg-slate-800 p-1.5 shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-center overflow-hidden">
+                  <div className="w-9 h-9 rounded-full bg-white dark:bg-slate-800 p-1 shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-center overflow-hidden">
                     <img 
                       className="w-full h-full object-contain rounded-full" 
                       src={brokerIconMap[brokerId]} 
                       alt={brokerId} 
                     />
                   </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white dark:border-[#1a1c2e]" />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white dark:border-[#1a1c2e]" />
                 </div>
                 <div>
-                  <p className="text-[15px] font-bold text-slate-900 dark:text-white leading-tight">{getBrokerDisplayName(brokerId)}</p>
-                  <p className="text-[12px] text-slate-400 font-medium">Connected</p>
+                  <p className="text-[13px] font-bold text-slate-900 dark:text-white leading-tight">{getBrokerDisplayName(brokerId)}</p>
+                  <p className="text-[10px] text-slate-400 font-medium">Connected</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-[16px] font-black text-slate-900 dark:text-white">
-                  {brokerId === "delta" ? "$" : "₹"}{funds.toLocaleString(brokerId === "delta" ? "en-US" : "en-IN", { minimumFractionDigits: 2 })}
+                <p className="text-[14px] font-black text-slate-900 dark:text-white">
+                  {brokerId === "delta" ? "$" : "₹"}{funds.toLocaleString(brokerId === "delta" ? "en-US" : "en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
-                <p className="text-[11px] font-bold text-slate-300 dark:text-slate-500">
+                <p className="text-[9px] font-bold text-slate-300 dark:text-slate-500">
                   {((funds / totalBrokerFunds) * 100).toFixed(0)}%
                 </p>
               </div>
@@ -24289,34 +24291,24 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           ))}
         </div>
         
-        <div className="mt-8 pt-6 border-t border-slate-50 dark:border-slate-800/50 flex items-center justify-between px-1">
-          <p className="text-[11px] font-black uppercase tracking-[0.1em] text-slate-400 dark:text-slate-500">Total Assets</p>
-          <p className="text-[22px] font-black text-indigo-600 dark:text-indigo-400">
-            ₹{totalBrokerFunds.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+        <div className="mt-5 pt-4 border-t border-slate-50 dark:border-slate-800/30 flex items-center justify-between px-1">
+          <p className="text-[10px] font-black uppercase tracking-[0.05em] text-slate-400 dark:text-slate-500">Total Assets</p>
+          <p className="text-[18px] font-black text-indigo-600 dark:text-indigo-400">
+            ₹{totalBrokerFunds.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
         </div>
 
-        <div className="mt-8">
-          <Button 
+        <div className="mt-5">
+          <button 
             onClick={() => setShowBrokerBreakupDialog(false)}
-            className="w-full h-14 bg-[#0f172a] hover:bg-[#1e293b] dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white rounded-[18px] text-[16px] font-bold transition-all shadow-xl active:scale-[0.98]"
+            className="w-full h-11 bg-[#0f172a] hover:bg-[#1e293b] dark:bg-slate-900 dark:hover:bg-slate-800 text-white rounded-[14px] text-[14px] font-bold transition-all shadow-lg active:scale-[0.98]"
           >
             Dismiss
-          </Button>
+          </button>
         </div>
       </div>
     </DialogContent>
-  </Dialog>
-
-  {/* Broker Import Dialog */}
-        <BrokerImportDialog
-          open={showBrokerImportModal}
-          onOpenChange={setShowBrokerImportModal}
-          onSuccess={handleBrokerImport}
-        />
-
-        {/* Import Modal - Minimalist Design */}
-        <Dialog open={showImportModal} onOpenChange={setShowImportModal}>
+  </Dialog>\n        <Dialog open={showImportModal} onOpenChange={setShowImportModal}>
           <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto custom-thin-scrollbar p-0">
             {/* Compact Header */}
             <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3">
