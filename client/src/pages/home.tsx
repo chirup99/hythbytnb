@@ -21305,6 +21305,39 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             M Stock
                             <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
                           </Button>
+
+                          {/* Kotak Neo */}
+                          <Button
+                            variant="outline"
+                            className="w-full h-10 bg-slate-50/50 dark:bg-slate-900/20 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 cursor-not-allowed relative hover:bg-slate-50/50 dark:hover:bg-slate-900/20"
+                            disabled
+                          >
+                            <img src="https://play-lh.googleusercontent.com/CO6_S_9_vI0X-Y-Y-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0=w240-h480-rw" alt="Kotak Neo" className="w-4 h-4 mr-2 rounded-full" />
+                            Kotak Neo
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
+                          </Button>
+
+                          {/* Finvasia Shoonya */}
+                          <Button
+                            variant="outline"
+                            className="w-full h-10 bg-slate-50/50 dark:bg-slate-900/20 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 cursor-not-allowed relative hover:bg-slate-50/50 dark:hover:bg-slate-900/20"
+                            disabled
+                          >
+                            <img src="https://play-lh.googleusercontent.com/vH3yVp_Lq3K0Z2Xw_I-N-N-N-N-N-N-N-N-N-N-N-N-N-N-N-N-N-N-N-N-N-N=w240-h480-rw" alt="Finvasia" className="w-4 h-4 mr-2 rounded-full" />
+                            Finvasia
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
+                          </Button>
+
+                          {/* Motilal Oswal */}
+                          <Button
+                            variant="outline"
+                            className="w-full h-10 bg-slate-50/50 dark:bg-slate-900/20 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 cursor-not-allowed relative hover:bg-slate-50/50 dark:hover:bg-slate-900/20"
+                            disabled
+                          >
+                            <img src="https://play-lh.googleusercontent.com/sdTW65mkcT7OaG6Rq_tpZcO8eslU1kWsI6saA773XR0rrxJaGIG2UeCGW8cS6PLfeg=w240-h480-rw" alt="Motilal Oswal" className="w-4 h-4 mr-2 rounded-full" />
+                            Motilal Oswal
+                            <span className="absolute top-1 right-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Coming Soon</span>
+                          </Button>
                             </div>
                           )}
 

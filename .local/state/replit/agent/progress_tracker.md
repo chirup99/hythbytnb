@@ -135,3 +135,4 @@
 [x] 137. Import migration complete - all progress tracker items marked done (Feb 28, 2026 - new session)
 [x] 138. Install dotenv package and verify application running (Feb 28, 2026 - latest session)
 [x] 139. Import migration fully complete - application running successfully (Feb 28, 2026 - latest session)
+[x] 140. Add "Coming Soon" buttons for Kotak Neo, Finvasia, and Motilal Oswal in Connect Broker dialog (Feb 28, 2026)
