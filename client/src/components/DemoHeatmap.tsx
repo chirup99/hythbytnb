@@ -1795,12 +1795,36 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                   <div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-zinc-950">
                     <div className="flex-1 px-6 py-4 flex flex-col">
                       <div className="flex-1 flex">
-                        <textarea 
-                          placeholder="Add your notes..." 
-                          value={postText}
-                          onChange={(e) => setPostText(e.target.value)}
-                          className="flex-1 w-[65%] bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-gray-600 dark:text-zinc-400 resize-none placeholder:text-gray-400 leading-relaxed"
-                        />
+                        {(() => {
+                          const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+                          const dayData = heatmapData[dateKey];
+                          const pnlValue = calculatePnL(dayData, isPublicView);
+                          const totalTrades = dayData?.tradeHistory?.length || dayData?.tradingData?.tradeHistory?.length || 0;
+                          
+                          let placeholder = "Add your notes...";
+                          if (pnlValue > 0) {
+                            if (totalTrades <= 3) {
+                              placeholder = "Planned trade proper setup with #planned #setup";
+                            } else {
+                              placeholder = "Less trades planned trade proper setup with #patience #discipline";
+                            }
+                          } else if (pnlValue < 0) {
+                            if (totalTrades > 5) {
+                              placeholder = "Over trading -ve reason for loss with #overtrading #discipline";
+                            } else {
+                              placeholder = "Reason for loss with #learning #analysis";
+                            }
+                          }
+                          
+                          return (
+                            <textarea 
+                              placeholder={placeholder} 
+                              value={postText}
+                              onChange={(e) => setPostText(e.target.value)}
+                              className="flex-1 w-[65%] bg-transparent border-none focus:outline-none focus:ring-0 text-xs text-gray-600 dark:text-zinc-400 resize-none placeholder:text-gray-400 leading-relaxed"
+                            />
+                          );
+                        })()}
                         <div className="w-[35%]"></div>
                       </div>
                       
