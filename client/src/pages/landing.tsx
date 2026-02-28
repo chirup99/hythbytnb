@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
-import faceVideo from "@assets/face_1772255754483.mp4";
+import faceVideo from "../assets/landing-page-face.mp4";
 import { useToast } from "@/hooks/use-toast";
 import { 
   cognitoSignIn, 

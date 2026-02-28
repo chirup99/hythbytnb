@@ -84,3 +84,4 @@
 [x] 83. Hide Tradebook v2.0 while the animated face GIF is displaying (Feb 28, 2026)
 [x] 84. Resize animated face GIF to landscape (280x160) and set display duration to 5 seconds (Feb 28, 2026)
 [x] 85. Hide Tradebook v2.0 while the animated face GIF is displaying (Feb 28, 2026 - verified)
+[x] 86. Relocate and rename landing page face animation video (Feb 28, 2026)
