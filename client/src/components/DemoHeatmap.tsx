@@ -1684,11 +1684,42 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
 
             <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
               <DialogContent className="max-w-xl p-0 overflow-hidden bg-white dark:bg-zinc-950 border-none shadow-2xl">
-                <div className="flex flex-col h-full">
+                <div className="flex flex-col h-full bg-white dark:bg-zinc-950 overflow-hidden">
                   <div className="flex h-[160px] border-b border-gray-100 dark:border-zinc-800/50">
                     {/* Left side: Chart */}
-                    <div className="flex-1 p-6 flex flex-col justify-center">
-                      <div className="h-[80px] w-full flex items-center justify-center">
+                    <div className="flex-1 p-6 flex flex-col justify-center relative">
+                      <div className="absolute top-4 left-6 flex flex-col">
+                        <span className="text-[10px] font-bold text-gray-900 dark:text-zinc-100 uppercase tracking-tight">
+                          {(() => {
+                            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+                            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                            const dayName = days[currentDate.getDay()];
+                            const monthName = months[currentDate.getMonth()];
+                            const date = currentDate.getDate();
+                            const year = currentDate.getFullYear();
+                            
+                            const getOrdinal = (n: number) => {
+                              const s = ["th", "st", "nd", "rd"];
+                              const v = n % 100;
+                              return s[(v - 20) % 10] || s[v] || s[0];
+                            };
+                            
+                            return `${dayName} ${date}${getOrdinal(date)} ${monthName} ${year}`;
+                          })()}
+                        </span>
+                      </div>
+                      <div className="absolute top-4 right-4 flex items-center gap-2 bg-gray-50/50 dark:bg-zinc-900/50 py-1 px-2 rounded-full border border-gray-100/50 dark:border-zinc-800/50">
+                        <Avatar className="h-4 w-4">
+                          <AvatarImage src={currentUser?.avatarUrl} />
+                          <AvatarFallback className="bg-blue-50 text-blue-600 text-[6px] font-bold">
+                            {currentUser?.username?.substring(0, 2).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-[9px] font-bold text-gray-700 dark:text-zinc-300 leading-none">
+                          {currentUser?.displayName || currentUser?.username}
+                        </span>
+                      </div>
+                      <div className="h-[80px] w-full flex items-center justify-center mt-6">
                         {(() => {
                           const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
                           const dayData = heatmapData[dateKey];
@@ -1714,7 +1745,7 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                               <svg width="100%" height="60" viewBox="0 0 320 80" preserveAspectRatio="none" className="overflow-visible">
                                 <defs>
                                   <linearGradient id="pnlGradientPost" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor={pnlValue >= 0 ? "#22c55e" : "#ef4444"} stopOpacity="0.1" />
+                                    <stop offset="0%" stopColor={pnlValue >= 0 ? "#22c55e" : "#ef4444"} stopOpacity="0.05" />
                                     <stop offset="100%" stopColor={pnlValue >= 0 ? "#22c55e" : "#ef4444"} stopOpacity="0" />
                                   </linearGradient>
                                 </defs>
@@ -1752,7 +1783,7 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                             <>
                               <div className="flex flex-col">
                                 <span className="text-[8px] uppercase text-gray-400 font-bold tracking-widest leading-none mb-1.5">TOTAL P&L</span>
-                                <span className={`text-base font-bold tracking-tight leading-none ${pnlValue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                <span className={`text-sm font-bold leading-none ${pnlValue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                   ₹{Math.floor(pnlValue).toLocaleString()}
                                 </span>
                               </div>
