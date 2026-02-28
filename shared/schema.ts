@@ -93,6 +93,7 @@ export const socialPosts = pgTable("social_posts", {
   isAudioPost: boolean("is_audio_post").notNull().default(false),
   selectedPostIds: jsonb("selected_post_ids").$type<(string | number)[]>().default([]),
   selectedPosts: jsonb("selected_posts").$type<Array<{ id: string | number; content: string }>>().default([]),
+  metadata: jsonb("metadata").$type<any>().default({}),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

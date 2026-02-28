@@ -1890,6 +1890,8 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                             const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
                             const dayData = heatmapData[dateKey];
                             const pnlValue = calculatePnL(dayData, isPublicView);
+                            const trades = dayData?.tradeHistory || dayData?.tradingData?.tradeHistory || [];
+                            const winRate = dayData?.performanceMetrics?.winRate || dayData?.tradingData?.performanceMetrics?.winRate || '0';
                             
                             createPostMutation.mutate({
                               content: postText.trim(),
@@ -1899,7 +1901,32 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                               stockMentions: [],
                               tags: [],
                               hasImage: false,
-                              isAudioPost: false
+                              isAudioPost: false,
+                              // Add trade data for image 1 style rendering
+                              metadata: {
+                                type: 'trade_insight',
+                                pnl: pnlValue,
+                                trades: trades.length,
+                                winRate: winRate,
+                                chartData: trades.map((t: any) => {
+                                  if (typeof t.pnl === 'number') return t.pnl;
+                                  if (typeof t.pnl === 'string') return parseFloat(t.pnl.replace(/[₹,+]/g, '')) || 0;
+                                  return 0;
+                                }),
+                                date: (() => {
+                                  const d = currentDate;
+                                  const dayName = d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+                                  const monthName = d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+                                  const date = d.getDate();
+                                  const year = d.getFullYear();
+                                  const getOrdinal = (v: number) => {
+                                    if (v > 3 && v < 21) return 'TH';
+                                    const s = ['TH', 'ST', 'ND', 'RD'];
+                                    return s[(v - 20) % 10] || s[v] || s[0];
+                                  };
+                                  return `${dayName} ${date}${getOrdinal(date)} ${monthName} ${year}`;
+                                })()
+                              }
                             });
                           }}
                         >

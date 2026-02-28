@@ -25,6 +25,7 @@ import {
   Newspaper,
   Radio
 } from 'lucide-react';
+import { LineChart, Line, ResponsiveContainer } from 'recharts';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
@@ -57,6 +58,7 @@ interface SocialPost {
   reposted?: boolean;
   isAudioPost?: boolean;
   selectedPostIds?: number[];
+  metadata?: any;
 }
 
 interface SearchBarProps {
@@ -332,8 +334,118 @@ function PostCard({ post }: { post: SocialPost }) {
               </div>
             </div>
 
+                          {post.metadata?.type === 'trade_insight' && (
+                            <div className="mb-4 bg-white dark:bg-zinc-950 border border-gray-100 dark:border-zinc-800/50 rounded-xl overflow-hidden shadow-sm">
+                              <div className="flex h-[140px]">
+                                {/* Left side: Date and Chart */}
+                                <div className="flex-1 p-4 flex flex-col">
+                                  <div className="text-[10px] font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-wider mb-2">
+                                    {post.metadata.date}
+                                  </div>
+                                  <div className="flex-1 w-full min-h-0 relative">
+                                    {post.metadata.chartData && post.metadata.chartData.length > 0 ? (
+                                      <ResponsiveContainer width="100%" height="100%">
+                                        <LineChart data={post.metadata.chartData.map((val: number, i: number) => ({ val, i }))}>
+                                          <defs>
+                                            <linearGradient id={`pnlGradient-feed-${post.id}`} x1="0" y1="0" x2="0" y2="1">
+                                              <stop offset="5%" stopColor={post.metadata.pnl >= 0 ? "#22c55e" : "#ef4444"} stopOpacity={0.1}/>
+                                              <stop offset="95%" stopColor={post.metadata.pnl >= 0 ? "#22c55e" : "#ef4444"} stopOpacity={0}/>
+                                            </linearGradient>
+                                          </defs>
+                                          <Line 
+                                            type="monotone" 
+                                            dataKey="val" 
+                                            stroke={post.metadata.pnl >= 0 ? "#22c55e" : "#ef4444"} 
+                                            strokeWidth={2} 
+                                            dot={false}
+                                            animationDuration={1000}
+                                          />
+                                        </LineChart>
+                                      </ResponsiveContainer>
+                                    ) : (
+                                      <div className="h-full flex items-center justify-center text-[10px] text-gray-400">
+                                        No chart data
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                                {/* Right side: Stats */}
+                                <div className="w-[120px] bg-gray-50/50 dark:bg-zinc-900/20 border-l border-gray-100 dark:border-zinc-800/50 p-4 flex flex-col justify-center space-y-3">
+                                  <div>
+                                    <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest mb-1">TOTAL P&L</div>
+                                    <div className={`text-sm font-bold ${post.metadata.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                      ₹{Math.floor(post.metadata.pnl).toLocaleString()}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest mb-1">TRADES</div>
+                                    <div className="text-xs font-semibold text-gray-700 dark:text-zinc-300">{post.metadata.trades}</div>
+                                  </div>
+                                  <div>
+                                    <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest mb-1">WIN RATE</div>
+                                    <div className="text-xs font-semibold text-gray-700 dark:text-zinc-300">{post.metadata.winRate}%</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
             {/* Post Content */}
             <div className="mb-3">
+              {post.metadata?.type === 'trade_insight' && (
+                <div className="mb-4 bg-white dark:bg-zinc-950 border border-gray-100 dark:border-zinc-800/50 rounded-xl overflow-hidden shadow-sm">
+                  <div className="flex h-[140px]">
+                    {/* Left side: Date and Chart */}
+                    <div className="flex-1 p-4 flex flex-col">
+                      <div className="text-[10px] font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-wider mb-2">
+                        {post.metadata.date}
+                      </div>
+                      <div className="flex-1 w-full min-h-0 relative">
+                        {post.metadata.chartData && post.metadata.chartData.length > 0 ? (
+                          <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={post.metadata.chartData.map((val: number, i: number) => ({ val, i }))}>
+                              <defs>
+                                <linearGradient id={`pnlGradient-feed-${post.id}`} x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="5%" stopColor={post.metadata.pnl >= 0 ? "#22c55e" : "#ef4444"} stopOpacity={0.1}/>
+                                  <stop offset="95%" stopColor={post.metadata.pnl >= 0 ? "#22c55e" : "#ef4444"} stopOpacity={0}/>
+                                </linearGradient>
+                              </defs>
+                              <Line 
+                                type="monotone" 
+                                dataKey="val" 
+                                stroke={post.metadata.pnl >= 0 ? "#22c55e" : "#ef4444"} 
+                                strokeWidth={2} 
+                                dot={false}
+                                animationDuration={1000}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        ) : (
+                          <div className="h-full flex items-center justify-center text-[10px] text-gray-400">
+                            No chart data
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {/* Right side: Stats */}
+                    <div className="w-[120px] bg-gray-50/50 dark:bg-zinc-900/20 border-l border-gray-100 dark:border-zinc-800/50 p-4 flex flex-col justify-center space-y-3">
+                      <div>
+                        <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest mb-1">TOTAL P&L</div>
+                        <div className={`text-sm font-bold ${post.metadata.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                          ₹{Math.floor(post.metadata.pnl).toLocaleString()}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest mb-1">TRADES</div>
+                        <div className="text-xs font-semibold text-gray-700 dark:text-zinc-300">{post.metadata.trades}</div>
+                      </div>
+                      <div>
+                        <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest mb-1">WIN RATE</div>
+                        <div className="text-xs font-semibold text-gray-700 dark:text-zinc-300">{post.metadata.winRate}%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
               <p className="text-gray-900 dark:text-white leading-relaxed">
                 {post.content}
               </p>
@@ -621,6 +733,7 @@ export function SocialFeed() {
     sentiment: post.sentiment || (post.ticker ? (Math.random() > 0.6 ? 'bullish' : Math.random() > 0.3 ? 'bearish' : 'neutral') : 'neutral'),
     hasImage: post.hasImage || false,
     imageUrl: post.imageUrl || undefined,
+    metadata: post.metadata,
     liked: false,
     reposted: false,
     isAudioPost: post.isAudioPost || false,
