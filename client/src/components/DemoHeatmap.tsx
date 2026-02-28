@@ -1804,16 +1804,18 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                           let placeholder = "Add your notes...";
                           if (pnlValue > 0) {
                             if (totalTrades <= 3) {
-                              placeholder = "Planned trade proper setup with #planned #setup";
+                              placeholder = "Quality over quantity. Executed the plan with #discipline and #patience.";
                             } else {
-                              placeholder = "Less trades planned trade proper setup with #patience #discipline";
+                              placeholder = "Great day! Caught some solid moves by sticking to the setup. #trading #growth";
                             }
                           } else if (pnlValue < 0) {
                             if (totalTrades > 5) {
-                              placeholder = "Over trading -ve reason for loss with #overtrading #discipline";
+                              placeholder = "Overtrading alert! Need to step back, review the rules, and regain #focus. #discipline";
                             } else {
-                              placeholder = "Reason for loss with #learning #analysis";
+                              placeholder = "Market didn't favor the setup today. A small setback is a setup for a comeback. #learning #analysis";
                             }
+                          } else if (totalTrades > 0) {
+                            placeholder = "Breakeven day. Protected the capital and followed the process. #riskmanagement";
                           }
                           
                           return (
