@@ -28,7 +28,7 @@
 [x] 27. Implement Angel One connection dialog with API Key and Client Code fields
 [x] 28. Re-install dotenv package and complete import migration
 [x] 29. Re-install dotenv package and verify application running (latest session)
-[x] 30. Re-install dotenv package and verify application running (current session)
+[x_ 30. Re-install dotenv package and verify application running (current session)
 [x] 31. Re-install dotenv package and verify application running (final session)
 [x] 32. Remove Angel One connect button and dialog from Trading Dashboard
 [x] 33. Re-install dotenv package and verify application running (this session)
@@ -114,3 +114,6 @@
 [x] 116. Enable feed mode stats (P&L, Trend, Trades, Win%) for Demo Heatmap (Feb 28, 2026)
 [x] 117. Install dotenv package and verify application running (Feb 28, 2026 - final session)
 [x] 118. Import migration complete - application running successfully (Feb 28, 2026 - final session)
+[x] 119. Add "Post" button to Feed mode stats in Tradebook
+[x] 120. Implement "Post Insight" dialog with user profile, trend chart, and stats
+[x] 121. Add text field and action buttons (image, emoji, attachment) to Post dialog

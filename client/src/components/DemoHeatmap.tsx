@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, X, MoreVertical, Layout } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, MoreVertical, Layout, Send, Image as ImageIcon, Smile, Paperclip } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,6 +9,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
 
 interface DemoHeatmapProps {
   onDateSelect: (date: Date) => void;
@@ -87,6 +95,8 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
   const [isRangeSelectMode, setIsRangeSelectMode] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [isFeedMode, setIsFeedMode] = useState(false);
+  const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
+  const [postText, setPostText] = useState("");
   const [selectedDateForDelete, setSelectedDateForDelete] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const badgeContainerRef = useRef<HTMLDivElement>(null);
@@ -1655,6 +1665,15 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                             {dayData?.performanceMetrics?.winRate || dayData?.tradingData?.performanceMetrics?.winRate || '0'}%
                           </span>
                         </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setIsPostDialogOpen(true)}
+                          className="h-8 w-8 ml-2 bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400"
+                          title="Post to feed"
+                        >
+                          <Send className="w-4 h-4" />
+                        </Button>
                       </>
                     );
                   })()}
@@ -1662,6 +1681,156 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
               )}
             </div>
             )}
+
+            <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
+              <DialogContent className="max-w-2xl p-0 overflow-hidden bg-white dark:bg-[#1a1b1e] border-none shadow-2xl">
+                <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-10 w-10 border border-gray-100 dark:border-gray-800">
+                      <AvatarImage src={currentUser?.avatarUrl} />
+                      <AvatarFallback className="bg-blue-50 text-blue-600 font-bold">
+                        {currentUser?.username?.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{currentUser?.displayName || currentUser?.username}</span>
+                      <span className="text-[10px] text-gray-500 font-medium">Post to Trading Feed</span>
+                    </div>
+                  </div>
+                  <Button variant="ghost" size="icon" onClick={() => setIsPostDialogOpen(false)} className="h-8 w-8 text-gray-400">
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+
+                <div className="p-6">
+                  <div className="grid grid-cols-2 gap-8 mb-6">
+                    {/* Left: Trend Chart */}
+                    <div className="space-y-3">
+                      <span className="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Performance Trend</span>
+                      <div className="h-32 w-full bg-gray-50/50 dark:bg-gray-900/30 rounded-xl border border-dashed border-gray-200 dark:border-gray-800 flex items-center justify-center relative overflow-hidden">
+                        {(() => {
+                          const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+                          const dayData = heatmapData[dateKey];
+                          const trades = dayData?.tradeHistory || dayData?.tradingData?.tradeHistory || [];
+                          const pnlData = trades.map((t: any) => {
+                            if (typeof t.pnl === 'number') return t.pnl;
+                            if (typeof t.pnl === 'string') return parseFloat(t.pnl.replace(/[₹,+]/g, '')) || 0;
+                            return 0;
+                          });
+                          const pnlValue = calculatePnL(dayData, isPublicView);
+
+                          if (pnlData.length > 0) {
+                            const min = Math.min(...pnlData, 0);
+                            const max = Math.max(...pnlData, 0);
+                            const range = max - min || 1;
+                            const points = pnlData.map((val: number, i: number) => {
+                              const x = (i / (pnlData.length - 1 || 1)) * 240;
+                              const y = 80 - ((val - min) / range) * 80;
+                              return `${x},${y}`;
+                            }).join(' ');
+                            
+                            return (
+                              <svg width="240" height="80" className="overflow-visible">
+                                <defs>
+                                  <linearGradient id="pnlGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor={pnlValue >= 0 ? "#22c55e" : "#ef4444"} stopOpacity="0.2" />
+                                    <stop offset="100%" stopColor={pnlValue >= 0 ? "#22c55e" : "#ef4444"} stopOpacity="0" />
+                                  </linearGradient>
+                                </defs>
+                                <path
+                                  d={`M 0 80 L ${points} L 240 80 Z`}
+                                  fill="url(#pnlGradient)"
+                                />
+                                <polyline
+                                  points={points}
+                                  fill="none"
+                                  stroke={pnlValue >= 0 ? "#22c55e" : "#ef4444"}
+                                  strokeWidth="2.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            );
+                          }
+                          return <span className="text-xs text-gray-400">No data available</span>;
+                        })()}
+                      </div>
+                    </div>
+
+                    {/* Right: Stats */}
+                    <div className="flex flex-col justify-center space-y-6">
+                      {(() => {
+                        const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+                        const dayData = heatmapData[dateKey];
+                        const pnlValue = calculatePnL(dayData, isPublicView);
+                        const totalTrades = dayData?.tradeHistory?.length || dayData?.tradingData?.tradeHistory?.length || 0;
+                        const winRate = dayData?.performanceMetrics?.winRate || dayData?.tradingData?.performanceMetrics?.winRate || '0';
+                        
+                        return (
+                          <>
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase text-gray-400 font-bold tracking-wider mb-1">Total P&L</span>
+                              <span className={`text-2xl font-black ${pnlValue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                ₹{Math.floor(pnlValue).toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="flex flex-col">
+                                <span className="text-[10px] uppercase text-gray-400 font-bold tracking-wider mb-1">Trades</span>
+                                <span className="text-lg font-bold text-gray-900 dark:text-gray-100">{totalTrades}</span>
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-[10px] uppercase text-gray-400 font-bold tracking-wider mb-1">Win Rate</span>
+                                <span className="text-lg font-bold text-gray-900 dark:text-gray-100">{winRate}%</span>
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
+
+                  <div className="relative">
+                    <textarea 
+                      placeholder="What's your strategy for today?..." 
+                      value={postText}
+                      onChange={(e) => setPostText(e.target.value)}
+                      className="w-full min-h-[120px] p-4 bg-gray-50/50 dark:bg-gray-900/50 rounded-xl border border-gray-100 dark:border-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm text-gray-700 dark:text-gray-300 resize-none placeholder:text-gray-400"
+                    />
+                    <div className="absolute bottom-3 right-3 flex items-center gap-2">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-blue-500">
+                        <ImageIcon className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-blue-500">
+                        <Smile className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-blue-500">
+                        <Paperclip className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-gray-50/50 dark:bg-gray-900/30 flex items-center justify-between border-t border-gray-100 dark:border-gray-800">
+                  <div className="flex items-center gap-2 text-gray-400">
+                    <span className="text-[10px] font-medium">Public visibility enabled</span>
+                  </div>
+                  <Button 
+                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 font-bold text-sm shadow-lg shadow-blue-500/20"
+                    onClick={() => {
+                      toast({
+                        title: "Post shared",
+                        description: "Your trading insight has been posted to the feed.",
+                      });
+                      setIsPostDialogOpen(false);
+                      setPostText("");
+                    }}
+                  >
+                    Post Insight
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
 
             {/* Right arrow - always show in normal mode, but hide in feed mode */}
             {!isRangeSelectMode && !isFeedMode && (
