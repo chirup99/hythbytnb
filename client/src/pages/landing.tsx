@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
+import faceVideo from "@assets/face_1772255754483.mp4";
 import { useToast } from "@/hooks/use-toast";
 import { 
   cognitoSignIn, 
@@ -27,6 +28,7 @@ export default function Landing() {
   const [showPerformanceWindow, setShowPerformanceWindow] = useState(false);
   const [showPerformanceTrend, setShowPerformanceTrend] = useState(false);
   const [showTradingNotes, setShowTradingNotes] = useState(false);
+  const [showGifFrame, setShowGifFrame] = useState(false);
   const [showTagsDropdown, setShowTagsDropdown] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>(["FOMO", "OVERTRADING"]);
   const [typedNote, setTypedNote] = useState("");
@@ -78,7 +80,7 @@ export default function Landing() {
     if (showTradingNotes) {
       const resetTimer = setTimeout(() => {
         setShowTradingNotes(false);
-        setShowAccessInfo(true);
+        setShowGifFrame(true);
         // Reset sequence state
         setTypedNote("");
         setShowTagsDropdown(false);
@@ -86,6 +88,16 @@ export default function Landing() {
       return () => clearTimeout(resetTimer);
     }
   }, [showTradingNotes]);
+
+  useEffect(() => {
+    if (showGifFrame) {
+      const timer = setTimeout(() => {
+        setShowGifFrame(false);
+        setShowAccessInfo(true);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [showGifFrame]);
 
   useEffect(() => {
     if (showTradingNotes) {
@@ -1126,6 +1138,20 @@ export default function Landing() {
             </div>
           </div>
           
+          {/* GIF/Video Frame - Shown after trading notes and before early access */}
+          <div className={`${!showGifFrame ? 'h-0 opacity-0 pointer-events-none' : 'h-auto opacity-100'} p-0 m-0 transition-all duration-500 ease-in-out transform ${!showGifFrame ? '-translate-y-4 scale-95' : 'translate-y-0 scale-100'}`}>
+            <div className="bg-gray-900/50 p-2 rounded-2xl border border-gray-800/50 backdrop-blur-sm overflow-hidden max-w-md w-full mx-auto aspect-square flex items-center justify-center">
+              <video 
+                src={faceVideo} 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="w-full h-full object-cover rounded-xl"
+              />
+            </div>
+          </div>
+
           {/* Access Info - Hides after 1 second */}
           <div className={`${!showAccessInfo ? 'h-0 opacity-0 pointer-events-none' : 'h-auto opacity-100'} p-0 m-0 transition-all duration-500 ease-in-out transform ${!showAccessInfo ? '-translate-y-4 scale-95' : 'translate-y-0 scale-100'}`}>
             <h2 className="text-2xl font-bold text-white mb-1">Get Early Access</h2>
