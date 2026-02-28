@@ -97,3 +97,6 @@
 [x] 99. Import migration fully verified - all systems running successfully (Feb 28, 2026)
 [x] 100. Install dotenv package and verify application running (Feb 28, 2026 - new session)
 [x] 101. Import migration complete - all items verified and application running (Feb 28, 2026)
+[x] 102. Add "Feedback or Request Feature" button to profile section (Feb 28, 2026)
+[x] 103. Implement Feedback/Request dialog with toggle, star rating, and textarea (Feb 28, 2026)
+[x] 104. Verify UI matches the requested design from the provided image (Feb 28, 2026)

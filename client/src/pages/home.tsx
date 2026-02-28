@@ -2015,6 +2015,10 @@ export default function Home() {
   const [isProfileActive, setIsProfileActive] = useState(false);
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [isVoiceSettingsOpen, setIsVoiceSettingsOpen] = useState(false);
+  const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false);
+  const [feedbackType, setFeedbackType] = useState<"feedback" | "request">("feedback");
+  const [rating, setRating] = useState(0);
+  const [feedbackText, setFeedbackText] = useState("");
   const [voicePitch, setVoicePitch] = useState(1.0);
   const [voiceRate, setVoiceRate] = useState(1.0);
   const [voiceBreakTime, setVoiceBreakTime] = useState(200); // ms
@@ -15289,6 +15293,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     return null;
                                   })()}
                                   <button
+                                    onClick={() => setIsFeedbackDialogOpen(true)}
+                                    className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                                    data-testid="nav-feedback"
+                                  >
+                                    <MessageCircle className="h-4 w-4" />
+                                    <span>feedback or request feature</span>
+                                  </button>
+                                  <button
                                     onClick={toggleTheme}
                                     className="w-full px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
                                     data-testid="nav-dark-theme"
@@ -15542,6 +15554,74 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         </div>
                       </div>
                       )}
+
+        {/* Feedback / Request Feature Dialog */}
+        <Dialog open={isFeedbackDialogOpen} onOpenChange={setIsFeedbackDialogOpen}>
+          <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 p-0 overflow-hidden rounded-2xl">
+            <div className="relative p-6">
+              <button 
+                onClick={() => setIsFeedbackDialogOpen(false)}
+                className="absolute right-4 top-4 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Send us feedback</h2>
+                  <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+                    <button 
+                      onClick={() => setFeedbackType("feedback")}
+                      className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${feedbackType === 'feedback' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-500'}`}
+                    >
+                      Feedback
+                    </button>
+                    <button 
+                      onClick={() => setFeedbackType("request")}
+                      className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${feedbackType === 'request' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-500'}`}
+                    >
+                      Request
+                    </button>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Watch <span className="text-gray-900 dark:text-gray-200 font-medium cursor-pointer">tutorials</span>, read Origin UI's <span className="text-gray-900 dark:text-gray-200 font-medium cursor-pointer">documentation</span>, or join our <span className="text-gray-900 dark:text-gray-200 font-medium cursor-pointer">Discord</span> for community help.
+                </p>
+              </div>
+
+              <div className="relative mb-6">
+                <Textarea 
+                  placeholder={feedbackType === "feedback" ? "How can we improve Origin UI?" : "What feature would you like to see?"}
+                  className="min-h-[120px] bg-white dark:bg-gray-950 border-gray-700 dark:border-gray-800 text-gray-900 dark:text-gray-100 resize-none focus:ring-blue-500 rounded-xl"
+                  value={feedbackText}
+                  onChange={(e) => setFeedbackText(e.target.value)}
+                />
+                <div className="absolute bottom-3 right-3 flex items-center gap-1 text-[10px] text-gray-400">
+                  <span className="w-1.5 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full"></span>
+                  <span className="w-1.5 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full"></span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star 
+                      key={star}
+                      className={`h-5 w-5 cursor-pointer transition-colors ${star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300 dark:text-gray-700'}`}
+                      onClick={() => setRating(star)}
+                    />
+                  ))}
+                </div>
+                <Button 
+                  className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 rounded-xl px-6"
+                  onClick={() => setIsFeedbackDialogOpen(false)}
+                >
+                  Send feedback
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
 
                       {/* AI Search Results - Desktop only */}
                       {isSearchActive && (
