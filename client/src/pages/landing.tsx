@@ -721,7 +721,7 @@ export default function Landing() {
       <div className="max-w-md w-full space-y-4">
         <div className="text-center relative flex flex-col items-center justify-center p-0 m-0 overflow-hidden">
           {/* Tradebook Preview - Always visible or transitions in */}
-          <div className={`${showAccessInfo ? 'h-0 opacity-0 pointer-events-none' : 'h-auto opacity-100'} w-full flex justify-center p-0 m-0 transition-all duration-700 ease-in-out transform ${showAccessInfo ? 'translate-y-4 scale-95' : 'translate-y-0 scale-100'}`}>
+          <div className={`${showAccessInfo || showGifFrame ? 'h-0 opacity-0 pointer-events-none' : 'h-auto opacity-100'} w-full flex justify-center p-0 m-0 transition-all duration-700 ease-in-out transform ${showAccessInfo || showGifFrame ? 'translate-y-4 scale-95' : 'translate-y-0 scale-100'}`}>
             <div className="w-[280px] h-[160px] bg-gray-900/80 rounded-lg border border-gray-800 shadow-2xl relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent" />
               <div className="p-2 border-b border-gray-800 flex items-center justify-between bg-gray-950/50">
