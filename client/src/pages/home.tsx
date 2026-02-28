@@ -77,7 +77,7 @@ import { cognitoSignOut, getCognitoToken, sendEmailVerificationCode, confirmEmai
 
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, LineSeries, HistogramSeries, IPriceLine, createSeriesMarkers } from 'lightweight-charts';
 
-import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle, Activity, Bitcoin } from "lucide-react";
+import { ArrowLeft, Banknote, Clock, ExternalLink, Info, Loader2, LogOut, Newspaper, RefreshCw, Save, TrendingUp, Award, Headset, X, Play, Music2, Pencil, CheckCircle, Activity, Bitcoin, Wallet } from "lucide-react";
 
 import { parseBrokerTrades, ParseError } from "@/utils/trade-parser";
 
@@ -23008,6 +23008,35 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                             ));
                           })()}
+                        </div>
+
+                        {/* Full Width Funds Analysis - New Empty Window */}
+                        <div className="col-span-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white shadow-2xl mt-6">
+                          <div className="flex items-center gap-4 mb-6">
+                            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                              <Wallet className="w-6 h-6" />
+                            </div>
+                            <div>
+                              <h3 className="text-xl font-bold">
+                                Funds Analysis
+                              </h3>
+                              <p className="opacity-80">
+                                Monitor and manage your trading capital
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="bg-white/10 rounded-2xl p-6 text-center">
+                            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                              <Wallet className="w-8 h-8" />
+                            </div>
+                            <p className="text-lg font-medium mb-2">
+                              No Data Available
+                            </p>
+                            <p className="opacity-80">
+                              Connect your broker to view funds analysis!
+                            </p>
+                          </div>
                         </div>
 
                         {/* Full Width Loss Making Analysis - Extended Like Discipline Window */}
