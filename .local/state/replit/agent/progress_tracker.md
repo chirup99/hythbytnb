@@ -105,4 +105,6 @@
 [x] 107. Hide star rating in "Request" mode of Feedback dialog (Feb 28, 2026)
 [x] 108. Update Feedback dialog button to blue background (Feb 28, 2026)
 [x] 109. Install dotenv package and verify application running (Feb 28, 2026 - this session)
+[x] 111. Replace feedback dialog tutorial text with investor outreach message (Feb 28, 2026)
+[x] 112. Add LinkedIn link with icon to feedback dialog for investor outreach (Feb 28, 2026)
 [x] 110. Import migration complete - application running successfully (Feb 28, 2026 - this session)

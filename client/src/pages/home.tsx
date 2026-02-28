@@ -15580,8 +15580,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   </div>
                 </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Watch <span className="text-gray-900 dark:text-gray-200 font-medium cursor-pointer">tutorials</span>, read Origin UI's <span className="text-gray-900 dark:text-gray-200 font-medium cursor-pointer">documentation</span>, or join our <span className="text-gray-900 dark:text-gray-200 font-medium cursor-pointer">Discord</span> for community help.
+                  We hope you’ve liked our app so far! As an early-stage startup, we’re building some big features for the future. We’re now seeking investors to help us scale — feel free to reach out to learn more.
                 </p>
+                <div className="mt-2">
+                  <a 
+                    href="https://play.google.com/store/apps/details?id=com.linkedin.android" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                    data-testid="link-linkedin-investor"
+                  >
+                    <Linkedin className="h-5 w-5" />
+                  </a>
+                </div>
               </div>
 
               <div className="relative mb-6">
