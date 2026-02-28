@@ -85,3 +85,5 @@
 [x] 84. Resize animated face GIF to landscape (280x160) and set display duration to 5 seconds (Feb 28, 2026)
 [x] 85. Hide Tradebook v2.0 while the animated face GIF is displaying (Feb 28, 2026 - verified)
 [x] 86. Relocate and rename landing page face animation video (Feb 28, 2026)
+[x] 87. Install dotenv package and verify application running (Feb 28, 2026 - current session)
+[x] 88. Import migration complete - application running successfully (Feb 28, 2026 - current session)
