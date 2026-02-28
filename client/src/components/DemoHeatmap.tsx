@@ -1708,17 +1708,6 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                           })()}
                         </span>
                       </div>
-                      <div className="absolute top-4 right-4 flex items-center gap-2 bg-gray-50/50 dark:bg-zinc-900/50 py-1 px-2 rounded-full border border-gray-100/50 dark:border-zinc-800/50">
-                        <Avatar className="h-4 w-4">
-                          <AvatarImage src={currentUser?.avatarUrl} />
-                          <AvatarFallback className="bg-blue-50 text-blue-600 text-[6px] font-bold">
-                            {currentUser?.username?.substring(0, 2).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-[9px] font-bold text-gray-700 dark:text-zinc-300 leading-none">
-                          {currentUser?.displayName || currentUser?.username}
-                        </span>
-                      </div>
                       <div className="h-[80px] w-full flex items-center justify-center mt-6">
                         {(() => {
                           const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
@@ -1816,9 +1805,16 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                       </div>
                       
                       <div className="mt-4 flex items-center justify-between border-t border-gray-100 dark:border-zinc-800/50 pt-4">
-                        <div className="flex items-center gap-1.5 text-[9px] text-gray-400 font-medium">
-                          <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
-                          <span>Published to Global Feed</span>
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage src={currentUser?.profilePicUrl} />
+                            <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold text-[10px]">
+                              {currentUser?.displayName?.substring(0, 2).toUpperCase() || "TR"}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span className="text-xs font-medium text-gray-700 dark:text-zinc-300">
+                            {currentUser?.displayName || "Trader"}
+                          </span>
                         </div>
                         
                         <Button 
@@ -1833,7 +1829,7 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                           }}
                         >
                           <Send className="w-3 h-3" />
-                          <span>POST INSIGHT</span>
+                          <span>POST</span>
                         </Button>
                       </div>
                     </div>

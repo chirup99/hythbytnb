@@ -121,3 +121,6 @@
 [x] 123. Import migration complete - application running successfully (Feb 28, 2026 - current session)
 [x] 124. Install dotenv package and verify application running (Feb 28, 2026 - this session)
 [x] 125. Import migration complete - application running successfully (Feb 28, 2026 - this session)
+[x] 126. Move user avatar and display name to bottom left of post dialog (Feb 28, 2026)
+[x] 127. Remove "Published to Global Feed" text from post dialog (Feb 28, 2026)
+[x] 128. Rename "Post Insight" button to "Post" (Feb 28, 2026)
