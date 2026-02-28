@@ -82,3 +82,5 @@
 [x] 81. Import migration complete - application running successfully (Feb 28, 2026)
 [x] 82. Add animated GIF frame standalone after notes and before early access text (Feb 28, 2026)
 [x] 83. Hide Tradebook v2.0 while the animated face GIF is displaying (Feb 28, 2026)
+[x] 84. Install dotenv package and verify application running (Feb 28, 2026 - current session)
+[x] 85. Import migration complete - application running successfully (Feb 28, 2026 - current session)
