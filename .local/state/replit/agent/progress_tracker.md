@@ -90,3 +90,5 @@
 [x] 89. Install dotenv and restart workflow - application running successfully (Feb 28, 2026 - this session)
 [x] 90. Import migration fully complete - all progress tracker items marked done (Feb 28, 2026)
 [x] 91. Implement global background fund fetching for all brokers (Feb 28, 2026)
+[x] 92. Implement multi-broker fund display with circular icons and breakup dialog (Feb 28, 2026)
+[x] 93. Added multi-broker fund persistence in localStorage (Feb 28, 2026)

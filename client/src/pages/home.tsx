@@ -4245,6 +4245,45 @@ ${
     }
     return null;
   });
+
+  // Track individual broker funds for multi-broker support
+  const [allBrokerFunds, setAllBrokerFunds] = useState<Record<string, number>>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("all_broker_funds");
+      return saved ? JSON.parse(saved) : {};
+    }
+    return {};
+  });
+
+  const [showBrokerBreakupDialog, setShowBrokerBreakupDialog] = useState(false);
+
+  // Sync allBrokerFunds to localStorage
+  useEffect(() => {
+    localStorage.setItem("all_broker_funds", JSON.stringify(allBrokerFunds));
+  }, [allBrokerFunds]);
+
+  // Calculate total funds across all brokers
+  const totalBrokerFunds = useMemo(() => {
+    return Object.values(allBrokerFunds).reduce((sum, val) => sum + val, 0);
+  }, [allBrokerFunds]);
+
+  const brokerIconMap: Record<string, string> = {
+    zerodha: "https://kite.zerodha.com/static/images/kite-logo.svg",
+    upstox: "https://upstox.com/apple-touch-icon.png",
+    angelone: "https://www.angelone.in/favicon.ico",
+    dhan: "https://dhan.co/wp-content/uploads/2021/07/dhan-logo-fav.png",
+    groww: "https://groww.in/groww-logo-270.png",
+    fyers: "https://fyers.in/wp-content/uploads/2023/05/cropped-fyers-favicon-32x32.png",
+    delta: "https://www.delta.exchange/favicon.ico"
+  };
+
+  const getBrokerDisplayName = (id: string) => {
+    const names: Record<string, string> = {
+      zerodha: "Zerodha", upstox: "Upstox", angelone: "Angel One",
+      dhan: "Dhan", groww: "Groww", fyers: "Fyers", delta: "Delta Exchange"
+    };
+    return names[id] || id;
+  };
   const [zerodhaUserName, setZerodhaUserName] = useState<string | null>(null);
 const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [showUserId, setShowUserId] = useState(true);
@@ -6115,6 +6154,14 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           const data = await response.json();
           const funds = data.availableCash || data.availableFunds || data.funds || 0;
           setBrokerFunds(funds);
+          
+          // Update multi-broker tracking
+          if (activeBroker) {
+            setAllBrokerFunds(prev => ({
+              ...prev,
+              [activeBroker]: funds
+            }));
+          }
           
           // Persist to query cache for consistency across components
           if (activeBroker === 'groww') {
@@ -23127,10 +23174,40 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <Badge variant="outline" className="bg-emerald-500/5 text-emerald-600 border-emerald-500/20">Available Cash</Badge>
                                     </div>
                                     <div className="space-y-1">
-                                      <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Net Balance</p>
+                                      <div className="flex items-center justify-between">
+                                        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Net Balance</p>
+                                        
+                                        {/* Multi-broker icons row */}
+                                        {Object.keys(allBrokerFunds).length > 0 && (
+                                          <div 
+                                            onClick={() => setShowBrokerBreakupDialog(true)}
+                                            className="flex -space-x-2 overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+                                          >
+                                            {Object.keys(allBrokerFunds).map((brokerId) => (
+                                              <div 
+                                                key={brokerId}
+                                                className="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 bg-white p-0.5"
+                                                title={getBrokerDisplayName(brokerId)}
+                                              >
+                                                <img 
+                                                  className="h-full w-full rounded-full object-contain" 
+                                                  src={brokerIconMap[brokerId]} 
+                                                  alt={brokerId} 
+                                                />
+                                              </div>
+                                            ))}
+                                            {Object.keys(allBrokerFunds).length > 3 && (
+                                              <div className="flex items-center justify-center h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-600 dark:text-slate-400">
+                                                +{Object.keys(allBrokerFunds).length - 3}
+                                              </div>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
+                                      
                                       <h4 className="text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-1">
                                         {activeBroker === 'delta' ? '$' : '₹'}
-                                        {(Number(brokerFundsValue) || 0).toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        {(Number(totalBrokerFunds) || 0).toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                       </h4>
                                     </div>
                                     <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -24162,7 +24239,68 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           importDataTextareaRef={importDataTextareaRef} brokerFunds={brokerFunds} 
           fyersStatus={fyersStatus}
         />
-        {/* Broker Import Dialog */}
+        {/* Broker Funds Breakup Dialog */}
+  <Dialog open={showBrokerBreakupDialog} onOpenChange={setShowBrokerBreakupDialog}>
+    <DialogContent className="max-w-md bg-white dark:bg-slate-900 border-indigo-500/20">
+      <DialogHeader>
+        <DialogTitle className="text-xl font-bold flex items-center gap-2">
+          <Wallet className="w-5 h-5 text-indigo-500" />
+          Broker Funds Breakup
+        </DialogTitle>
+        <DialogDescription>
+          Detailed view of capital distributed across your connected brokers.
+        </DialogDescription>
+      </DialogHeader>
+      
+      <div className="space-y-4 py-4">
+        {Object.entries(allBrokerFunds).map(([brokerId, funds]) => (
+          <div key={brokerId} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 transition-all hover:border-indigo-500/30 group">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-white dark:bg-slate-800 p-1.5 shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-center">
+                <img 
+                  className="w-full h-full object-contain rounded-full" 
+                  src={brokerIconMap[brokerId]} 
+                  alt={brokerId} 
+                />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-slate-900 dark:text-white">{getBrokerDisplayName(brokerId)}</p>
+                <p className="text-[10px] text-slate-500 uppercase tracking-tighter">Live Connection Active</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-base font-black text-indigo-600 dark:text-indigo-400">
+                {brokerId === 'delta' ? '$' : '₹'}{funds.toLocaleString(brokerId === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2 })}
+              </p>
+              <p className="text-[10px] font-bold text-slate-400">
+                {((funds / totalBrokerFunds) * 100).toFixed(1)}% Weight
+              </p>
+            </div>
+          </div>
+        ))}
+        
+        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-between px-2">
+            <p className="text-sm font-bold text-slate-500 dark:text-slate-400">Total Consolidated Capital</p>
+            <p className="text-xl font-black text-slate-900 dark:text-white">
+              ₹{totalBrokerFunds.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <DialogFooter>
+        <Button 
+          onClick={() => setShowBrokerBreakupDialog(false)}
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold"
+        >
+          Close Consolidated View
+        </Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+
+  {/* Broker Import Dialog */}
         <BrokerImportDialog
           open={showBrokerImportModal}
           onOpenChange={setShowBrokerImportModal}
