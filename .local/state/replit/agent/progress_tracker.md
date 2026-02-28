@@ -125,3 +125,5 @@
 [x] 127. Remove "Published to Global Feed" text from post dialog (Feb 28, 2026)
 [x] 128. Rename "Post Insight" button to "Post" (Feb 28, 2026)
 [x] 129. Update placeholder text in post dialog with dynamic demo text based on P&L (Feb 28, 2026)
+[x] 130. Install dotenv package and verify application running (Feb 28, 2026 - new session)
+[x] 131. Import migration complete - all items verified and application running (Feb 28, 2026 - new session)
