@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -132,6 +133,42 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
   const heatmapContainerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<boolean>(false);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const createPostMutation = useMutation({
+    mutationFn: async (postData: any) => {
+      const response = await fetch('/api/social-posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create post');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/social-posts'] });
+      toast({
+        title: "Post shared",
+        description: "Your trading insight has been posted to the feed.",
+      });
+      setIsPostDialogOpen(false);
+      setPostText("");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to share post",
+        variant: "destructive",
+      });
+    }
+  });
   
   // FOMO highlighted dates curved lines support
   const [fomoLinePositions, setFomoLinePositions] = useState<Array<{ x1: number; y1: number; x2: number; y2: number }> | null>(null);
@@ -1845,17 +1882,33 @@ export function DemoHeatmap({ onDateSelect, selectedDate, onDataUpdate, onRangeC
                         
                         <Button 
                           className="h-8 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold shadow-sm flex items-center gap-2"
+                          disabled={!postText.trim() || createPostMutation.isPending}
                           onClick={() => {
-                            toast({
-                              title: "Post shared",
-                              description: "Your trading insight has been posted to the feed.",
+                            const username = currentUser?.username || currentUser?.email?.split('@')[0] || 'anonymous';
+                            const displayName = currentUser?.displayName || username;
+                            
+                            const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+                            const dayData = heatmapData[dateKey];
+                            const pnlValue = calculatePnL(dayData, isPublicView);
+                            
+                            createPostMutation.mutate({
+                              content: postText.trim(),
+                              authorUsername: username,
+                              authorDisplayName: displayName,
+                              sentiment: pnlValue > 0 ? 'bullish' : (pnlValue < 0 ? 'bearish' : 'neutral'),
+                              stockMentions: [],
+                              tags: [],
+                              hasImage: false,
+                              isAudioPost: false
                             });
-                            setIsPostDialogOpen(false);
-                            setPostText("");
                           }}
                         >
-                          <Send className="w-3 h-3" />
-                          <span>POST</span>
+                          {createPostMutation.isPending ? (
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
+                          ) : (
+                            <Send className="w-3 h-3" />
+                          )}
+                          <span>{createPostMutation.isPending ? 'POSTING...' : 'POST'}</span>
                         </Button>
                       </div>
                     </div>
