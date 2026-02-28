@@ -93,6 +93,5 @@
 [x] 92. Implement multi-broker fund display with circular icons and breakup dialog (Feb 28, 2026)
 [x] 93. Added multi-broker fund persistence in localStorage (Feb 28, 2026)
 [x] 94. Install dotenv package and verify application running (Feb 28, 2026 - current session)
-[x] 95. Import migration complete - application running successfully (Feb 28, 2026 - current session)
-[x] 96. Install dotenv package and verify application running (Feb 28, 2026 - latest session)
-[x] 97. Import migration fully verified - all systems running successfully (Feb 28, 2026)
+[x] 98. Update Broker Funds Breakup dialog to minimalist design matching template (Feb 28, 2026)
+[x] 99. Import migration fully verified - all systems running successfully (Feb 28, 2026)

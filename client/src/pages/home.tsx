@@ -24241,62 +24241,70 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         />
         {/* Broker Funds Breakup Dialog */}
   <Dialog open={showBrokerBreakupDialog} onOpenChange={setShowBrokerBreakupDialog}>
-    <DialogContent className="max-w-md bg-white dark:bg-slate-900 border-indigo-500/20">
-      <DialogHeader>
-        <DialogTitle className="text-xl font-bold flex items-center gap-2">
-          <Wallet className="w-5 h-5 text-indigo-500" />
-          Broker Funds Breakup
-        </DialogTitle>
-        <DialogDescription>
-          Detailed view of capital distributed across your connected brokers.
-        </DialogDescription>
-      </DialogHeader>
-      
-      <div className="space-y-4 py-4">
-        {Object.entries(allBrokerFunds).map(([brokerId, funds]) => (
-          <div key={brokerId} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 transition-all hover:border-indigo-500/30 group">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white dark:bg-slate-800 p-1.5 shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-center">
-                <img 
-                  className="w-full h-full object-contain rounded-full" 
-                  src={brokerIconMap[brokerId]} 
-                  alt={brokerId} 
-                />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-slate-900 dark:text-white">{getBrokerDisplayName(brokerId)}</p>
-                <p className="text-[10px] text-slate-500 uppercase tracking-tighter">Live Connection Active</p>
-              </div>
+    <DialogContent className="max-w-[360px] p-0 bg-white dark:bg-[#1a1c2e] border-none rounded-[28px] shadow-2xl overflow-hidden [&>button]:hidden">
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 flex items-center justify-center">
+              <Wallet className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <div className="text-right">
-              <p className="text-base font-black text-indigo-600 dark:text-indigo-400">
-                {brokerId === 'delta' ? '$' : '₹'}{funds.toLocaleString(brokerId === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2 })}
-              </p>
-              <p className="text-[10px] font-bold text-slate-400">
-                {((funds / totalBrokerFunds) * 100).toFixed(1)}% Weight
-              </p>
-            </div>
+            <span className="text-[13px] font-black uppercase tracking-[0.1em] text-slate-800 dark:text-slate-200">Capital Breakup</span>
           </div>
-        ))}
+          <button 
+            onClick={() => setShowBrokerBreakupDialog(false)}
+            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
         
-        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex items-center justify-between px-2">
-            <p className="text-sm font-bold text-slate-500 dark:text-slate-400">Total Consolidated Capital</p>
-            <p className="text-xl font-black text-slate-900 dark:text-white">
-              ₹{totalBrokerFunds.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-            </p>
-          </div>
+        <div className="space-y-3">
+          {Object.entries(allBrokerFunds).map(([brokerId, funds]) => (
+            <div key={brokerId} className="flex items-center justify-between p-4 rounded-[20px] bg-slate-50/50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-700/30 transition-all hover:bg-slate-100/50 dark:hover:bg-slate-800/40">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="w-11 h-11 rounded-full bg-white dark:bg-slate-800 p-1.5 shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-center overflow-hidden">
+                    <img 
+                      className="w-full h-full object-contain rounded-full" 
+                      src={brokerIconMap[brokerId]} 
+                      alt={brokerId} 
+                    />
+                  </div>
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white dark:border-[#1a1c2e]" />
+                </div>
+                <div>
+                  <p className="text-[15px] font-bold text-slate-900 dark:text-white leading-tight">{getBrokerDisplayName(brokerId)}</p>
+                  <p className="text-[12px] text-slate-400 font-medium">Connected</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-[16px] font-black text-slate-900 dark:text-white">
+                  {brokerId === "delta" ? "$" : "₹"}{funds.toLocaleString(brokerId === "delta" ? "en-US" : "en-IN", { minimumFractionDigits: 2 })}
+                </p>
+                <p className="text-[11px] font-bold text-slate-300 dark:text-slate-500">
+                  {((funds / totalBrokerFunds) * 100).toFixed(0)}%
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="mt-8 pt-6 border-t border-slate-50 dark:border-slate-800/50 flex items-center justify-between px-1">
+          <p className="text-[11px] font-black uppercase tracking-[0.1em] text-slate-400 dark:text-slate-500">Total Assets</p>
+          <p className="text-[22px] font-black text-indigo-600 dark:text-indigo-400">
+            ₹{totalBrokerFunds.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+          </p>
+        </div>
+
+        <div className="mt-8">
+          <Button 
+            onClick={() => setShowBrokerBreakupDialog(false)}
+            className="w-full h-14 bg-[#0f172a] hover:bg-[#1e293b] dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white rounded-[18px] text-[16px] font-bold transition-all shadow-xl active:scale-[0.98]"
+          >
+            Dismiss
+          </Button>
         </div>
       </div>
-      
-      <DialogFooter>
-        <Button 
-          onClick={() => setShowBrokerBreakupDialog(false)}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold"
-        >
-          Close Consolidated View
-        </Button>
-      </DialogFooter>
     </DialogContent>
   </Dialog>
 
