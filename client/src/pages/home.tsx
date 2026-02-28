@@ -4269,12 +4269,12 @@ ${
 
   const brokerIconMap: Record<string, string> = {
     zerodha: "https://kite.zerodha.com/static/images/kite-logo.svg",
-    upstox: "https://upstox.com/apple-touch-icon.png",
-    angelone: "https://www.angelone.in/favicon.ico",
-    dhan: "https://dhan.co/wp-content/uploads/2021/07/dhan-logo-fav.png",
-    groww: "https://groww.in/groww-logo-270.png",
-    fyers: "https://fyers.in/wp-content/uploads/2023/05/cropped-fyers-favicon-32x32.png",
-    delta: "https://www.delta.exchange/favicon.ico"
+    upstox: "https://assets.upstox.com/content/assets/images/cms/202494/MediumWordmark_UP(WhiteOnPurple).png",
+    angelone: "https://play-lh.googleusercontent.com/Ic8lUYwMCgTePpo-Gbg0VwE_0srDj1xD386BvQHO_mOwsfMjX8lFBLl0Def28pO_Mvk=s48-rw?v=1701",
+    dhan: "https://play-lh.googleusercontent.com/lVXf_i8Gi3C7eZVWKgeG8U5h_kAzUT0MrmvEAXfM_ihlo44VEk01HgAi6vbBNsSzBQ=w240-h480-rw?v=1701",
+    groww: "https://play-lh.googleusercontent.com/LHjOai6kf1IsstKNWO9jbMxD-ix_FVYaJSLodKCqYQdoFVzQBuV9z5txxzcTagQcyX8=s48-rw",
+    fyers: "https://play-lh.googleusercontent.com/5Y1kVEbboWVeZ4T0l7cjP2nAUbz1_-ImIWKbbdXkJ0-JMpwV7svbG4uEakENWxPQFRWuQgu4tDtaENULAzZW=s48-rw",
+    delta: "https://play-lh.googleusercontent.com/XAQ7c8MRAvy_mOUw8EGS3tQsn95MY7gJxtj-sSoVZ6OYJmjvt7KaGGDyT85UTRpLxL6d=w240-h480-rw"
   };
 
   const getBrokerDisplayName = (id: string) => {
