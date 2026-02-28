@@ -6069,6 +6069,73 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     return 0;
   });
 
+  // Fetch broker funds globally - supports all 4 brokers (Zerodha, Upstox, Angel One, Dhan, Groww, Fyers)
+  useEffect(() => {
+    if (zerodhaAccessToken || upstoxAccessToken || angelOneAccessToken || dhanAccessToken || growwAccessToken || fyersIsConnected) {
+      const fetchBrokerFundsGlobal = async () => {
+        try {
+          // Determine which broker is connected
+          let endpoint = '';
+          let token = '';
+          let broker = '';
+          
+          if (activeBroker === 'zerodha' && zerodhaAccessToken) {
+            endpoint = '/api/zerodha/margins';
+            token = zerodhaAccessToken;
+            broker = 'Zerodha';
+            const apiKey = localStorage.getItem("zerodha_api_key");
+            if (apiKey) endpoint += `?api_key=${encodeURIComponent(apiKey)}`;
+          } else if (activeBroker === 'upstox' && upstoxAccessToken) {
+            endpoint = '/api/broker/upstox/margins';
+            token = upstoxAccessToken;
+            broker = 'Upstox';
+          } else if (activeBroker === 'angelone' && angelOneAccessToken) {
+            endpoint = '/api/broker/angelone/margins';
+            token = angelOneAccessToken;
+            broker = 'Angel One';
+          } else if (activeBroker === 'dhan' && dhanAccessToken) {
+            endpoint = '/api/broker/dhan/margins';
+            token = dhanAccessToken;
+            broker = 'Dhan';
+          } else if (activeBroker === 'groww' && growwAccessToken) {
+            endpoint = `/api/broker/groww/funds?accessToken=${growwAccessToken}`;
+            token = growwAccessToken;
+            broker = 'Groww';
+          } else if (activeBroker === 'fyers' && fyersIsConnected) {
+            endpoint = '/api/fyers/positions'; // Using positions as proxy if specific margins missing
+            token = 'fyers_connected';
+            broker = 'Fyers';
+          }
+          
+          if (!endpoint) return;
+          
+          const response = await fetch(endpoint, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await response.json();
+          const funds = data.availableCash || data.availableFunds || data.funds || 0;
+          setBrokerFunds(funds);
+          
+          // Persist to query cache for consistency across components
+          if (activeBroker === 'groww') {
+            queryClient.setQueryData(["/api/broker/groww/funds"], { funds });
+          }
+          
+          console.log('✅ [GLOBAL-FUNDS]', broker, 'Fetched available funds:', funds);
+        } catch (error) {
+          console.error('❌ [GLOBAL-FUNDS] Error fetching broker funds:', error);
+        }
+      };
+      
+      // Fetch funds immediately
+      fetchBrokerFundsGlobal();
+      
+      // Set up background polling every 5 seconds
+      const pollInterval = setInterval(fetchBrokerFundsGlobal, 5000);
+      return () => clearInterval(pollInterval);
+    }
+  }, [activeBroker, zerodhaAccessToken, upstoxAccessToken, angelOneAccessToken, dhanAccessToken, growwAccessToken, fyersIsConnected]);
+
   // Paper trading position interface
   interface PaperPosition {
     id: string;
