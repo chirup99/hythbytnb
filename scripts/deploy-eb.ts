@@ -11,8 +11,8 @@ import * as path from 'path';
 
 const APPLICATION_NAME = 'perala-ai';
 const ENVIRONMENT_NAME = 'Peralai-env'; // Default EB environment name pattern
-const S3_BUCKET = 'elasticbeanstalk-eu-north-1-' + process.env.AWS_ACCOUNT_ID || 'perala-ai-deployments';
-const REGION = process.env.AWS_REGION || 'eu-north-1';
+const S3_BUCKET = 'elasticbeanstalk-ap-south-1-' + process.env.AWS_ACCOUNT_ID || 'perala-ai-deployments';
+const REGION = process.env.AWS_REGION || 'ap-south-1';
 
 async function deploy() {
   console.log('🚀 Starting AWS Elastic Beanstalk deployment...');

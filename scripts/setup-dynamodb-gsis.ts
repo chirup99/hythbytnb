@@ -7,7 +7,7 @@ async function main() {
   const command = process.argv[2];
 
   console.log('🔧 DynamoDB GSI Management Tool\n');
-  console.log('AWS Region:', process.env.AWS_REGION || 'eu-north-1');
+  console.log('AWS Region:', process.env.AWS_REGION || 'ap-south-1');
   console.log('---\n');
 
   if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {

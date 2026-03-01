@@ -17,10 +17,10 @@ This document provides a comprehensive analysis of AWS services configuration be
 ### Current Configuration
 | Setting | Value | Status |
 |---------|-------|--------|
-| Region | eu-north-1 | OK |
-| User Pool ID | eu-north-1_rXrrnI6cZ | OK |
+| Region | ap-south-1 | OK |
+| User Pool ID | ap-south-1_rXrrnI6cZ | OK |
 | App Client ID | 65plb5ei051fh8qr52mispdqq | OK |
-| Domain | tradingplatform-531503.auth.eu-north-1.amazoncognito.com | OK |
+| Domain | tradingplatform-531503.auth.ap-south-1.amazoncognito.com | OK |
 
 ### Cognito Features Checklist
 
@@ -162,7 +162,7 @@ npx tsx scripts/setup-dynamodb-gsis.ts check
 | Setting | Value |
 |---------|-------|
 | Bucket Name | neofeed-profile-images |
-| Region | eu-north-1 |
+| Region | ap-south-1 |
 | Purpose | Profile images, banners |
 
 ### S3 Checklist
@@ -254,7 +254,7 @@ Copy these from Replit Secrets to Elastic Beanstalk Environment Variables:
 # AWS Core
 AWS_ACCESS_KEY_ID=<from secrets>
 AWS_SECRET_ACCESS_KEY=<from secrets>
-AWS_REGION=eu-north-1
+AWS_REGION=ap-south-1
 
 # Cognito
 AWS_COGNITO_USER_POOL_ID=eu-north-1_rXrrnI6cZ
