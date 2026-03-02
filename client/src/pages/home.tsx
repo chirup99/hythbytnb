@@ -23284,7 +23284,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             
                                                           <CardContent className="p-6 relative z-10">
                                 {(() => {
-                                  const isDemoMode = localStorage.getItem('tradebook_mode') === 'demo';
+                                  // Use the component's isDemoMode state instead of local storage check
                                   const effectiveIsConnected = isConnected || isDemoMode;
                                   const displayFunds = isDemoMode ? 42000 : (Number(totalBrokerFunds) || 0);
                                   const displayBrokerFunds = isDemoMode ? {
