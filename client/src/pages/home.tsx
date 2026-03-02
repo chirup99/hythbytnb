@@ -23281,134 +23281,148 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               </div>
                             </CardHeader>
                             
-                            <CardContent className="p-6 relative z-10">
-                              {isConnected ? (
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                  {/* Available Cash Card */}
-                                  <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-5 rounded-2xl border border-white/40 dark:border-white/10 shadow-sm group hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                                    <div className="flex items-center justify-between mb-4">
-                                      <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-600 dark:text-emerald-400">
-                                        <Banknote className="w-5 h-5" />
+                            
+                                                          <CardContent className="p-6 relative z-10">
+                                {(() => {
+                                  const isDemoMode = localStorage.getItem('tradebook_mode') === 'demo';
+                                  const effectiveIsConnected = isConnected || isDemoMode;
+                                  const displayFunds = isDemoMode ? 42000 : (Number(totalBrokerFunds) || 0);
+                                  const displayBrokerFunds = isDemoMode ? {
+                                    'zerodha': 25000,
+                                    'upstox': 17000
+                                  } : allBrokerFunds;
+
+                                  if (!effectiveIsConnected) {
+                                    return (
+                                      <div className="flex flex-col items-center justify-center py-12 text-center bg-white/30 dark:bg-slate-900/30 rounded-3xl border border-dashed border-indigo-500/30">
+                                        <div className="relative mb-6">
+                                          <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-2xl animate-pulse" />
+                                          <div className="relative p-6 bg-indigo-500/10 rounded-full border border-indigo-500/20">
+                                            <Wallet className="w-12 h-12 text-indigo-500" />
+                                          </div>
+                                        </div>
+                                        <h4 className="text-xl font-bold text-slate-800 dark:text-white mb-2">No Data Available</h4>
+                                        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md px-6">
+                                          Connect your broker to view real-time funds analysis, margin utilization, and capital monitoring.
+                                        </p>
+                                        <Button 
+                                          onClick={() => setShowConnectDialog(true)}
+                                          className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white px-8 rounded-full font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-indigo-500/25"
+                                        >
+                                          Connect Broker Now
+                                        </Button>
                                       </div>
-                                      <Badge variant="outline" className="bg-emerald-500/5 text-emerald-600 border-emerald-500/20">Available Cash</Badge>
-                                    </div>
-                                    <div className="space-y-1">
-                                      <div className="flex items-center justify-between">
-                                        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Net Balance</p>
-                                        
-                                        {/* Multi-broker icons row */}
-                                        {Object.keys(allBrokerFunds).length > 0 && (
-                                          <div 
-                                            onClick={() => setShowBrokerBreakupDialog(true)}
-                                            className="flex -space-x-2 overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
-                                          >
-                                            {Object.keys(allBrokerFunds).map((brokerId) => (
+                                    );
+                                  }
+
+                                  return (
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                      {/* Available Cash Card */}
+                                      <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-5 rounded-2xl border border-white/40 dark:border-white/10 shadow-sm group hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                                        <div className="flex items-center justify-between mb-4">
+                                          <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-600 dark:text-emerald-400">
+                                            <Banknote className="w-5 h-5" />
+                                          </div>
+                                          <div className="flex flex-col items-end gap-1">
+                                            <Badge variant="outline" className="bg-emerald-500/5 text-emerald-600 border-emerald-500/20">Available Cash</Badge>
+                                            
+                                            {/* Multi-broker icons row */}
+                                            {Object.keys(displayBrokerFunds).length > 0 && (
                                               <div 
-                                                key={brokerId}
-                                                className="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 bg-white p-0.5"
-                                                title={getBrokerDisplayName(brokerId)}
+                                                onClick={() => setShowBrokerBreakupDialog(true)}
+                                                className="flex -space-x-2 overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
                                               >
-                                                <img 
-                                                  className="h-full w-full rounded-full object-contain" 
-                                                  src={brokerIconMap[brokerId]} 
-                                                  alt={brokerId} 
-                                                />
-                                              </div>
-                                            ))}
-                                            {Object.keys(allBrokerFunds).length > 3 && (
-                                              <div className="flex items-center justify-center h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-600 dark:text-slate-400">
-                                                +{Object.keys(allBrokerFunds).length - 3}
+                                                {Object.keys(displayBrokerFunds).map((brokerId) => (
+                                                  <div 
+                                                    key={brokerId}
+                                                    className="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 bg-white p-0.5"
+                                                    title={getBrokerDisplayName(brokerId)}
+                                                  >
+                                                    <img 
+                                                      className="h-full w-full rounded-full object-contain" 
+                                                      src={brokerIconMap[brokerId]} 
+                                                      alt={brokerId} 
+                                                    />
+                                                  </div>
+                                                ))}
+                                                {Object.keys(displayBrokerFunds).length > 3 && (
+                                                  <div className="flex items-center justify-center h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-600 dark:text-slate-400">
+                                                    +{Object.keys(displayBrokerFunds).length - 3}
+                                                  </div>
+                                                )}
                                               </div>
                                             )}
                                           </div>
-                                        )}
+                                        </div>
+                                        <div className="space-y-1">
+                                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Net Balance</p>
+                                          <h4 className="text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-1">
+                                            {activeBroker === 'delta' ? '$' : '₹'}
+                                            {displayFunds.toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                          </h4>
+                                        </div>
+                                        <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                          <span>Updated Just Now</span>
+                                          <div className="flex gap-1">
+                                            <div className="w-1 h-1 rounded-full bg-emerald-500" />
+                                            <div className="w-1 h-1 rounded-full bg-emerald-500/40" />
+                                            <div className="w-1 h-1 rounded-full bg-emerald-500/20" />
+                                          </div>
+                                        </div>
                                       </div>
                                       
-                                      <h4 className="text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-1">
-                                        {activeBroker === 'delta' ? '$' : '₹'}
-                                        {(Number(totalBrokerFunds) || 0).toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                      </h4>
-                                    </div>
-                                    <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                      <span>Updated Just Now</span>
-                                      <div className="flex gap-1">
-                                        <div className="w-1 h-1 rounded-full bg-emerald-500" />
-                                        <div className="w-1 h-1 rounded-full bg-emerald-500/40" />
-                                        <div className="w-1 h-1 rounded-full bg-emerald-500/20" />
+                                      {/* Utilized Funds Card */}
+                                      <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-5 rounded-2xl border border-white/40 dark:border-white/10 shadow-sm group hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                                        <div className="flex items-center justify-between mb-4">
+                                          <div className="p-2 bg-amber-500/10 rounded-lg text-amber-600 dark:text-amber-400">
+                                            <TrendingUp className="w-5 h-5" />
+                                          </div>
+                                          <Badge variant="outline" className="bg-amber-500/5 text-amber-600 border-amber-500/20">Utilized</Badge>
+                                        </div>
+                                        <div className="space-y-1">
+                                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Margin Used</p>
+                                          <h4 className="text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-1">
+                                            {activeBroker === 'delta' ? '$' : '₹'}0.00
+                                          </h4>
+                                        </div>
+                                        <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                          <span>Live Exposure</span>
+                                          <div className="flex gap-1">
+                                            <div className="w-1 h-1 rounded-full bg-amber-500" />
+                                            <div className="w-1 h-1 rounded-full bg-amber-500/40" />
+                                            <div className="w-1 h-1 rounded-full bg-amber-500/20" />
+                                          </div>
+                                        </div>
                                       </div>
-                                    </div>
-                                  </div>
 
-                                  {/* Utilized Funds Card */}
-                                  <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-5 rounded-2xl border border-white/40 dark:border-white/10 shadow-sm group hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                                    <div className="flex items-center justify-between mb-4">
-                                      <div className="p-2 bg-amber-500/10 rounded-lg text-amber-600 dark:text-amber-400">
-                                        <TrendingUp className="w-5 h-5" />
-                                      </div>
-                                      <Badge variant="outline" className="bg-amber-500/5 text-amber-600 border-amber-500/20">Utilized</Badge>
-                                    </div>
-                                    <div className="space-y-1">
-                                      <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Margin Used</p>
-                                      <h4 className="text-2xl font-black text-slate-900 dark:text-white flex items-baseline gap-1">
-                                        {activeBroker === 'delta' ? '$' : '₹'}0.00
-                                      </h4>
-                                    </div>
-                                    <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                      <span>Live Exposure</span>
-                                      <div className="flex gap-1">
-                                        <div className="w-1 h-1 rounded-full bg-amber-500" />
-                                        <div className="w-1 h-1 rounded-full bg-amber-500/40" />
-                                        <div className="w-1 h-1 rounded-full bg-amber-500/20" />
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  {/* P&L Impact Card */}
-                                  <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-5 rounded-2xl border border-white/40 dark:border-white/10 shadow-sm group hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                                    <div className="flex items-center justify-between mb-4">
-                                      <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-600 dark:text-indigo-400">
-                                        <Activity className="w-5 h-5" />
-                                      </div>
-                                      <Badge variant="outline" className="bg-indigo-500/5 text-indigo-600 border-indigo-500/20">P&L Impact</Badge>
-                                    </div>
-                                    <div className="space-y-1">
-                                      <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Unrealized P&L</p>
-                                      <h4 className={`text-2xl font-black flex items-baseline gap-1 ${performanceMetrics.netPnL >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                        {activeBroker === 'delta' ? '$' : '₹'}
-                                        {performanceMetrics.netPnL.toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                      </h4>
-                                    </div>
-                                    <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                      <span>Current Session</span>
-                                      <div className="flex gap-1">
-                                        <div className="w-1 h-1 rounded-full bg-indigo-500" />
-                                        <div className="w-1 h-1 rounded-full bg-indigo-500/40" />
-                                        <div className="w-1 h-1 rounded-full bg-indigo-500/20" />
+                                      {/* P&L Impact Card */}
+                                      <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-5 rounded-2xl border border-white/40 dark:border-white/10 shadow-sm group hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                                        <div className="flex items-center justify-between mb-4">
+                                          <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-600 dark:text-indigo-400">
+                                            <Activity className="w-5 h-5" />
+                                          </div>
+                                          <Badge variant="outline" className="bg-indigo-500/5 text-indigo-600 border-indigo-500/20">P&L Impact</Badge>
+                                        </div>
+                                        <div className="space-y-1">
+                                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Unrealized P&L</p>
+                                          <h4 className={`text-2xl font-black flex items-baseline gap-1 ${performanceMetrics.netPnL >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                            {activeBroker === 'delta' ? '$' : '₹'}
+                                            {performanceMetrics.netPnL.toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                          </h4>
+                                        </div>
+                                        <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                          <span>Current Session</span>
+                                          <div className="flex gap-1">
+                                            <div className="w-1 h-1 rounded-full bg-indigo-500" />
+                                            <div className="w-1 h-1 rounded-full bg-indigo-500/40" />
+                                            <div className="w-1 h-1 rounded-full bg-indigo-500/20" />
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="flex flex-col items-center justify-center py-12 text-center bg-white/30 dark:bg-slate-900/30 rounded-3xl border border-dashed border-indigo-500/30">
-                                  <div className="relative mb-6">
-                                    <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-2xl animate-pulse" />
-                                    <div className="relative p-6 bg-indigo-500/10 rounded-full border border-indigo-500/20">
-                                      <Wallet className="w-12 h-12 text-indigo-500" />
-                                    </div>
-                                  </div>
-                                  <h4 className="text-xl font-bold text-slate-800 dark:text-white mb-2">No Data Available</h4>
-                                  <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md px-6">
-                                    Connect your broker to view real-time funds analysis, margin utilization, and capital monitoring.
-                                  </p>
-                                  <Button 
-                                    onClick={() => setShowConnectDialog(true)}
-                                    className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white px-8 rounded-full font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-indigo-500/25"
-                                  >
-                                    Connect Broker Now
-                                  </Button>
-                                </div>
-                              )}
-                            </CardContent>
+                                  );
+                                })()}
+                              </CardContent>
                           </Card>
                         </div>
 
@@ -24378,8 +24392,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         </div>
         
         <div className="space-y-2">
-          {Object.entries(allBrokerFunds)
-            .filter(([_, funds]) => funds > 0)
+          {(isDemoMode ? ([['zerodha', 25000], ['upstox', 17000]]) : Object.entries(allBrokerFunds))
+            .filter(([_, funds]) => (funds as number) > 0)
             .map(([brokerId, funds]) => (
             <div key={brokerId} className="flex items-center justify-between p-3 rounded-[18px] bg-slate-50/50 dark:bg-slate-800/20 border border-slate-100/30 dark:border-slate-700/20">
               <div className="flex items-center gap-2.5">
@@ -24400,10 +24414,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
               </div>
               <div className="text-right">
                 <p className="text-[14px] font-black text-slate-900 dark:text-white">
-                  {brokerId === "delta" ? "$" : "₹"}{funds.toLocaleString(brokerId === "delta" ? "en-US" : "en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  {brokerId === "delta" ? "$" : "₹"}{(funds as number).toLocaleString(brokerId === "delta" ? "en-US" : "en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
                 <p className="text-[9px] font-bold text-slate-300 dark:text-slate-500">
-                  {((funds / totalBrokerFunds) * 100).toFixed(0)}%
+                  {(( (funds as number) / (isDemoMode ? 42000 : totalBrokerFunds)) * 100).toFixed(0)}%
                 </p>
               </div>
             </div>
@@ -24413,7 +24427,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
         <div className="mt-5 pt-4 border-t border-slate-50 dark:border-slate-800/30 flex items-center justify-between px-1">
           <p className="text-[10px] font-black uppercase tracking-[0.05em] text-slate-400 dark:text-slate-500">Total Assets</p>
           <p className="text-[18px] font-black text-indigo-600 dark:text-indigo-400">
-            ₹{totalBrokerFunds.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            ₹{(isDemoMode ? 42000 : totalBrokerFunds).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
         </div>
 
