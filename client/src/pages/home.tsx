@@ -23524,7 +23524,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   const exchange = tradeValue * 0.0003503; // 0.03503%
                                                   const sebi = tradeValue * 0.0000001; // ₹10 per crore (0.0001%)
                                                   const ipft = tradeValue * 0.000005; // 0.0005%
-                                                  const gst = (brokerage + stt + exchange + sebi + ipft) * 0.18; // 18% GST
+                                                  const gst = (brokerage + exchange + sebi + ipft) * 0.18; // 18% GST
 
                                                   return acc + brokerage + stt + exchange + sebi + stamp + ipft + gst;
                                                 }, 0) || 0;
@@ -28511,7 +28511,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         stamp = 0;
                       }
                       
-                      const gst = (brokerage + stt + exchange + sebi + ipft) * 0.18;
+                      const gst = (brokerage + exchange + sebi + ipft) * 0.18;
                       const totalCharges = brokerage + stt + exchange + sebi + stamp + ipft + gst;
                       
                       return (
