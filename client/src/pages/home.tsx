@@ -23491,6 +23491,17 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             {activeBroker === 'delta' ? '$' : '₹'}
                                             {performanceMetrics.netPnL.toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                           </h4>
+                                          <div className="flex items-center gap-1 mt-1">
+                                            <span className="text-[10px] font-medium text-slate-400 uppercase">Est. Brokerage:</span>
+                                            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                                              {activeBroker === 'delta' ? '$' : '₹'}
+                                              {(() => {
+                                                const tradeCount = tradeHistoryData?.length || 0;
+                                                const estBrokerage = tradeCount * 40; // ₹20 buy + ₹20 sell per trade
+                                                return estBrokerage.toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                              })()}
+                                            </span>
+                                          </div>
                                         </div>
                                         <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                                           <span>Current Session</span>

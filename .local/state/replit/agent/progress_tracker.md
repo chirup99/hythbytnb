@@ -146,3 +146,4 @@
 [x] 148. Install npm dependencies and verify application running on port 5000 (Mar 07, 2026)
 [x] 149. Import migration fully verified - all systems running successfully (Mar 07, 2026)
 [x] 150. Add "Incl. Brokerage" label and charges info dialog to Unrealized P&L (Mar 07, 2026)
+[x] 151. Display real-time estimated brokerage charges based on trade history (Mar 07, 2026)
