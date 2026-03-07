@@ -28541,58 +28541,69 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                       const price = parseFloat(trade.price) || 0;
                       const qty = parseInt(trade.qty) || 0;
                       const tradeValue = price * qty;
-                      const brokerage = 20;
                       
-                      // Detect if trade is Options or Futures based on symbol
-                      // Options typically have strike prices (digits) or C/P for call/put
-                      // e.g., "BANKNIFTY2500C", "NIFTY50FEB2500P"
+                      // Detect trade type from symbol
+                      // Futures: contains "FUT" (e.g., CRUDEOILM18DEC25FUT)
+                      // Options: contains "CE" or "PE" (e.g., SENSEX15AUGPE)
+                      // Equity: everything else
                       const symbol = (trade.symbol || trade.name || '').toUpperCase();
-                      const isOptions = /(\d{4,5}[CP])|(\w+[CP]\d)/.test(symbol);
+                      const isFutures = /FUT/.test(symbol);
+                      const isOptions = /(CE|PE)/.test(symbol);
+                      const isEquity = !isFutures && !isOptions;
                       
+                      let brokerage = 20;
                       let stt = 0;
                       let stamp = 0;
                       let exchange = 0;
                       let sebi = 0;
                       let ipft = 0;
                       
-                      if (isOptions) {
-                        // OPTIONS CHARGES
+                      if (isEquity) {
+                        // EQUITY CHARGES (Delivery or Intraday)
+                        brokerage = 20; // 0.03% or ₹20 whichever is lower
                         if (isBuy) {
-                          // BUY SIDE CHARGES (Options)
-                          stamp = tradeValue * 0.00003; // 0.003%
-                          exchange = tradeValue * 0.0003503; // 0.03503%
+                          stamp = tradeValue * 0.0001; // 0.01% on buy side
+                          exchange = tradeValue * 0.00307; // 0.00307% NSE
                           sebi = tradeValue * 0.0000001; // ₹10 per crore
-                          ipft = tradeValue * 0.000005; // 0.0005%
                           stt = 0;
                         } else {
-                          // SELL SIDE CHARGES (Options - STT on premium)
-                          stt = tradeValue * 0.001; // 0.1% on sell premium
-                          exchange = tradeValue * 0.0003503; // 0.03503%
+                          stt = tradeValue * 0.001; // 0.1% on sell
+                          exchange = tradeValue * 0.00307; // 0.00307% NSE
                           sebi = tradeValue * 0.0000001; // ₹10 per crore
-                          ipft = tradeValue * 0.000005; // 0.0005%
                           stamp = 0;
                         }
-                      } else {
+                      } else if (isFutures) {
                         // FUTURES CHARGES
+                        brokerage = 20; // 0.03% or ₹20 whichever is lower
                         if (isBuy) {
-                          // BUY SIDE CHARGES (Futures)
-                          stamp = tradeValue * 0.00002; // 0.002%
-                          exchange = tradeValue * 0.0000173; // 0.00173%
+                          stamp = tradeValue * 0.00002; // 0.002% on buy side
+                          exchange = tradeValue * 0.0000183; // 0.00183% NSE
                           sebi = tradeValue * 0.0000001; // ₹10 per crore
-                          ipft = tradeValue * 0.000001; // 0.0001%
                           stt = 0;
                         } else {
-                          // SELL SIDE CHARGES (Futures - STT on sell value)
-                          stt = tradeValue * 0.0002; // 0.02% on sell value
-                          exchange = tradeValue * 0.0000173; // 0.00173%
+                          stt = tradeValue * 0.0002; // 0.02% on sell
+                          exchange = tradeValue * 0.0000183; // 0.00183% NSE
                           sebi = tradeValue * 0.0000001; // ₹10 per crore
-                          ipft = tradeValue * 0.000001; // 0.0001%
+                          stamp = 0;
+                        }
+                      } else if (isOptions) {
+                        // OPTIONS CHARGES (F&O)
+                        brokerage = 20; // Flat ₹20 per executed order
+                        if (isBuy) {
+                          stamp = tradeValue * 0.00003; // 0.003% or ₹300/crore on buy side
+                          exchange = tradeValue * 0.0003553; // 0.03553% NSE
+                          sebi = tradeValue * 0.0000001; // ₹10 per crore
+                          stt = 0;
+                        } else {
+                          stt = tradeValue * 0.001; // 0.1% on sell (premium)
+                          exchange = tradeValue * 0.0003553; // 0.03553% NSE
+                          sebi = tradeValue * 0.0000001; // ₹10 per crore
                           stamp = 0;
                         }
                       }
                       
-                      const gst = (brokerage + exchange + sebi + ipft) * 0.18;
-                      const totalCharges = brokerage + stt + exchange + sebi + stamp + ipft + gst;
+                      const gst = (brokerage + exchange + sebi) * 0.18;
+                      const totalCharges = brokerage + stt + exchange + sebi + stamp + gst;
                       
                       return (
                         <tr 
@@ -28637,32 +28648,40 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </table>
               </div>
               <div className="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-lg">
-                <h4 className="font-semibold text-sm mb-3">Charge Types:</h4>
-                <div className="space-y-3">
+                <h4 className="font-semibold text-sm mb-3">Charge Types by Trade Type:</h4>
+                <div className="space-y-4">
                   <div>
-                    <h5 className="font-semibold text-xs text-slate-700 dark:text-slate-300 mb-1">Futures:</h5>
+                    <h5 className="font-semibold text-xs text-slate-700 dark:text-slate-300 mb-1">Equity:</h5>
                     <ul className="text-xs space-y-1 text-slate-600 dark:text-slate-400 ml-2">
-                      <li>• <strong>Brokerage:</strong> ₹20 per trade</li>
+                      <li>• <strong>Brokerage:</strong> ₹20 per trade (0.03% or ₹20 whichever is lower)</li>
+                      <li>• <strong>STT:</strong> 0.1% on sell side</li>
+                      <li>• <strong>Transaction:</strong> 0.00307% NSE</li>
+                      <li>• <strong>Stamp Duty:</strong> 0.01% on buy side</li>
+                      <li>• <strong>SEBI:</strong> ₹10 per crore</li>
+                      <li>• <strong>GST:</strong> 18% on (Brokerage + Exchange + SEBI)</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-xs text-slate-700 dark:text-slate-300 mb-1">Futures (Symbol contains "FUT"):</h5>
+                    <ul className="text-xs space-y-1 text-slate-600 dark:text-slate-400 ml-2">
+                      <li>• <strong>Brokerage:</strong> ₹20 per trade (0.03% or ₹20 whichever is lower)</li>
                       <li>• <strong>STT:</strong> 0.02% on sell value</li>
-                      <li>• <strong>Exchange:</strong> 0.00173% of turnover</li>
-                      <li>• <strong>SEBI:</strong> ₹10 per crore (0.00001%)</li>
+                      <li>• <strong>Transaction:</strong> 0.00183% NSE</li>
                       <li>• <strong>Stamp Duty:</strong> 0.002% on buy side</li>
-                      <li>• <strong>IPFT:</strong> 0.0001% of turnover</li>
+                      <li>• <strong>SEBI:</strong> ₹10 per crore</li>
+                      <li>• <strong>GST:</strong> 18% on (Brokerage + Exchange + SEBI)</li>
                     </ul>
                   </div>
                   <div>
-                    <h5 className="font-semibold text-xs text-slate-700 dark:text-slate-300 mb-1">Options:</h5>
+                    <h5 className="font-semibold text-xs text-slate-700 dark:text-slate-300 mb-1">Options (Symbol contains "CE" or "PE"):</h5>
                     <ul className="text-xs space-y-1 text-slate-600 dark:text-slate-400 ml-2">
-                      <li>• <strong>Brokerage:</strong> ₹20 per trade</li>
-                      <li>• <strong>STT:</strong> 0.1% on sell premium</li>
-                      <li>• <strong>Exchange:</strong> 0.03503% of premium</li>
-                      <li>• <strong>SEBI:</strong> ₹10 per crore (0.0001%)</li>
+                      <li>• <strong>Brokerage:</strong> Flat ₹20 per executed order</li>
+                      <li>• <strong>STT:</strong> 0.1% on sell side (premium)</li>
+                      <li>• <strong>Transaction:</strong> 0.03553% NSE</li>
                       <li>• <strong>Stamp Duty:</strong> 0.003% on buy side</li>
-                      <li>• <strong>IPFT:</strong> 0.0005% of turnover</li>
+                      <li>• <strong>SEBI:</strong> ₹10 per crore</li>
+                      <li>• <strong>GST:</strong> 18% on (Brokerage + Exchange + SEBI)</li>
                     </ul>
-                  </div>
-                  <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
-                    <li className="text-xs text-slate-600 dark:text-slate-400 list-none">• <strong>GST:</strong> 18% on (Brokerage + Exchange + SEBI + IPFT)</li>
                   </div>
                 </div>
               </div>
