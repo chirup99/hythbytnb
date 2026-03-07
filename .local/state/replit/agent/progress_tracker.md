@@ -164,3 +164,9 @@
 [x] 166. Fixed GST calculation formula - excluded STT from GST calculation (GST = 18% × (Brokerage + Exchange + SEBI + IPFT)) (Mar 07, 2026)
 [x] 167. Install dotenv package and verify application running (current migration session)
 [x] 168. Import migration fully complete - application running successfully on port 5000 (current session)
+[x] 169. Implement dynamic username availability check with real-time validation
+[x] 170. Added checkUsernameAvailability function to profile dropdown
+[x] 171. Updated username input field UI to show dynamic status (available/taken)
+[x] 172. Made save button clickable only when username is available
+[x] 173. Added visual feedback with spinner, checkmark, and X icons for username status
+[x] 174. Verified application running successfully with dynamic username check

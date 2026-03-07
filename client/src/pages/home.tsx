@@ -2297,6 +2297,24 @@ export default function Home() {
     }
   };
 
+  const checkUsernameAvailability = async (username: string) => {
+    if (!username || username.length < 3) {
+      setIsUsernameAvailable(null);
+      return;
+    }
+    setIsCheckingUsername(true);
+    try {
+      const response = await fetch(`/api/user/check-username/${username}`);
+      const data = await response.json();
+      setIsUsernameAvailable(data.available);
+    } catch (error) {
+      console.error("Username check error:", error);
+      setIsUsernameAvailable(null);
+    } finally {
+      setIsCheckingUsername(false);
+    }
+  };
+
   // Mobile bottom navigation state (home, insight, ranking, paper-trade)
   const [mobileBottomTab, setMobileBottomTab] = useState<
     "home" | "insight" | "ranking" | "paper-trade"
@@ -14625,13 +14643,47 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <div className="flex flex-col group relative">
                                 <span className="text-xs text-gray-400 uppercase tracking-wider">username</span>
                                 {isEditingUsername ? (
-                                  <div className="relative flex items-center gap-2">
+                                  <div className="relative flex flex-col gap-2 w-full">
                                     <div className="relative w-full">
-                                      <Input value={newUsername} onChange={(e) => setNewUsername(e.target.value)} className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" autoFocus />
-                                      <button onClick={async (e) => { e.stopPropagation(); await handleUpdateProfile({ username: newUsername }); setIsEditingUsername(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10">
-                                        <CheckCircle className="h-4 w-4 text-green-400" />
-                                      </button>
+                                      <Input 
+                                        value={newUsername} 
+                                        onChange={(e) => {
+                                          setNewUsername(e.target.value);
+                                          checkUsernameAvailability(e.target.value);
+                                        }} 
+                                        className="h-8 bg-gray-800 border-gray-700 text-white pr-10 w-full" 
+                                        autoFocus
+                                        data-testid="input-username-edit"
+                                      />
+                                      {isCheckingUsername ? (
+                                        <div className="absolute right-2 top-1/2 -translate-y-1/2 p-1">
+                                          <div className="h-4 w-4 border-2 border-gray-500 border-t-blue-400 rounded-full animate-spin" />
+                                        </div>
+                                      ) : isUsernameAvailable === true ? (
+                                        <button 
+                                          onClick={async (e) => { 
+                                            e.stopPropagation(); 
+                                            await handleUpdateProfile({ username: newUsername }); 
+                                            setIsEditingUsername(false);
+                                            setIsUsernameAvailable(null);
+                                          }} 
+                                          className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-md transition-all z-10"
+                                          data-testid="button-save-username"
+                                        >
+                                          <CheckCircle className="h-4 w-4 text-green-400" />
+                                        </button>
+                                      ) : isUsernameAvailable === false ? (
+                                        <div className="absolute right-2 top-1/2 -translate-y-1/2 p-1 cursor-not-allowed">
+                                          <X className="h-4 w-4 text-red-400" />
+                                        </div>
+                                      ) : null}
                                     </div>
+                                    {isUsernameAvailable === false && (
+                                      <span className="text-xs text-red-400">Username taken</span>
+                                    )}
+                                    {isUsernameAvailable === true && newUsername.length >= 3 && (
+                                      <span className="text-xs text-green-400">Available now</span>
+                                    )}
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-2 group">
@@ -14640,9 +14692,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         setNewUsername(currentUser?.username || "");
+                                        setIsUsernameAvailable(null);
                                         setIsEditingUsername(true);
                                       }}
                                       className="p-1 hover:bg-white/10 rounded-md transition-all"
+                                      data-testid="button-edit-username"
                                     >
                                       <Pencil className="h-3 w-3 text-blue-400 opacity-0 group-hover:opacity-100" />
                                     </button>
@@ -23408,7 +23462,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <div className="flex items-center justify-between">
                                             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Unrealized P&L</p>
                                             <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-                                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">Incl. Brokerage</span>
+                                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">Inff. Brokerage</span>
                                               <Dialog>
                                                 <DialogTrigger asChild>
                                                   <button className="text-slate-400 hover:text-indigo-500 transition-colors">
@@ -23431,7 +23485,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     <div className="rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
                                                       <div className="bg-slate-50 dark:bg-slate-800/50 px-4 py-2 border-b border-slate-200 dark:border-slate-800">
                                                         <h4 className="text-sm font-bold flex items-center gap-2">
-                                                          <span>2️⃣</span> Government & Exchange Charges
+                                                          <span></span> Government & Exchange Charges
                                                         </h4>
                                                       </div>
                                                       <div className="overflow-x-auto">
