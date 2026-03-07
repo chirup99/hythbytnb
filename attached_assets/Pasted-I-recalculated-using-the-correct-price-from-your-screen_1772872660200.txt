@@ -1,0 +1,186 @@
+I recalculated using the **correct price from your screenshot (₹483)** for the first trade. Let’s compute **all 3 trades accurately**. 📊
+
+Rates used (typical F&O):
+
+* Brokerage = **₹40 per trade**
+* STT = **0.1% on sell value**
+* Exchange = **0.03503%**
+* SEBI = **0.0001%**
+* Stamp duty = **0.003% (buy)**
+* GST = **18%**
+* IPFT ≈ **0.0005%**
+
+---
+
+# Trade 1
+
+BUY **440 @ ₹483**
+SELL **440 @ ₹457.35**
+
+### Values
+
+Buy value
+483 × 440 = **₹212,520**
+
+Sell value
+457.35 × 440 = **₹201,234**
+
+Loss before charges
+= **−₹11,286**
+
+Turnover
+(483 + 457.35) × 440
+= **₹413,754**
+
+### Charges
+
+Brokerage = **₹40**
+
+STT
+201,234 × 0.1%
+= **₹201.23**
+
+Exchange
+413,754 × 0.03503%
+≈ **₹144.94**
+
+SEBI
+≈ **₹0.41**
+
+Stamp duty
+212,520 × 0.003%
+≈ **₹6.38**
+
+IPFT
+≈ **₹2.07**
+
+GST
+18% × (40 + 144.94 + 0.41 + 2.07)
+≈ **₹33.77**
+
+### Total Charges
+
+**≈ ₹428.8**
+
+### Net Loss
+
+**−₹11,714.8**
+
+---
+
+# Trade 2
+
+BUY **420 @ ₹492**
+SELL **420 @ ₹452.78**
+
+### Values
+
+Buy value
+492 × 420 = **₹206,640**
+
+Sell value
+452.78 × 420 = **₹190,167.60**
+
+Loss before charges
+= **−₹16,472.40**
+
+Turnover
+= **₹396,807.60**
+
+### Charges
+
+Brokerage = **₹40**
+
+STT = **₹190.17**
+
+Exchange = **₹139.00**
+
+SEBI = **₹0.40**
+
+Stamp duty = **₹6.20**
+
+IPFT = **₹1.98**
+
+GST = **₹32.65**
+
+### Total Charges
+
+**≈ ₹410.4**
+
+### Net Loss
+
+**−₹16,882.8**
+
+---
+
+# Trade 3
+
+BUY **360 @ ₹539**
+SELL **360 @ ₹568.96**
+
+### Values
+
+Buy value
+539 × 360 = **₹194,040**
+
+Sell value
+568.96 × 360 = **₹204,825.60**
+
+Profit before charges
+= **₹10,785.60**
+
+Turnover
+= **₹398,865.60**
+
+### Charges
+
+Brokerage = **₹40**
+
+STT = **₹204.83**
+
+Exchange = **₹139.66**
+
+SEBI = **₹0.40**
+
+Stamp duty = **₹5.82**
+
+IPFT = **₹1.99**
+
+GST = **₹32.77**
+
+### Total Charges
+
+**≈ ₹425.5**
+
+### Net Profit
+
+**₹10,360.1**
+
+---
+
+# 📊 Final Result
+
+| Trade   | Before Charges | Charges | Net            |
+| ------- | -------------- | ------- | -------------- |
+| Trade 1 | −₹11,286       | ₹428.8  | **−₹11,714.8** |
+| Trade 2 | −₹16,472.4     | ₹410.4  | **−₹16,882.8** |
+| Trade 3 | ₹10,785.6      | ₹425.5  | **₹10,360.1**  |
+
+---
+
+# 💰 Final Net P&L
+
+Total after charges:
+
+**−₹18,237.5 loss**
+
+---
+
+💡 **Important thing I notice from your trades:**
+Your **average charge per SENSEX trade ≈ ₹420**.
+
+For **3 trades = ~₹1,260 cost**, which is significant for scalping.
+
+---
+
+If you want, I can also show you **one mistake in these trades that caused most of the ₹18k loss** (many scalpers make this mistake in SENSEX options). 📉

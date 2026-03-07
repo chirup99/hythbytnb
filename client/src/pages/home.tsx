@@ -23496,9 +23496,31 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300">
                                               {activeBroker === 'delta' ? '$' : '₹'}
                                               {(() => {
-                                                const tradeCount = tradeHistoryData?.length || 0;
-                                                const estBrokerage = tradeCount * 40; // ₹20 buy + ₹20 sell per trade
-                                                return estBrokerage.toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                                const totalEstCharges = tradeHistoryData?.reduce((acc, trade) => {
+                                                  const pnlStr = (trade.pnl || "").replace(/[₹,+\s]/g, "");
+                                                  const pnlValue = parseFloat(pnlStr) || 0;
+                                                  const price = parseFloat(trade.price) || 0;
+                                                  const qty = parseInt(trade.qty) || 0;
+                                                  const buyValue = price * qty;
+                                                  const sellValue = Math.abs(pnlValue + buyValue);
+                                                  const turnover = buyValue + sellValue;
+
+                                                  const brokerage = 40; // ₹20 buy + ₹20 sell
+                                                  const stt = sellValue * 0.001; // 0.1% on sell
+                                                  const exchange = turnover * 0.0003503; // 0.03503%
+                                                  const sebi = turnover * 0.0000001; // ₹10 per crore (0.0001%)
+                                                  const stamp = buyValue * 0.00003; // 0.003% on buy
+                                                  const ipft = turnover * 0.000005; // 0.0005%
+                                                  const gst = (brokerage + exchange + sebi + ipft) * 0.18; // 18% GST
+
+                                                  return acc + brokerage + stt + exchange + sebi + stamp + ipft + gst;
+                                                }, 0) || 0;
+                                                
+                                                return totalEstCharges.toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { 
+                                                  padding: 0,
+                                                  minimumFractionDigits: 2, 
+                                                  maximumFractionDigits: 2 
+                                                });
                                               })()}
                                             </span>
                                           </div>
