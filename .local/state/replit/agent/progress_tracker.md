@@ -174,3 +174,5 @@
 [x] 176. Made aggregate losses section clickable - redirects to SEBI research report URL
 [x] 177. Added hover effect and cursor-pointer styling for better UX
 [x] 178. Verified application running successfully with SEBI report link
+[x] 179. Install dotenv package and verify application running (current migration session)
+[x] 180. Import migration fully complete - application running successfully on Replit (current session)
