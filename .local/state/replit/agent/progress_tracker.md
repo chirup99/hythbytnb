@@ -152,3 +152,5 @@
 [x] 154. Made brokerage amount clickable to open detailed charges dialog (Mar 07, 2026)
 [x] 155. Implemented trade-by-trade brokerage charges breakdown dialog with all fee types (Mar 07, 2026)
 [x] 156. Complete - All brokerage calculations and UI updates done (Mar 07, 2026)
+[x] 157. Fixed brokerage charges calculation - ₹20 per trade (buy or sell) instead of ₹40 (Mar 07, 2026)
+[x] 158. Migration to Replit environment complete - application running successfully with all fixes applied (Mar 07, 2026)
