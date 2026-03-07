@@ -2044,6 +2044,7 @@ export default function Home() {
   const [showAddAdminAccessDialog, setShowAddAdminAccessDialog] = useState(false);
   const [adminAccessEmail, setAdminAccessEmail] = useState("");
   const [adminAccessRole, setAdminAccessRole] = useState<"developer" | "admin">("developer");
+  const [showBrokerageChargesDialog, setShowBrokerageChargesDialog] = useState(false);
   const [adminBugReports, setAdminBugReports] = useState<Array<{ bugId: string; title: string; reportDate: string; bugLocate: string; status: string; username: string; }>>([]); 
   const [loadingBugReports, setLoadingBugReports] = useState(false);
   const [expandedBugId, setExpandedBugId] = useState<string | null>(null);
@@ -23493,7 +23494,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           </h4>
                                           <div className="flex items-center gap-1 mt-1">
                                             <span className="text-[10px] font-medium text-slate-400 uppercase">Est. Brokerage:</span>
-                                            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                                            <span 
+                                              className="text-[10px] font-bold text-slate-600 dark:text-slate-300 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                                              onClick={() => setShowBrokerageChargesDialog(true)}
+                                              data-testid="brokerage-amount-clickable"
+                                            >
                                               {activeBroker === 'delta' ? '$' : '₹'}
                                               {(() => {
                                                 const totalEstCharges = tradeHistoryData?.reduce((acc, trade) => {
@@ -28435,6 +28440,88 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 </div>
               </div>
 
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Brokerage Charges Breakdown Dialog */}
+        <Dialog open={showBrokerageChargesDialog} onOpenChange={setShowBrokerageChargesDialog}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Brokerage Charges Breakdown</DialogTitle>
+              <DialogDescription>
+                Detailed charge calculation for each trade in your session
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <th className="text-left p-2 font-semibold">Trade</th>
+                      <th className="text-right p-2 font-semibold">Price</th>
+                      <th className="text-right p-2 font-semibold">Qty</th>
+                      <th className="text-right p-2 font-semibold">Buy Value</th>
+                      <th className="text-right p-2 font-semibold">Brokerage</th>
+                      <th className="text-right p-2 font-semibold">STT</th>
+                      <th className="text-right p-2 font-semibold">Exchange</th>
+                      <th className="text-right p-2 font-semibold">SEBI</th>
+                      <th className="text-right p-2 font-semibold">Stamp</th>
+                      <th className="text-right p-2 font-semibold">IPFT</th>
+                      <th className="text-right p-2 font-semibold">GST</th>
+                      <th className="text-right p-2 font-semibold font-bold">Total Charges</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tradeHistoryData?.map((trade, idx) => {
+                      const pnlStr = (trade.pnl || "").replace(/[₹,+\s]/g, "");
+                      const pnlValue = parseFloat(pnlStr) || 0;
+                      const price = parseFloat(trade.price) || 0;
+                      const qty = parseInt(trade.qty) || 0;
+                      const buyValue = price * qty;
+                      const sellValue = Math.abs(pnlValue + buyValue);
+                      const turnover = buyValue + sellValue;
+                      const brokerage = 40;
+                      const stt = sellValue * 0.001;
+                      const exchange = turnover * 0.0003503;
+                      const sebi = turnover * 0.0000001;
+                      const stamp = buyValue * 0.00003;
+                      const ipft = turnover * 0.000005;
+                      const gst = (brokerage + exchange + sebi + ipft) * 0.18;
+                      const totalCharges = brokerage + stt + exchange + sebi + stamp + ipft + gst;
+                      
+                      return (
+                        <tr key={idx} className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30">
+                          <td className="p-2">{idx + 1}</td>
+                          <td className="text-right p-2">₹{price.toFixed(2)}</td>
+                          <td className="text-right p-2">{qty}</td>
+                          <td className="text-right p-2">₹{buyValue.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                          <td className="text-right p-2">₹{brokerage.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{stt.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{exchange.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{sebi.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{stamp.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{ipft.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{gst.toFixed(2)}</td>
+                          <td className="text-right p-2 font-bold text-indigo-600 dark:text-indigo-400">₹{totalCharges.toFixed(2)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-lg">
+                <h4 className="font-semibold text-sm mb-2">Charge Types:</h4>
+                <ul className="text-xs space-y-1 text-slate-600 dark:text-slate-400">
+                  <li>• <strong>Brokerage:</strong> ₹20 buy + ₹20 sell per trade</li>
+                  <li>• <strong>STT:</strong> 0.1% on sell value (Options)</li>
+                  <li>• <strong>Exchange:</strong> 0.03503% of turnover (Premium)</li>
+                  <li>• <strong>SEBI:</strong> ₹10 per crore (0.0001%)</li>
+                  <li>• <strong>Stamp Duty:</strong> 0.003% on buy side</li>
+                  <li>• <strong>IPFT:</strong> 0.0005% of turnover</li>
+                  <li>• <strong>GST:</strong> 18% on (Brokerage + Exchange + SEBI + IPFT)</li>
+                </ul>
+              </div>
             </div>
           </DialogContent>
         </Dialog>

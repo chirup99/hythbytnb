@@ -149,3 +149,6 @@
 [x] 151. Display real-time estimated brokerage charges based on trade history (Mar 07, 2026)
 [x] 152. Install dotenv package and verify application running (Mar 07, 2026 - current session)
 [x] 153. Import migration fully complete - application running on port 5000 with Angel One connected (Mar 07, 2026)
+[x] 154. Made brokerage amount clickable to open detailed charges dialog (Mar 07, 2026)
+[x] 155. Implemented trade-by-trade brokerage charges breakdown dialog with all fee types (Mar 07, 2026)
+[x] 156. Complete - All brokerage calculations and UI updates done (Mar 07, 2026)
