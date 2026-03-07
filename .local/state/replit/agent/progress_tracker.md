@@ -147,3 +147,5 @@
 [x] 149. Import migration fully verified - all systems running successfully (Mar 07, 2026)
 [x] 150. Add "Incl. Brokerage" label and charges info dialog to Unrealized P&L (Mar 07, 2026)
 [x] 151. Display real-time estimated brokerage charges based on trade history (Mar 07, 2026)
+[x] 152. Install dotenv package and verify application running (Mar 07, 2026 - current session)
+[x] 153. Import migration fully complete - application running on port 5000 with Angel One connected (Mar 07, 2026)
