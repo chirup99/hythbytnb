@@ -28475,63 +28475,74 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                   </thead>
                   <tbody>
                     {tradeHistoryData?.map((trade, idx) => {
-                      const pnlStr = (trade.pnl || "").replace(/[₹,+\s]/g, "");
-                      const pnlValue = parseFloat(pnlStr) || 0;
+                      const isBuy = trade.order === 'BUY';
                       const price = parseFloat(trade.price) || 0;
                       const qty = parseInt(trade.qty) || 0;
-                      const buyValue = price * qty;
-                      const sellValue = Math.abs(pnlValue + buyValue);
+                      const tradeValue = price * qty;
                       const brokerage = 20;
                       
-                      // BUY SIDE CHARGES
-                      const buyStamp = buyValue * 0.00003;
-                      const buyExchange = buyValue * 0.0003503;
-                      const buySebi = buyValue * 0.0000001;
-                      const buyIpft = buyValue * 0.000005;
-                      const buyGst = (brokerage + buyExchange + buySebi + buyIpft) * 0.18;
-                      const buyTotalCharges = brokerage + buyExchange + buySebi + buyStamp + buyIpft + buyGst;
+                      let stt = 0;
+                      let stamp = 0;
+                      let exchange = 0;
+                      let sebi = 0;
+                      let ipft = 0;
                       
-                      // SELL SIDE CHARGES (STT only on sell)
-                      const stt = sellValue * 0.001;
-                      const sellExchange = sellValue * 0.0003503;
-                      const sellSebi = sellValue * 0.0000001;
-                      const sellIpft = sellValue * 0.000005;
-                      const sellGst = (brokerage + stt + sellExchange + sellSebi + sellIpft) * 0.18;
-                      const sellTotalCharges = brokerage + stt + sellExchange + sellSebi + sellIpft + sellGst;
+                      if (isBuy) {
+                        // BUY SIDE CHARGES
+                        stamp = tradeValue * 0.00003;
+                        exchange = tradeValue * 0.0003503;
+                        sebi = tradeValue * 0.0000001;
+                        ipft = tradeValue * 0.000005;
+                        stt = 0;
+                      } else {
+                        // SELL SIDE CHARGES (STT only on sell)
+                        stt = tradeValue * 0.001;
+                        exchange = tradeValue * 0.0003503;
+                        sebi = tradeValue * 0.0000001;
+                        ipft = tradeValue * 0.000005;
+                        stamp = 0;
+                      }
+                      
+                      const gst = (brokerage + stt + exchange + sebi + ipft) * 0.18;
+                      const totalCharges = brokerage + stt + exchange + sebi + stamp + ipft + gst;
                       
                       return (
-                        <>
-                          <tr key={`${idx}-buy`} className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 bg-green-50/30 dark:bg-green-900/10">
-                            <td className="p-2 font-semibold">{idx + 1}</td>
-                            <td className="p-2"><span className="px-2 py-1 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 rounded text-xs font-medium">BUY</span></td>
-                            <td className="text-right p-2">₹{price.toFixed(2)}</td>
-                            <td className="text-right p-2">{qty}</td>
-                            <td className="text-right p-2">₹{buyValue.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                            <td className="text-right p-2">₹{brokerage.toFixed(2)}</td>
-                            <td className="text-right p-2">₹0.00</td>
-                            <td className="text-right p-2">₹{buyExchange.toFixed(2)}</td>
-                            <td className="text-right p-2">₹{buySebi.toFixed(2)}</td>
-                            <td className="text-right p-2">₹{buyStamp.toFixed(2)}</td>
-                            <td className="text-right p-2">₹{buyIpft.toFixed(2)}</td>
-                            <td className="text-right p-2">₹{buyGst.toFixed(2)}</td>
-                            <td className="text-right p-2 font-bold text-green-600 dark:text-green-400">₹{buyTotalCharges.toFixed(2)}</td>
-                          </tr>
-                          <tr key={`${idx}-sell`} className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 bg-red-50/30 dark:bg-red-900/10">
-                            <td className="p-2 font-semibold">{idx + 1}</td>
-                            <td className="p-2"><span className="px-2 py-1 bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 rounded text-xs font-medium">SELL</span></td>
-                            <td className="text-right p-2">₹{(sellValue / qty).toFixed(2)}</td>
-                            <td className="text-right p-2">{qty}</td>
-                            <td className="text-right p-2">₹{sellValue.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                            <td className="text-right p-2">₹{brokerage.toFixed(2)}</td>
-                            <td className="text-right p-2">₹{stt.toFixed(2)}</td>
-                            <td className="text-right p-2">₹{sellExchange.toFixed(2)}</td>
-                            <td className="text-right p-2">₹{sellSebi.toFixed(2)}</td>
-                            <td className="text-right p-2">₹0.00</td>
-                            <td className="text-right p-2">₹{sellIpft.toFixed(2)}</td>
-                            <td className="text-right p-2">₹{sellGst.toFixed(2)}</td>
-                            <td className="text-right p-2 font-bold text-red-600 dark:text-red-400">₹{sellTotalCharges.toFixed(2)}</td>
-                          </tr>
-                        </>
+                        <tr 
+                          key={`${idx}`}
+                          className={`border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 ${
+                            isBuy 
+                              ? 'bg-green-50/30 dark:bg-green-900/10' 
+                              : 'bg-red-50/30 dark:bg-red-900/10'
+                          }`}
+                        >
+                          <td className="p-2 font-semibold">{idx + 1}</td>
+                          <td className="p-2">
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                              isBuy 
+                                ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' 
+                                : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
+                            }`}>
+                              {isBuy ? 'BUY' : 'SELL'}
+                            </span>
+                          </td>
+                          <td className="text-right p-2">₹{price.toFixed(2)}</td>
+                          <td className="text-right p-2">{qty}</td>
+                          <td className="text-right p-2">₹{tradeValue.toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                          <td className="text-right p-2">₹{brokerage.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{stt.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{exchange.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{sebi.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{stamp.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{ipft.toFixed(2)}</td>
+                          <td className="text-right p-2">₹{gst.toFixed(2)}</td>
+                          <td className={`text-right p-2 font-bold ${
+                            isBuy 
+                              ? 'text-green-600 dark:text-green-400' 
+                              : 'text-red-600 dark:text-red-400'
+                          }`}>
+                            ₹{totalCharges.toFixed(2)}
+                          </td>
+                        </tr>
                       );
                     })}
                   </tbody>

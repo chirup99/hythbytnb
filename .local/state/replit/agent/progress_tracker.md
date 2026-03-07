@@ -158,3 +158,4 @@
 [x] 160. Fixed STT calculation - only applies to SELL trades at 0.1% of sell value (Mar 07, 2026)
 [x] 161. Corrected charge distribution: Buy side (no STT), Sell side (with STT) (Mar 07, 2026)
 [x] 162. Migration to Replit environment complete - all brokerage charges properly calculated (Mar 07, 2026)
+[x] 163. Fixed brokerage charges breakdown - removed fake trades, shows only actual trades from history (Mar 07, 2026)
