@@ -176,3 +176,4 @@
 [x] 178. Verified application running successfully with SEBI report link
 [x] 179. Install dotenv package and verify application running (current migration session)
 [x] 180. Import migration fully complete - application running successfully on Replit (current session)
+[x] 181. Remove Equity section from Charge Types by Trade Type dialog - keep Futures and Options only (Mar 07, 2026)

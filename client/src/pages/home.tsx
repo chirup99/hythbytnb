@@ -28651,17 +28651,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                 <h4 className="font-semibold text-sm mb-3">Charge Types by Trade Type:</h4>
                 <div className="space-y-4">
                   <div>
-                    <h5 className="font-semibold text-xs text-slate-700 dark:text-slate-300 mb-1">Equity:</h5>
-                    <ul className="text-xs space-y-1 text-slate-600 dark:text-slate-400 ml-2">
-                      <li>• <strong>Brokerage:</strong> ₹20 per trade (0.03% or ₹20 whichever is lower)</li>
-                      <li>• <strong>STT:</strong> 0.1% on sell side</li>
-                      <li>• <strong>Transaction:</strong> 0.00307% NSE</li>
-                      <li>• <strong>Stamp Duty:</strong> 0.01% on buy side</li>
-                      <li>• <strong>SEBI:</strong> ₹10 per crore</li>
-                      <li>• <strong>GST:</strong> 18% on (Brokerage + Exchange + SEBI)</li>
-                    </ul>
-                  </div>
-                  <div>
                     <h5 className="font-semibold text-xs text-slate-700 dark:text-slate-300 mb-1">Futures (Symbol contains "FUT"):</h5>
                     <ul className="text-xs space-y-1 text-slate-600 dark:text-slate-400 ml-2">
                       <li>• <strong>Brokerage:</strong> ₹20 per trade (0.03% or ₹20 whichever is lower)</li>
