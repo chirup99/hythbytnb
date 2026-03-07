@@ -23502,21 +23502,29 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               {activeBroker === 'delta' ? '$' : '₹'}
                                               {(() => {
                                                 const totalEstCharges = tradeHistoryData?.reduce((acc, trade) => {
-                                                  const pnlStr = (trade.pnl || "").replace(/[₹,+\s]/g, "");
-                                                  const pnlValue = parseFloat(pnlStr) || 0;
+                                                  const isBuy = trade.order === 'BUY';
                                                   const price = parseFloat(trade.price) || 0;
                                                   const qty = parseInt(trade.qty) || 0;
-                                                  const buyValue = price * qty;
-                                                  const sellValue = Math.abs(pnlValue + buyValue);
-                                                  const turnover = buyValue + sellValue;
-
-                                                  const brokerage = 40; // ₹20 buy + ₹20 sell
-                                                  const stt = sellValue * 0.001; // 0.1% on sell
-                                                  const exchange = turnover * 0.0003503; // 0.03503%
-                                                  const sebi = turnover * 0.0000001; // ₹10 per crore (0.0001%)
-                                                  const stamp = buyValue * 0.00003; // 0.003% on buy
-                                                  const ipft = turnover * 0.000005; // 0.0005%
-                                                  const gst = (brokerage + exchange + sebi + ipft) * 0.18; // 18% GST
+                                                  const tradeValue = price * qty;
+                                                  const brokerage = 20; // ₹20 per trade (not ₹40)
+                                                  
+                                                  let stt = 0;
+                                                  let stamp = 0;
+                                                  
+                                                  if (isBuy) {
+                                                    // BUY SIDE CHARGES
+                                                    stamp = tradeValue * 0.00003;
+                                                    stt = 0;
+                                                  } else {
+                                                    // SELL SIDE CHARGES (STT only on sell)
+                                                    stt = tradeValue * 0.001;
+                                                    stamp = 0;
+                                                  }
+                                                  
+                                                  const exchange = tradeValue * 0.0003503; // 0.03503%
+                                                  const sebi = tradeValue * 0.0000001; // ₹10 per crore (0.0001%)
+                                                  const ipft = tradeValue * 0.000005; // 0.0005%
+                                                  const gst = (brokerage + stt + exchange + sebi + ipft) * 0.18; // 18% GST
 
                                                   return acc + brokerage + stt + exchange + sebi + stamp + ipft + gst;
                                                 }, 0) || 0;
