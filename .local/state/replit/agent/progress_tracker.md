@@ -170,3 +170,7 @@
 [x] 172. Made save button clickable only when username is available
 [x] 173. Added visual feedback with spinner, checkmark, and X icons for username status
 [x] 174. Verified application running successfully with dynamic username check
+[x] 175. Added PDF icon (FileText) to Aggregate Losses section in trading journal modal
+[x] 176. Made aggregate losses section clickable - redirects to SEBI research report URL
+[x] 177. Added hover effect and cursor-pointer styling for better UX
+[x] 178. Verified application running successfully with SEBI report link
