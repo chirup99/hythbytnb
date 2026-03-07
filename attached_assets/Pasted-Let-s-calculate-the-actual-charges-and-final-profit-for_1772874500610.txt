@@ -1,0 +1,139 @@
+Let’s calculate the **actual charges and final profit** for these **NIFTY option trades**. 📊
+
+Rates used (typical discount broker):
+
+* Brokerage = **₹20 buy + ₹20 sell = ₹40**
+* STT = **0.1% on sell value**
+* Exchange = **0.03503%**
+* SEBI = **0.0001%**
+* Stamp duty = **0.003% (buy)**
+* GST = **18%**
+* IPFT ≈ **0.0005%**
+
+---
+
+# Trade 1
+
+BUY **225 @ ₹200**
+SELL **225 @ ₹288.30**
+
+### Values
+
+Buy value
+200 × 225 = **₹45,000**
+
+Sell value
+288.30 × 225 = **₹64,867.50**
+
+Profit before charges
+= **₹19,867.50**
+
+Turnover
+(200 + 288.30) × 225
+= **₹109,867.50**
+
+### Charges
+
+Brokerage = **₹40**
+
+STT
+64,867.5 × 0.1%
+= **₹64.87**
+
+Exchange
+109,867.5 × 0.03503%
+≈ **₹38.46**
+
+SEBI
+≈ **₹0.11**
+
+Stamp duty
+45,000 × 0.003%
+≈ **₹1.35**
+
+IPFT
+≈ **₹0.55**
+
+GST
+18% × (40 + 38.46 + 0.11 + 0.55)
+≈ **₹14.24**
+
+### Total Charges
+
+**≈ ₹159.6**
+
+### Net Profit
+
+19,867.50 − 159.6
+✅ **₹19,707.9**
+
+---
+
+# Trade 2
+
+BUY **300 @ ₹203**
+SELL **300 @ ₹200.60**
+
+### Values
+
+Buy value
+203 × 300 = **₹60,900**
+
+Sell value
+200.6 × 300 = **₹60,180**
+
+Loss before charges
+= **−₹720**
+
+Turnover
+= **₹121,080**
+
+### Charges
+
+Brokerage = **₹40**
+
+STT = **₹60.18**
+
+Exchange = **₹42.38**
+
+SEBI = **₹0.12**
+
+Stamp duty = **₹1.83**
+
+IPFT = **₹0.61**
+
+GST = **₹14.96**
+
+### Total Charges
+
+**≈ ₹160.1**
+
+### Net Loss
+
+−720 − 160.1
+❌ **−₹880.1**
+
+---
+
+# 📊 Final Result
+
+| Trade   | Before Charges | Charges | Net           |
+| ------- | -------------- | ------- | ------------- |
+| Trade 1 | ₹19,867.50     | ₹159.6  | **₹19,707.9** |
+| Trade 2 | −₹720          | ₹160.1  | **−₹880.1**   |
+
+---
+
+# 💰 Total Net Profit
+
+**₹18,827.8 profit**
+
+---
+
+✅ **Important insight:**
+Your **total turnover = ~₹2.3 lakh**, but **total charges only ≈ ₹320**.
+That means your **first trade was very efficient (big move vs charges)**.
+
+---
+
+💡 If you want, I can also show you a **very useful scalper rule using NIFTY option points to instantly know if a trade is worth taking after charges** (most traders don’t know this). 📈
