@@ -160,3 +160,4 @@
 [x] 162. Migration to Replit environment complete - all brokerage charges properly calculated (Mar 07, 2026)
 [x] 163. Fixed brokerage charges breakdown - removed fake trades, shows only actual trades from history (Mar 07, 2026)
 [x] 164. Fixed unrealized P&L brokerage charges calculation to match dialog - using ₹20 per trade instead of ₹40 (Mar 07, 2026)
+[x] 165. Migration to Replit environment complete - dotenv installed, application running on port 5000, all systems verified (Mar 07, 2026)
