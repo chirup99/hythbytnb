@@ -23404,7 +23404,89 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <Badge variant="outline" className="bg-indigo-500/5 text-indigo-600 border-indigo-500/20">P&L Impact</Badge>
                                         </div>
                                         <div className="space-y-1">
-                                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Unrealized P&L</p>
+                                          <div className="flex items-center justify-between">
+                                            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Unrealized P&L</p>
+                                            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">Incl. Brokerage</span>
+                                              <Dialog>
+                                                <DialogTrigger asChild>
+                                                  <button className="text-slate-400 hover:text-indigo-500 transition-colors">
+                                                    <Info className="w-3 h-3" />
+                                                  </button>
+                                                </DialogTrigger>
+                                                <DialogContent className="max-w-md bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+                                                  <DialogHeader>
+                                                    <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+                                                      <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-600 dark:text-indigo-400">
+                                                        <Activity className="w-5 h-5" />
+                                                      </div>
+                                                      Charges Information
+                                                    </DialogTitle>
+                                                    <DialogDescription className="text-slate-500 dark:text-slate-400">
+                                                      Latest F&O charges (India – NSE 2025-2026)
+                                                    </DialogDescription>
+                                                  </DialogHeader>
+                                                  <div className="space-y-6 py-4">
+                                                    <div className="rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                                                      <div className="bg-slate-50 dark:bg-slate-800/50 px-4 py-2 border-b border-slate-200 dark:border-slate-800">
+                                                        <h4 className="text-sm font-bold flex items-center gap-2">
+                                                          <span>2️⃣</span> Government & Exchange Charges
+                                                        </h4>
+                                                      </div>
+                                                      <div className="overflow-x-auto">
+                                                        <table className="w-full text-sm text-left">
+                                                          <thead className="text-xs uppercase bg-slate-50/50 dark:bg-slate-800/30 text-slate-500">
+                                                            <tr>
+                                                              <th className="px-4 py-2 font-bold">Charge</th>
+                                                              <th className="px-4 py-2 font-bold">Futures</th>
+                                                              <th className="px-4 py-2 font-bold">Options</th>
+                                                            </tr>
+                                                          </thead>
+                                                          <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                                                            <tr>
+                                                              <td className="px-4 py-2 font-medium">STT</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">0.02% on sell value</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">0.1% on sell premium</td>
+                                                            </tr>
+                                                            <tr>
+                                                              <td className="px-4 py-2 font-medium">Exchange transaction</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">0.00173%</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">0.03503% (premium)</td>
+                                                            </tr>
+                                                            <tr>
+                                                              <td className="px-4 py-2 font-medium">SEBI charges</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">₹10 per crore</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">₹10 per crore</td>
+                                                            </tr>
+                                                            <tr>
+                                                              <td className="px-4 py-2 font-medium">Stamp duty</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">0.002% buy side</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">0.003% buy side</td>
+                                                            </tr>
+                                                            <tr>
+                                                              <td className="px-4 py-2 font-medium">GST</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400" colSpan={2}>18% on brokerage + exchange + SEBI</td>
+                                                            </tr>
+                                                            <tr>
+                                                              <td className="px-4 py-2 font-medium">IPFT</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">0.0001%</td>
+                                                              <td className="px-4 py-2 text-slate-600 dark:text-slate-400">0.0005%</td>
+                                                            </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </div>
+                                                    </div>
+                                                    <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-900/30">
+                                                      <h5 className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase mb-2">Pro Tip</h5>
+                                                      <p className="text-sm text-amber-600 dark:text-amber-500 leading-relaxed">
+                                                        Most option traders remember this: ₹50 – ₹80 charges per trade (1 lot options) or ₹200 – ₹400 charges per lot in futures.
+                                                      </p>
+                                                    </div>
+                                                  </div>
+                                                </DialogContent>
+                                              </Dialog>
+                                            </div>
+                                          </div>
                                           <h4 className={`text-2xl font-black flex items-baseline gap-1 ${performanceMetrics.netPnL >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                             {activeBroker === 'delta' ? '$' : '₹'}
                                             {performanceMetrics.netPnL.toLocaleString(activeBroker === 'delta' ? 'en-US' : 'en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

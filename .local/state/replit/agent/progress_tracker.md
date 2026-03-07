@@ -145,3 +145,4 @@
 [x] 147. Migration to Replit environment complete - dotenv installed, source map fixed, application running on port 5000 (Mar 02, 2026)
 [x] 148. Install npm dependencies and verify application running on port 5000 (Mar 07, 2026)
 [x] 149. Import migration fully verified - all systems running successfully (Mar 07, 2026)
+[x] 150. Add "Incl. Brokerage" label and charges info dialog to Unrealized P&L (Mar 07, 2026)
