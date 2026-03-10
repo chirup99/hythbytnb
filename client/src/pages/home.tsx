@@ -2032,6 +2032,7 @@ export default function Home() {
   const [voiceNounDuration, setVoiceNounDuration] = useState(1.15);
   const [voiceFunctionDuration, setVoiceFunctionDuration] = useState(0.92);
   const [voiceMicroJitter, setVoiceMicroJitter] = useState(3);
+  const [voiceLanguage, setVoiceLanguage] = useState("en"); // Multilingual support: en, hi, bn, ta, te, mr, gu, kn, ml
   const [showAdminDashboardDialog, setShowAdminDashboardDialog] = useState(false);
   const [adminTab, setAdminTab] = useState("bugs-list");
   const [showMagicBugBar, setShowMagicBugBar] = useState(false);
@@ -14839,7 +14840,18 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                 if (typeof window !== "undefined" && "speechSynthesis" in window) {
                                                   const utterance = new SpeechSynthesisUtterance();
                                                   const name = currentUser?.displayName || currentUser?.username || "Trader";
-                                                  const baseText = `Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`;
+                                                  // Multilingual greetings with Sarvam language support
+                                                  const voiceGreetings: { [key: string]: (name: string, profile: string) => string } = {
+                                                    en: (n, p) => `Hello ${n}, I am ${p}. How is your day? Welcome to perala!`,
+                                                    hi: (n, p) => `नमस्ते ${n}, मैं ${p} हूँ। आपका दिन कैसा है? परला में आपका स्वागत है!`,
+                                                    bn: (n, p) => `হ্যালো ${n}, আমি ${p}। আপনার দিন কেমন? পেরালায় আপনাকে স্বাগতম!`,
+                                                    ta: (n, p) => `வணக்கம் ${n}, நான் ${p}. உங்கள் நாள் எப்படி? பெரால்லாவில் உங்களை வரவேற்கிறேன்!`,
+                                                    te: (n, p) => `హలో ${n}, నేను ${p}. మీ రోజు ఎలా ఉంది? పెరాలాలో మీకు స్వాగతం!`,
+                                                    mr: (n, p) => `नमस्कार ${n}, मी ${p} आहे. तुमचा दिवस कसा? पेरला मध्ये तुमचे स्वागत आहे!`,
+                                                    gu: (n, p) => `હેલો ${n}, હું ${p} છું. તમારો દિવસ કેમ છે? પેરાલામાં તમારું સ્વાગત છે!`,
+                                                    kn: (n, p) => `ಹೆಲೋ ${n}, ನಾನು ${p}. ನಿಮ್ಮ ದಿನ ಹೇಗಿದೆ? ಪೆರಾಲಾದಲ್ಲಿ ನಿಮಗೆ ಸ್ವಾಗತ!`,
+                                                  };
+                                                  const baseText = voiceGreetings[voiceLanguage] ? voiceGreetings[voiceLanguage](name, profile.name) : `Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`;
                                                   
                                                   // Humanization Logic
                                                   const voices = window.speechSynthesis.getVoices();
@@ -14930,7 +14942,26 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       })}
                                     </div>
                                     <div className="w-full h-px bg-gray-700/50 my-1" />
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                      <div className="flex-1">
+                                        <p className="text-[11px] text-gray-500 italic mb-2">Language (Sarvam)</p>
+                                        <select 
+                                          value={voiceLanguage}
+                                          onChange={(e) => setVoiceLanguage(e.target.value)}
+                                          className="w-full px-2 py-1 text-xs bg-gray-700 border border-gray-600 rounded text-gray-200 focus:border-blue-400 focus:outline-none"
+                                        >
+                                          <option value="en">English</option>
+                                          <option value="hi">हिंदी (Hindi)</option>
+                                          <option value="bn">বাংলা (Bengali)</option>
+                                          <option value="ta">தமிழ் (Tamil)</option>
+                                          <option value="te">తెలుగు (Telugu)</option>
+                                          <option value="mr">मराठी (Marathi)</option>
+                                          <option value="gu">ગુજરાતી (Gujarati)</option>
+                                          <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center justify-between mt-3">
                                       <p className="text-[11px] text-gray-500 italic">Select a voice for your audio post</p>
                                       <button 
                                         onClick={(e) => {
