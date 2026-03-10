@@ -444,78 +444,13 @@ function SwipeableCardStack({
       .replace(/^[.,\\s]+/, "") // Remove leading punctuation and spaces
       .trim();
 
-    // Microsoft Edge TTS will handle voice selection
-    const selectedProfile = (typeof window !== "undefined" && localStorage.getItem("activeVoiceProfileId")) || "samantha";
-
-    if (true) {
-      if (selectedProfile === "samantha") {
-        preferredVoice = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
-      } else if (selectedProfile === "liam") {
-        preferredVoice = voices.find(v => v.name.includes("Liam") || (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("US") || v.name.includes("Great Britain"))) || v.name.includes("David") || v.name.includes("Arthur") || v.name.includes("Daniel"));
-      } else if (selectedProfile === "sophia") {
-        preferredVoice = voices.find(v => v.name.includes("Sophia") || v.name.includes("Aria") || (v.name.includes("Female") && (v.name.includes("English") || v.name.includes("US"))) || v.name.includes("Zira"));
-      }
-    }
-
-    if (!preferredVoice) {
-      preferredVoice = voices.find(v => v.lang.startsWith("en"));
-    }
-
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
-    }
-
-    // Apply more human-like parameters based on PRD
-    utterance.pitch = voicePitch || 1.0;
-    utterance.rate = voiceRate || 1.0;
-    
-    // Dynamic Energy Variation (Volume)
-    const energyVariance = (voiceEnergyDynamic || 5) / 100;
-    utterance.volume = (1.0 - energyVariance) + (Math.random() * energyVariance * 2);
-
-    // Micro Variation (Anti-Robot Layer / Jitter)
-    const jitterAmount = (voiceMicroJitter || 3) / 100;
-    const pitchJitter = (Math.random() * jitterAmount * 2) - jitterAmount;
-    const rateJitter = (Math.random() * jitterAmount) - (jitterAmount / 2);
-    utterance.pitch += pitchJitter;
-    utterance.rate += rateJitter;
-
-    // Human-like processing: add breaks and emphasis simulation
-    const commaPause = voiceCommaPause || 220;
-    const periodPause = voicePeriodPause || 500;
-    
-    // We simulate pauses by processing the text
-    const processedText = cleanText
-      .replace(/,/g, `, [break:${commaPause}ms]`)
-      .replace(/\./g, `. [break:${periodPause}ms]`);
-    
-    utterance.text = processedText;
-    
-    // Note: Actual [break] tags won't work in Web Speech API, 
-    // but we can simulate by splitting the text and speaking in chunks if needed.
-    // For now, we'll keep it simple as per Web Speech API limits.
-
-    utterance.onstart = () => setIsPlaying(true);
-    utterance.onend = () => {
-      setIsPlaying(false);
-      setCurrentAudio(null);
-    };
-    utterance.onerror = () => {
-      setIsPlaying(false);
-      setCurrentAudio(null);
-    };
-
-    setCurrentAudio(utterance);
-    speechSynthesis.speak(utterance);
+    // Microsoft Edge TTS handles all voice and playback
+    setIsPlaying(true);
   };
 
   // Stop audio playback
   const stopAudio = () => {
-    if (currentAudio) {
-      speechSynthesis.cancel();
-      setIsPlaying(false);
-      setCurrentAudio(null);
-    }
+    setIsPlaying(false);
   };
 
   const swipeCard = (direction: "left" | "right") => {
