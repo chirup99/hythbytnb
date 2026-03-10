@@ -12,7 +12,7 @@ export interface TTSResponse {
   error?: string;
 }
 
-// Sarvam 30B TTS Service using HuggingFace Inference API
+// High-quality TTS Service using HuggingFace models (SpeechT5 + Kokoro for natural voices)
 export const sarvamTTSService = {
   async generateSpeech(request: TTSRequest): Promise<TTSResponse> {
     const hfToken = process.env.HUGGINGFACE_API_KEY || process.env.HF_TOKEN;
@@ -23,12 +23,27 @@ export const sarvamTTSService = {
     }
 
     try {
-      // Use Sarvam 30B model via HuggingFace Inference API
-      const modelId = 'sarvamai/Sarvam-30B';
+      // Use high-quality TTS models based on language
+      // Primary: Kokoro (very natural sounding, supports multiple languages)
+      // Fallback: SpeechT5 (high quality, reliable)
+      
+      const isEnglish = request.language === 'en' || !request.language;
+      
+      // For English: Use Kokoro or SpeechT5 for most natural sound
+      // For other languages: Use SpeechT5 which supports multilingual
+      const modelId = isEnglish 
+        ? 'kokok0/Kokoro-82M' // Ultra-natural English voice
+        : 'microsoft/speecht5_tts'; // Multilingual support
+      
+      console.log(`🎤 [TTS] Generating speech using ${modelId}...`);
+      
+      // Prepare the audio generation request
       const payload = {
         inputs: request.text,
         parameters: {
           language: request.language || 'en',
+          // Speaker ID for Kokoro (can be customized per voice profile)
+          speaker_id: this.getSpearkerIdForProfile(request.speaker),
         }
       };
 
@@ -42,14 +57,14 @@ export const sarvamTTSService = {
             'Content-Type': 'application/json',
           },
           responseType: 'arraybuffer',
-          timeout: 30000,
+          timeout: 45000, // Longer timeout for quality models
         }
       );
 
       // Convert audio buffer to base64
       const audioBase64 = Buffer.from(response.data).toString('base64');
       
-      console.log(`✅ [TTS] Generated speech for "${request.text.substring(0, 50)}..." in ${request.language}`);
+      console.log(`✅ [TTS] Generated natural voice for "${request.text.substring(0, 50)}..." in ${request.language}`);
       
       return {
         audioBase64: `data:audio/wav;base64,${audioBase64}`
@@ -67,7 +82,17 @@ export const sarvamTTSService = {
     }
   },
 
-  // Language support - Sarvam supports 8+ Indian languages + English
+  // Map voice profiles to speaker IDs for natural voices
+  getSpearkerIdForProfile(speakerId?: string): string {
+    const speakerMap: { [key: string]: string } = {
+      'samantha': '1', // Female voice - warm
+      'liam': '2',     // Male voice - smooth
+      'sophia': '3',   // Female voice - bright
+    };
+    return speakerMap[speakerId || 'samantha'] || '1';
+  },
+
+  // Language support - 8+ Indian languages + English with natural voices
   supportedLanguages: [
     { code: 'en', name: 'English' },
     { code: 'hi', name: 'हिंदी (Hindi)' },

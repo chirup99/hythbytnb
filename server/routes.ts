@@ -22580,10 +22580,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Sarvam 30B TTS Endpoint - Open source voice from HuggingFace
+  // Natural voice TTS Endpoint - High-quality human-like voices from HuggingFace
   app.post('/api/tts/generate', async (req, res) => {
     try {
-      const { text, language } = req.body;
+      const { text, language, speaker } = req.body;
       
       if (!text) {
         res.status(400).json({ error: 'Text is required' });
@@ -22592,7 +22592,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const result = await sarvamTTSService.generateSpeech({
         text,
-        language: language || 'en'
+        language: language || 'en',
+        speaker: speaker
       });
 
       if (result.error) {

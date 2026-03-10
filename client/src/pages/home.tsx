@@ -14851,14 +14851,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   };
                                                   const baseText = voiceGreetings[voiceLanguage] ? voiceGreetings[voiceLanguage](name, profile.name) : `Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`;
                                                   
-                                                  // Use open-source Sarvam 30B TTS from HuggingFace
+                                                  // Use high-quality TTS with natural human-like voices (Kokoro + SpeechT5)
                                                   try {
                                                     const response = await fetch('/api/tts/generate', {
                                                       method: 'POST',
                                                       headers: { 'Content-Type': 'application/json' },
                                                       body: JSON.stringify({
                                                         text: baseText,
-                                                        language: voiceLanguage || 'en'
+                                                        language: voiceLanguage || 'en',
+                                                        speaker: profile.id
                                                       })
                                                     });
 
