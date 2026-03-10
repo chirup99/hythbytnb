@@ -177,3 +177,6 @@
 [x] 179. Install dotenv package and verify application running (current migration session)
 [x] 180. Import migration fully complete - application running successfully on Replit (current session)
 [x] 181. Remove Equity section from Charge Types by Trade Type dialog - keep Futures and Options only (Mar 07, 2026)
+[x] 182. Install npm dependencies (dotenv and all packages) and verify application running (Mar 10, 2026)
+[x] 183. Restart workflow and confirm application responds on port 5000 (Mar 10, 2026)
+[x] 184. Import migration fully complete - all systems running successfully on Replit (Mar 10, 2026)
