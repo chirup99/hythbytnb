@@ -14962,14 +14962,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     onChange={(e) => {
                                                       const val = parseFloat(e.target.value);
                                                       setVoicePitch(val);
-                                                      // Live testing: play sample
-                                                      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-                                                        window.speechSynthesis.cancel();
-                                                        const utterance = new SpeechSynthesisUtterance("Testing pitch");
-                                                        utterance.pitch = val;
-                                                        utterance.rate = voiceRate || 1.0;
-                                                        window.speechSynthesis.speak(utterance);
-                                                      }
                                                     }}
                                                     className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
                                                   />
@@ -14998,14 +14990,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     onChange={(e) => {
                                                       const val = parseFloat(e.target.value);
                                                       setVoiceRate(val);
-                                                      // Live testing: play sample
-                                                      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-                                                        window.speechSynthesis.cancel();
-                                                        const utterance = new SpeechSynthesisUtterance("Testing speed");
-                                                        utterance.pitch = voicePitch || 1.0;
-                                                        utterance.rate = val;
-                                                        window.speechSynthesis.speak(utterance);
-                                                      }
                                                     }}
                                                     className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
                                                   />
@@ -15034,14 +15018,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     onChange={(e) => {
                                                       const val = parseInt(e.target.value);
                                                       setVoiceBreakTime(val);
-                                                      // Live testing: play sample with break
-                                                      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-                                                        window.speechSynthesis.cancel();
-                                                        const utterance = new SpeechSynthesisUtterance(`Testing break time.`);
-                                                        utterance.pitch = voicePitch || 1.0;
-                                                        utterance.rate = voiceRate || 1.0;
-                                                        window.speechSynthesis.speak(utterance);
-                                                      }
                                                     }}
                                                     className="absolute w-full h-6 bg-transparent appearance-none cursor-pointer z-10 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-125"
                                                   />
