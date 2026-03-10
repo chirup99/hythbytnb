@@ -14824,22 +14824,35 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="flex flex-col items-center gap-4">
                                     <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">voice profiles</span>
                                     <div className="flex items-center justify-start gap-4 py-2 overflow-x-auto no-scrollbar scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                                      {[
-                                        { id: "samantha", name: "Samantha", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" },
-                                        { id: "liam", name: "Liam", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop" },
-                                        { id: "sophia", name: "Sophia", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop" },
-                                      ].map((profile) => {
-                                        const isSelected = activeVoiceProfileId === profile.id;
+                                      {(() => {
+                                        const voicesByLanguage: { [key: string]: any[] } = {
+                                          'en': [
+                                            { id: 'en-US-AriaNeural', name: 'Aria', description: 'Confident & clear', gender: 'Female' },
+                                            { id: 'en-US-EmmaNeural', name: 'Emma', description: 'Bright & energetic', gender: 'Female' },
+                                            { id: 'en-US-EricNeural', name: 'Eric', description: 'Professional & warm', gender: 'Male' },
+                                            { id: 'en-US-JennyNeural', name: 'Jenny', description: 'Young professional', gender: 'Female' },
+                                            { id: 'en-GB-ThomasNeural', name: 'Thomas', description: 'Classic British', gender: 'Male' }
+                                          ],
+                                          'hi': [{ id: 'hi-IN-MadhurNeural', name: 'Madhur', description: 'Natural Indian', gender: 'Male' }],
+                                          'bn': [{ id: 'bn-IN-BashkarNeural', name: 'Bashkar', description: 'Natural Bengali', gender: 'Male' }],
+                                          'ta': [{ id: 'ta-IN-ValluvarNeural', name: 'Valluvar', description: 'Natural Tamil', gender: 'Male' }],
+                                          'te': [{ id: 'te-IN-MohanNeural', name: 'Mohan', description: 'Natural Telugu', gender: 'Male' }],
+                                          'mr': [{ id: 'mr-IN-ManoharNeural', name: 'Manohar', description: 'Natural Marathi', gender: 'Male' }],
+                                          'gu': [{ id: 'gu-IN-DhwaniNeural', name: 'Dhwani', description: 'Natural Gujarati', gender: 'Female' }],
+                                          'kn': [{ id: 'kn-IN-GaranNeural', name: 'Garan', description: 'Natural Kannada', gender: 'Male' }]
+                                        };
+                                        const currentLanguageVoices = voicesByLanguage[voiceLanguage] || voicesByLanguage['en'];
+                                        return currentLanguageVoices.map((profile) => {
+                                          const isSelected = activeVoiceProfileId === profile.id;
                                         return (
                                           <div 
                                             key={profile.id} 
                                             className="flex flex-col items-center gap-1.5 group cursor-pointer" 
                                             onClick={async () => {
-                                              if (!profile.isAdd) {
-                                                setActiveVoiceProfileId(profile.id);
-                                                const name = currentUser?.displayName || currentUser?.username || "Trader";
-                                                  // Multilingual greetings with Sarvam language support
-                                                  const voiceGreetings: { [key: string]: (name: string, profile: string) => string } = {
+                                              setActiveVoiceProfileId(profile.id);
+                                              const name = currentUser?.displayName || currentUser?.username || "Trader";
+                                              // Multilingual greetings with Microsoft Edge TTS voices
+                                              const voiceGreetings: { [key: string]: (name: string, profile: string) => string } = {
                                                     en: (n, p) => `Hello ${n}, I am ${p}. How is your day? Welcome to perala!`,
                                                     hi: (n, p) => `नमस्ते ${n}, मैं ${p} हूँ। आपका दिन कैसा है? परला में आपका स्वागत है!`,
                                                     bn: (n, p) => `হ্যালো ${n}, আমি ${p}। আপনার দিन কেমন? পেরালায় আপনাকে স্বাগতম!`,
@@ -14848,56 +14861,52 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     mr: (n, p) => `नमस्कार ${n}, मी ${p} आहे. तुमचा दिवस कसा? पेरला मध्ये तुमचे स्वागत आहे!`,
                                                     gu: (n, p) => `હેલો ${n}, હું ${p} છું. તમારો દિવસ કેમ છે? પેરાલામાં તમારું સ્વાગત છે!`,
                                                     kn: (n, p) => `ಹೆಲೋ ${n}, ನಾನು ${p}. ನಿಮ್ಮ ದಿನ ಹೇಗಿದೆ? ಪೆರಾಲಾದಲ್ಲಿ ನಿಮಗೆ ಸ್ವಾಗತ!`,
-                                                  };
-                                                  const baseText = voiceGreetings[voiceLanguage] ? voiceGreetings[voiceLanguage](name, profile.name) : `Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`;
-                                                  
-                                                  // Use high-quality TTS with natural human-like voices (Kokoro + SpeechT5)
-                                                  try {
-                                                    const response = await fetch('/api/tts/generate', {
-                                                      method: 'POST',
-                                                      headers: { 'Content-Type': 'application/json' },
-                                                      body: JSON.stringify({
-                                                        text: baseText,
-                                                        language: voiceLanguage || 'en',
-                                                        speaker: profile.id
-                                                      })
-                                                    });
+                                              };
+                                              const baseText = voiceGreetings[voiceLanguage] ? voiceGreetings[voiceLanguage](name, profile.name) : `Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`;
+                                              
+                                              // Use Microsoft Edge TTS with actual neural voices
+                                              try {
+                                                const response = await fetch('/api/tts/generate', {
+                                                  method: 'POST',
+                                                  headers: { 'Content-Type': 'application/json' },
+                                                  body: JSON.stringify({
+                                                    text: baseText,
+                                                    language: voiceLanguage || 'en',
+                                                    speaker: profile.id  // Uses actual voice name like 'en-US-AriaNeural'
+                                                  })
+                                                });
 
-                                                    if (!response.ok) {
-                                                      const error = await response.json();
-                                                      console.warn('🔴 [TTS] Error:', error.error);
-                                                      return;
-                                                    }
+                                                if (!response.ok) {
+                                                  const error = await response.json();
+                                                  console.warn('🔴 [TTS] Error:', error.error);
+                                                  return;
+                                                }
 
-                                                    const data = await response.json();
-                                                    if (data.audioBase64) {
-                                                      const audio = new Audio(data.audioBase64);
-                                                      audio.play().catch(err => console.error('Audio play error:', err));
-                                                    }
-                                                  } catch (error) {
-                                                    console.error('🔴 [TTS] Failed to generate speech:', error);
-                                                  }
+                                                const data = await response.json();
+                                                if (data.audioBase64) {
+                                                  const audio = new Audio(data.audioBase64);
+                                                  audio.play().catch(err => console.error('Audio play error:', err));
+                                                }
+                                              } catch (error) {
+                                                console.error('🔴 [TTS] Failed to generate speech:', error);
                                               }
                                             }}
                                           >
-                                            <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 ${isSelected ? "border-blue-500 ring-2 ring-blue-500/50" : "border-transparent"} active:scale-95 overflow-hidden bg-gray-700 shadow-lg`}>
-                                              {profile.isAdd ? (
-                                                <Plus className="h-5 w-5 text-gray-400" />
-                                              ) : (
-                                                <img src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />
-                                              )}
+                                            <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 ${isSelected ? "border-blue-500 ring-2 ring-blue-500/50" : "border-transparent"} active:scale-95 overflow-hidden bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg`}>
+                                              <span className="text-xs font-bold text-white">{profile.name.charAt(0).toUpperCase()}</span>
                                             </div>
                                             <span className={`text-[10px] font-medium transition-colors flex items-center gap-1 ${isSelected ? "text-blue-400 font-bold" : "text-gray-300 group-hover:text-blue-400"}`}>
                                               {profile.name} {isSelected && <Check className="h-2.5 w-2.5" />}
                                             </span>
                                           </div>
                                         );
-                                      })}
+                                        });
+                                      })()}
                                     </div>
                                     <div className="w-full h-px bg-gray-700/50 my-1" />
                                     <div className="flex items-center gap-3">
                                       <div className="flex-1">
-                                        <p className="text-[11px] text-gray-500 italic mb-2">Language (Sarvam)</p>
+                                        <p className="text-[11px] text-gray-500 italic mb-2">Language & Voice</p>
                                         <select 
                                           value={voiceLanguage}
                                           onChange={(e) => setVoiceLanguage(e.target.value)}

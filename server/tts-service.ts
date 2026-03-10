@@ -120,25 +120,41 @@ export const sarvamTTSService = {
     { code: 'kn', name: 'ಕನ್ನಡ (Kannada)' },
   ],
 
-  // Available voice profiles with OpenAI-Edge-TTS compatible naming
-  voiceProfiles: [
-    {
-      id: 'samantha',
-      name: 'Samantha',
-      description: 'Female, bright & energetic',
-      voice: 'en-US-EmmaNeural'
-    },
-    {
-      id: 'liam',
-      name: 'Liam',
-      description: 'Male, professional & warm',
-      voice: 'en-US-EricNeural'
-    },
-    {
-      id: 'sophia',
-      name: 'Sophia',
-      description: 'Female, confident & clear',
-      voice: 'en-US-AriaNeural'
-    }
-  ]
+  // All available Microsoft Edge TTS voices grouped by language
+  voicesByLanguage: {
+    'en': [
+      { name: 'Aria', voice: 'en-US-AriaNeural', gender: 'Female', accent: 'US', description: 'Confident & clear' },
+      { name: 'Emma', voice: 'en-US-EmmaNeural', gender: 'Female', accent: 'US', description: 'Bright & energetic' },
+      { name: 'Jenny', voice: 'en-US-JennyNeural', gender: 'Female', accent: 'US', description: 'Young professional' },
+      { name: 'Eric', voice: 'en-US-EricNeural', gender: 'Male', accent: 'US', description: 'Professional & warm' },
+      { name: 'Guy', voice: 'en-US-GuyNeural', gender: 'Male', accent: 'US', description: 'Conversational' },
+      { name: 'Brian', voice: 'en-US-BrianNeural', gender: 'Male', accent: 'US', description: 'Deep & warm' },
+      { name: 'Andrew', voice: 'en-US-AndrewNeural', gender: 'Male', accent: 'US', description: 'Young professional' },
+      { name: 'Thomas', voice: 'en-GB-ThomasNeural', gender: 'Male', accent: 'British', description: 'Classic British' },
+      { name: 'Sonia', voice: 'en-GB-SoniaNeural', gender: 'Female', accent: 'British', description: 'Storyteller' },
+      { name: 'Natasha', voice: 'en-AU-NatashaNeural', gender: 'Female', accent: 'Australian', description: 'Warm & friendly' }
+    ],
+    'hi': [
+      { name: 'Madhur', voice: 'hi-IN-MadhurNeural', gender: 'Male', accent: 'India', description: 'Natural Indian accent' },
+      { name: 'Gaurav', voice: 'hi-IN-GauravNeural', gender: 'Male', accent: 'India', description: 'Clear articulation' }
+    ],
+    'bn': [
+      { name: 'Bashkar', voice: 'bn-IN-BashkarNeural', gender: 'Male', accent: 'India', description: 'Natural Bengali' }
+    ],
+    'ta': [
+      { name: 'Valluvar', voice: 'ta-IN-ValluvarNeural', gender: 'Male', accent: 'India', description: 'Natural Tamil' }
+    ],
+    'te': [
+      { name: 'Mohan', voice: 'te-IN-MohanNeural', gender: 'Male', accent: 'India', description: 'Natural Telugu' }
+    ],
+    'mr': [
+      { name: 'Manohar', voice: 'mr-IN-ManoharNeural', gender: 'Male', accent: 'India', description: 'Natural Marathi' }
+    ],
+    'gu': [
+      { name: 'Dhwani', voice: 'gu-IN-DhwaniNeural', gender: 'Female', accent: 'India', description: 'Natural Gujarati' }
+    ],
+    'kn': [
+      { name: 'Garan', voice: 'kn-IN-GaranNeural', gender: 'Male', accent: 'India', description: 'Natural Kannada' }
+    ]
+  }
 };
