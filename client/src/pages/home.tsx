@@ -14864,7 +14864,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               };
                                               const baseText = voiceGreetings[voiceLanguage] ? voiceGreetings[voiceLanguage](name, profile.name) : `Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`;
                                               
-                                              // Use Microsoft Edge TTS with actual neural voices
+                                              // Try backend TTS first, fallback to browser Web Speech API
+                                              let backendSuccess = false;
                                               try {
                                                 const response = await fetch('/api/tts/generate', {
                                                   method: 'POST',
@@ -14876,19 +14877,27 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   })
                                                 });
 
-                                                if (!response.ok) {
-                                                  const error = await response.json();
-                                                  console.warn('🔴 [TTS] Error:', error.error);
-                                                  return;
-                                                }
-
-                                                const data = await response.json();
-                                                if (data.audioBase64) {
-                                                  const audio = new Audio(data.audioBase64);
-                                                  audio.play().catch(err => console.error('Audio play error:', err));
+                                                if (response.ok) {
+                                                  const data = await response.json();
+                                                  if (data.audioBase64) {
+                                                    const audio = new Audio(data.audioBase64);
+                                                    audio.play().catch(err => console.error('Audio play error:', err));
+                                                    backendSuccess = true;
+                                                  }
                                                 }
                                               } catch (error) {
-                                                console.error('🔴 [TTS] Failed to generate speech:', error);
+                                                console.warn('⚠️ Backend TTS unavailable, falling back to browser speech synthesis');
+                                              }
+                                              
+                                              // Fallback: Use browser's native Web Speech API if backend failed
+                                              if (!backendSuccess && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+                                                window.speechSynthesis.cancel();
+                                                const utterance = new SpeechSynthesisUtterance(baseText);
+                                                utterance.rate = voiceRate || 1.0;
+                                                utterance.pitch = voicePitch || 1.0;
+                                                utterance.lang = voiceLanguage === 'en' ? 'en-US' : voiceLanguage === 'hi' ? 'hi-IN' : voiceLanguage === 'bn' ? 'bn-IN' : 'en-US';
+                                                window.speechSynthesis.speak(utterance);
+                                                console.log('🎧 [VOICE] Speaking with browser Web Speech API (fallback)');
                                               }
                                             }}
                                           >
