@@ -26,11 +26,18 @@ export const sarvamTTSService = {
       
       console.log(`🎤 [TTS] Generating speech using Edge TTS voice: ${voiceName} at ${speedRate}...`);
       
-      // Use edge-tts to generate audio with speed adjustment
+      // Convert pitch adjustment (0.5-2.0) to Hz format
+      let pitchHz = '+0Hz';
+      if (request.pitch && request.pitch !== 1.0) {
+        const pitchShift = (request.pitch - 1.0) * 50; // Scale to Hz
+        pitchHz = pitchShift >= 0 ? `+${Math.round(pitchShift)}Hz` : `${Math.round(pitchShift)}Hz`;
+      }
+      
+      // Use edge-tts to generate audio with speed and pitch adjustment
       const audioBuffer = await tts(request.text, {
         voice: voiceName,
         rate: speedRate,    // speed adjustment
-        pitch: '+0Hz',      // normal pitch
+        pitch: pitchHz,      // pitch adjustment
         volume: '+0%'       // normal volume
       });
 

@@ -295,8 +295,6 @@ function SwipeableCardStack({
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentContent, setCurrentContent] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
-  const [currentAudio, setCurrentAudio] =
-    useState<SpeechSynthesisUtterance | null>(null);
 
   const [cards, setCards] = useState([
     {
@@ -369,12 +367,8 @@ function SwipeableCardStack({
 
   // Global cleanup function to stop all audio
   const globalStopAudio = React.useCallback(() => {
-    if (currentAudio) {
-      speechSynthesis.cancel();
-      setCurrentAudio(null);
-      setIsPlaying(false);
-    }
-  }, [currentAudio]);
+    setIsPlaying(false);
+  }, []);
 
   // Fetch AI-generated news content for current card with caching
   const fetchAndPlayContent = async (cardTitle: string, sector: string) => {
@@ -450,24 +444,10 @@ function SwipeableCardStack({
       .replace(/^[.,\\s]+/, "") // Remove leading punctuation and spaces
       .trim();
 
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-
-    const voiceProfileMap: Record<string, string[]> = {
-      samantha: ["Samantha", "Victoria", "Female", "US", "Zira", "en-US"],
-      liam: ["Liam", "Daniel", "Oliver", "Arthur", "Male", "UK", "GB", "US", "en-GB", "en-US"],
-      sophia: ["Sophia", "Aria", "Female", "US", "UK", "English", "Zira", "en-US"]
-    };
+    // Microsoft Edge TTS will handle voice selection
     const selectedProfile = (typeof window !== "undefined" && localStorage.getItem("activeVoiceProfileId")) || "samantha";
-    const priorityKeywords = voiceProfileMap[selectedProfile as keyof typeof voiceProfileMap] || voiceProfileMap.samantha;
 
-    const voices = window.speechSynthesis.getVoices();
-    
-    let preferredVoice = voices.find(v => 
-      v.lang.startsWith("en") && 
-      priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
-    );
-
-    if (!preferredVoice) {
+    if (true) {
       if (selectedProfile === "samantha") {
         preferredVoice = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
       } else if (selectedProfile === "liam") {
@@ -619,20 +599,9 @@ function SwipeableCardStack({
     };
   }, [globalStopAudio]);
 
-  // Load voices on component mount
+  // Cleanup on component unmount
   React.useEffect(() => {
-    // Ensure voices are loaded
-    const loadVoices = () => {
-      speechSynthesis.getVoices();
-    };
-
-    // Load voices immediately and on voiceschanged event
-    loadVoices();
-    speechSynthesis.addEventListener("voiceschanged", loadVoices);
-
-    // Cleanup on unmount
     return () => {
-      speechSynthesis.removeEventListener("voiceschanged", loadVoices);
       globalStopAudio(); // Stop any playing audio when component unmounts
     };
   }, [globalStopAudio]);
@@ -14864,8 +14833,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               };
                                               const baseText = voiceGreetings[voiceLanguage] ? voiceGreetings[voiceLanguage](name, profile.name) : `Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`;
                                               
-                                              // Try backend TTS first, fallback to browser Web Speech API
-                                              let backendSuccess = false;
+                                              // Use Microsoft Edge TTS (backend only)
                                               try {
                                                 const response = await fetch('/api/tts/generate', {
                                                   method: 'POST',
@@ -14873,7 +14841,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   body: JSON.stringify({
                                                     text: baseText,
                                                     language: voiceLanguage || 'en',
-                                                    speaker: profile.id  // Uses actual voice name like 'en-US-AriaNeural'
+                                                    speaker: profile.id,
+                                                    speed: voiceRate || 1.0,
+                                                    pitch: voicePitch || 1.0
                                                   })
                                                 });
 
@@ -14881,23 +14851,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   const data = await response.json();
                                                   if (data.audioBase64) {
                                                     const audio = new Audio(data.audioBase64);
-                                                    audio.play().catch(err => console.error('Audio play error:', err));
-                                                    backendSuccess = true;
+                                                    audio.play().catch(err => console.error('🎤 [TTS] Audio play error:', err));
+                                                    console.log('🎤 [TTS] Playing voice using Microsoft Edge TTS');
                                                   }
+                                                } else {
+                                                  const errorData = await response.json();
+                                                  console.error('🎤 [TTS] Backend error:', errorData.error);
                                                 }
                                               } catch (error) {
-                                                console.warn('⚠️ Backend TTS unavailable, falling back to browser speech synthesis');
-                                              }
-                                              
-                                              // Fallback: Use browser's native Web Speech API if backend failed
-                                              if (!backendSuccess && typeof window !== 'undefined' && 'speechSynthesis' in window) {
-                                                window.speechSynthesis.cancel();
-                                                const utterance = new SpeechSynthesisUtterance(baseText);
-                                                utterance.rate = voiceRate || 1.0;
-                                                utterance.pitch = voicePitch || 1.0;
-                                                utterance.lang = voiceLanguage === 'en' ? 'en-US' : voiceLanguage === 'hi' ? 'hi-IN' : voiceLanguage === 'bn' ? 'bn-IN' : 'en-US';
-                                                window.speechSynthesis.speak(utterance);
-                                                console.log('🎧 [VOICE] Speaking with browser Web Speech API (fallback)');
+                                                console.error('🎤 [TTS] Error calling Microsoft Edge TTS:', error);
                                               }
                                             }}
                                           >
