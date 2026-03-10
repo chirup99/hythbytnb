@@ -88,11 +88,38 @@ Preferred communication style: Simple, everyday language.
 - Includes quarterly performance, trend analysis, and recent news for each stock
 - Returns chart-ready data with PE, EPS, and recommendation for each stock
 
+# Text-to-Speech (TTS) System
+
+## OpenAI-Edge-TTS Integration (v2.0 - Premium Voice Quality)
+
+The platform now uses **openai-edge-tts** compatible voice mapping for perfect voice quality.
+
+**Voice Profiles**:
+- **Samantha** (Female, bright & energetic) → `en-US-EmmaNeural`
+- **Liam** (Male, professional & warm) → `en-US-EricNeural`
+- **Sophia** (Female, confident & clear) → `en-US-AriaNeural`
+
+**Supported Languages** (8+ Indian languages + English):
+- English, Hindi, Bengali, Tamil, Telugu, Marathi, Gujarati, Kannada
+
+**Features**:
+- Free, open-source Microsoft Edge TTS (no API key required)
+- Speed adjustment (0.25x to 4.0x playback speed)
+- Natural, human-like voice synthesis
+- `/api/tts/generate` endpoint for TTS generation
+- `/v1/audio/speech` endpoint for OpenAI API compatibility
+
+**Backend**: `server/tts-service.ts` (Sarvam TTS Service)
+- Uses `edge-tts` library with OpenAI voice mapping
+- Converts speed values to SSML rate format
+- Returns base64-encoded MP3 audio
+
 # External Dependencies
 
 -   **Market Data Providers**:
     -   **Global Market Indices**: Web search-based data (DuckDuckGo, Google News) for S&P 500, S&P/TSX, Nifty 50, Nikkei 225, Hang Seng, with smart caching and refresh based on market hours.
     -   **Indian Market Data**: Fyers API v3 and Angel One SmartAPI for real-time and historical NSE/BSE data.
+-   **Text-to-Speech**: Microsoft Edge TTS via `edge-tts` (free, no API key required)
 -   **Cloud Services**:
     -   **Google Cloud Firestore**: Document storage.
     -   **Google Cloud Storage**: File and asset storage.

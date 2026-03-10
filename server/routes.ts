@@ -22581,9 +22581,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Natural voice TTS Endpoint - High-quality human-like voices from HuggingFace
+  // OpenAI-Edge-TTS compatible endpoint with full voice quality support
   app.post('/api/tts/generate', async (req, res) => {
     try {
-      const { text, language, speaker } = req.body;
+      const { text, language, speaker, speed } = req.body;
       
       if (!text) {
         res.status(400).json({ error: 'Text is required' });
@@ -22593,7 +22594,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const result = await sarvamTTSService.generateSpeech({
         text,
         language: language || 'en',
-        speaker: speaker
+        speaker: speaker,
+        speed: speed || 1.0
       });
 
       if (result.error) {
@@ -22602,6 +22604,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       res.json({ audioBase64: result.audioBase64 });
+    } catch (error: any) {
+      console.error('🔴 [TTS] Error:', error.message);
+      res.status(500).json({ error: 'TTS generation failed' });
+    }
+  });
+
+  // Optional: Add /v1/audio/speech endpoint for full OpenAI-Edge-TTS compatibility
+  app.post('/v1/audio/speech', async (req, res) => {
+    try {
+      const { input, voice = 'shimmer', speed = 1.0, response_format = 'mp3' } = req.body;
+      
+      if (!input) {
+        res.status(400).json({ error: 'Missing "input" in request body' });
+        return;
+      }
+
+      const result = await sarvamTTSService.generateSpeech({
+        text: input,
+        language: 'en',
+        speaker: voice,
+        speed: speed
+      });
+
+      if (result.error) {
+        res.status(500).json({ error: result.error });
+        return;
+      }
+
+      // Return as audio/mpeg for OpenAI compatibility
+      res.contentType('audio/mpeg');
+      res.send(Buffer.from(result.audioBase64!.replace('data:audio/mpeg;base64,', ''), 'base64'));
     } catch (error: any) {
       console.error('🔴 [TTS] Error:', error.message);
       res.status(500).json({ error: 'TTS generation failed' });

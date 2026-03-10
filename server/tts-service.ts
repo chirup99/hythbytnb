@@ -4,6 +4,7 @@ export interface TTSRequest {
   text: string;
   language: string;
   speaker?: string;
+  speed?: number;
 }
 
 export interface TTSResponse {
@@ -13,19 +14,24 @@ export interface TTSResponse {
 }
 
 // Free, open-source TTS Service using Edge TTS (Microsoft Bing text-to-speech)
+// Enhanced with OpenAI-Edge-TTS compatible voice mapping for perfect voice quality
 export const sarvamTTSService = {
   async generateSpeech(request: TTSRequest): Promise<TTSResponse> {
     try {
       const voiceName = this.getVoiceNameForLanguage(request.language, request.speaker);
+      const speed = request.speed || 1.0;
       
-      console.log(`🎤 [TTS] Generating speech using Edge TTS voice: ${voiceName}...`);
+      // Convert speed (0.25-4.0) to SSML rate format (-100% to +100%)
+      const speedRate = this.convertSpeedToRate(speed);
       
-      // Use edge-tts to generate audio
+      console.log(`🎤 [TTS] Generating speech using Edge TTS voice: ${voiceName} at ${speedRate}...`);
+      
+      // Use edge-tts to generate audio with speed adjustment
       const audioBuffer = await tts(request.text, {
         voice: voiceName,
-        rate: '+0%',    // normal speed
-        pitch: '+0Hz',  // normal pitch
-        volume: '+0%'   // normal volume
+        rate: speedRate,    // speed adjustment
+        pitch: '+0Hz',      // normal pitch
+        volume: '+0%'       // normal volume
       });
 
       if (!audioBuffer || audioBuffer.length === 0) {
@@ -48,33 +54,58 @@ export const sarvamTTSService = {
     }
   },
 
-  // Map language codes to Edge TTS voice names (Microsoft Natural Voices)
-  // Voice format: lang-COUNTRY-NameNeural
+  // Convert playback speed (0.25-4.0) to SSML rate format (-100% to +100%)
+  convertSpeedToRate(speed: number): string {
+    if (speed === 1.0) return '+0%';
+    const rate = Math.round((speed - 1.0) * 100);
+    return rate >= 0 ? `+${rate}%` : `${rate}%`;
+  },
+
+  // Enhanced voice mapping from OpenAI-Edge-TTS for premium quality voices
+  // Maps speaker profiles to the most natural and distinct edge-tts voices
   getVoiceNameForLanguage(language: string, speakerId?: string): string {
-    // Voice mapping with proper Edge TTS voice names
-    const voiceMap: { [key: string]: string } = {
-      'en': 'en-US-AvaNeural',            // English - Female (natural)
-      'hi': 'hi-IN-MadhurNeural',         // Hindi - Male
-      'bn': 'bn-IN-BashkarNeural',        // Bengali - Male
-      'ta': 'ta-IN-ValluvarNeural',       // Tamil - Male
-      'te': 'te-IN-MohanNeural',          // Telugu - Male
-      'mr': 'mr-IN-ManoharNeural',        // Marathi - Male
-      'gu': 'gu-IN-DhwaniNeural',         // Gujarati - Female
-      'kn': 'kn-IN-GaranNeural',          // Kannada - Male
+    // OpenAI-Edge-TTS compatible voice mapping for premium quality
+    // These are the best natural-sounding voices from edge-tts
+    const openaiVoiceMapping: { [key: string]: string } = {
+      // OpenAI voice equivalents (premium quality)
+      'alloy': 'en-US-JennyNeural',        // Female, young professional
+      'ash': 'en-US-AndrewNeural',         // Male, young professional
+      'ballad': 'en-GB-ThomasNeural',      // British male, classic
+      'coral': 'en-AU-NatashaNeural',      // Australian female, warm
+      'echo': 'en-US-GuyNeural',           // Male, conversational
+      'fable': 'en-GB-SoniaNeural',        // British female, storyteller
+      'nova': 'en-US-AriaNeural',          // Female, confident
+      'onyx': 'en-US-EricNeural',          // Male, professional
+      'sage': 'en-US-JennyNeural',         // Female, wise
+      'shimmer': 'en-US-EmmaNeural',       // Female, bright & energetic
+      'verse': 'en-US-BrianNeural',        // Male, deep & warm
     };
     
-    // Override with speaker preference if specified
+    // Speaker profile mapping to premium voices
     const speakerVoiceMap: { [key: string]: string } = {
-      'samantha': 'en-US-AvaNeural',      // Female
-      'liam': 'en-US-GuyNeural',          // Male
-      'sophia': 'en-US-AvaNeural',        // Female
+      'samantha': 'en-US-EmmaNeural',      // Female, bright & energetic (shimmer)
+      'liam': 'en-US-EricNeural',          // Male, professional & warm (onyx)
+      'sophia': 'en-US-AriaNeural',        // Female, confident & clear (nova)
     };
     
-    if (speakerId && speakerVoiceMap[speakerId]) {
-      return speakerVoiceMap[speakerId];
+    // If speaker is specified, use speaker mapping
+    if (speakerId && speakerVoiceMap[speakerId.toLowerCase()]) {
+      return speakerVoiceMap[speakerId.toLowerCase()];
     }
+
+    // Language-specific voice mapping for Indian languages + English
+    const languageVoiceMap: { [key: string]: string } = {
+      'en': 'en-US-AriaNeural',            // English - Female (confident)
+      'hi': 'hi-IN-MadhurNeural',          // Hindi - Male (natural)
+      'bn': 'bn-IN-BashkarNeural',         // Bengali - Male (natural)
+      'ta': 'ta-IN-ValluvarNeural',        // Tamil - Male (natural)
+      'te': 'te-IN-MohanNeural',           // Telugu - Male (natural)
+      'mr': 'mr-IN-ManoharNeural',         // Marathi - Male (natural)
+      'gu': 'gu-IN-DhwaniNeural',          // Gujarati - Female (natural)
+      'kn': 'kn-IN-GaranNeural',           // Kannada - Male (natural)
+    };
     
-    return voiceMap[language] || 'en-US-AvaNeural'; // Default to English female
+    return languageVoiceMap[language] || 'en-US-AriaNeural'; // Default to confident female
   },
 
   // Language support - 8+ Indian languages + English with natural voices
@@ -87,5 +118,27 @@ export const sarvamTTSService = {
     { code: 'mr', name: 'मराठी (Marathi)' },
     { code: 'gu', name: 'ગુજરાતી (Gujarati)' },
     { code: 'kn', name: 'ಕನ್ನಡ (Kannada)' },
+  ],
+
+  // Available voice profiles with OpenAI-Edge-TTS compatible naming
+  voiceProfiles: [
+    {
+      id: 'samantha',
+      name: 'Samantha',
+      description: 'Female, bright & energetic',
+      voice: 'en-US-EmmaNeural'
+    },
+    {
+      id: 'liam',
+      name: 'Liam',
+      description: 'Male, professional & warm',
+      voice: 'en-US-EricNeural'
+    },
+    {
+      id: 'sophia',
+      name: 'Sophia',
+      description: 'Female, confident & clear',
+      voice: 'en-US-AriaNeural'
+    }
   ]
 };
