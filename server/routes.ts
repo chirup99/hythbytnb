@@ -82,6 +82,7 @@ import { upstoxOAuthManager } from './upstox-oauth';
 import { angelOneOAuthManager } from './angel-one-oauth';
 import { dhanOAuthManager } from './dhan-oauth';
 import { fyersOAuthManager } from './fyers-oauth';
+import { sarvamTTSService } from './tts-service';
 
 const ANGEL_ONE_STOCK_TOKENS: { [key: string]: { token: string; exchange: string; tradingSymbol: string } } = {
   'NIFTYFIN': { token: '99926037', exchange: 'NSE', tradingSymbol: 'Nifty Fin Service' },
@@ -22576,6 +22577,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error('🔴 [ANGEL ONE] Error disconnecting:', error.message);
       res.status(500).json({ success: false, error: 'Failed to disconnect' });
+    }
+  });
+
+  // Sarvam 30B TTS Endpoint - Open source voice from HuggingFace
+  app.post('/api/tts/generate', async (req, res) => {
+    try {
+      const { text, language } = req.body;
+      
+      if (!text) {
+        res.status(400).json({ error: 'Text is required' });
+        return;
+      }
+
+      const result = await sarvamTTSService.generateSpeech({
+        text,
+        language: language || 'en'
+      });
+
+      if (result.error) {
+        res.status(500).json({ error: result.error });
+        return;
+      }
+
+      res.json({ audioBase64: result.audioBase64 });
+    } catch (error: any) {
+      console.error('🔴 [TTS] Error:', error.message);
+      res.status(500).json({ error: 'TTS generation failed' });
     }
   });
 

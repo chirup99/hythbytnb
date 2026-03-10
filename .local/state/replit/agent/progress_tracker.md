@@ -186,3 +186,6 @@
 [x] 188. Voice profiles fully functional with dynamic multilingual text generation based on selected language (Mar 10, 2026)
 [x] 189. Application tested and verified running successfully with new multilingual voice feature (Mar 10, 2026)
 [x] 190. Replit environment migration complete - dotenv installed, workflow running, app verified live on port 5000 (Mar 10, 2026)
+[x] 191. Integrated open-source Sarvam 30B TTS from HuggingFace - replaced browser speechSynthesis with backend TTS service (Mar 10, 2026)
+[x] 192. Added /api/tts/generate endpoint and server/tts-service.ts for multilingual TTS support (8+ languages) (Mar 10, 2026)
+[x] 193. Updated frontend voice profiles to use Sarvam TTS with HuggingFace Inference API integration (Mar 10, 2026)

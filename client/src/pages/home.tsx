@@ -14834,17 +14834,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <div 
                                             key={profile.id} 
                                             className="flex flex-col items-center gap-1.5 group cursor-pointer" 
-                                            onClick={() => {
+                                            onClick={async () => {
                                               if (!profile.isAdd) {
                                                 setActiveVoiceProfileId(profile.id);
-                                                if (typeof window !== "undefined" && "speechSynthesis" in window) {
-                                                  const utterance = new SpeechSynthesisUtterance();
-                                                  const name = currentUser?.displayName || currentUser?.username || "Trader";
+                                                const name = currentUser?.displayName || currentUser?.username || "Trader";
                                                   // Multilingual greetings with Sarvam language support
                                                   const voiceGreetings: { [key: string]: (name: string, profile: string) => string } = {
                                                     en: (n, p) => `Hello ${n}, I am ${p}. How is your day? Welcome to perala!`,
                                                     hi: (n, p) => `नमस्ते ${n}, मैं ${p} हूँ। आपका दिन कैसा है? परला में आपका स्वागत है!`,
-                                                    bn: (n, p) => `হ্যালো ${n}, আমি ${p}। আপনার দিন কেমন? পেরালায় আপনাকে স্বাগতম!`,
+                                                    bn: (n, p) => `হ্যালো ${n}, আমি ${p}। আপনার দিन কেমন? পেরালায় আপনাকে স্বাগতম!`,
                                                     ta: (n, p) => `வணக்கம் ${n}, நான் ${p}. உங்கள் நாள் எப்படி? பெரால்லாவில் உங்களை வரவேற்கிறேன்!`,
                                                     te: (n, p) => `హలో ${n}, నేను ${p}. మీ రోజు ఎలా ఉంది? పెరాలాలో మీకు స్వాగతం!`,
                                                     mr: (n, p) => `नमस्कार ${n}, मी ${p} आहे. तुमचा दिवस कसा? पेरला मध्ये तुमचे स्वागत आहे!`,
@@ -14853,77 +14851,31 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   };
                                                   const baseText = voiceGreetings[voiceLanguage] ? voiceGreetings[voiceLanguage](name, profile.name) : `Hello ${name}, I am ${profile.name}. How is your day? Welcome to perala!`;
                                                   
-                                                  // Humanization Logic
-                                                  const voices = window.speechSynthesis.getVoices();
-                                                  let selectedVoice = null;
+                                                  // Use open-source Sarvam 30B TTS from HuggingFace
+                                                  try {
+                                                    const response = await fetch('/api/tts/generate', {
+                                                      method: 'POST',
+                                                      headers: { 'Content-Type': 'application/json' },
+                                                      body: JSON.stringify({
+                                                        text: baseText,
+                                                        language: voiceLanguage || 'en'
+                                                      })
+                                                    });
 
-                                                  if (profile.id === "samantha" || profile.name.toLowerCase().includes("samantha")) {
-                                                    selectedVoice = voices.find(v => v.name.includes("Samantha") || (v.name.includes("Female") && (v.name.includes("US") || v.name.includes("United States"))) || v.name.includes("Zira"));
-                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 1.05;
-                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.92; // Slightly slower for naturalness
-                                                  } else if (profile.id === "liam" || profile.name.toLowerCase().includes("liam")) {
-                                                    selectedVoice = voices.find(v => v.name.includes("Liam") || (v.name.includes("Male") && (v.name.includes("UK") || v.name.includes("US") || v.name.includes("English"))) || v.name.includes("Daniel") || v.name.includes("Arthur"));
-                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 0.95; // Smooth male
-                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 1.02; // Slightly faster for smoothness
-                                                  } else if (profile.id === "sophia" || profile.name.toLowerCase().includes("sophia")) {
-                                                    selectedVoice = voices.find(v => v.name.includes("Sophia") || v.name.includes("Aria") || (v.name.includes("Female") && (v.name.includes("English") || v.name.includes("US"))) || v.name.includes("Zira"));
-                                                    utterance.pitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 1.02; // Smooth female
-                                                    utterance.rate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.95;
+                                                    if (!response.ok) {
+                                                      const error = await response.json();
+                                                      console.warn('🔴 [TTS] Error:', error.error);
+                                                      return;
+                                                    }
+
+                                                    const data = await response.json();
+                                                    if (data.audioBase64) {
+                                                      const audio = new Audio(data.audioBase64);
+                                                      audio.play().catch(err => console.error('Audio play error:', err));
+                                                    }
+                                                  } catch (error) {
+                                                    console.error('🔴 [TTS] Failed to generate speech:', error);
                                                   }
-
-                                                  if (selectedVoice) utterance.voice = selectedVoice;
-
-                                                  // Advanced Humanization: Prosody & Punctuation Logic
-                                                  // We simulate variable rate and pauses by processing the text
-                                                  
-                                                  // ChatGPT-style logic: Sentence Type & Sentiment Detection
-                                                  let processedText = baseText;
-                                                  const isQuestion = baseText.trim().endsWith('?');
-                                                  const isExclamation = baseText.trim().endsWith('!');
-                                                  
-                                                  // Base parameters from attached humanization documents
-                                                  // Speech Rate: 0.95 – 1.05 (Recommended Range)
-                                                  let finalPitch = (typeof voicePitch !== "undefined" && voicePitch !== 1.0) ? voicePitch : 1.0;
-                                                  let finalRate = (typeof voiceRate !== "undefined" && voiceRate !== 1.0) ? voiceRate : 0.98; // Human sweet spot
-                                                  
-                                                  // Level 1: Sentence Type Detection → Pitch Contour Logic
-                                                  // Pitch: ±5% to ±15% (Recommended Range)
-                                                  if (isQuestion) {
-                                                    finalPitch *= 1.12; // Rise at end (+12%)
-                                                  } else if (isExclamation) {
-                                                    finalPitch *= 1.08; // Excited (+8%)
-                                                    utterance.volume = 1.0;
-                                                  } else {
-                                                    finalPitch *= 0.94; // Statement drop (-6%)
-                                                  }
-
-                                                  // Level 2: Pause Modeling (Simulated via text punctuation spacing)
-                                                  const commaPause = voiceCommaPause || 220;
-                                                  const periodPause = voicePeriodPause || 500;
-                                                  
-                                                  processedText = processedText
-                                                    .replace(/,/g, `, ${' '.repeat(Math.floor(commaPause/50))}`) 
-                                                    .replace(/\./g, `. ${' '.repeat(Math.floor(periodPause/50))}`)
-                                                    .replace(/\?/g, `? ${' '.repeat(Math.floor(periodPause/50))}`) 
-                                                    .replace(/!/g, `! ${' '.repeat(Math.floor(periodPause/50))}`);
-
-                                                  utterance.rate = finalRate;
-                                                  utterance.pitch = finalPitch;
-                                                  utterance.text = processedText;
-                                                  
-                                                  // Level 4: Micro Variation (Anti-Robot Layer / Jitter)
-                                                  const jitterAmount = (voiceMicroJitter || 3) / 100;
-                                                  const pitchJitter = (Math.random() * jitterAmount * 2) - jitterAmount;
-                                                  const rateJitter = (Math.random() * jitterAmount) - (jitterAmount / 2);
-                                                  utterance.pitch += pitchJitter;
-                                                  utterance.rate += rateJitter;
-
-                                                  // Dynamic Energy Variation (Volume)
-                                                  const energyVariance = (voiceEnergyDynamic || 5) / 100;
-                                                  utterance.volume = (1.0 - energyVariance) + (Math.random() * energyVariance * 2);
-
-                                                  window.speechSynthesis.speak(utterance);
-                                                }
                                               }
                                             }}
                                           >
