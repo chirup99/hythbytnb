@@ -12,7 +12,7 @@ export interface TTSResponse {
   error?: string;
 }
 
-// Free, open-source TTS Service using Edge TTS (Microsoft Edge text-to-speech)
+// Free, open-source TTS Service using Edge TTS (Microsoft Bing text-to-speech)
 export const sarvamTTSService = {
   async generateSpeech(request: TTSRequest): Promise<TTSResponse> {
     try {
@@ -20,13 +20,12 @@ export const sarvamTTSService = {
       
       console.log(`🎤 [TTS] Generating speech using Edge TTS voice: ${voiceName}...`);
       
-      // Create text-to-speech request with edge-tts
-      const audioBuffer = await tts({
-        text: request.text,
+      // Use edge-tts to generate audio
+      const audioBuffer = await tts(request.text, {
         voice: voiceName,
-        pitch: 0,
-        rate: 0,
-        volume: 100
+        rate: '+0%',    // normal speed
+        pitch: '+0Hz',  // normal pitch
+        volume: '+0%'   // normal volume
       });
 
       if (!audioBuffer || audioBuffer.length === 0) {
@@ -35,9 +34,7 @@ export const sarvamTTSService = {
       }
 
       // Convert audio buffer to base64
-      const audioBase64 = Buffer.isBuffer(audioBuffer) 
-        ? audioBuffer.toString('base64')
-        : Buffer.from(audioBuffer).toString('base64');
+      const audioBase64 = audioBuffer.toString('base64');
       
       console.log(`✅ [TTS] Generated natural voice for "${request.text.substring(0, 50)}..." using ${voiceName}`);
       
@@ -52,9 +49,11 @@ export const sarvamTTSService = {
   },
 
   // Map language codes to Edge TTS voice names (Microsoft Natural Voices)
+  // Voice format: lang-COUNTRY-NameNeural
   getVoiceNameForLanguage(language: string, speakerId?: string): string {
+    // Voice mapping with proper Edge TTS voice names
     const voiceMap: { [key: string]: string } = {
-      'en': 'en-US-AriaNeural',           // English - Female (natural)
+      'en': 'en-US-AvaNeural',            // English - Female (natural)
       'hi': 'hi-IN-MadhurNeural',         // Hindi - Male
       'bn': 'bn-IN-BashkarNeural',        // Bengali - Male
       'ta': 'ta-IN-ValluvarNeural',       // Tamil - Male
@@ -66,16 +65,16 @@ export const sarvamTTSService = {
     
     // Override with speaker preference if specified
     const speakerVoiceMap: { [key: string]: string } = {
-      'samantha': 'en-US-AriaNeural',      // Female
-      'liam': 'en-US-GuyNeural',           // Male
-      'sophia': 'en-US-AvaNeural',         // Female
+      'samantha': 'en-US-AvaNeural',      // Female
+      'liam': 'en-US-GuyNeural',          // Male
+      'sophia': 'en-US-AvaNeural',        // Female
     };
     
     if (speakerId && speakerVoiceMap[speakerId]) {
       return speakerVoiceMap[speakerId];
     }
     
-    return voiceMap[language] || 'en-US-AriaNeural'; // Default to English female
+    return voiceMap[language] || 'en-US-AvaNeural'; // Default to English female
   },
 
   // Language support - 8+ Indian languages + English with natural voices
