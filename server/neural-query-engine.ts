@@ -539,6 +539,7 @@ class NeuralQueryEngine {
   
   // Utility methods
   private formatNumber(num: number): string {
+    if (num == null || isNaN(num)) return '0.00';
     if (num >= 10000000) return (num / 10000000).toFixed(2) + ' Cr';
     if (num >= 100000) return (num / 100000).toFixed(2) + ' L';
     if (num >= 1000) return num.toLocaleString('en-IN');
@@ -546,6 +547,7 @@ class NeuralQueryEngine {
   }
   
   private formatVolume(vol: number): string {
+    if (vol == null || isNaN(vol)) return '0';
     if (vol >= 10000000) return (vol / 10000000).toFixed(2) + ' Cr';
     if (vol >= 100000) return (vol / 100000).toFixed(2) + ' L';
     if (vol >= 1000) return (vol / 1000).toFixed(2) + 'K';

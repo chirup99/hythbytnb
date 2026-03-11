@@ -7981,7 +7981,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     }
   };
   const [selectedInstrumentCategory, setSelectedInstrumentCategory] = useState("all");
-  const [selectedJournalDate, setSelectedJournalDate] = useState("2025-09-12");
+  const [selectedJournalDate, setSelectedJournalDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [journalChartData, setJournalChartData] = useState<Array<{ time: number; open: number; high: number; low: number; close: number; volume?: number }>>([]);
   const [journalChartLoading, setJournalChartLoading] = useState(false);
   const [journalChartTimeframe, setJournalChartTimeframe] = useState('5'); // Default 5 minutes (matches selectedJournalInterval)

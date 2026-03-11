@@ -136,11 +136,11 @@ class AWSDynamoDBService {
       if (response.Items) {
         for (const item of response.Items) {
           if (item.dateKey && item.data) {
-            // ✅ CRITICAL FIX: Skip user-specific journal entries (personal heatmap data)
-            // These keys start with "user_" and should NOT be processed by getAllJournalData()
-            // They have their own function: getAllUserJournalData()
-            if (item.dateKey.startsWith('user_')) {
-              continue; // Skip personal heatmap data - do not modify or delete
+            // ✅ CRITICAL FIX: Only process actual journal_ keys
+            // Skip user_ (personal heatmap), paper_trading_ (paper trade state), and any other non-journal keys
+            // Touching paper_trading_ keys here would corrupt and then DELETE paper trading data
+            if (!item.dateKey.startsWith('journal_')) {
+              continue; // Only process genuine demo journal entries
             }
             
             let cleanKey = item.dateKey.replace('journal_', '');
