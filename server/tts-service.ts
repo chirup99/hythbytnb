@@ -21,39 +21,49 @@ export const sarvamTTSService = {
       const voiceName = this.getVoiceNameForLanguage(request.language, request.speaker);
       const speed = request.speed || 1.0;
       
-      // Convert speed (0.25-4.0) to SSML rate format (-100% to +100%)
-      const speedRate = this.convertSpeedToRate(speed);
+      // Convert speed (0.25-4.0) to rate format for edge-tts
+      // edge-tts expects rate as a decimal like 1.5 for 1.5x speed
+      const rate = speed;
       
-      console.log(`🎤 [TTS] Generating speech using Edge TTS voice: ${voiceName} at ${speedRate}...`);
+      console.log(`🎤 [TTS] Generating speech using Edge TTS voice: ${voiceName} at ${rate}x speed...`);
       
-      // Convert pitch adjustment (0.5-2.0) to Hz format
-      let pitchHz = '+0Hz';
-      if (request.pitch && request.pitch !== 1.0) {
-        const pitchShift = (request.pitch - 1.0) * 50; // Scale to Hz
-        pitchHz = pitchShift >= 0 ? `+${Math.round(pitchShift)}Hz` : `${Math.round(pitchShift)}Hz`;
-      }
-      
-      // Use edge-tts to generate audio with speed and pitch adjustment
-      const audioBuffer = await tts(request.text, {
-        voice: voiceName,
-        rate: speedRate,    // speed adjustment
-        pitch: pitchHz,      // pitch adjustment
-        volume: '+0%'       // normal volume
-      });
+      try {
+        // Use edge-tts to generate audio stream
+        // tts returns a Readable stream
+        const audioStream = await tts({
+          text: request.text,
+          voice: voiceName,
+          rate: rate // 0.25 to 4.0
+        });
 
-      if (!audioBuffer || audioBuffer.length === 0) {
-        console.warn(`⚠️ [TTS] Empty audio buffer returned for text: "${request.text.substring(0, 50)}..."`);
-        return { error: 'TTS generation returned empty audio' };
-      }
+        // Collect audio chunks into a buffer
+        const chunks: Buffer[] = [];
+        
+        for await (const chunk of audioStream) {
+          chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+        }
 
-      // Convert audio buffer to base64
-      const audioBase64 = audioBuffer.toString('base64');
-      
-      console.log(`✅ [TTS] Generated natural voice for "${request.text.substring(0, 50)}..." using ${voiceName}`);
-      
-      return {
-        audioBase64: `data:audio/mpeg;base64,${audioBase64}`
-      };
+        if (chunks.length === 0) {
+          console.warn(`⚠️ [TTS] Empty audio buffer returned for text: "${request.text.substring(0, 50)}..."`);
+          return { error: 'TTS generation returned empty audio' };
+        }
+
+        // Combine all chunks into single buffer
+        const audioBuffer = Buffer.concat(chunks);
+        
+        // Convert audio buffer to base64
+        const audioBase64 = audioBuffer.toString('base64');
+        
+        console.log(`✅ [TTS] Generated natural voice for "${request.text.substring(0, 50)}..." using ${voiceName} (${audioBuffer.length} bytes)`);
+        
+        return {
+          audioBase64: `data:audio/mpeg;base64,${audioBase64}`
+        };
+      } catch (streamError) {
+        const streamErrorMsg = streamError instanceof Error ? streamError.message : String(streamError);
+        console.error(`❌ [TTS] Stream processing error:`, streamErrorMsg);
+        return { error: `Audio stream processing failed: ${streamErrorMsg}` };
+      }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error);
       console.error(`❌ [TTS] Error generating speech:`, errorMsg);
@@ -61,20 +71,12 @@ export const sarvamTTSService = {
     }
   },
 
-  // Convert playback speed (0.25-4.0) to SSML rate format (-100% to +100%)
-  convertSpeedToRate(speed: number): string {
-    if (speed === 1.0) return '+0%';
-    const rate = Math.round((speed - 1.0) * 100);
-    return rate >= 0 ? `+${rate}%` : `${rate}%`;
-  },
-
   // Enhanced voice mapping from OpenAI-Edge-TTS for premium quality voices
   // Maps speaker profiles to the most natural and distinct edge-tts voices
   getVoiceNameForLanguage(language: string, speakerId?: string): string {
-    // OpenAI-Edge-TTS compatible voice mapping for premium quality
-    // These are the best natural-sounding voices from edge-tts
+    // OpenAI voice equivalents (premium quality)
     const openaiVoiceMapping: { [key: string]: string } = {
-      // OpenAI voice equivalents (premium quality)
+      // OpenAI voice equivalents
       'alloy': 'en-US-JennyNeural',        // Female, young professional
       'ash': 'en-US-AndrewNeural',         // Male, young professional
       'ballad': 'en-GB-ThomasNeural',      // British male, classic
@@ -90,14 +92,25 @@ export const sarvamTTSService = {
     
     // Speaker profile mapping to premium voices
     const speakerVoiceMap: { [key: string]: string } = {
-      'samantha': 'en-US-EmmaNeural',      // Female, bright & energetic (shimmer)
-      'liam': 'en-US-EricNeural',          // Male, professional & warm (onyx)
-      'sophia': 'en-US-AriaNeural',        // Female, confident & clear (nova)
+      'en-US-AriaNeural': 'en-US-AriaNeural',      // Female, confident & clear (nova)
+      'en-US-EmmaNeural': 'en-US-EmmaNeural',      // Female, bright & energetic (shimmer)
+      'en-US-EricNeural': 'en-US-EricNeural',      // Male, professional & warm (onyx)
+      'aria': 'en-US-AriaNeural',
+      'emma': 'en-US-EmmaNeural',
+      'eric': 'en-US-EricNeural',
+      'samantha': 'en-US-EmmaNeural',              // Female, bright & energetic (shimmer)
+      'liam': 'en-US-EricNeural',                  // Male, professional & warm (onyx)
+      'sophia': 'en-US-AriaNeural',                // Female, confident & clear (nova)
     };
     
     // If speaker is specified, use speaker mapping
-    if (speakerId && speakerVoiceMap[speakerId.toLowerCase()]) {
-      return speakerVoiceMap[speakerId.toLowerCase()];
+    if (speakerId) {
+      const mapped = speakerVoiceMap[speakerId.toLowerCase()];
+      if (mapped) return mapped;
+      
+      // Try OpenAI mapping
+      const openaiMapped = openaiVoiceMapping[speakerId.toLowerCase()];
+      if (openaiMapped) return openaiMapped;
     }
 
     // Language-specific voice mapping for Indian languages + English

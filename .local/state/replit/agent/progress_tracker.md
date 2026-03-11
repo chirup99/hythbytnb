@@ -237,3 +237,8 @@
 [x] 239. Simplified stopAudio function to only manage isPlaying state
 [x] 240. Restarted workflow and verified Microsoft Edge TTS backend integration active
 [x] 241. ✅ VOICE PROFILES NOW USE PURE MICROSOFT EDGE TTS - All browser Web Speech API removed, backend-only TTS (Mar 10, 2026 - FINAL)
+[x] 242. Fixed Microsoft Edge TTS backend error - updated tts-service.ts to properly consume edge-tts stream (Mar 11, 2026)
+[x] 243. Implemented proper audio buffer collection from edge-tts stream with async iteration (Mar 11, 2026)
+[x] 244. Updated voice profile mapping to support speaker ID fallback and proper voice name resolution (Mar 11, 2026)
+[x] 245. Restarted workflow and verified application running successfully with fixed TTS service (Mar 11, 2026)
+[x] 246. ✅ IMPORT MIGRATION COMPLETE - Voice profiles now fully operational with Microsoft Edge TTS backend (Mar 11, 2026)
