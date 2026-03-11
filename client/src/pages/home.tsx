@@ -14734,13 +14734,34 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             { id: 'en-IN-NeerjaNeural', name: 'Neerja', description: 'Indian English', gender: 'Female' },
                                             { id: 'en-IN-PrabhatNeural', name: 'Prabhat', description: 'Indian English', gender: 'Male' }
                                           ],
-                                          'hi': [{ id: 'hi-IN-MadhurNeural', name: 'Madhur', description: 'Natural Hindi', gender: 'Male' }],
-                                          'bn': [{ id: 'bn-IN-BashkarNeural', name: 'Bashkar', description: 'Natural Bengali', gender: 'Male' }],
-                                          'ta': [{ id: 'ta-IN-ValluvarNeural', name: 'Valluvar', description: 'Natural Tamil', gender: 'Male' }],
-                                          'te': [{ id: 'te-IN-MohanNeural', name: 'Mohan', description: 'Natural Telugu', gender: 'Male' }],
-                                          'mr': [{ id: 'mr-IN-ManoharNeural', name: 'Manohar', description: 'Natural Marathi', gender: 'Male' }],
-                                          'gu': [{ id: 'gu-IN-DhwaniNeural', name: 'Dhwani', description: 'Natural Gujarati', gender: 'Female' }],
-                                          'kn': [{ id: 'kn-IN-GaranNeural', name: 'Garan', description: 'Natural Kannada', gender: 'Male' }]
+                                          'hi': [
+                                            { id: 'hi-IN-MadhurNeural', name: 'Madhur', description: 'Natural Hindi', gender: 'Male' },
+                                            { id: 'hi-IN-SwaraNeural', name: 'Swara', description: 'Natural Hindi', gender: 'Female' }
+                                          ],
+                                          'bn': [
+                                            { id: 'bn-IN-BashkarNeural', name: 'Bashkar', description: 'Natural Bengali', gender: 'Male' },
+                                            { id: 'bn-IN-TanayaNeural', name: 'Tanaya', description: 'Natural Bengali', gender: 'Female' }
+                                          ],
+                                          'ta': [
+                                            { id: 'ta-IN-ValluvarNeural', name: 'Valluvar', description: 'Natural Tamil', gender: 'Male' },
+                                            { id: 'ta-IN-SaranyaNeural', name: 'Saranya', description: 'Natural Tamil', gender: 'Female' }
+                                          ],
+                                          'te': [
+                                            { id: 'te-IN-MohanNeural', name: 'Mohan', description: 'Natural Telugu', gender: 'Male' },
+                                            { id: 'te-IN-ShrutiNeural', name: 'Shruti', description: 'Natural Telugu', gender: 'Female' }
+                                          ],
+                                          'mr': [
+                                            { id: 'mr-IN-ManoharNeural', name: 'Manohar', description: 'Natural Marathi', gender: 'Male' },
+                                            { id: 'mr-IN-AarohiNeural', name: 'Aarohi', description: 'Natural Marathi', gender: 'Female' }
+                                          ],
+                                          'gu': [
+                                            { id: 'gu-IN-DhwaniNeural', name: 'Dhwani', description: 'Natural Gujarati', gender: 'Female' },
+                                            { id: 'gu-IN-NiranjanNeural', name: 'Niranjan', description: 'Natural Gujarati', gender: 'Male' }
+                                          ],
+                                          'kn': [
+                                            { id: 'kn-IN-GaranNeural', name: 'Garan', description: 'Natural Kannada', gender: 'Male' },
+                                            { id: 'kn-IN-SapnaNeural', name: 'Sapna', description: 'Natural Kannada', gender: 'Female' }
+                                          ]
                                         };
                                         const currentLanguageVoices = voicesByLanguage[voiceLanguage] || voicesByLanguage['en'];
                                         return currentLanguageVoices.map((profile) => {
