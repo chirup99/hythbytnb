@@ -14767,9 +14767,23 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             { id: 'ml-IN-SobhanaNeural', name: 'Sobhana', description: 'Natural Malayalam', gender: 'Female' }
                                           ]
                                         };
+                                        const languageScripts: { [key: string]: string } = {
+                                          'en': 'A',
+                                          'hi': 'हि',
+                                          'bn': 'বা',
+                                          'ta': 'த',
+                                          'te': 'తె',
+                                          'mr': 'मर',
+                                          'gu': 'ગુ',
+                                          'kn': 'ಕ',
+                                          'ml': 'മ'
+                                        };
+                                        
                                         const currentLanguageVoices = voicesByLanguage[voiceLanguage] || voicesByLanguage['en'];
                                         return currentLanguageVoices.map((profile) => {
                                           const isSelected = activeVoiceProfileId === profile.id;
+                                          const isMale = profile.gender === 'Male';
+                                          const languageText = languageScripts[voiceLanguage] || 'A';
                                         return (
                                           <div 
                                             key={profile.id} 
@@ -14829,10 +14843,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               }
                                             }}
                                           >
-                                            <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 ${isSelected ? "border-blue-500 ring-2 ring-blue-500/50" : "border-transparent"} active:scale-95 overflow-hidden bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg`}>
-                                              <span className="text-xs font-bold text-white">{profile.name.charAt(0).toUpperCase()}</span>
+                                            <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all group-hover:scale-105 ${isSelected ? (isMale ? "border-blue-500 ring-2 ring-blue-500/50" : "border-pink-500 ring-2 ring-pink-500/50") : "border-transparent"} active:scale-95 overflow-hidden ${isMale ? 'bg-gradient-to-br from-blue-600 to-blue-400' : 'bg-gradient-to-br from-pink-600 to-pink-400'} shadow-lg`}>
+                                              <span className="text-xs font-bold text-white">{languageText}</span>
                                             </div>
-                                            <span className={`text-[10px] font-medium transition-colors flex items-center gap-1 ${isSelected ? "text-blue-400 font-bold" : "text-gray-300 group-hover:text-blue-400"}`}>
+                                            <span className={`text-[10px] font-medium transition-colors flex items-center gap-1 ${isSelected ? (isMale ? "text-blue-400" : "text-pink-400") + " font-bold" : "text-gray-300 group-hover:" + (isMale ? "text-blue-400" : "text-pink-400")}`}>
                                               {profile.name} {isSelected && <Check className="h-2.5 w-2.5" />}
                                             </span>
                                           </div>
