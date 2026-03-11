@@ -14731,13 +14731,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       {(() => {
                                         const voicesByLanguage: { [key: string]: any[] } = {
                                           'en': [
-                                            { id: 'en-US-AriaNeural', name: 'Aria', description: 'Confident & clear', gender: 'Female' },
-                                            { id: 'en-US-EmmaNeural', name: 'Emma', description: 'Bright & energetic', gender: 'Female' },
-                                            { id: 'en-US-EricNeural', name: 'Eric', description: 'Professional & warm', gender: 'Male' },
-                                            { id: 'en-US-JennyNeural', name: 'Jenny', description: 'Young professional', gender: 'Female' },
-                                            { id: 'en-GB-ThomasNeural', name: 'Thomas', description: 'Classic British', gender: 'Male' }
+                                            { id: 'en-IN-NeerjaNeural', name: 'Neerja', description: 'Indian English', gender: 'Female' },
+                                            { id: 'en-IN-PrabhatNeural', name: 'Prabhat', description: 'Indian English', gender: 'Male' }
                                           ],
-                                          'hi': [{ id: 'hi-IN-MadhurNeural', name: 'Madhur', description: 'Natural Indian', gender: 'Male' }],
+                                          'hi': [{ id: 'hi-IN-MadhurNeural', name: 'Madhur', description: 'Natural Hindi', gender: 'Male' }],
                                           'bn': [{ id: 'bn-IN-BashkarNeural', name: 'Bashkar', description: 'Natural Bengali', gender: 'Male' }],
                                           'ta': [{ id: 'ta-IN-ValluvarNeural', name: 'Valluvar', description: 'Natural Tamil', gender: 'Male' }],
                                           'te': [{ id: 'te-IN-MohanNeural', name: 'Mohan', description: 'Natural Telugu', gender: 'Male' }],
@@ -14827,7 +14824,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           onChange={(e) => setVoiceLanguage(e.target.value)}
                                           className="w-full px-2 py-1 text-xs bg-gray-700 border border-gray-600 rounded text-gray-200 focus:border-blue-400 focus:outline-none"
                                         >
-                                          <option value="en">English</option>
+                                          <option value="en">English (Indian)</option>
                                           <option value="hi">हिंदी (Hindi)</option>
                                           <option value="bn">বাংলা (Bengali)</option>
                                           <option value="ta">தமிழ் (Tamil)</option>

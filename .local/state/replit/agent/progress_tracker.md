@@ -263,3 +263,8 @@
 [x] 265. Install npm dependencies and verify application running on port 5000 (current Replit migration session)
 [x] 266. Restart workflow and confirm application responds on port 5000 (current Replit migration session)
 [x] 267. ✅ REPLIT IMPORT MIGRATION COMPLETE - Application fully verified running on port 5000, all systems operational (current session)
+[x] 268. Updated English voice profiles to 2 Indian English voices (Neerja, Prabhat) instead of 5 US/GB voices
+[x] 269. Changed language selector to display "English (Indian)" for consistency with other languages
+[x] 270. Verified all other languages show only 1 voice each (Hindi, Bengali, Tamil, Telugu, Marathi, Gujarati, Kannada)
+[x] 271. Restarted workflow and confirmed voice profiles display correctly with Indian English voices
+[x] 272. ✅ VOICE PROFILES UPDATED - 2 Indian English voices per language standard, application verified running (Mar 11, 2026)
