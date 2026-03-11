@@ -1852,6 +1852,7 @@ export default function Home() {
   const isTortoiseFacingRightRef = useRef(true);
 
   useEffect(() => { localStorage.setItem('activeVoiceProfileId', activeVoiceProfileId); }, [activeVoiceProfileId]);
+  useEffect(() => { localStorage.setItem('voiceLanguage', voiceLanguage); }, [voiceLanguage]);
   const [location, setLocation] = useLocation();
 
   // 🔶 Detect Angel One OAuth callback from redirect
@@ -1937,7 +1938,7 @@ export default function Home() {
   const [voiceNounDuration, setVoiceNounDuration] = useState(1.15);
   const [voiceFunctionDuration, setVoiceFunctionDuration] = useState(0.92);
   const [voiceMicroJitter, setVoiceMicroJitter] = useState(3);
-  const [voiceLanguage, setVoiceLanguage] = useState("en"); // Multilingual support: en, hi, bn, ta, te, mr, gu, kn, ml
+  const [voiceLanguage, setVoiceLanguage] = useState<string>(() => { if (typeof window !== 'undefined') { return localStorage.getItem('voiceLanguage') || 'en'; } return 'en'; }); // Multilingual support: en, hi, bn, ta, te, mr, gu, kn, ml
   const [showAdminDashboardDialog, setShowAdminDashboardDialog] = useState(false);
   const [adminTab, setAdminTab] = useState("bugs-list");
   const [showMagicBugBar, setShowMagicBugBar] = useState(false);

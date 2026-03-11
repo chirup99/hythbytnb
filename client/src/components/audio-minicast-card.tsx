@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import { getCognitoToken } from '@/cognito';
+import { ttsUtils } from '@/lib/tts-utils';
 
 interface SelectedPost {
   id: string | number;
@@ -62,6 +63,7 @@ export function AudioMinicastCard({
   const [isDeleting, setIsDeleting] = useState(false);
   const [shouldAutoPlay, setShouldAutoPlay] = useState(false);
   const previousCardIdRef = useRef<string | null>(null);
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -246,11 +248,14 @@ export function AudioMinicastCard({
     return cleaned.replace(/\s+/g, ' ').trim();
   }
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
     setShouldAutoPlay(false); // Disable auto-play for manual interactions
     
     if (isPlaying) {
-      window.speechSynthesis.cancel();
+      if (currentAudioRef.current) {
+        currentAudioRef.current.pause();
+        currentAudioRef.current = null;
+      }
       setIsPlaying(false);
     } else {
       // Only read content cards (not the main announcement card)
@@ -258,40 +263,80 @@ export function AudioMinicastCard({
       if (currentCard && currentCard.type === 'post') {
         const textToSpeak = cleanTextForSpeech(currentCard.content);
         
-        console.log('🔊 Playing audio:', {
+        console.log('🔊 Playing audio with voice profile:', {
           currentCardId: currentCard.id,
           currentCardType: currentCard.type,
           textLength: textToSpeak.length,
           textPreview: textToSpeak.substring(0, 100) + '...'
         });
         
-        const utterance = new SpeechSynthesisUtterance(textToSpeak);
-        const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'ravi';
-        const voiceProfileMap: Record<string, string[]> = {
-          ravi: ["Google UK English Male", "Microsoft Ravi Online (Natural) - English (India)", "en-IN-Wavenet-B", "en-IN-Standard-B", "ravi", "moira"],
-          vaib: ["Google US English", "Microsoft Vaibhav Online (Natural) - English (India)", "en-IN-Wavenet-A", "en-IN-Standard-A", "samantha", "aria"],
-          kids: ["Google UK English Female", "Microsoft Heera Online (Natural) - English (India)", "en-IN-Wavenet-D", "en-IN-Standard-D", "ava", "samantha"],
-        };
-        const priorityKeywords = voiceProfileMap[savedVoiceProfileId as keyof typeof voiceProfileMap] || voiceProfileMap.ravi;
-        const voices = window.speechSynthesis.getVoices();
-        const selectedVoice = voices.find(v => 
-          priorityKeywords.some(keyword => v.name.toLowerCase().includes(keyword.toLowerCase()))
-        );
-        if (selectedVoice) utterance.voice = selectedVoice;
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
-        utterance.volume = 1.0;
-        
-        utterance.onend = () => {
+        try {
+          // Get voice settings from localStorage
+          const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'ravi';
+          const voiceLanguage = localStorage.getItem('voiceLanguage') || 'en';
+          
+          console.log('🎤 TTS Settings:', { savedVoiceProfileId, voiceLanguage });
+          
+          // Call TTS API with voice profile settings
+          const response = await fetch('/api/tts/generate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              text: textToSpeak,
+              language: voiceLanguage,
+              speaker: savedVoiceProfileId,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`TTS API error: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          
+          if (data.error) {
+            console.error('❌ TTS Error:', data.error);
+            throw new Error(data.error);
+          }
+
+          if (data.audioBase64) {
+            // Stop previous audio if playing
+            if (currentAudioRef.current) {
+              currentAudioRef.current.pause();
+            }
+
+            // Convert base64 to Blob and create audio element
+            const binaryString = atob(data.audioBase64);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+              bytes[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([bytes], { type: 'audio/mpeg' });
+            const audioUrl = URL.createObjectURL(blob);
+            
+            const audio = new Audio(audioUrl);
+            currentAudioRef.current = audio;
+            
+            audio.onended = () => {
+              setIsPlaying(false);
+              URL.revokeObjectURL(audioUrl);
+            };
+            
+            audio.onerror = () => {
+              setIsPlaying(false);
+              URL.revokeObjectURL(audioUrl);
+            };
+            
+            audio.play();
+            setIsPlaying(true);
+          }
+        } catch (error) {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          console.error('🎤 [AudioMinicast] TTS Generation Failed:', errorMsg);
           setIsPlaying(false);
-        };
-        
-        utterance.onerror = () => {
-          setIsPlaying(false);
-        };
-        
-        window.speechSynthesis.speak(utterance);
-        setIsPlaying(true);
+        }
       }
     }
   }
