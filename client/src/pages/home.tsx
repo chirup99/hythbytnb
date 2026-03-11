@@ -1847,6 +1847,7 @@ const getFullApiUrl = (path: string): string => {
 
 export default function Home() {
   const [activeVoiceProfileId, setActiveVoiceProfileId] = useState<string>(() => { if (typeof window !== 'undefined') { return localStorage.getItem('activeVoiceProfileId') || 'ravi'; } return 'ravi'; });
+  const [voiceLanguage, setVoiceLanguage] = useState("en"); // Multilingual support: en, hi, bn, ta, te, mr, gu, kn, ml
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
   const prevProgressRef = useRef(0);
   const isTortoiseFacingRightRef = useRef(true);
@@ -1942,7 +1943,6 @@ export default function Home() {
   const [voiceNounDuration, setVoiceNounDuration] = useState(1.15);
   const [voiceFunctionDuration, setVoiceFunctionDuration] = useState(0.92);
   const [voiceMicroJitter, setVoiceMicroJitter] = useState(3);
-  const [voiceLanguage, setVoiceLanguage] = useState("en"); // Multilingual support: en, hi, bn, ta, te, mr, gu, kn, ml
   const [showAdminDashboardDialog, setShowAdminDashboardDialog] = useState(false);
   const [adminTab, setAdminTab] = useState("bugs-list");
   const [showMagicBugBar, setShowMagicBugBar] = useState(false);

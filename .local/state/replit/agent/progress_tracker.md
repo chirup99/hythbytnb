@@ -7,6 +7,8 @@
 [x] 305. Fixed voiceLanguage initialization error - changed from function initializer to simple 'en' default (Mar 11, 2026)
 [x] 306. Added useEffect to load saved voiceLanguage from localStorage on mount (Mar 11, 2026)
 [x] 307. Restarted workflow and verified app rendering HTML - preview loading successfully (Mar 11, 2026)
+[x] 308. Fixed state initialization order - moved voiceLanguage state before useEffects that use it (Mar 11, 2026)
+[x] 309. Restarted workflow and confirmed app responding with HTTP 200 - preview now displaying (Mar 11, 2026)
 [x] 28. Fix Angel One connection logic to use OAuth redirect pattern
 [x] 5. Rename "Test AI" to "Scanner" in Trading Master tab
 [x] 6. Update "Scanner" icon to Scan icon from lucide-react
