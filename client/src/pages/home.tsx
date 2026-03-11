@@ -1847,6 +1847,7 @@ const getFullApiUrl = (path: string): string => {
 
 export default function Home() {
   const [activeVoiceProfileId, setActiveVoiceProfileId] = useState<string>(() => { if (typeof window !== 'undefined') { return localStorage.getItem('activeVoiceProfileId') || 'ravi'; } return 'ravi'; });
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
   const prevProgressRef = useRef(0);
   const isTortoiseFacingRightRef = useRef(true);
 
@@ -14736,7 +14737,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           ],
                                           'hi': [
                                             { id: 'hi-IN-MadhurNeural', name: 'Madhur', description: 'Natural Hindi', gender: 'Male' },
-                                            { id: 'hi-IN-GauravNeural', name: 'Gaurav', description: 'Natural Hindi', gender: 'Male' }
+                                            { id: 'hi-IN-KalpanaNeural', name: 'Kalpana', description: 'Natural Hindi', gender: 'Female' }
                                           ],
                                           'bn': [
                                             { id: 'bn-IN-BashkarNeural', name: 'Bashkar', description: 'Natural Bengali', gender: 'Male' },
@@ -14790,6 +14791,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             className="flex flex-col items-center gap-1.5 group cursor-pointer" 
                                             onClick={async () => {
                                               setActiveVoiceProfileId(profile.id);
+                                              // Stop any currently playing audio
+                                              if (currentAudioRef.current) {
+                                                currentAudioRef.current.pause();
+                                                currentAudioRef.current = null;
+                                              }
                                               const name = currentUser?.displayName || currentUser?.username || "Trader";
                                               // Multilingual greetings with Microsoft Edge TTS voices
                                               const voiceGreetings: { [key: string]: (name: string, profile: string) => string } = {
@@ -14831,6 +14837,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     const audioBlob = new Blob([bytes], { type: 'audio/mpeg' });
                                                     const audioUrl = URL.createObjectURL(audioBlob);
                                                     const audio = new Audio(audioUrl);
+                                                    currentAudioRef.current = audio;
                                                     audio.play().catch(err => console.error('🎤 [TTS] Audio play error:', err));
                                                     console.log('🎤 [TTS] Playing voice using Microsoft Edge TTS');
                                                   }

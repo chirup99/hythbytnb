@@ -291,3 +291,7 @@
 [x] 293. ✅ REPLIT IMPORT MIGRATION COMPLETE - All systems operational, application verified running on port 5000 (current session)
 [x] 294. Configured workflow to run npm run dev on port 5000 with webview output - application running successfully (Mar 11, 2026)
 [x] 295. ✅ FINAL REPLIT ENVIRONMENT MIGRATION COMPLETE - All systems verified, workflow configured, application live on port 5000
+[x] 296. Fixed Hindi voice "Gaurav" - replaced with valid "Kalpana" (female voice) for gender diversity
+[x] 297. Implemented audio playback management with currentAudioRef to stop previous audio when selecting new voice
+[x] 298. Voice profiles now properly pause previous audio and switch instantly without overlapping playback (Mar 11, 2026)
+[x] 299. ✅ VOICE PROFILES ISSUES FIXED - Hindi Gaurav replaced with Kalpana, audio pause-on-switch working (Mar 11, 2026)
