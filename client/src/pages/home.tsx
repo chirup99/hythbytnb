@@ -14785,7 +14785,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                 if (response.ok) {
                                                   const data = await response.json();
                                                   if (data.audioBase64) {
-                                                    const audio = new Audio(data.audioBase64);
+                                                    // Convert base64 data URL to Blob for proper playback
+                                                    const base64Data = data.audioBase64.replace(/^data:audio\/\w+;base64,/, '');
+                                                    const binaryString = atob(base64Data);
+                                                    const bytes = new Uint8Array(binaryString.length);
+                                                    for (let i = 0; i < binaryString.length; i++) {
+                                                      bytes[i] = binaryString.charCodeAt(i);
+                                                    }
+                                                    const audioBlob = new Blob([bytes], { type: 'audio/mpeg' });
+                                                    const audioUrl = URL.createObjectURL(audioBlob);
+                                                    const audio = new Audio(audioUrl);
                                                     audio.play().catch(err => console.error('🎤 [TTS] Audio play error:', err));
                                                     console.log('🎤 [TTS] Playing voice using Microsoft Edge TTS');
                                                   }
