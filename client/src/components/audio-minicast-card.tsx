@@ -248,6 +248,78 @@ export function AudioMinicastCard({
     return cleaned.replace(/\s+/g, ' ').trim();
   }
 
+  // Helper: Map language + voice profile to proper language-specific voice
+  const getLanguageAwareVoiceName = (voiceProfileId: string, language: string): string => {
+    // Voice name to voice ID mappings by language
+    const voicesByLanguage: { [lang: string]: { [voiceName: string]: string } } = {
+      'en': {
+        'prabhat': 'en-IN-PrabhatNeural',
+        'neerja': 'en-IN-NeerjaNeural',
+        'neerja-expressive': 'en-IN-NeerjaExpressiveNeural',
+      },
+      'hi': {
+        'prabhat': 'hi-IN-GauravNeural', // Fallback to Gaurav for Hindi
+        'neerja': 'hi-IN-MadhurNeural', // Fallback to Madhur for Hindi
+        'madhur': 'hi-IN-MadhurNeural',
+        'gaurav': 'hi-IN-GauravNeural',
+      },
+      'bn': {
+        'prabhat': 'bn-IN-BashkarNeural',
+        'neerja': 'bn-IN-BashkarNeural',
+        'bashkar': 'bn-IN-BashkarNeural',
+      },
+      'ta': {
+        'prabhat': 'ta-IN-ValluvarNeural',
+        'neerja': 'ta-IN-ValluvarNeural',
+        'valluvar': 'ta-IN-ValluvarNeural',
+      },
+      'te': {
+        'prabhat': 'te-IN-MohanNeural',
+        'neerja': 'te-IN-MohanNeural',
+        'mohan': 'te-IN-MohanNeural',
+      },
+      'mr': {
+        'prabhat': 'mr-IN-ManoharNeural',
+        'neerja': 'mr-IN-ManoharNeural',
+        'manohar': 'mr-IN-ManoharNeural',
+      },
+      'gu': {
+        'prabhat': 'gu-IN-DhwaniNeural',
+        'neerja': 'gu-IN-DhwaniNeural',
+        'dhwani': 'gu-IN-DhwaniNeural',
+      },
+      'kn': {
+        'prabhat': 'kn-IN-GaganNeural',
+        'neerja': 'kn-IN-SapnaNeural',
+        'gagan': 'kn-IN-GaganNeural',
+        'sapna': 'kn-IN-SapnaNeural',
+      },
+      'ml': {
+        'prabhat': 'ml-IN-MidhunNeural',
+        'neerja': 'ml-IN-SobhanaNeural',
+        'midhun': 'ml-IN-MidhunNeural',
+        'sobhana': 'ml-IN-SobhanaNeural',
+      },
+    };
+
+    // Extract voice name from full voice ID (e.g., "Prabhat" from "en-IN-PrabhatNeural")
+    const voiceNameMatch = voiceProfileId.match(/([A-Za-z]+)Neural$/);
+    const voiceName = voiceNameMatch ? voiceNameMatch[1].toLowerCase() : voiceProfileId.toLowerCase();
+
+    // Get language-specific mapping
+    const languageVoices = voicesByLanguage[language] || voicesByLanguage['en'];
+    const mappedVoice = languageVoices[voiceName];
+
+    console.log('🗣️ Voice Mapping:', {
+      originalProfile: voiceProfileId,
+      extractedName: voiceName,
+      selectedLanguage: language,
+      mappedVoice: mappedVoice || 'using language fallback'
+    });
+
+    return mappedVoice || voicesByLanguage[language]?.[Object.keys(languageVoices)[0]] || 'en-IN-PrabhatNeural';
+  };
+
   const togglePlay = async () => {
     setShouldAutoPlay(false); // Disable auto-play for manual interactions
     
@@ -275,7 +347,10 @@ export function AudioMinicastCard({
           const savedVoiceProfileId = localStorage.getItem('activeVoiceProfileId') || 'ravi';
           const voiceLanguage = localStorage.getItem('voiceLanguage') || 'en';
           
-          console.log('🎤 TTS Settings:', { savedVoiceProfileId, voiceLanguage });
+          // Get language-aware voice name
+          const languageAwareVoice = getLanguageAwareVoiceName(savedVoiceProfileId, voiceLanguage);
+          
+          console.log('🎤 TTS Settings:', { savedVoiceProfileId, voiceLanguage, languageAwareVoice });
           
           // Call TTS API with voice profile settings
           const response = await fetch('/api/tts/generate', {
@@ -286,7 +361,7 @@ export function AudioMinicastCard({
             body: JSON.stringify({
               text: textToSpeak,
               language: voiceLanguage,
-              speaker: savedVoiceProfileId,
+              speaker: languageAwareVoice,
             }),
           });
 
