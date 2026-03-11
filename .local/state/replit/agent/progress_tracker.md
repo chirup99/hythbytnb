@@ -254,3 +254,9 @@
 [x] 256. Added second Kannada voice option (Sapna) for gender diversity in voice profiles
 [x] 257. Restarted workflow and verified Kannada voice now works properly with Microsoft Edge TTS
 [x] 258. ✅ KANNADA VOICE FIX COMPLETE - All 8+ languages now fully functional in voice profiles (Mar 11, 2026)
+[x] 259. Limited English voices to 3 Indian English options (Neerja, Prabhat, Neerja Expressive)
+[x] 260. Added Malayalam language with 2 voices (Midhun, Sobhana)
+[x] 261. Updated language selector in voice profiles to show Malayalam (മലയാളം)
+[x] 262. Changed English from US/British/Australian to Indian accent only for consistency
+[x] 263. Restarted workflow and verified all changes applied successfully
+[x] 264. ✅ VOICE PROFILES UPDATED - 9 languages supported with max 3 voices each, Malayalam added, English limited to Indian (Mar 11, 2026)

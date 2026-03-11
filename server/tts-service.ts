@@ -112,7 +112,7 @@ export const sarvamTTSService = {
 
     // Language-specific voice mapping for Indian languages + English
     const languageVoiceMap: { [key: string]: string } = {
-      'en': 'en-US-AriaNeural',     // English
+      'en': 'en-IN-NeerjaNeural',   // English (Indian)
       'hi': 'hi-IN-MadhurNeural',   // Hindi
       'bn': 'bn-IN-BashkarNeural',  // Bengali
       'ta': 'ta-IN-ValluvarNeural', // Tamil
@@ -120,13 +120,14 @@ export const sarvamTTSService = {
       'mr': 'mr-IN-ManoharNeural',  // Marathi
       'gu': 'gu-IN-DhwaniNeural',   // Gujarati
       'kn': 'kn-IN-GaganNeural',    // Kannada
+      'ml': 'ml-IN-MidhunNeural',   // Malayalam
     };
 
     return languageVoiceMap[language] || 'en-US-AriaNeural';
   },
 
   supportedLanguages: [
-    { code: 'en', name: 'English' },
+    { code: 'en', name: 'English (Indian)' },
     { code: 'hi', name: 'हिंदी (Hindi)' },
     { code: 'bn', name: 'বাংলা (Bengali)' },
     { code: 'ta', name: 'தமிழ் (Tamil)' },
@@ -134,20 +135,14 @@ export const sarvamTTSService = {
     { code: 'mr', name: 'मराठी (Marathi)' },
     { code: 'gu', name: 'ગુજરાતી (Gujarati)' },
     { code: 'kn', name: 'ಕನ್ನಡ (Kannada)' },
+    { code: 'ml', name: 'മലയാളം (Malayalam)' },
   ],
 
   voicesByLanguage: {
     'en': [
-      { name: 'Aria',    voice: 'en-US-AriaNeural',    gender: 'Female', accent: 'US',         description: 'Confident & clear' },
-      { name: 'Emma',    voice: 'en-US-EmmaNeural',    gender: 'Female', accent: 'US',         description: 'Bright & energetic' },
-      { name: 'Jenny',   voice: 'en-US-JennyNeural',   gender: 'Female', accent: 'US',         description: 'Young professional' },
-      { name: 'Eric',    voice: 'en-US-EricNeural',    gender: 'Male',   accent: 'US',         description: 'Professional & warm' },
-      { name: 'Guy',     voice: 'en-US-GuyNeural',     gender: 'Male',   accent: 'US',         description: 'Conversational' },
-      { name: 'Brian',   voice: 'en-US-BrianNeural',   gender: 'Male',   accent: 'US',         description: 'Deep & warm' },
-      { name: 'Andrew',  voice: 'en-US-AndrewNeural',  gender: 'Male',   accent: 'US',         description: 'Young professional' },
-      { name: 'Thomas',  voice: 'en-GB-ThomasNeural',  gender: 'Male',   accent: 'British',    description: 'Classic British' },
-      { name: 'Sonia',   voice: 'en-GB-SoniaNeural',   gender: 'Female', accent: 'British',    description: 'Storyteller' },
-      { name: 'Natasha', voice: 'en-AU-NatashaNeural', gender: 'Female', accent: 'Australian', description: 'Warm & friendly' },
+      { name: 'Neerja', voice: 'en-IN-NeerjaNeural', gender: 'Female', accent: 'Indian', description: 'Natural Indian English' },
+      { name: 'Prabhat', voice: 'en-IN-PrabhatNeural', gender: 'Male', accent: 'Indian', description: 'Clear Indian English' },
+      { name: 'Neerja Expressive', voice: 'en-IN-NeerjaExpressiveNeural', gender: 'Female', accent: 'Indian', description: 'Expressive Indian English' },
     ],
     'hi': [
       { name: 'Madhur', voice: 'hi-IN-MadhurNeural', gender: 'Male', accent: 'India', description: 'Natural Indian accent' },
@@ -171,6 +166,10 @@ export const sarvamTTSService = {
     'kn': [
       { name: 'Gagan', voice: 'kn-IN-GaganNeural', gender: 'Male', accent: 'India', description: 'Natural Kannada' },
       { name: 'Sapna', voice: 'kn-IN-SapnaNeural', gender: 'Female', accent: 'India', description: 'Natural Kannada' },
+    ],
+    'ml': [
+      { name: 'Midhun', voice: 'ml-IN-MidhunNeural', gender: 'Male', accent: 'India', description: 'Natural Malayalam' },
+      { name: 'Sobhana', voice: 'ml-IN-SobhanaNeural', gender: 'Female', accent: 'India', description: 'Natural Malayalam' },
     ],
   }
 };
