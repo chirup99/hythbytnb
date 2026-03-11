@@ -296,6 +296,12 @@ export function AudioMinicastCard({
 
           const data = await response.json();
           
+          console.log('📦 TTS API Response:', {
+            hasAudioBase64: !!data.audioBase64,
+            audioLength: data.audioBase64?.length || 0,
+            error: data.error || null
+          });
+          
           if (data.error) {
             console.error('❌ TTS Error:', data.error);
             throw new Error(data.error);
@@ -308,7 +314,9 @@ export function AudioMinicastCard({
             }
 
             // Convert base64 to Blob and create audio element
-            const binaryString = atob(data.audioBase64);
+            // Strip data URI prefix if present
+            const base64String = data.audioBase64.replace(/^data:audio\/\w+;base64,/, '');
+            const binaryString = atob(base64String);
             const bytes = new Uint8Array(binaryString.length);
             for (let i = 0; i < binaryString.length; i++) {
               bytes[i] = binaryString.charCodeAt(i);

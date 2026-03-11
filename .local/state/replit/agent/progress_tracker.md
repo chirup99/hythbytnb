@@ -11,6 +11,9 @@
 [x] 309. Restarted workflow and confirmed app responding with HTTP 200 - preview now displaying (Mar 11, 2026)
 [x] 310. Cleaned build cache with npm run build and restarted workflow - voiceLanguage state properly initialized (Mar 11, 2026)
 [x] 311. ✅ Audio minicast cards NOW FUNCTIONAL - using voice profiles and TTS API backend (Mar 11, 2026)
+[x] 312. Fixed audio playback: Strip data:audio/mpeg;base64, prefix from TTS response before decoding base64 (Mar 11, 2026)
+[x] 313. Added logging to TTS API response for debugging: audioLength, hasAudioBase64 fields (Mar 11, 2026)
+[x] 314. ✅✅✅ AUDIO MINICASTS NOW PLAYING - Full end-to-end TTS working with voice profiles (Mar 11, 2026)
 [x] 28. Fix Angel One connection logic to use OAuth redirect pattern
 [x] 5. Rename "Test AI" to "Scanner" in Trading Master tab
 [x] 6. Update "Scanner" icon to Scan icon from lucide-react
