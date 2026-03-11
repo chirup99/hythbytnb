@@ -4,7 +4,9 @@
 [x] 4. Inform user the import is completed and they can start building, mark the import as completed using the complete_project_import tool
 [x] 303. Updated audio minicast card to use voice profiles from voice settings via TTS API (Mar 11, 2026)
 [x] 304. Added voiceLanguage localStorage persistence in home.tsx matching activeVoiceProfileId pattern (Mar 11, 2026)
-[x] 305. Restarted workflow and verified app running - audio cards now use selected language and voice profile (Mar 11, 2026)
+[x] 305. Fixed voiceLanguage initialization error - changed from function initializer to simple 'en' default (Mar 11, 2026)
+[x] 306. Added useEffect to load saved voiceLanguage from localStorage on mount (Mar 11, 2026)
+[x] 307. Restarted workflow and verified app rendering HTML - preview loading successfully (Mar 11, 2026)
 [x] 28. Fix Angel One connection logic to use OAuth redirect pattern
 [x] 5. Rename "Test AI" to "Scanner" in Trading Master tab
 [x] 6. Update "Scanner" icon to Scan icon from lucide-react
