@@ -14741,11 +14741,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           ],
                                           'bn': [
                                             { id: 'bn-IN-BashkarNeural', name: 'Bashkar', description: 'Natural Bengali', gender: 'Male' },
-                                            { id: 'bn-IN-TanayaNeural', name: 'Tanaya', description: 'Natural Bengali', gender: 'Female' }
+                                            { id: 'en-IN-NeerjaNeural', name: 'Neerja', description: 'Clear Female Voice', gender: 'Female' }
                                           ],
                                           'ta': [
                                             { id: 'ta-IN-ValluvarNeural', name: 'Valluvar', description: 'Natural Tamil', gender: 'Male' },
-                                            { id: 'ta-IN-SaranyaNeural', name: 'Saranya', description: 'Natural Tamil', gender: 'Female' }
+                                            { id: 'en-IN-NeerjaNeural', name: 'Neerja', description: 'Clear Female Voice', gender: 'Female' }
                                           ],
                                           'te': [
                                             { id: 'te-IN-MohanNeural', name: 'Mohan', description: 'Natural Telugu', gender: 'Male' },
