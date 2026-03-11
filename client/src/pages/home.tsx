@@ -24485,7 +24485,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
           getCognitoToken={getCognitoToken} 
           setSavedFormats={setSavedFormats} 
           importDataTextareaRef={importDataTextareaRef} brokerFunds={brokerFunds} 
-          fyersStatus={fyersStatus}
         />
         {/* Broker Funds Breakup Dialog */}
   <Dialog open={showBrokerBreakupDialog} onOpenChange={setShowBrokerBreakupDialog}>

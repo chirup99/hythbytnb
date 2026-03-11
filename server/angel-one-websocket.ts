@@ -96,7 +96,8 @@ class AngelOneWebSocket {
 
       // Set up tick handler for receiving market data (BEFORE connect)
       this.ws.on('tick', (data: any) => {
-        console.log('[WEBSOCKET] Tick received:', data?.token);
+        if (!data?.token) return;
+        console.log('[WEBSOCKET] Tick received:', data.token);
         this.handleTick(data);
       });
 
