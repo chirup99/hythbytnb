@@ -119,7 +119,7 @@ export const sarvamTTSService = {
       'te': 'te-IN-MohanNeural',    // Telugu
       'mr': 'mr-IN-ManoharNeural',  // Marathi
       'gu': 'gu-IN-DhwaniNeural',   // Gujarati
-      'kn': 'kn-IN-GaranNeural',    // Kannada
+      'kn': 'kn-IN-GaganNeural',    // Kannada
     };
 
     return languageVoiceMap[language] || 'en-US-AriaNeural';
@@ -169,7 +169,8 @@ export const sarvamTTSService = {
       { name: 'Dhwani', voice: 'gu-IN-DhwaniNeural', gender: 'Female', accent: 'India', description: 'Natural Gujarati' },
     ],
     'kn': [
-      { name: 'Garan', voice: 'kn-IN-GaranNeural', gender: 'Male', accent: 'India', description: 'Natural Kannada' },
+      { name: 'Gagan', voice: 'kn-IN-GaganNeural', gender: 'Male', accent: 'India', description: 'Natural Kannada' },
+      { name: 'Sapna', voice: 'kn-IN-SapnaNeural', gender: 'Female', accent: 'India', description: 'Natural Kannada' },
     ],
   }
 };
