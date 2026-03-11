@@ -274,3 +274,8 @@
 [x] 276. Install npm dependencies and verify application running on port 5000 (Replit migration - current session)
 [x] 277. Restart workflow and confirm application responds on port 5000 (Replit migration - current session)
 [x] 278. ✅ REPLIT IMPORT MIGRATION FULLY COMPLETE - Application verified running on port 5000, all UI elements loading, market data live
+[x] 279. Fixed voice profiles to use distinct male/female voice IDs for each language (proper tone difference)
+[x] 280. Updated backend TTS service to pass through full voice IDs directly for proper gender-specific voices
+[x] 281. Added Malayalam language support to voice profiles with 2 distinct voices (Midhun♂, Sobhana♀)
+[x] 282. Updated voice profiles: Prabhat/Neerja (English), Madhur/Gaurav (Hindi), Bashkar/Tanaya (Bengali), Valluvar/Saranya (Tamil), Mohan/Shruti (Telugu), Manohar/Aarohi (Marathi), Niranjan/Dhwani (Gujarati), Gagan/Sapna (Kannada), Midhun/Sobhana (Malayalam)
+[x] 283. Restarted workflow and verified application running with updated voice profiles

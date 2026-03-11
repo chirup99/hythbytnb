@@ -14731,12 +14731,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       {(() => {
                                         const voicesByLanguage: { [key: string]: any[] } = {
                                           'en': [
-                                            { id: 'en-IN-NeerjaNeural', name: 'Neerja', description: 'Indian English', gender: 'Female' },
-                                            { id: 'en-IN-PrabhatNeural', name: 'Prabhat', description: 'Indian English', gender: 'Male' }
+                                            { id: 'en-IN-PrabhatNeural', name: 'Prabhat', description: 'Indian English', gender: 'Male' },
+                                            { id: 'en-IN-NeerjaNeural', name: 'Neerja', description: 'Indian English', gender: 'Female' }
                                           ],
                                           'hi': [
                                             { id: 'hi-IN-MadhurNeural', name: 'Madhur', description: 'Natural Hindi', gender: 'Male' },
-                                            { id: 'hi-IN-SwaraNeural', name: 'Swara', description: 'Natural Hindi', gender: 'Female' }
+                                            { id: 'hi-IN-GauravNeural', name: 'Gaurav', description: 'Natural Hindi', gender: 'Male' }
                                           ],
                                           'bn': [
                                             { id: 'bn-IN-BashkarNeural', name: 'Bashkar', description: 'Natural Bengali', gender: 'Male' },
@@ -14755,12 +14755,16 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             { id: 'mr-IN-AarohiNeural', name: 'Aarohi', description: 'Natural Marathi', gender: 'Female' }
                                           ],
                                           'gu': [
-                                            { id: 'gu-IN-DhwaniNeural', name: 'Dhwani', description: 'Natural Gujarati', gender: 'Female' },
-                                            { id: 'gu-IN-NiranjanNeural', name: 'Niranjan', description: 'Natural Gujarati', gender: 'Male' }
+                                            { id: 'gu-IN-NiranjanNeural', name: 'Niranjan', description: 'Natural Gujarati', gender: 'Male' },
+                                            { id: 'gu-IN-DhwaniNeural', name: 'Dhwani', description: 'Natural Gujarati', gender: 'Female' }
                                           ],
                                           'kn': [
-                                            { id: 'kn-IN-GaranNeural', name: 'Garan', description: 'Natural Kannada', gender: 'Male' },
+                                            { id: 'kn-IN-GaganNeural', name: 'Gagan', description: 'Natural Kannada', gender: 'Male' },
                                             { id: 'kn-IN-SapnaNeural', name: 'Sapna', description: 'Natural Kannada', gender: 'Female' }
+                                          ],
+                                          'ml': [
+                                            { id: 'ml-IN-MidhunNeural', name: 'Midhun', description: 'Natural Malayalam', gender: 'Male' },
+                                            { id: 'ml-IN-SobhanaNeural', name: 'Sobhana', description: 'Natural Malayalam', gender: 'Female' }
                                           ]
                                         };
                                         const currentLanguageVoices = voicesByLanguage[voiceLanguage] || voicesByLanguage['en'];
@@ -14853,6 +14857,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           <option value="mr">मराठी (Marathi)</option>
                                           <option value="gu">ગુજરાતી (Gujarati)</option>
                                           <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                                          <option value="ml">മലയാളം (Malayalam)</option>
                                         </select>
                                       </div>
                                     </div>

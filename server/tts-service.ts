@@ -75,6 +75,12 @@ export const sarvamTTSService = {
   // Voice mapping following openai-edge-tts voice choices
   // Reference: https://github.com/travisvn/openai-edge-tts
   getVoiceNameForLanguage(language: string, speakerId?: string): string {
+    // If speakerId is already a full voice ID (contains "-Neural" or language code), use it directly
+    if (speakerId && (speakerId.includes('-') || speakerId.includes('Neural'))) {
+      console.log(`🎤 [TTS] Using speaker ID directly: ${speakerId}`);
+      return speakerId;
+    }
+
     // OpenAI voice equivalents — same mapping as openai-edge-tts reference
     const openaiVoiceMapping: { [key: string]: string } = {
       'alloy':   'en-US-JennyNeural',    // Female, young professional
