@@ -1,0 +1,80 @@
+[33m759ea639[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: reset: moving to 759ea639b743fbb4dff2a905135fd1e0b2995d03
+[33mc23aa389[m HEAD@{1}: reset: moving to c23aa389eb8b6b635bfd4bba76045cdce0cc47a4
+[33mb99abdba[m HEAD@{2}: pull: Fast-forward
+[33meb1cfb3e[m HEAD@{3}: reset: moving to eb1cfb3e392db736382b45c551a2581b529c85f0
+[33me7e6fba8[m HEAD@{4}: pull: Fast-forward
+[33m1deb6ec7[m HEAD@{5}: reset: moving to 1deb6ec742a3a0dde9647296a33cb1275512e02d
+[33mfe5bb0a7[m HEAD@{6}: pull: Fast-forward
+[33m4a535fb3[m HEAD@{7}: reset: moving to 4a535fb3da67c89e3918669aee0526df1bfaf9a3
+[33m4a535fb3[m HEAD@{8}: reset: moving to 4a535fb3da67c89e3918669aee0526df1bfaf9a3
+[33m4a535fb3[m HEAD@{9}: reset: moving to 4a535fb3da67c89e3918669aee0526df1bfaf9a3
+[33mfbf840bb[m HEAD@{10}: pull: Fast-forward
+[33maddc5277[m HEAD@{11}: reset: moving to addc5277abd1b146381b8e5fbf65ff7795076444
+[33m3a2a6dc1[m HEAD@{12}: pull: Fast-forward
+[33me701580f[m HEAD@{13}: reset: moving to e701580f85ea897845a5fd46aeea22cded8b9d6c
+[33m4ba880e8[m HEAD@{14}: pull: Fast-forward
+[33md598fdb7[m HEAD@{15}: reset: moving to d598fdb7ae88283ea9fb7c8e6d668516f12736ee
+[33mf7cee98d[m HEAD@{16}: pull: Fast-forward
+[33m5f9b2c73[m HEAD@{17}: reset: moving to 5f9b2c73a4b3ad3a9ea42866e4174313dce12f87
+[33mcfcef7f8[m HEAD@{18}: pull: Fast-forward
+[33m381da177[m HEAD@{19}: reset: moving to 381da1771ab344fa30ba82e47eed9c6c32ee640f
+[33mb4002249[m HEAD@{20}: reset: moving to b40022490573918374be95e4f884596ed82690dd
+[33md39da067[m HEAD@{21}: pull: Fast-forward
+[33m2dfa073f[m HEAD@{22}: reset: moving to 2dfa073f7485d57a1884109a175f7d106f54a8a7
+[33mc1f9b507[m HEAD@{23}: reset: moving to c1f9b5073ee5f152c7afe0f50ca8afdf0f2fcb92
+[33m41577ae3[m HEAD@{24}: pull: Fast-forward
+[33m4ab3f291[m HEAD@{25}: reset: moving to 4ab3f291bcab94af260cd355718fd4ee8ee5ab1c
+[33mc3ccec07[m HEAD@{26}: pull: Fast-forward
+[33m8a4253c2[m HEAD@{27}: reset: moving to 8a4253c248d037906cfb843d31d2d7e280b77509
+[33m4f6d0b7d[m HEAD@{28}: pull: Fast-forward
+[33m694bb0e7[m HEAD@{29}: reset: moving to 694bb0e7752d08cec51479d98b853c36e8888a72
+[33m6ee8aa56[m HEAD@{30}: pull: Fast-forward
+[33m15d5342c[m HEAD@{31}: reset: moving to 15d5342cf396c6749ba4d1fe8ad7ccfdffafb023
+[33m7e897707[m HEAD@{32}: pull: Fast-forward
+[33m15d5342c[m HEAD@{33}: reset: moving to 15d5342cf396c6749ba4d1fe8ad7ccfdffafb023
+[33ma77577b7[m HEAD@{34}: pull: Fast-forward
+[33me6966029[m HEAD@{35}: reset: moving to e696602959aa26dfbe890bd038d694cfffc0450d
+[33me6966029[m HEAD@{36}: checkout: moving from main to main
+[33me6966029[m HEAD@{37}: checkout: moving from main to main
+[33me6966029[m HEAD@{38}: reset: moving to e696602959aa26dfbe890bd038d694cfffc0450d
+[33ma7656d80[m HEAD@{39}: pull: Fast-forward
+[33m40c30077[m HEAD@{40}: reset: moving to 40c30077044a7b5694098eff8f3f7457d32388e2
+[33m8753c74a[m HEAD@{41}: pull: Fast-forward
+[33m911371e7[m[33m ([m[1;31morigin/rollback-911371e73957628134513b162d624be88ecc807f[m[33m)[m HEAD@{42}: reset: moving to 911371e73957628134513b162d624be88ecc807f
+[33mad647ca1[m HEAD@{43}: pull: Fast-forward
+[33mb08038b6[m HEAD@{44}: reset: moving to HEAD
+[33mb08038b6[m HEAD@{45}: pull --tags origin main: Fast-forward
+[33m294a14a9[m HEAD@{46}: reset: moving to 294a14a9e3c58f6abdef8d1956ed26f7293b3d64
+[33m294a14a9[m HEAD@{47}: reset: moving to 294a14a9e3c58f6abdef8d1956ed26f7293b3d64
+[33m9a364463[m HEAD@{48}: pull: Fast-forward
+[33m613b9e20[m HEAD@{49}: reset: moving to 613b9e20b7f505215be18714acaa3313d10a233b
+[33mfe246419[m HEAD@{50}: pull: Fast-forward
+[33m5e40de8f[m HEAD@{51}: reset: moving to 5e40de8fbdcfe62669023c6f5fbc912a534a141c
+[33md5d0034f[m HEAD@{52}: pull: Fast-forward
+[33m51ec3c49[m HEAD@{53}: reset: moving to 51ec3c49efaadf64314078eaefe9cd2ddcef21d5
+[33m73638bc8[m HEAD@{54}: reset: moving to 73638bc
+[33mb70d880f[m HEAD@{55}: reset: moving to b70d880
+[33mb9a0da6e[m HEAD@{56}: reset: moving to b9a0da6
+[33m73638bc8[m HEAD@{57}: reset: moving to 73638bc
+[33mb70d880f[m HEAD@{58}: checkout: moving from main to main
+[33mb70d880f[m HEAD@{59}: pull: Fast-forward
+[33md5cb3b70[m HEAD@{60}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{61}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{62}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{63}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{64}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{65}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{66}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{67}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{68}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{69}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{70}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{71}: checkout: moving from main to main
+[33md5cb3b70[m HEAD@{72}: reset: moving to d5cb3b709f914916514e7a786ebe4c4fba708f57
+[33m75d8ed92[m[33m ([m[1;32mbackup-before-rollback-20260112-120526[m[33m)[m HEAD@{73}: pull: Fast-forward
+[33m8ecfaf57[m HEAD@{74}: pull: Fast-forward
+[33m0f2ebb85[m HEAD@{75}: reset: moving to 0f2ebb8
+[33me8afef76[m HEAD@{76}: reset: moving to e8afef763b3af681af259cf6df505468bb3285d7
+[33m0f2ebb85[m HEAD@{77}: pull origin main: Fast-forward
+[33me8afef76[m HEAD@{78}: reset: moving to e8afef763b3af681af259cf6df505468bb3285d7
+[33mda218e3c[m HEAD@{79}: commit: Add sanitized .env.example (sanitize secrets)
