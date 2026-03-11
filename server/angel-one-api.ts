@@ -275,7 +275,7 @@ class AngelOneAPI {
       this.addActivityLog('info', 'Generating access tokens...');
       const tokenResponse = await this.smartApi.generateToken(sessionData.refreshToken);
       
-      console.log('🔶 [Angel One] Token Response:', JSON.stringify(tokenResponse, null, 2));
+      console.log('🔶 [Angel One] Token Response: status=', tokenResponse?.status, '| message=', tokenResponse?.message);
 
       if (tokenResponse.status && tokenResponse.data) {
         this.session = {
@@ -333,7 +333,7 @@ class AngelOneAPI {
       console.log(`   Client Code: ${this.credentials.clientCode}`);
       console.log(`   JWT Token: ${this.session.jwtToken.substring(0, 20)}...`);
       console.log(`   Refresh Token: ${this.session.refreshToken.substring(0, 20)}...`);
-      console.log(`   Feed Token: ${this.session.feedToken}`);
+      console.log(`   Feed Token: ${this.session.feedToken.substring(0, 20)}...`);
 
       // Connect WebSocket for real-time market data streaming
       this.addActivityLog('info', 'Initializing WebSocket for real-time market data...');

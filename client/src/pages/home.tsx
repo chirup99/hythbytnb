@@ -8252,7 +8252,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     if (selectedWatchlistSymbol) {
       const fetchWatchlistCompanyInsights = async () => {
         try {
-          const response = await fetch(`/api/trading-agent?symbol=${encodeURIComponent(selectedWatchlistSymbol)}`);
+          const response = await fetch(`/api/trading-agent?q=${encodeURIComponent(selectedWatchlistSymbol)}`);
           if (response.ok) {
             const data = await response.json();
             if (data.companyInsights) {

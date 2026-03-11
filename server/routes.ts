@@ -24,6 +24,7 @@ import { desc, sql, eq } from "drizzle-orm";
 // REMOVED: Fyers API dependent imports - commented out to fix startup
 // import { intradayAnalyzer } from "./intraday-market-session";
 import { awsDynamoDBService } from './aws-dynamodb-service';
+import { googleCloudService, googleCloudSigninBackupService } from './google-cloud-service';
 // import { IntradayPatternDetector } from "./intraday-patterns";
 // import { Enhanced4CandleProcessor } from "./enhanced-four-candle-processor";
 // import { oneMinuteAnalyzer } from "./one-minute-timestamp-analyzer";
