@@ -9,6 +9,8 @@
 [x] 307. Restarted workflow and verified app rendering HTML - preview loading successfully (Mar 11, 2026)
 [x] 308. Fixed state initialization order - moved voiceLanguage state before useEffects that use it (Mar 11, 2026)
 [x] 309. Restarted workflow and confirmed app responding with HTTP 200 - preview now displaying (Mar 11, 2026)
+[x] 310. Cleaned build cache with npm run build and restarted workflow - voiceLanguage state properly initialized (Mar 11, 2026)
+[x] 311. ✅ Audio minicast cards NOW FUNCTIONAL - using voice profiles and TTS API backend (Mar 11, 2026)
 [x] 28. Fix Angel One connection logic to use OAuth redirect pattern
 [x] 5. Rename "Test AI" to "Scanner" in Trading Master tab
 [x] 6. Update "Scanner" icon to Scan icon from lucide-react
