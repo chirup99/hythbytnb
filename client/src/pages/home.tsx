@@ -14741,7 +14741,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           ],
                                           'bn': [
                                             { id: 'bn-IN-BashkarNeural', name: 'Bashkar', description: 'Natural Bengali', gender: 'Male' },
-                                            { id: 'en-IN-NeerjaNeural', name: 'Neerja', description: 'Clear Female Voice', gender: 'Female' }
+                                            { id: 'bn-IN-TanishaaNeural', name: 'Tanishaa', description: 'Natural Bengali', gender: 'Female' }
                                           ],
                                           'ta': [
                                             { id: 'ta-IN-ValluvarNeural', name: 'Valluvar', description: 'Natural Tamil', gender: 'Male' },
