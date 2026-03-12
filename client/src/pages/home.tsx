@@ -8028,9 +8028,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [isWatchlistNewsLoading, setIsWatchlistNewsLoading] = useState(false);
   const [marketNewsItems, setMarketNewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}>>([]);
   const [isMarketNewsLoading, setIsMarketNewsLoading] = useState(false);
-  const [marketNewsMode, setMarketNewsMode] = useState<'all' | 'watchlist'>('all');
+  const [marketNewsMode, setMarketNewsMode] = useState<'all' | 'watchlist' | 'nifty50'>('all');
   const [allMarketNewsItems, setAllMarketNewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; sector: string; displayName: string;}>>([]);
   const [isAllMarketNewsLoading, setIsAllMarketNewsLoading] = useState(false);
+  const [nifty50NewsItems, setNifty50NewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}>>([]);
+  const [isNifty50NewsLoading, setIsNifty50NewsLoading] = useState(false);
   const [allWatchlistQuarterlyData, setAllWatchlistQuarterlyData] = useState<{[symbol: string]: Array<{
     quarter: string;
     revenue: string;
@@ -8349,6 +8351,110 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       console.error('Error fetching all market news:', error);
     } finally {
       setIsAllMarketNewsLoading(false);
+    }
+  };
+
+  const NIFTY50_SYMBOLS = [
+    { symbol: 'ADANIENT', name: 'Adani Enterprises' },
+    { symbol: 'ADANIPORTS', name: 'Adani Ports & SEZ' },
+    { symbol: 'APOLLOHOSP', name: 'Apollo Hospitals' },
+    { symbol: 'ASIANPAINT', name: 'Asian Paints' },
+    { symbol: 'AXISBANK', name: 'Axis Bank' },
+    { symbol: 'BAJAJ-AUTO', name: 'Bajaj Auto' },
+    { symbol: 'BAJFINANCE', name: 'Bajaj Finance' },
+    { symbol: 'BAJAJFINSV', name: 'Bajaj Finserv' },
+    { symbol: 'BPCL', name: 'BPCL' },
+    { symbol: 'BHARTIARTL', name: 'Bharti Airtel' },
+    { symbol: 'BRITANNIA', name: 'Britannia Industries' },
+    { symbol: 'CIPLA', name: 'Cipla' },
+    { symbol: 'COALINDIA', name: 'Coal India' },
+    { symbol: 'DIVISLAB', name: "Divi's Laboratories" },
+    { symbol: 'DRREDDY', name: "Dr. Reddy's" },
+    { symbol: 'EICHERMOT', name: 'Eicher Motors' },
+    { symbol: 'GRASIM', name: 'Grasim Industries' },
+    { symbol: 'HCLTECH', name: 'HCL Technologies' },
+    { symbol: 'HDFCBANK', name: 'HDFC Bank' },
+    { symbol: 'HDFCLIFE', name: 'HDFC Life' },
+    { symbol: 'HEROMOTOCO', name: 'Hero MotoCorp' },
+    { symbol: 'HINDALCO', name: 'Hindalco Industries' },
+    { symbol: 'HINDUNILVR', name: 'Hindustan Unilever' },
+    { symbol: 'ICICIBANK', name: 'ICICI Bank' },
+    { symbol: 'ITC', name: 'ITC' },
+    { symbol: 'INDUSINDBK', name: 'IndusInd Bank' },
+    { symbol: 'INFY', name: 'Infosys' },
+    { symbol: 'JSWSTEEL', name: 'JSW Steel' },
+    { symbol: 'KOTAKBANK', name: 'Kotak Mahindra Bank' },
+    { symbol: 'LT', name: 'Larsen & Toubro' },
+    { symbol: 'LTIM', name: 'LTIMindtree' },
+    { symbol: 'M&M', name: 'Mahindra & Mahindra' },
+    { symbol: 'MARUTI', name: 'Maruti Suzuki' },
+    { symbol: 'NESTLEIND', name: 'Nestlé India' },
+    { symbol: 'NTPC', name: 'NTPC' },
+    { symbol: 'ONGC', name: 'ONGC' },
+    { symbol: 'POWERGRID', name: 'Power Grid Corporation' },
+    { symbol: 'RELIANCE', name: 'Reliance Industries' },
+    { symbol: 'SBILIFE', name: 'SBI Life Insurance' },
+    { symbol: 'SBIN', name: 'State Bank of India' },
+    { symbol: 'SUNPHARMA', name: 'Sun Pharma' },
+    { symbol: 'TCS', name: 'Tata Consultancy Services' },
+    { symbol: 'TATACONSUM', name: 'Tata Consumer Products' },
+    { symbol: 'TATAMOTORS', name: 'Tata Motors' },
+    { symbol: 'TATASTEEL', name: 'Tata Steel' },
+    { symbol: 'TECHM', name: 'Tech Mahindra' },
+    { symbol: 'TITAN', name: 'Titan Company' },
+    { symbol: 'ULTRACEMCO', name: 'UltraTech Cement' },
+    { symbol: 'UPL', name: 'UPL' },
+    { symbol: 'WIPRO', name: 'Wipro' },
+    { symbol: 'SENSEX', name: 'Sensex' },
+    { symbol: 'NIFTY', name: 'Nifty 50' },
+    { symbol: 'BANKNIFTY', name: 'Bank Nifty' },
+    { symbol: 'CRUDEOIL', name: 'Crude Oil' },
+    { symbol: 'GOLD', name: 'Gold' },
+    { symbol: 'SILVER', name: 'Silver' },
+  ];
+
+  const fetchNifty50News = async () => {
+    setIsNifty50NewsLoading(true);
+    try {
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      const allNews: Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}> = [];
+      const seenUrls = new Set<string>();
+      const batchSize = 8;
+      for (let i = 0; i < NIFTY50_SYMBOLS.length; i += batchSize) {
+        const batch = NIFTY50_SYMBOLS.slice(i, i + batchSize);
+        await Promise.all(
+          batch.map(async (stock) => {
+            try {
+              const res = await fetch(`/api/stock-news/${stock.symbol}`);
+              if (!res.ok) return;
+              const data = await res.json();
+              const items = Array.isArray(data) ? data : (data.news || []);
+              items.forEach((item: any) => {
+                if (!item.url || seenUrls.has(item.url)) return;
+                const publishedDate = new Date(item.publishedAt || item.date || 0);
+                if (publishedDate < oneWeekAgo) return;
+                seenUrls.add(item.url);
+                allNews.push({
+                  title: item.title || '',
+                  url: item.url || '',
+                  description: item.description || item.summary || '',
+                  source: item.source || '',
+                  publishedAt: item.publishedAt || item.date || new Date().toISOString(),
+                  symbol: stock.symbol,
+                  displayName: stock.name,
+                });
+              });
+            } catch {}
+          })
+        );
+      }
+      allNews.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+      setNifty50NewsItems(allNews);
+    } catch (error) {
+      console.error('Error fetching Nifty 50 news:', error);
+    } finally {
+      setIsNifty50NewsLoading(false);
     }
   };
 
@@ -15729,33 +15835,62 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       // Handle Market News view
                                       if (searchResults.includes("[CHART:MARKET_NEWS]")) {
                                         const isAllMode = marketNewsMode === 'all';
-                                        const loading = isAllMode ? isAllMarketNewsLoading : isMarketNewsLoading;
-                                        const newsItems = isAllMode ? allMarketNewsItems : marketNewsItems;
+                                        const isNifty50Mode = marketNewsMode === 'nifty50';
+                                        const loading = isAllMode ? isAllMarketNewsLoading : isNifty50Mode ? isNifty50NewsLoading : isMarketNewsLoading;
+                                        const newsItems = isAllMode ? allMarketNewsItems : isNifty50Mode ? nifty50NewsItems : marketNewsItems;
+                                        const tagColor = isAllMode ? 'bg-purple-500/20 text-purple-400' : isNifty50Mode ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400';
+                                        const emptyMsg = isAllMode ? 'Click Refresh to load latest market news' : isNifty50Mode ? 'Click Refresh to load Nifty 50 news' : 'Add stocks to your watchlist or click Refresh';
+                                        const loadingMsg = isAllMode ? 'Fetching news across all sectors...' : isNifty50Mode ? 'Fetching Nifty 50 stock news...' : `Fetching news from ${watchlistSymbols.length} stocks...`;
+                                        const handleRefresh = () => {
+                                          if (isAllMode) fetchAllMarketNews();
+                                          else if (isNifty50Mode) fetchNifty50News();
+                                          else fetchMarketNews();
+                                        };
                                         return (
                                           <div className="w-full">
                                             {/* Header row */}
                                             <div className="flex items-center justify-between mb-4">
-                                              {/* Toggle: All News / Watchlist */}
-                                              <div className="flex items-center gap-3">
-                                                <span className={`text-sm font-medium transition-colors ${isAllMode ? 'text-gray-100' : 'text-gray-500'}`}>All News</span>
-                                                <Switch
-                                                  checked={!isAllMode}
-                                                  onCheckedChange={(checked) => {
-                                                    const newMode = checked ? 'watchlist' : 'all';
-                                                    setMarketNewsMode(newMode);
-                                                    if (newMode === 'watchlist' && marketNewsItems.length === 0) fetchMarketNews();
-                                                    if (newMode === 'all' && allMarketNewsItems.length === 0) fetchAllMarketNews();
-                                                  }}
-                                                  data-testid="toggle-market-news-mode"
-                                                />
-                                                <span className={`text-sm font-medium transition-colors ${!isAllMode ? 'text-gray-100' : 'text-gray-500'}`}>Watchlist</span>
+                                              {/* Pill-style tab switcher */}
+                                              <div
+                                                className="flex items-center p-0.5 rounded-full"
+                                                style={{ background: '#1a1a1a' }}
+                                                data-testid="market-news-tab-switcher"
+                                              >
+                                                {[
+                                                  { key: 'all', label: 'All News' },
+                                                  { key: 'watchlist', label: 'Watchlist' },
+                                                  { key: 'nifty50', label: 'Nifty 50' },
+                                                ].map((tab) => (
+                                                  <button
+                                                    key={tab.key}
+                                                    onClick={() => {
+                                                      setMarketNewsMode(tab.key as 'all' | 'watchlist' | 'nifty50');
+                                                      if (tab.key === 'watchlist' && marketNewsItems.length === 0) fetchMarketNews();
+                                                      if (tab.key === 'all' && allMarketNewsItems.length === 0) fetchAllMarketNews();
+                                                      if (tab.key === 'nifty50' && nifty50NewsItems.length === 0) fetchNifty50News();
+                                                    }}
+                                                    data-testid={`tab-market-news-${tab.key}`}
+                                                    className="relative px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200"
+                                                    style={
+                                                      marketNewsMode === tab.key
+                                                        ? {
+                                                            background: 'linear-gradient(135deg, #d4d4d4 0%, #a8a8a8 40%, #c8c8c8 100%)',
+                                                            color: '#111',
+                                                            boxShadow: '0 1px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3)',
+                                                          }
+                                                        : { color: '#9ca3af' }
+                                                    }
+                                                  >
+                                                    {tab.label}
+                                                  </button>
+                                                ))}
                                               </div>
                                               <div className="flex items-center gap-2">
                                                 <span className="text-xs text-gray-500">
-                                                  {isAllMode ? 'All sectors · last 7 days' : `${watchlistSymbols.length} stocks · last 7 days`}
+                                                  {isAllMode ? 'All sectors · last 7 days' : isNifty50Mode ? '50+ stocks · last 7 days' : `${watchlistSymbols.length} stocks · last 7 days`}
                                                 </span>
                                                 <button
-                                                  onClick={() => { isAllMode ? fetchAllMarketNews() : fetchMarketNews(); }}
+                                                  onClick={handleRefresh}
                                                   className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs text-gray-300 transition-colors"
                                                   data-testid="button-refresh-market-news"
                                                 >
@@ -15768,13 +15903,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             {loading ? (
                                               <div className="flex flex-col items-center justify-center py-16 gap-3">
                                                 <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-                                                <p className="text-sm text-gray-500">{isAllMode ? 'Fetching news across all sectors...' : `Fetching news from ${watchlistSymbols.length} stocks...`}</p>
+                                                <p className="text-sm text-gray-500">{loadingMsg}</p>
                                               </div>
                                             ) : newsItems.length === 0 ? (
                                               <div className="flex flex-col items-center justify-center py-16 gap-3">
                                                 <Newspaper className="h-10 w-10 text-gray-600" />
                                                 <p className="text-sm text-gray-400">No recent news found in the last 7 days</p>
-                                                <p className="text-xs text-gray-500">{isAllMode ? 'Click Refresh to load latest market news' : 'Add stocks to your watchlist or click Refresh'}</p>
+                                                <p className="text-xs text-gray-500">{emptyMsg}</p>
                                               </div>
                                             ) : (
                                               <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
@@ -15796,7 +15931,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         )}
                                                         <div className="flex items-center justify-between">
                                                           <div className="flex items-center gap-2">
-                                                            <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${isAllMode ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400'}`}>{item.displayName}</span>
+                                                            <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${tagColor}`}>{item.displayName}</span>
                                                             <span className="text-gray-500 text-xs">{item.source}</span>
                                                           </div>
                                                           <span className="text-gray-500 text-xs shrink-0">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
