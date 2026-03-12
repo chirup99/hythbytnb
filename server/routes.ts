@@ -1961,7 +1961,7 @@ async function scrapeQuarterlyResults(symbol: string) {
   try {
     console.log(`📊 Scraping quarterly results for ${symbol} from screener.in...`);
     
-    const cleanSymbol = symbol.replace('-EQ', '').replace('-BE', '').toUpperCase();
+    const cleanSymbol = symbol.replace(/^[A-Z]+:/i, '').replace('-EQ', '').replace('-BE', '').toUpperCase();
     
     // Try consolidated page first, then standalone
     const urls = [

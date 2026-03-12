@@ -8130,7 +8130,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     const fetchQuarterlyData = async () => {
       setIsWatchlistQuarterlyLoading(true);
       try {
-        const cleanSymbol = searchResultsNewsSymbol.replace('-EQ', '').replace('-BE', '');
+        const cleanSymbol = searchResultsNewsSymbol.replace(/^[A-Z]+:/i, '').replace('-EQ', '').replace('-BE', '');
         const response = await fetch(`/api/quarterly-results/${cleanSymbol}`);
         if (response.ok) {
           const data = await response.json();
@@ -8163,7 +8163,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       const fetchWatchlistNews = async () => {
         setIsWatchlistNewsLoading(true);
         try {
-          const cleanSymbol = selectedWatchlistSymbol.replace('-EQ', '').replace('-BE', '');
+          const cleanSymbol = selectedWatchlistSymbol.replace(/^[A-Z]+:/i, '').replace('-EQ', '').replace('-BE', '');
           const response = await fetch(`/api/stock-news/${cleanSymbol}?refresh=${Date.now()}`);
           if (response.ok) {
             const data = await response.json();
@@ -8186,7 +8186,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       const fetchSearchResultsNews = async () => {
         setIsWatchlistNewsLoading(true);
         try {
-          const cleanSymbol = searchResultsNewsSymbol.replace('-EQ', '').replace('-BE', '');
+          const cleanSymbol = searchResultsNewsSymbol.replace(/^[A-Z]+:/i, '').replace('-EQ', '').replace('-BE', '');
           const response = await fetch(`/api/stock-news/${cleanSymbol}?refresh=${Date.now()}`);
           if (response.ok) {
             const data = await response.json();
@@ -15915,7 +15915,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       // Handle Watchlist view
                                       if (searchResults.includes("[CHART:WATCHLIST]")) {
                                         const selectedStock = watchlistSymbols.find(s => s.symbol === selectedWatchlistSymbol);
-                                        const cleanSymbolForNews = selectedWatchlistSymbol.replace('-EQ', '').replace('-BE', '');
+                                        const cleanSymbolForNews = selectedWatchlistSymbol.replace(/^[A-Z]+:/i, '').replace('-EQ', '').replace('-BE', '');
 
                                         renderedContent = (
                                           <div className="flex gap-4 w-full">
@@ -16415,7 +16415,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         onClick={async () => {
                                                           setIsWatchlistQuarterlyLoading(true);
                                                           try {
-                                                            const cleanSymbol = searchResultsNewsSymbol.replace("-EQ", "").replace("-BE", "");
+                                                            const cleanSymbol = searchResultsNewsSymbol.replace(/^[A-Z]+:/i, '').replace("-EQ", "").replace("-BE", "");
                                                             const response = await fetch(`/api/quarterly-results/${cleanSymbol}`);
                                                             if (response.ok) {
                                                               const data = await response.json();
