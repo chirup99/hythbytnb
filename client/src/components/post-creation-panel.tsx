@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { X, Upload, Hash, ImageIcon, TrendingUp, TrendingDown, Minus, Sparkles, Zap, Eye, Copy, Clipboard, Clock, Activity, MessageCircle, Users, UserPlus, ExternalLink, Radio, Check, Plus, Search, Loader2, Layers } from 'lucide-react';
+import { X, Upload, Hash, ImageIcon, TrendingUp, TrendingDown, Minus, Sparkles, Zap, Eye, Copy, Clipboard, Clock, Activity, MessageCircle, Users, UserPlus, ExternalLink, Radio, Check, Plus, Search, Layers } from 'lucide-react';
 import { MultipleImageUpload } from './multiple-image-upload';
 import { StackedSwipeableCards } from './stacked-swipeable-cards';
 import { apiRequest } from '@/lib/queryClient';
@@ -17,19 +17,32 @@ import { useCurrentUser } from '@/hooks/useCurrentUser';
 import type { InsertSocialPost } from '@shared/schema';
 import { useAudioMode } from '@/contexts/AudioModeContext';
 
-interface InstrumentResult {
-  symbol: string;
-  name: string;
-  token: string;
-  exchange: string;
-  instrumentType: string;
-  displayName: string;
-}
-
-const POPULAR_STOCKS = [
-  'RELIANCE', 'TCS', 'HDFCBANK', 'INFY', 'HINDUNILVR',
-  'ICICIBANK', 'KOTAKBANK', 'BHARTIARTL', 'ITC', 'SBIN',
-  'ASIANPAINT', 'MARUTI', 'LT', 'AXISBANK', 'HCLTECH'
+const STOCK_LIST = [
+  'Nifty', 'Banknifty', 'Sensex',
+  'Adani Enterprises', 'Adani Ports', 'Apollo Hospitals', 'Asian Paints',
+  'Axis Bank', 'Bajaj Auto', 'Bajaj Finance', 'Bajaj Finserv', 'BPCL',
+  'Bharti Airtel', 'Britannia', 'Cipla', 'Coal India', "Divi's Laboratories",
+  "Dr Reddy's Laboratories", 'Eicher Motors', 'Grasim Industries', 'HCL Technologies',
+  'HDFC Bank', 'HDFC Life', 'Hero MotoCorp', 'Hindalco', 'Hindustan Unilever',
+  'ICICI Bank', 'ITC', 'IndusInd Bank', 'Infosys', 'JSW Steel',
+  'Kotak Mahindra Bank', 'Larsen & Toubro', 'LTIMindtree', 'Mahindra & Mahindra',
+  'Maruti Suzuki', 'Nestlé India', 'NTPC', 'ONGC', 'Power Grid',
+  'Reliance Industries', 'SBI Life Insurance', 'State Bank of India', 'Sun Pharma',
+  'Tata Consultancy Services', 'Tata Consumer Products', 'Tata Motors', 'Tata Steel',
+  'Tech Mahindra', 'Titan', 'UltraTech Cement', 'UPL', 'Wipro',
+  'AU Small Finance Bank', 'Bandhan Bank', 'Bank of Baroda', 'Canara Bank',
+  'Federal Bank', 'IDFC First Bank', 'ACC', 'Adani Green Energy', 'Adani Total Gas',
+  'Ambuja Cements', 'ABB India', 'Avenue Supermarts (DMart)', 'Bajaj Holdings & Investment',
+  'Berger Paints', 'Bharat Electronics', 'Biocon', 'Bosch',
+  'Cholamandalam Investment', 'Colgate-Palmolive India', 'DLF', 'Dabur India',
+  'FSN E-Commerce (Nykaa)', 'GAIL India', 'Gland Pharma', 'Godrej Consumer Products',
+  'Havells India', 'HDFC AMC', 'Hindustan Aeronautics', 'ICICI Lombard',
+  'ICICI Prudential Life', 'Indian Hotels', 'Indian Oil Corporation', 'IRCTC',
+  'Indus Towers', 'Info Edge (Naukri)', 'InterGlobe Aviation (IndiGo)', 'LIC',
+  'Marico', 'Mphasis', 'Muthoot Finance', 'One97 Communications (Paytm)',
+  'PI Industries', 'Pidilite Industries', 'P&G Hygiene', 'SBI Cards', 'SRF',
+  'Samvardhana Motherson', 'Shree Cement', 'Siemens India', 'Tata Power',
+  'Torrent Pharma', 'United Spirits', 'Vedanta', 'Zomato',
 ];
 
 const SENTIMENTS = [
@@ -53,18 +66,15 @@ interface PostCreationPanelProps {
 
 export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'post', onMinimize }: PostCreationPanelProps = {}) {
   const [content, setContent] = useState('');
-  const [selectedStock, setSelectedStock] = useState('');
   const [stockMentions, setStockMentions] = useState<string[]>([]);
   const [sentiment, setSentiment] = useState<string>('neutral');
   const [uploadedImages, setUploadedImages] = useState<Array<{id: string; url: string; name: string; file?: File}>>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   
-  // Instrument search state
-  const [instrumentSearchQuery, setInstrumentSearchQuery] = useState('');
-  const [instrumentSearchResults, setInstrumentSearchResults] = useState<InstrumentResult[]>([]);
-  const [isSearchingInstruments, setIsSearchingInstruments] = useState(false);
-  const [showInstrumentDropdown, setShowInstrumentDropdown] = useState(false);
-  const instrumentSearchRef = useRef<HTMLDivElement>(null);
+  // Stock mention search state
+  const [stockSearchQuery, setStockSearchQuery] = useState('');
+  const [showStockDropdown, setShowStockDropdown] = useState(false);
+  const stockSearchRef = useRef<HTMLDivElement>(null);
   
   // New state for view switching
   const [viewMode, setViewMode] = useState<'post' | 'message' | 'audio'>(initialViewMode);
@@ -78,75 +88,30 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
     setIsAudioMode(viewMode === 'audio');
   }, [viewMode, setIsAudioMode]);
   
-  // Instrument search with debounce
-  useEffect(() => {
-    const searchInstruments = async () => {
-      if (instrumentSearchQuery.trim().length < 2) {
-        setInstrumentSearchResults([]);
-        setShowInstrumentDropdown(false);
-        return;
-      }
-      
-      setIsSearchingInstruments(true);
-      try {
-        const response = await fetch(`/api/angelone/search-instruments?query=${encodeURIComponent(instrumentSearchQuery)}&exchange=NSE,BSE,MCX&limit=50`);
-        const data = await response.json();
-        
-        if (data.success && data.instruments) {
-          // Filter out futures and options (FUT, OPT, CE, PE, OPTIDX, OPTSTK, FUTIDX, FUTSTK)
-          const filteredInstruments = data.instruments.filter((inst: InstrumentResult) => {
-            const instType = (inst.instrumentType || '').toUpperCase();
-            const symbol = (inst.symbol || '').toUpperCase();
-            
-            // Exclude futures and options
-            if (instType.includes('FUT') || instType.includes('OPT') || 
-                instType.includes('CE') || instType.includes('PE') ||
-                symbol.endsWith('CE') || symbol.endsWith('PE') ||
-                symbol.includes('FUT')) {
-              return false;
-            }
-            return true;
-          });
-          
-          // Filter out already mentioned stocks
-          const uniqueInstruments = filteredInstruments.filter((inst: InstrumentResult) => 
-            !stockMentions.includes(inst.symbol)
-          );
-          
-          setInstrumentSearchResults(uniqueInstruments.slice(0, 20));
-          setShowInstrumentDropdown(uniqueInstruments.length > 0);
-        }
-      } catch (error) {
-        console.error('Error searching instruments:', error);
-      } finally {
-        setIsSearchingInstruments(false);
-      }
-    };
-    
-    const debounceTimer = setTimeout(searchInstruments, 300);
-    return () => clearTimeout(debounceTimer);
-  }, [instrumentSearchQuery, stockMentions]);
-  
+  // Filtered stock list based on search query
+  const filteredStocks = STOCK_LIST.filter(stock =>
+    stock.toLowerCase().includes(stockSearchQuery.toLowerCase()) &&
+    !stockMentions.includes(stock)
+  );
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (instrumentSearchRef.current && !instrumentSearchRef.current.contains(event.target as Node)) {
-        setShowInstrumentDropdown(false);
+      if (stockSearchRef.current && !stockSearchRef.current.contains(event.target as Node)) {
+        setShowStockDropdown(false);
       }
     };
-    
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-  
-  // Add instrument from search
-  const addInstrumentFromSearch = (instrument: InstrumentResult) => {
-    if (!stockMentions.includes(instrument.symbol)) {
-      setStockMentions(prev => [...prev, instrument.symbol]);
+
+  // Add stock mention from dropdown
+  const addStockMention = (stock: string) => {
+    if (!stockMentions.includes(stock)) {
+      setStockMentions(prev => [...prev, stock]);
     }
-    setInstrumentSearchQuery('');
-    setShowInstrumentDropdown(false);
-    setInstrumentSearchResults([]);
+    setStockSearchQuery('');
+    setShowStockDropdown(false);
   };
   
   const { toast } = useToast();
@@ -266,12 +231,6 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
     }
   };
 
-  const addStockMention = () => {
-    if (selectedStock && !stockMentions.includes(selectedStock)) {
-      setStockMentions([...stockMentions, selectedStock]);
-      setSelectedStock('');
-    }
-  };
 
   const removeStockMention = (stock: string) => {
     setStockMentions(stockMentions.filter(s => s !== stock));
@@ -588,57 +547,42 @@ export function PostCreationPanel({ hideAudioMode = false, initialViewMode = 'po
             </div>
           </div>
 
-          {/* Stock Selection - Searchable */}
+          {/* Stock Selection - Dropdown with search */}
           <div className="space-y-2">
             <Label className="text-gray-800 dark:text-gray-200 font-medium text-base">Stock Mentions</Label>
-            <div className="relative" ref={instrumentSearchRef}>
+            <div className="relative" ref={stockSearchRef}>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   type="text"
-                  value={instrumentSearchQuery}
-                  onChange={(e) => setInstrumentSearchQuery(e.target.value)}
-                  onFocus={() => instrumentSearchQuery.length >= 2 && setShowInstrumentDropdown(true)}
-                  placeholder="Search NSE, BSE, MCX instruments..."
-                  className="pl-10 pr-10 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-blue-500"
-                  data-testid="input-instrument-search"
+                  value={stockSearchQuery}
+                  onChange={(e) => { setStockSearchQuery(e.target.value); setShowStockDropdown(true); }}
+                  onFocus={() => setShowStockDropdown(true)}
+                  placeholder="Search stocks..."
+                  className="pl-10 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-blue-500"
+                  data-testid="input-stock-search"
                 />
-                {isSearchingInstruments && (
-                  <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-blue-500 animate-spin" />
-                )}
               </div>
-              
-              {/* Search Results Dropdown */}
-              {showInstrumentDropdown && instrumentSearchResults.length > 0 && (
+
+              {/* Stock Dropdown */}
+              {showStockDropdown && (
                 <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                  {instrumentSearchResults.map((instrument, index) => (
+                  {filteredStocks.length > 0 ? filteredStocks.map((stock) => (
                     <button
-                      key={`${instrument.symbol}-${instrument.exchange}-${index}`}
+                      key={stock}
                       type="button"
-                      onClick={() => addInstrumentFromSearch(instrument)}
+                      onClick={() => addStockMention(stock)}
                       className="w-full px-4 py-2.5 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between gap-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
-                      data-testid={`instrument-result-${instrument.symbol}`}
+                      data-testid={`stock-option-${stock}`}
                     >
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-gray-900 dark:text-white truncate">{instrument.symbol}</span>
-                          <Badge variant="outline" className="text-xs px-1.5 py-0 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-600">
-                            {instrument.exchange}
-                          </Badge>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{instrument.name}</p>
-                      </div>
+                      <span className="text-sm text-gray-900 dark:text-white">{stock}</span>
                       <Plus className="h-4 w-4 text-blue-500 flex-shrink-0" />
                     </button>
-                  ))}
-                </div>
-              )}
-              
-              {/* No Results Message */}
-              {showInstrumentDropdown && instrumentSearchQuery.length >= 2 && !isSearchingInstruments && instrumentSearchResults.length === 0 && (
-                <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 text-center">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">No instruments found for "{instrumentSearchQuery}"</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Try searching NSE, BSE, or MCX symbols</p>
+                  )) : (
+                    <div className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+                      No stocks found for "{stockSearchQuery}"
+                    </div>
+                  )}
                 </div>
               )}
             </div>
