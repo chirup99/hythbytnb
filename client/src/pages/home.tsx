@@ -8028,7 +8028,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [isWatchlistNewsLoading, setIsWatchlistNewsLoading] = useState(false);
   const [marketNewsItems, setMarketNewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}>>([]);
   const [isMarketNewsLoading, setIsMarketNewsLoading] = useState(false);
-  const [marketNewsMode, setMarketNewsMode] = useState<'all' | 'watchlist' | 'nifty50'>('all');
+  const [marketNewsMode, setMarketNewsMode] = useState<'all' | 'watchlist' | 'nifty50'>('nifty50');
   const [allMarketNewsItems, setAllMarketNewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; sector: string; displayName: string;}>>([]);
   const [isAllMarketNewsLoading, setIsAllMarketNewsLoading] = useState(false);
   const [nifty50NewsItems, setNifty50NewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}>>([]);
@@ -15912,32 +15912,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                 <p className="text-xs text-gray-500">{emptyMsg}</p>
                                               </div>
                                             ) : (
-                                              <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+                                              <div className="space-y-1.5 max-h-[680px] overflow-y-auto pr-1">
                                                 {newsItems.map((item, index) => (
                                                   <div
                                                     key={`${item.url}-${index}`}
-                                                    className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700"
+                                                    className="px-2.5 py-2 bg-gray-800/40 rounded-md hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700/60 flex items-center gap-2"
                                                     onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
                                                     data-testid={`market-news-item-${index}`}
                                                   >
-                                                    <div className="flex items-start gap-2">
-                                                      <div className="flex-1 min-w-0">
-                                                        <h4 className="text-gray-200 font-medium text-sm mb-1.5 hover:text-gray-100 transition-colors line-clamp-2 leading-snug">
-                                                          {item.title}
-                                                          <ExternalLink className="h-3 w-3 inline ml-1 opacity-60" />
-                                                        </h4>
-                                                        {item.description && (
-                                                          <p className="text-gray-400 text-xs line-clamp-2 mb-2">{item.description}</p>
-                                                        )}
-                                                        <div className="flex items-center justify-between">
-                                                          <div className="flex items-center gap-2">
-                                                            <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${tagColor}`}>{item.displayName}</span>
-                                                            <span className="text-gray-500 text-xs">{item.source}</span>
-                                                          </div>
-                                                          <span className="text-gray-500 text-xs shrink-0">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
-                                                        </div>
-                                                      </div>
-                                                    </div>
+                                                    <span className={`text-xs px-1.5 py-0.5 rounded font-medium shrink-0 ${tagColor}`}>{item.displayName}</span>
+                                                    <span className="text-gray-200 text-xs line-clamp-1 flex-1 leading-tight">
+                                                      {item.title}
+                                                      <ExternalLink className="h-2.5 w-2.5 inline ml-1 opacity-50" />
+                                                    </span>
+                                                    <span className="text-gray-500 text-xs shrink-0">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
                                                   </div>
                                                 ))}
                                               </div>
@@ -17427,8 +17415,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                           onClick={() => {
                             setIsSearchActive(true);
                             setSearchResults("[CHART:MARKET_NEWS]");
-                            fetchMarketNews();
-                            fetchAllMarketNews();
+                            fetchNifty50News();
                           }}
                         >
                           <div className="flex items-center gap-2">
@@ -17638,8 +17625,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 onClick={() => {
                                   setIsSearchActive(true);
                                   setSearchResults("[CHART:MARKET_NEWS]");
-                                  fetchMarketNews();
-                                  fetchAllMarketNews();
+                                  fetchNifty50News();
                                 }}
                               >
                                 <div className="flex items-center gap-1">
