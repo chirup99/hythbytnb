@@ -8466,30 +8466,15 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     const toFetch = symbols.filter(s => !fetchedPriceSymbolsRef.current.has(s));
     if (toFetch.length === 0) return;
     toFetch.forEach(s => fetchedPriceSymbolsRef.current.add(s));
-    const batchSize = 6;
+    const batchSize = 15;
     for (let i = 0; i < toFetch.length; i += batchSize) {
       const batch = toFetch.slice(i, i + batchSize);
-      await Promise.all(batch.map(async (symbol) => {
-        try {
-          const res = await fetch(`/api/stock-chart-data/NSE:${symbol}-EQ?timeframe=1D`);
-          if (!res.ok) return;
-          const data = await res.json();
-          if (!Array.isArray(data) || data.length < 2) return;
-          const first = data[0];
-          const last = data[data.length - 1];
-          const change = last.price - first.price;
-          const changePercent = first.price ? (change / first.price) * 100 : 0;
-          setNewsStockPrices(prev => ({
-            ...prev,
-            [symbol]: {
-              price: last.price,
-              change,
-              changePercent,
-              chartData: data.filter((_: any, idx: number) => idx % Math.max(1, Math.floor(data.length / 20)) === 0).slice(0, 20),
-            },
-          }));
-        } catch {}
-      }));
+      try {
+        const res = await fetch(`/api/news-stock-prices?symbols=${batch.join(',')}`);
+        if (!res.ok) continue;
+        const data = await res.json();
+        setNewsStockPrices(prev => ({ ...prev, ...data }));
+      } catch {}
     }
   };
 

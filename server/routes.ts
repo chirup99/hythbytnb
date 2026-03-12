@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import axios from "axios";
 import multer from "multer";
+import YahooFinance from "yahoo-finance2";
 
 // Configure multer for memory storage (files stored in memory as Buffer)
 const upload = multer({
@@ -6094,6 +6095,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Return fallback data on error instead of error response
       const fallbackData = generateFallbackChartData(req.params.symbol.toUpperCase(), req.query.timeframe as string || '1D');
       res.json(fallbackData);
+    }
+  });
+
+  // ============================================================================
+  // YAHOO FINANCE REAL-TIME PRICES FOR MARKET NEWS
+  // ============================================================================
+
+  // Singleton yahoo finance instance (suppress Node version warning)
+  const yf = new (YahooFinance as any)({ suppressNotices: ['yahooSurvey'] });
+
+  // Fetch real prices for a batch of NSE stock symbols (no cookies, no scraping)
+  app.get('/api/news-stock-prices', async (req, res) => {
+    try {
+      const symbolsParam = req.query.symbols as string;
+      if (!symbolsParam) return res.json({});
+
+      const symbols = symbolsParam.split(',').map((s: string) => s.trim().toUpperCase()).filter(Boolean).slice(0, 30);
+
+      const results: Record<string, { price: number; change: number; changePercent: number; chartData: Array<{ price: number; time: string }> }> = {};
+
+      await Promise.allSettled(symbols.map(async (symbol: string) => {
+        try {
+          const yahooSymbol = `${symbol}.NS`;
+
+          // Fetch quote (current price, change)
+          const quote = await yf.quote(yahooSymbol, {
+            fields: ['regularMarketPrice', 'regularMarketChange', 'regularMarketChangePercent']
+          }).catch(() => null);
+
+          if (!quote || !quote.regularMarketPrice) return;
+
+          // Fetch intraday chart for sparkline (1d, 5m interval)
+          const now = new Date();
+          const dayStart = new Date(now);
+          dayStart.setHours(0, 0, 0, 0);
+
+          let chartData: Array<{ price: number; time: string }> = [];
+          try {
+            const chartResult = await yf.chart(yahooSymbol, {
+              interval: '5m',
+              period1: dayStart,
+              period2: now,
+            });
+            const quotes = chartResult?.quotes ?? [];
+            // Downsample to ~20 points for sparkline
+            const step = Math.max(1, Math.floor(quotes.length / 20));
+            chartData = quotes
+              .filter((_: any, i: number) => i % step === 0)
+              .map((q: any) => {
+                const d = new Date(q.date);
+                const hh = d.getHours().toString().padStart(2, '0');
+                const mm = d.getMinutes().toString().padStart(2, '0');
+                return { price: q.close ?? q.open ?? 0, time: `${hh}:${mm}` };
+              })
+              .filter((p: any) => p.price > 0)
+              .slice(0, 20);
+          } catch {
+            // Chart data optional; just return price without sparkline
+          }
+
+          results[symbol] = {
+            price: quote.regularMarketPrice,
+            change: quote.regularMarketChange ?? 0,
+            changePercent: quote.regularMarketChangePercent ?? 0,
+            chartData,
+          };
+        } catch {
+          // Skip individual symbol errors silently
+        }
+      }));
+
+      res.json(results);
+    } catch (error) {
+      console.error('❌ [NEWS-PRICES] Error:', error);
+      res.json({});
     }
   });
 
