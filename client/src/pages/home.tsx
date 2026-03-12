@@ -15863,21 +15863,6 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         const isNifty50Mode = marketNewsMode === 'nifty50';
                                         const loading = isAllMode ? isAllMarketNewsLoading : isNifty50Mode ? isNifty50NewsLoading : isMarketNewsLoading;
                                         const rawNewsItems = isAllMode ? allMarketNewsItems : isNifty50Mode ? nifty50NewsItems : marketNewsItems;
-                                        const newsItems = newsSelectedSector
-                                          ? rawNewsItems.filter((item: any) => {
-                                              if (isAllMode) return (item.sector || item.displayName) === newsSelectedSector;
-                                              if (isNifty50Mode) return (NIFTY50_SECTOR_MAP[item.symbol] || 'Market') === newsSelectedSector;
-                                              return true;
-                                            })
-                                          : rawNewsItems;
-                                        const tagColor = isAllMode ? 'bg-purple-500/20 text-purple-400' : isNifty50Mode ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400';
-                                        const emptyMsg = isAllMode ? 'Click Refresh to load latest market news' : isNifty50Mode ? 'Click Refresh to load Nifty 50 news' : 'Add stocks to your watchlist or click Refresh';
-                                        const loadingMsg = isAllMode ? 'Fetching news across all sectors...' : isNifty50Mode ? 'Fetching Nifty 50 stock news...' : `Fetching news from ${watchlistSymbols.length} stocks...`;
-                                        const handleRefresh = () => {
-                                          if (isAllMode) fetchAllMarketNews();
-                                          else if (isNifty50Mode) fetchNifty50News();
-                                          else fetchMarketNews();
-                                        };
                                         const NIFTY50_SECTOR_MAP: Record<string, string> = {
                                           ADANIENT: 'Commodity', ADANIPORTS: 'Commodity', COALINDIA: 'Commodity',
                                           HINDALCO: 'Commodity', JSWSTEEL: 'Commodity', TATASTEEL: 'Commodity',
@@ -15896,7 +15881,21 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           BHARTIARTL: 'Market', GRASIM: 'Market', LT: 'Market',
                                           SENSEX: 'Market', NIFTY: 'Market', BANKNIFTY: 'Market',
                                         };
-
+                                        const newsItems = newsSelectedSector
+                                          ? rawNewsItems.filter((item: any) => {
+                                              if (isAllMode) return (item.sector || item.displayName) === newsSelectedSector;
+                                              if (isNifty50Mode) return (NIFTY50_SECTOR_MAP[item.symbol] || 'Market') === newsSelectedSector;
+                                              return true;
+                                            })
+                                          : rawNewsItems;
+                                        const tagColor = isAllMode ? 'bg-purple-500/20 text-purple-400' : isNifty50Mode ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400';
+                                        const emptyMsg = isAllMode ? 'Click Refresh to load latest market news' : isNifty50Mode ? 'Click Refresh to load Nifty 50 news' : 'Add stocks to your watchlist or click Refresh';
+                                        const loadingMsg = isAllMode ? 'Fetching news across all sectors...' : isNifty50Mode ? 'Fetching Nifty 50 stock news...' : `Fetching news from ${watchlistSymbols.length} stocks...`;
+                                        const handleRefresh = () => {
+                                          if (isAllMode) fetchAllMarketNews();
+                                          else if (isNifty50Mode) fetchNifty50News();
+                                          else fetchMarketNews();
+                                        };
                                         const getItemSector = (item: any): string => {
                                           if (isAllMode) return item.sector || item.displayName || 'Market';
                                           if (isNifty50Mode) return NIFTY50_SECTOR_MAP[item.symbol] || 'Market';
