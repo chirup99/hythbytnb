@@ -7237,7 +7237,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Fetch from Google News RSS (primary - most recent)
       const googleFetches = categories.map(async (cat) => {
         try {
-          const gnUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(cat.query + ' when:2d')}&hl=en-IN&gl=IN&ceid=IN:en`;
+          const gnUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(cat.query + ' when:7d')}&hl=en-IN&gl=IN&ceid=IN:en`;
           const response = await fetch(gnUrl, {
             headers: {
               'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -7250,7 +7250,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           // Parse RSS items with regex (no extra dependency needed)
           const itemMatches = xml.match(/<item>([\s\S]*?)<\/item>/g) || [];
-          for (const itemXml of itemMatches.slice(0, 6)) {
+          for (const itemXml of itemMatches.slice(0, 50)) {
             const titleMatch = itemXml.match(/<title><!\[CDATA\[([\s\S]*?)\]\]><\/title>/) || itemXml.match(/<title>([\s\S]*?)<\/title>/);
             const linkMatch = itemXml.match(/<link>([\s\S]*?)<\/link>/) || itemXml.match(/<guid[^>]*>(https?:\/\/[^\s<]+)<\/guid>/);
             const pubDateMatch = itemXml.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
@@ -7279,7 +7279,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Fetch from Yahoo Finance (secondary - as supplement)
       const yahooFetches = categories.map(async (cat) => {
         try {
-          const yahooUrl = `https://query2.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(cat.query)}&newsCount=4&quotesCount=0`;
+          const yahooUrl = `https://query2.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(cat.query)}&newsCount=10&quotesCount=0`;
           const response = await fetch(yahooUrl, {
             headers: {
               'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -7311,7 +7311,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       allNews.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
       console.log(`📰 [ALL-NEWS] Fetched ${allNews.length} articles (Google News + Yahoo Finance)`);
-      res.json(allNews.slice(0, 100));
+      res.json(allNews.slice(0, 500));
     } catch (error) {
       console.error('Error fetching general market news:', error);
       res.status(500).json({ error: 'Failed to fetch general market news' });
