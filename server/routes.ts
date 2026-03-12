@@ -7115,6 +7115,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get('/api/general-market-news', async (req, res) => {
+    try {
+      const categories = [
+        { query: 'India stock market today NSE BSE', sector: 'Market' },
+        { query: 'Indian IT technology stocks TCS Infosys Wipro', sector: 'IT' },
+        { query: 'India finance banking HDFC ICICI SBI', sector: 'Finance' },
+        { query: 'India commodity gold silver oil crude', sector: 'Commodity' },
+        { query: 'India defence stocks HAL BEL Bharat Forge', sector: 'Defence' },
+        { query: 'India AI artificial intelligence technology stocks', sector: 'AI & Tech' },
+        { query: 'India pharma healthcare stocks Sun Cipla Dr Reddy', sector: 'Pharma' },
+        { query: 'India edtech education Byju Zomato Swiggy startup', sector: 'Consumer' },
+        { query: 'India economy RBI inflation GDP growth', sector: 'Economy' },
+        { query: 'India auto automobile Tata Motors Maruti', sector: 'Auto' },
+      ];
+
+      const allNews: any[] = [];
+      const seenUrls = new Set<string>();
+      const seenTitles = new Set<string>();
+
+      for (const cat of categories) {
+        try {
+          const yahooUrl = `https://query2.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(cat.query)}&newsCount=5&quotesCount=0`;
+          const response = await fetch(yahooUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'Accept': 'application/json',
+              'Referer': 'https://finance.yahoo.com/'
+            }
+          });
+          if (!response.ok) continue;
+          const data = await response.json();
+          const news = data.news || [];
+          for (const item of news) {
+            if (!item.link || seenUrls.has(item.link)) continue;
+            const titleKey = (item.title || '').slice(0, 60).toLowerCase();
+            if (seenTitles.has(titleKey)) continue;
+            seenUrls.add(item.link);
+            seenTitles.add(titleKey);
+            const publishedAt = item.providerPublishTime
+              ? new Date(item.providerPublishTime * 1000).toISOString()
+              : new Date().toISOString();
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            if (new Date(publishedAt) < sevenDaysAgo) continue;
+            allNews.push({
+              title: item.title || '',
+              url: item.link || '',
+              description: item.summary || '',
+              source: item.publisher || 'Yahoo Finance',
+              publishedAt,
+              sector: cat.sector,
+              displayName: cat.sector,
+            });
+          }
+        } catch {}
+      }
+
+      allNews.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+      res.json(allNews.slice(0, 80));
+    } catch (error) {
+      console.error('Error fetching general market news:', error);
+      res.status(500).json({ error: 'Failed to fetch general market news' });
+    }
+  });
+
   app.get('/api/stock-news/:symbol', async (req, res) => {
     const { symbol } = req.params;
 

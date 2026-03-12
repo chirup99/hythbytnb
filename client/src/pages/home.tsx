@@ -8028,6 +8028,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [isWatchlistNewsLoading, setIsWatchlistNewsLoading] = useState(false);
   const [marketNewsItems, setMarketNewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}>>([]);
   const [isMarketNewsLoading, setIsMarketNewsLoading] = useState(false);
+  const [marketNewsMode, setMarketNewsMode] = useState<'all' | 'watchlist'>('all');
+  const [allMarketNewsItems, setAllMarketNewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; sector: string; displayName: string;}>>([]);
+  const [isAllMarketNewsLoading, setIsAllMarketNewsLoading] = useState(false);
   const [allWatchlistQuarterlyData, setAllWatchlistQuarterlyData] = useState<{[symbol: string]: Array<{
     quarter: string;
     revenue: string;
@@ -8332,6 +8335,20 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
       console.error('Error fetching market news:', error);
     } finally {
       setIsMarketNewsLoading(false);
+    }
+  };
+
+  const fetchAllMarketNews = async () => {
+    setIsAllMarketNewsLoading(true);
+    try {
+      const res = await fetch('/api/general-market-news');
+      if (!res.ok) throw new Error('Failed');
+      const data = await res.json();
+      setAllMarketNewsItems(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error fetching all market news:', error);
+    } finally {
+      setIsAllMarketNewsLoading(false);
     }
   };
 
@@ -15711,39 +15728,57 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
 
                                       // Handle Market News view
                                       if (searchResults.includes("[CHART:MARKET_NEWS]")) {
+                                        const isAllMode = marketNewsMode === 'all';
+                                        const loading = isAllMode ? isAllMarketNewsLoading : isMarketNewsLoading;
+                                        const newsItems = isAllMode ? allMarketNewsItems : marketNewsItems;
                                         return (
                                           <div className="w-full">
                                             {/* Header row */}
                                             <div className="flex items-center justify-between mb-4">
-                                              <div className="flex items-center gap-2">
-                                                <span className="text-sm text-gray-400">
-                                                  Combined news from your {watchlistSymbols.length} watchlist stocks — last 7 days
-                                                </span>
+                                              {/* Toggle: All News / Watchlist */}
+                                              <div className="flex items-center gap-3">
+                                                <span className={`text-sm font-medium transition-colors ${isAllMode ? 'text-gray-100' : 'text-gray-500'}`}>All News</span>
+                                                <Switch
+                                                  checked={!isAllMode}
+                                                  onCheckedChange={(checked) => {
+                                                    const newMode = checked ? 'watchlist' : 'all';
+                                                    setMarketNewsMode(newMode);
+                                                    if (newMode === 'watchlist' && marketNewsItems.length === 0) fetchMarketNews();
+                                                    if (newMode === 'all' && allMarketNewsItems.length === 0) fetchAllMarketNews();
+                                                  }}
+                                                  data-testid="toggle-market-news-mode"
+                                                />
+                                                <span className={`text-sm font-medium transition-colors ${!isAllMode ? 'text-gray-100' : 'text-gray-500'}`}>Watchlist</span>
                                               </div>
-                                              <button
-                                                onClick={() => { fetchMarketNews(); }}
-                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs text-gray-300 transition-colors"
-                                                data-testid="button-refresh-market-news"
-                                              >
-                                                <RefreshCw className={`h-3 w-3 ${isMarketNewsLoading ? 'animate-spin' : ''}`} />
-                                                Refresh
-                                              </button>
+                                              <div className="flex items-center gap-2">
+                                                <span className="text-xs text-gray-500">
+                                                  {isAllMode ? 'All sectors · last 7 days' : `${watchlistSymbols.length} stocks · last 7 days`}
+                                                </span>
+                                                <button
+                                                  onClick={() => { isAllMode ? fetchAllMarketNews() : fetchMarketNews(); }}
+                                                  className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs text-gray-300 transition-colors"
+                                                  data-testid="button-refresh-market-news"
+                                                >
+                                                  <RefreshCw className={`h-3 w-3 ${loading ? 'animate-spin' : ''}`} />
+                                                  Refresh
+                                                </button>
+                                              </div>
                                             </div>
 
-                                            {isMarketNewsLoading ? (
+                                            {loading ? (
                                               <div className="flex flex-col items-center justify-center py-16 gap-3">
                                                 <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-                                                <p className="text-sm text-gray-500">Fetching news from {watchlistSymbols.length} stocks...</p>
+                                                <p className="text-sm text-gray-500">{isAllMode ? 'Fetching news across all sectors...' : `Fetching news from ${watchlistSymbols.length} stocks...`}</p>
                                               </div>
-                                            ) : marketNewsItems.length === 0 ? (
+                                            ) : newsItems.length === 0 ? (
                                               <div className="flex flex-col items-center justify-center py-16 gap-3">
                                                 <Newspaper className="h-10 w-10 text-gray-600" />
                                                 <p className="text-sm text-gray-400">No recent news found in the last 7 days</p>
-                                                <p className="text-xs text-gray-500">Add stocks to your watchlist or click Refresh</p>
+                                                <p className="text-xs text-gray-500">{isAllMode ? 'Click Refresh to load latest market news' : 'Add stocks to your watchlist or click Refresh'}</p>
                                               </div>
                                             ) : (
                                               <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
-                                                {marketNewsItems.map((item, index) => (
+                                                {newsItems.map((item, index) => (
                                                   <div
                                                     key={`${item.url}-${index}`}
                                                     className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700"
@@ -15761,7 +15796,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                         )}
                                                         <div className="flex items-center justify-between">
                                                           <div className="flex items-center gap-2">
-                                                            <span className="text-xs px-1.5 py-0.5 bg-blue-500/20 text-blue-400 rounded font-medium">{item.displayName}</span>
+                                                            <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${isAllMode ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400'}`}>{item.displayName}</span>
                                                             <span className="text-gray-500 text-xs">{item.source}</span>
                                                           </div>
                                                           <span className="text-gray-500 text-xs shrink-0">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
@@ -17258,6 +17293,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                             setIsSearchActive(true);
                             setSearchResults("[CHART:MARKET_NEWS]");
                             fetchMarketNews();
+                            fetchAllMarketNews();
                           }}
                         >
                           <div className="flex items-center gap-2">
@@ -17468,6 +17504,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   setIsSearchActive(true);
                                   setSearchResults("[CHART:MARKET_NEWS]");
                                   fetchMarketNews();
+                                  fetchAllMarketNews();
                                 }}
                               >
                                 <div className="flex items-center gap-1">
