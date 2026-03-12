@@ -21037,26 +21037,26 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                   <div className="flex-1 overflow-y-auto custom-thin-scrollbar">
                                     {isNifty50NewsLoading && nifty50NewsItems.length === 0 ? (
                                       <div className="flex items-center justify-center h-20">
-                                        <Loader2 className="w-4 h-4 animate-spin text-purple-500" />
+                                        <Loader2 className="w-4 h-4 animate-spin text-slate-400" />
                                       </div>
                                     ) : nifty50NewsItems.length > 0 ? (
-                                      <div className="space-y-1.5">
+                                      <div className="divide-y divide-slate-100 dark:divide-slate-800">
                                         {nifty50NewsItems.slice(0, 30).map((news, idx) => (
                                           <div
                                             key={`${news.url}-${idx}`}
-                                            className="px-2 py-1.5 bg-gray-800/40 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700/60"
+                                            className="py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer"
                                             onClick={() => window.open(news.url, '_blank', 'noopener,noreferrer')}
                                           >
-                                            <div className="flex items-center gap-1.5 mb-0.5">
-                                              <span className="text-[9px] px-1 py-0.5 rounded font-medium bg-orange-500/20 text-orange-400 shrink-0">{news.displayName}</span>
-                                              <span className="text-gray-500 text-[9px] shrink-0">{getWatchlistNewsRelativeTime(news.publishedAt)}</span>
+                                            <p className="text-[10px] text-slate-700 dark:text-slate-300 line-clamp-2 leading-tight mb-0.5">{news.title}</p>
+                                            <div className="flex items-center gap-1.5">
+                                              <span className="text-[9px] font-semibold text-indigo-500 dark:text-indigo-400 shrink-0">{news.displayName}</span>
+                                              <span className="text-[9px] text-slate-400 shrink-0">{getWatchlistNewsRelativeTime(news.publishedAt)}</span>
                                             </div>
-                                            <p className="text-[10px] font-medium text-slate-200 line-clamp-2 leading-tight">{news.title}</p>
                                           </div>
                                         ))}
                                       </div>
                                     ) : (
-                                      <p className="text-gray-500 italic text-center text-xs mt-4">No news found.</p>
+                                      <p className="text-slate-400 italic text-center text-xs mt-4">No news found.</p>
                                     )}
                                   </div>
                                 ) : (
