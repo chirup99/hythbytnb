@@ -66,6 +66,75 @@ export default function setupGeminiRoutes(app: Express) {
     }
   });
 
+  // Advanced market news analysis
+  app.post("/api/gemini/market-news-analysis", async (req, res) => {
+    try {
+      const { newsItems } = req.body;
+      if (!newsItems || !Array.isArray(newsItems) || newsItems.length === 0) {
+        return res.status(400).json({ success: false, error: "newsItems array is required" });
+      }
+
+      const { GoogleGenAI } = await import("@google/genai");
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+
+      // Count per sector and build summary
+      const sectorCounts: Record<string, number> = {};
+      newsItems.forEach((item: any) => {
+        const s = item.sector || item.displayName || 'Other';
+        sectorCounts[s] = (sectorCounts[s] || 0) + 1;
+      });
+
+      const top100 = newsItems.slice(0, 100);
+      const newsDigest = top100.map((item: any) =>
+        `[${item.sector || item.displayName}] ${item.title} (${item.source})`
+      ).join('\n');
+
+      const sectorSummary = Object.entries(sectorCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([s, c]) => `${s}: ${c} articles`)
+        .join(', ');
+
+      const prompt = `You are a senior Indian market analyst. Analyze these ${newsItems.length} market news headlines from the last 7 days.
+
+Sector distribution: ${sectorSummary}
+
+Headlines (sample of ${top100.length}):
+${newsDigest}
+
+Provide a comprehensive JSON analysis with:
+1. overallSentiment: "BULLISH" | "BEARISH" | "NEUTRAL" with a score 0-100
+2. marketMood: one sentence market mood
+3. trendingSectors: top 5 sectors ranked by impact, each with { sector, rank, sentiment: "positive"|"negative"|"neutral", articleCount, momentum: "rising"|"falling"|"stable", keyTheme, investmentSignal: "BUY"|"SELL"|"WATCH" }
+4. keyEvents: top 5 most impactful events, each with { event, impact: "HIGH"|"MEDIUM"|"LOW", affectedSectors, implication }
+5. riskAlerts: up to 3 risk alerts, each with { risk, severity: "HIGH"|"MEDIUM"|"LOW", mitigation }
+6. opportunities: top 3 investment opportunities from news, each with { opportunity, sector, timeframe: "short"|"medium"|"long", confidence: 0-100 }
+7. weeklyOutlook: 2-3 sentence market outlook for the week ahead
+8. topHeadlines: top 5 most impactful headlines from the provided list, each with { title, sector, impact: "HIGH"|"MEDIUM"|"LOW" }
+
+Focus on Indian markets (NSE/BSE). Be specific and actionable.`;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash-exp",
+        contents: prompt,
+        config: { responseMimeType: "application/json", temperature: 0.3 }
+      });
+
+      const raw = response.text || '{}';
+      let analysis;
+      try {
+        analysis = JSON.parse(raw);
+      } catch {
+        const match = raw.match(/\{[\s\S]*\}/);
+        analysis = match ? JSON.parse(match[0]) : {};
+      }
+
+      res.json({ success: true, analysis, totalArticles: newsItems.length, sectorCounts });
+    } catch (error) {
+      console.error("❌ Error in market news analysis:", error);
+      res.status(500).json({ success: false, error: error instanceof Error ? error.message : "Analysis failed" });
+    }
+  });
+
   // Detect arbitrage opportunities
   app.post("/api/gemini/arbitrage", async (req, res) => {
     try {

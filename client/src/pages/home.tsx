@@ -8033,6 +8033,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [isAllMarketNewsLoading, setIsAllMarketNewsLoading] = useState(false);
   const [nifty50NewsItems, setNifty50NewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}>>([]);
   const [isNifty50NewsLoading, setIsNifty50NewsLoading] = useState(false);
+  const [newsSelectedSector, setNewsSelectedSector] = useState<string | null>(null);
+  const [newsAiAnalysis, setNewsAiAnalysis] = useState<any>(null);
+  const [isNewsAiAnalysisLoading, setIsNewsAiAnalysisLoading] = useState(false);
+  const [showNewsAiPanel, setShowNewsAiPanel] = useState(false);
+  const [newsAiAnalysisError, setNewsAiAnalysisError] = useState<string | null>(null);
   const [newsStockPrices, setNewsStockPrices] = useState<{[symbol: string]: {price: number; change: number; changePercent: number; currency: string; chartData: Array<{price: number; time: string}>}}>({});
   const fetchedPriceSymbolsRef = useRef<Set<string>>(new Set());
   const [allWatchlistQuarterlyData, setAllWatchlistQuarterlyData] = useState<{[symbol: string]: Array<{
@@ -15857,7 +15862,10 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         const isAllMode = marketNewsMode === 'all';
                                         const isNifty50Mode = marketNewsMode === 'nifty50';
                                         const loading = isAllMode ? isAllMarketNewsLoading : isNifty50Mode ? isNifty50NewsLoading : isMarketNewsLoading;
-                                        const newsItems = isAllMode ? allMarketNewsItems : isNifty50Mode ? nifty50NewsItems : marketNewsItems;
+                                        const rawNewsItems = isAllMode ? allMarketNewsItems : isNifty50Mode ? nifty50NewsItems : marketNewsItems;
+                                        const newsItems = isAllMode && newsSelectedSector
+                                          ? rawNewsItems.filter((item: any) => (item.sector || item.displayName) === newsSelectedSector)
+                                          : rawNewsItems;
                                         const tagColor = isAllMode ? 'bg-purple-500/20 text-purple-400' : isNifty50Mode ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400';
                                         const emptyMsg = isAllMode ? 'Click Refresh to load latest market news' : isNifty50Mode ? 'Click Refresh to load Nifty 50 news' : 'Add stocks to your watchlist or click Refresh';
                                         const loadingMsg = isAllMode ? 'Fetching news across all sectors...' : isNifty50Mode ? 'Fetching Nifty 50 stock news...' : `Fetching news from ${watchlistSymbols.length} stocks...`;
@@ -15866,10 +15874,52 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           else if (isNifty50Mode) fetchNifty50News();
                                           else fetchMarketNews();
                                         };
+                                        const handleAiAnalysis = async () => {
+                                          if (rawNewsItems.length === 0) return;
+                                          setIsNewsAiAnalysisLoading(true);
+                                          setShowNewsAiPanel(true);
+                                          setNewsAiAnalysis(null);
+                                          setNewsAiAnalysisError(null);
+                                          try {
+                                            const res = await fetch('/api/gemini/market-news-analysis', {
+                                              method: 'POST',
+                                              headers: { 'Content-Type': 'application/json' },
+                                              body: JSON.stringify({ newsItems: rawNewsItems }),
+                                            });
+                                            const data = await res.json();
+                                            if (data.success) {
+                                              setNewsAiAnalysis({ ...data.analysis, totalArticles: data.totalArticles, sectorCounts: data.sectorCounts });
+                                            } else {
+                                              setNewsAiAnalysisError(data.error?.includes('PERMISSION_DENIED') || data.error?.includes('API Key')
+                                                ? 'Gemini API key not configured. Please add GEMINI_API_KEY to your environment secrets.'
+                                                : data.error || 'Analysis failed. Please try again.');
+                                            }
+                                          } catch (e) {
+                                            console.error('AI analysis error:', e);
+                                            setNewsAiAnalysisError('Failed to connect to AI service. Please try again.');
+                                          } finally {
+                                            setIsNewsAiAnalysisLoading(false);
+                                          }
+                                        };
+
+                                        const allSectors = ['Market', 'IT', 'Finance', 'Commodity', 'Defence', 'AI & Tech', 'Pharma', 'Consumer', 'Economy', 'Auto'];
+                                        const sectorColors: Record<string, string> = {
+                                          Market: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
+                                          IT: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30',
+                                          Finance: 'bg-green-500/15 text-green-400 border-green-500/30',
+                                          Commodity: 'bg-orange-500/15 text-orange-400 border-orange-500/30',
+                                          Defence: 'bg-red-500/15 text-red-400 border-red-500/30',
+                                          'AI & Tech': 'bg-violet-500/15 text-violet-400 border-violet-500/30',
+                                          Pharma: 'bg-pink-500/15 text-pink-400 border-pink-500/30',
+                                          Consumer: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30',
+                                          Economy: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
+                                          Auto: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
+                                        };
+
                                         return (
                                           <div className="w-full">
                                             {/* Header row */}
-                                            <div className="flex items-center justify-between mb-4">
+                                            <div className="flex items-center justify-between mb-3">
                                               {/* Pill-style tab switcher */}
                                               <div
                                                 className="flex items-center p-0.5 rounded-full"
@@ -15885,6 +15935,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     key={tab.key}
                                                     onClick={() => {
                                                       setMarketNewsMode(tab.key as 'all' | 'watchlist' | 'nifty50');
+                                                      setNewsSelectedSector(null);
                                                       if (tab.key === 'watchlist' && marketNewsItems.length === 0) fetchMarketNews();
                                                       if (tab.key === 'all' && allMarketNewsItems.length === 0) fetchAllMarketNews();
                                                       if (tab.key === 'nifty50' && nifty50NewsItems.length === 0) fetchNifty50News();
@@ -15907,8 +15958,26 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               </div>
                                               <div className="flex items-center gap-2">
                                                 <span className="text-xs text-gray-500">
-                                                  {isAllMode ? 'All sectors · last 7 days' : isNifty50Mode ? '50+ stocks · last 7 days' : `${watchlistSymbols.length} stocks · last 7 days`}
+                                                  {isAllMode
+                                                    ? newsSelectedSector
+                                                      ? `${newsItems.length} articles · ${newsSelectedSector}`
+                                                      : `${rawNewsItems.length} articles · last 7 days`
+                                                    : isNifty50Mode ? '50+ stocks · last 7 days' : `${watchlistSymbols.length} stocks · last 7 days`}
                                                 </span>
+                                                {isAllMode && rawNewsItems.length > 0 && (
+                                                  <button
+                                                    onClick={handleAiAnalysis}
+                                                    disabled={isNewsAiAnalysisLoading}
+                                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                                                    style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', color: '#fff', opacity: isNewsAiAnalysisLoading ? 0.7 : 1 }}
+                                                    data-testid="button-news-ai-analysis"
+                                                  >
+                                                    {isNewsAiAnalysisLoading
+                                                      ? <Loader2 className="h-3 w-3 animate-spin" />
+                                                      : <Sparkles className="h-3 w-3" />}
+                                                    AI Analysis
+                                                  </button>
+                                                )}
                                                 <button
                                                   onClick={handleRefresh}
                                                   className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs text-gray-300 transition-colors"
@@ -15919,6 +15988,170 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                 </button>
                                               </div>
                                             </div>
+
+                                            {/* Sector filter pills (All News mode only) */}
+                                            {isAllMode && rawNewsItems.length > 0 && (
+                                              <div className="flex flex-wrap gap-1.5 mb-3">
+                                                <button
+                                                  onClick={() => setNewsSelectedSector(null)}
+                                                  className={`px-2.5 py-0.5 rounded-full text-xs font-medium border transition-all ${newsSelectedSector === null ? 'bg-gray-200 text-gray-900 border-gray-200' : 'bg-gray-800/60 text-gray-400 border-gray-700/60 hover:border-gray-500'}`}
+                                                  data-testid="filter-sector-all"
+                                                >All</button>
+                                                {allSectors.map(sector => {
+                                                  const count = rawNewsItems.filter((i: any) => (i.sector || i.displayName) === sector).length;
+                                                  if (count === 0) return null;
+                                                  const active = newsSelectedSector === sector;
+                                                  return (
+                                                    <button
+                                                      key={sector}
+                                                      onClick={() => setNewsSelectedSector(active ? null : sector)}
+                                                      className={`px-2.5 py-0.5 rounded-full text-xs font-medium border transition-all ${active ? sectorColors[sector] || 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'bg-gray-800/60 text-gray-500 border-gray-700/60 hover:text-gray-300 hover:border-gray-500'}`}
+                                                      data-testid={`filter-sector-${sector.toLowerCase().replace(/\s+/g, '-')}`}
+                                                    >
+                                                      {sector} <span className="opacity-60 ml-0.5">{count}</span>
+                                                    </button>
+                                                  );
+                                                })}
+                                              </div>
+                                            )}
+
+                                            {/* AI Analysis Panel */}
+                                            {isAllMode && showNewsAiPanel && (
+                                              <div className="mb-4 rounded-xl border border-violet-500/30 bg-gradient-to-b from-violet-950/40 to-gray-900/60 overflow-hidden">
+                                                <div className="flex items-center justify-between px-4 py-3 border-b border-violet-500/20">
+                                                  <div className="flex items-center gap-2">
+                                                    <Brain className="h-4 w-4 text-violet-400" />
+                                                    <span className="text-sm font-semibold text-violet-300">AI Market Intelligence</span>
+                                                    {newsAiAnalysis && <span className="text-xs text-gray-500">· {newsAiAnalysis.totalArticles} articles analysed</span>}
+                                                  </div>
+                                                  <button onClick={() => setShowNewsAiPanel(false)} className="text-gray-500 hover:text-gray-300 text-xs">✕</button>
+                                                </div>
+                                                {isNewsAiAnalysisLoading ? (
+                                                  <div className="flex items-center justify-center py-10 gap-3">
+                                                    <Loader2 className="h-5 w-5 animate-spin text-violet-400" />
+                                                    <span className="text-sm text-gray-400">Analysing {rawNewsItems.length} articles across all sectors…</span>
+                                                  </div>
+                                                ) : newsAiAnalysisError ? (
+                                                  <div className="flex flex-col items-center justify-center py-8 gap-2 px-4">
+                                                    <span className="text-2xl">⚠️</span>
+                                                    <p className="text-sm text-red-400 text-center">{newsAiAnalysisError}</p>
+                                                    <button onClick={handleAiAnalysis} className="mt-2 text-xs text-violet-400 hover:text-violet-300 underline">Try again</button>
+                                                  </div>
+                                                ) : newsAiAnalysis ? (
+                                                  <div className="p-4 space-y-4">
+                                                    {/* Overall Sentiment */}
+                                                    <div className="flex items-center gap-3">
+                                                      <div className={`px-3 py-1.5 rounded-lg text-sm font-bold tracking-wide ${newsAiAnalysis.overallSentiment === 'BULLISH' ? 'bg-green-500/20 text-green-400' : newsAiAnalysis.overallSentiment === 'BEARISH' ? 'bg-red-500/20 text-red-400' : 'bg-yellow-500/20 text-yellow-400'}`}>
+                                                        {newsAiAnalysis.overallSentiment === 'BULLISH' ? '▲' : newsAiAnalysis.overallSentiment === 'BEARISH' ? '▼' : '●'} {newsAiAnalysis.overallSentiment}
+                                                      </div>
+                                                      <p className="text-sm text-gray-300 flex-1">{newsAiAnalysis.marketMood}</p>
+                                                    </div>
+
+                                                    {/* Trending Sectors */}
+                                                    {newsAiAnalysis.trendingSectors?.length > 0 && (
+                                                      <div>
+                                                        <div className="flex items-center gap-1.5 mb-2">
+                                                          <TrendingUp className="h-3.5 w-3.5 text-violet-400" />
+                                                          <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Trending Sectors</span>
+                                                        </div>
+                                                        <div className="grid grid-cols-1 gap-2">
+                                                          {newsAiAnalysis.trendingSectors.map((s: any, i: number) => (
+                                                            <div key={i} className="flex items-center gap-3 bg-gray-800/50 rounded-lg px-3 py-2 border border-gray-700/50">
+                                                              <span className="text-gray-500 text-xs font-mono w-4">#{s.rank || i+1}</span>
+                                                              <span className="text-sm font-medium text-gray-200 w-24 shrink-0">{s.sector}</span>
+                                                              <span className={`text-xs px-1.5 py-0.5 rounded font-medium shrink-0 ${s.sentiment === 'positive' ? 'bg-green-500/20 text-green-400' : s.sentiment === 'negative' ? 'bg-red-500/20 text-red-400' : 'bg-yellow-500/20 text-yellow-400'}`}>
+                                                                {s.sentiment === 'positive' ? '▲' : s.sentiment === 'negative' ? '▼' : '●'}
+                                                              </span>
+                                                              <span className="text-xs text-gray-400 flex-1 line-clamp-1">{s.keyTheme}</span>
+                                                              <span className={`text-xs font-bold px-2 py-0.5 rounded shrink-0 ${s.investmentSignal === 'BUY' ? 'bg-green-500/20 text-green-400' : s.investmentSignal === 'SELL' ? 'bg-red-500/20 text-red-400' : 'bg-yellow-500/20 text-yellow-400'}`}>
+                                                                {s.investmentSignal}
+                                                              </span>
+                                                            </div>
+                                                          ))}
+                                                        </div>
+                                                      </div>
+                                                    )}
+
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                      {/* Key Events */}
+                                                      {newsAiAnalysis.keyEvents?.length > 0 && (
+                                                        <div>
+                                                          <div className="flex items-center gap-1.5 mb-2">
+                                                            <Zap className="h-3.5 w-3.5 text-yellow-400" />
+                                                            <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Key Events</span>
+                                                          </div>
+                                                          <div className="space-y-1.5">
+                                                            {newsAiAnalysis.keyEvents.slice(0, 4).map((e: any, i: number) => (
+                                                              <div key={i} className="bg-gray-800/50 rounded-lg px-3 py-2 border border-gray-700/50">
+                                                                <div className="flex items-center gap-1.5 mb-1">
+                                                                  <span className={`text-xs px-1 py-0.5 rounded font-medium ${e.impact === 'HIGH' ? 'bg-red-500/20 text-red-400' : e.impact === 'MEDIUM' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-400'}`}>{e.impact}</span>
+                                                                </div>
+                                                                <p className="text-xs text-gray-200 line-clamp-2">{e.event}</p>
+                                                                <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{e.implication}</p>
+                                                              </div>
+                                                            ))}
+                                                          </div>
+                                                        </div>
+                                                      )}
+
+                                                      {/* Opportunities */}
+                                                      {newsAiAnalysis.opportunities?.length > 0 && (
+                                                        <div>
+                                                          <div className="flex items-center gap-1.5 mb-2">
+                                                            <Sparkles className="h-3.5 w-3.5 text-green-400" />
+                                                            <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Opportunities</span>
+                                                          </div>
+                                                          <div className="space-y-1.5">
+                                                            {newsAiAnalysis.opportunities.map((o: any, i: number) => (
+                                                              <div key={i} className="bg-gray-800/50 rounded-lg px-3 py-2 border border-gray-700/50">
+                                                                <div className="flex items-center justify-between mb-1">
+                                                                  <span className="text-xs text-green-400 font-medium">{o.sector}</span>
+                                                                  <span className="text-xs text-gray-500">{o.confidence}% conf</span>
+                                                                </div>
+                                                                <p className="text-xs text-gray-200 line-clamp-2">{o.opportunity}</p>
+                                                                <p className="text-xs text-gray-500 mt-0.5">{o.timeframe}-term</p>
+                                                              </div>
+                                                            ))}
+                                                          </div>
+                                                        </div>
+                                                      )}
+                                                    </div>
+
+                                                    {/* Risk Alerts */}
+                                                    {newsAiAnalysis.riskAlerts?.length > 0 && (
+                                                      <div>
+                                                        <div className="flex items-center gap-1.5 mb-2">
+                                                          <Activity className="h-3.5 w-3.5 text-red-400" />
+                                                          <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Risk Alerts</span>
+                                                        </div>
+                                                        <div className="space-y-1.5">
+                                                          {newsAiAnalysis.riskAlerts.map((r: any, i: number) => (
+                                                            <div key={i} className={`flex items-start gap-2 rounded-lg px-3 py-2 border ${r.severity === 'HIGH' ? 'bg-red-950/30 border-red-500/30' : r.severity === 'MEDIUM' ? 'bg-yellow-950/30 border-yellow-500/30' : 'bg-gray-800/50 border-gray-700/50'}`}>
+                                                              <span className={`text-xs px-1 py-0.5 rounded font-medium shrink-0 mt-0.5 ${r.severity === 'HIGH' ? 'bg-red-500/20 text-red-400' : r.severity === 'MEDIUM' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-400'}`}>{r.severity}</span>
+                                                              <div>
+                                                                <p className="text-xs text-gray-200">{r.risk}</p>
+                                                                <p className="text-xs text-gray-500 mt-0.5">{r.mitigation}</p>
+                                                              </div>
+                                                            </div>
+                                                          ))}
+                                                        </div>
+                                                      </div>
+                                                    )}
+
+                                                    {/* Weekly Outlook */}
+                                                    {newsAiAnalysis.weeklyOutlook && (
+                                                      <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg px-3 py-2.5">
+                                                        <div className="flex items-center gap-1.5 mb-1.5">
+                                                          <BarChart3 className="h-3.5 w-3.5 text-indigo-400" />
+                                                          <span className="text-xs font-semibold text-indigo-300 uppercase tracking-wider">Weekly Outlook</span>
+                                                        </div>
+                                                        <p className="text-xs text-gray-300 leading-relaxed">{newsAiAnalysis.weeklyOutlook}</p>
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                ) : null}
+                                              </div>
+                                            )}
 
                                             {loading ? (
                                               <div className="flex flex-col items-center justify-center py-16 gap-3">
