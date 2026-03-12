@@ -8033,7 +8033,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [isAllMarketNewsLoading, setIsAllMarketNewsLoading] = useState(false);
   const [nifty50NewsItems, setNifty50NewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}>>([]);
   const [isNifty50NewsLoading, setIsNifty50NewsLoading] = useState(false);
-  const [newsStockPrices, setNewsStockPrices] = useState<{[symbol: string]: {price: number; change: number; changePercent: number; chartData: Array<{price: number; time: string}>}}>({});
+  const [newsStockPrices, setNewsStockPrices] = useState<{[symbol: string]: {price: number; change: number; changePercent: number; currency: string; chartData: Array<{price: number; time: string}>}}>({});
   const fetchedPriceSymbolsRef = useRef<Set<string>>(new Set());
   const [allWatchlistQuarterlyData, setAllWatchlistQuarterlyData] = useState<{[symbol: string]: Array<{
     quarter: string;
@@ -15968,7 +15968,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                       <div className="flex items-center gap-2 pl-0.5">
                                                         {stockData ? (
                                                           <>
-                                                            <span className="text-gray-300 text-xs font-mono">₹{stockData.price.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
+                                                            <span className="text-gray-300 text-xs font-mono">
+                                                              {stockData.currency === 'USD'
+                                                                ? `$${stockData.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}`
+                                                                : `₹${stockData.price.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`}
+                                                            </span>
                                                             <span className={`text-xs font-medium ${isUp ? 'text-green-400' : 'text-red-400'}`}>
                                                               {isUp ? '▲' : '▼'} {Math.abs(stockData.changePercent).toFixed(2)}%
                                                             </span>

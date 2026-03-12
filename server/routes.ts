@@ -6105,6 +6105,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Singleton yahoo finance instance (suppress Node version warning)
   const yf = new (YahooFinance as any)({ suppressNotices: ['yahooSurvey'] });
 
+  // Special symbol mappings: app symbol → { yahooSymbol, currency }
+  const SPECIAL_SYMBOL_MAP: Record<string, { yahoo: string; currency: 'INR' | 'USD' }> = {
+    SENSEX:    { yahoo: '^BSESN', currency: 'INR' },
+    NIFTY:     { yahoo: '^NSEI',  currency: 'INR' },
+    BANKNIFTY: { yahoo: '^NSEBANK', currency: 'INR' },
+    GOLD:      { yahoo: 'GC=F',   currency: 'USD' },
+    SILVER:    { yahoo: 'SI=F',   currency: 'USD' },
+    CRUDEOIL:  { yahoo: 'CL=F',   currency: 'USD' },
+  };
+
   // Fetch real prices for a batch of NSE stock symbols (no cookies, no scraping)
   app.get('/api/news-stock-prices', async (req, res) => {
     try {
@@ -6113,16 +6123,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const symbols = symbolsParam.split(',').map((s: string) => s.trim().toUpperCase()).filter(Boolean).slice(0, 30);
 
-      const results: Record<string, { price: number; change: number; changePercent: number; chartData: Array<{ price: number; time: string }> }> = {};
+      const results: Record<string, { price: number; change: number; changePercent: number; currency: string; chartData: Array<{ price: number; time: string }> }> = {};
 
       await Promise.allSettled(symbols.map(async (symbol: string) => {
         try {
-          const yahooSymbol = `${symbol}.NS`;
+          const special = SPECIAL_SYMBOL_MAP[symbol];
+          const yahooSymbol = special ? special.yahoo : `${symbol}.NS`;
+          const currency = special?.currency ?? 'INR';
+          const isFuture = yahooSymbol.endsWith('=F');
 
-          // Fetch quote (current price, change)
-          const quote = await yf.quote(yahooSymbol, {
-            fields: ['regularMarketPrice', 'regularMarketChange', 'regularMarketChangePercent']
-          }).catch(() => null);
+          // Fetch quote — futures need validateResult:false due to schema mismatch
+          const quoteOpts = isFuture ? { validateResult: false } : {};
+          const quote = await yf.quote(yahooSymbol, {}, quoteOpts).catch(() => null);
 
           if (!quote || !quote.regularMarketPrice) return;
 
@@ -6139,7 +6151,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
               period2: now,
             });
             const quotes = chartResult?.quotes ?? [];
-            // Downsample to ~20 points for sparkline
             const step = Math.max(1, Math.floor(quotes.length / 20));
             chartData = quotes
               .filter((_: any, i: number) => i % step === 0)
@@ -6159,6 +6170,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             price: quote.regularMarketPrice,
             change: quote.regularMarketChange ?? 0,
             changePercent: quote.regularMarketChangePercent ?? 0,
+            currency,
             chartData,
           };
         } catch {
