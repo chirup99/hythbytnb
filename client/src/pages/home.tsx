@@ -8008,6 +8008,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   });
   const [selectedWatchlistSymbol, setSelectedWatchlistSymbol] = useState<string>('NSE:RELIANCE-EQ');
   const [watchlistSearchQuery, setWatchlistSearchQuery] = useState('');
+  const [watchlistDropdownOpen, setWatchlistDropdownOpen] = useState(false);
   const [watchlistSearchResults, setWatchlistSearchResults] = useState<Array<{
     symbol: string;
     name: string;
@@ -16107,47 +16108,191 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                   <span className="text-xs text-gray-400">{watchlistSymbols.length} stocks</span>
                                                 </div>
 
-                                                {/* Search to add stocks */}
-                                                <div className="relative mb-3">
-                                                  <Input
-                                                    placeholder="Search to add stock..."
-                                                    value={watchlistSearchQuery}
-                                                    onChange={(e) => {
-                                                      setWatchlistSearchQuery(e.target.value);
-                                                      searchWatchlistStocks(e.target.value);
-                                                    }}
-                                                    className="h-8 text-xs bg-gray-800 border-gray-600 text-gray-200 placeholder:text-gray-500"
-                                                    data-testid="input-watchlist-search"
-                                                  />
-                                                  {watchlistSearchResults.length > 0 && (
-                                                    <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-lg z-50 max-h-40 overflow-y-auto">
-                                                      {watchlistSearchResults.map((result, idx) => (
-                                                        <div
-                                                          key={idx}
-                                                          className="px-3 py-2 border-b border-gray-700 last:border-b-0 flex items-center justify-start hover:bg-gray-700/50 transition-colors"
-                                                          data-testid={`watchlist-search-result-${idx}`}
-                                                        >
-                                                        <div className="flex items-center justify-between w-full">
-                                                          <div className="flex-1 min-w-0">
-                                                            <div className="text-xs font-medium text-gray-200">{result.displayName || result.symbol}</div>
-                                                            <div className="text-xs text-gray-400 truncate">{result.name}</div>
-                                                        </div>
+                                                {/* Add Stock Dropdown */}
+                                                {(() => {
+                                                  const PREDEFINED_STOCKS = [
+                                                    { symbol: 'NIFTY50', displayName: 'NIFTY 50', name: 'Nifty 50 Index', token: '99926000', exchange: 'NSE', tradingSymbol: 'NIFTY50' },
+                                                    { symbol: 'SENSEX', displayName: 'SENSEX', name: 'BSE Sensex Index', token: '99919000', exchange: 'BSE', tradingSymbol: 'SENSEX' },
+                                                    { symbol: 'BANKNIFTY', displayName: 'BANKNIFTY', name: 'Bank Nifty Index', token: '99926009', exchange: 'NSE', tradingSymbol: 'BANKNIFTY' },
+                                                    { symbol: 'CRUDEOIL', displayName: 'Crude Oil', name: 'Crude Oil MCX', token: '234230', exchange: 'MCX', tradingSymbol: 'CRUDEOIL' },
+                                                    { symbol: 'GOLD', displayName: 'Gold', name: 'Gold MCX', token: '99920003', exchange: 'MCX', tradingSymbol: 'GOLD' },
+                                                    { symbol: 'SILVER', displayName: 'Silver', name: 'Silver MCX', token: '99920004', exchange: 'MCX', tradingSymbol: 'SILVER' },
+                                                    { symbol: 'ADANIENT-EQ', displayName: 'ADANIENT', name: 'Adani Enterprises', token: '25', exchange: 'NSE', tradingSymbol: 'ADANIENT-EQ' },
+                                                    { symbol: 'ADANIPORTS-EQ', displayName: 'ADANIPORTS', name: 'Adani Ports & SEZ', token: '15083', exchange: 'NSE', tradingSymbol: 'ADANIPORTS-EQ' },
+                                                    { symbol: 'APOLLOHOSP-EQ', displayName: 'APOLLOHOSP', name: 'Apollo Hospitals', token: '157', exchange: 'NSE', tradingSymbol: 'APOLLOHOSP-EQ' },
+                                                    { symbol: 'ASIANPAINT-EQ', displayName: 'ASIANPAINT', name: 'Asian Paints', token: '236', exchange: 'NSE', tradingSymbol: 'ASIANPAINT-EQ' },
+                                                    { symbol: 'AXISBANK-EQ', displayName: 'AXISBANK', name: 'Axis Bank', token: '5900', exchange: 'NSE', tradingSymbol: 'AXISBANK-EQ' },
+                                                    { symbol: 'BAJAJ-AUTO-EQ', displayName: 'BAJAJ-AUTO', name: 'Bajaj Auto', token: '16669', exchange: 'NSE', tradingSymbol: 'BAJAJ-AUTO-EQ' },
+                                                    { symbol: 'BAJFINANCE-EQ', displayName: 'BAJFINANCE', name: 'Bajaj Finance', token: '317', exchange: 'NSE', tradingSymbol: 'BAJFINANCE-EQ' },
+                                                    { symbol: 'BAJAJFINSV-EQ', displayName: 'BAJAJFINSV', name: 'Bajaj Finserv', token: '16675', exchange: 'NSE', tradingSymbol: 'BAJAJFINSV-EQ' },
+                                                    { symbol: 'BPCL-EQ', displayName: 'BPCL', name: 'BPCL', token: '526', exchange: 'NSE', tradingSymbol: 'BPCL-EQ' },
+                                                    { symbol: 'BHARTIARTL-EQ', displayName: 'BHARTIARTL', name: 'Bharti Airtel', token: '10604', exchange: 'NSE', tradingSymbol: 'BHARTIARTL-EQ' },
+                                                    { symbol: 'BRITANNIA-EQ', displayName: 'BRITANNIA', name: 'Britannia Industries', token: '547', exchange: 'NSE', tradingSymbol: 'BRITANNIA-EQ' },
+                                                    { symbol: 'CIPLA-EQ', displayName: 'CIPLA', name: 'Cipla', token: '694', exchange: 'NSE', tradingSymbol: 'CIPLA-EQ' },
+                                                    { symbol: 'COALINDIA-EQ', displayName: 'COALINDIA', name: 'Coal India', token: '20374', exchange: 'NSE', tradingSymbol: 'COALINDIA-EQ' },
+                                                    { symbol: 'DIVISLAB-EQ', displayName: 'DIVISLAB', name: "Divi's Laboratories", token: '10940', exchange: 'NSE', tradingSymbol: 'DIVISLAB-EQ' },
+                                                    { symbol: 'DRREDDY-EQ', displayName: 'DRREDDY', name: "Dr. Reddy's Laboratories", token: '881', exchange: 'NSE', tradingSymbol: 'DRREDDY-EQ' },
+                                                    { symbol: 'EICHERMOT-EQ', displayName: 'EICHERMOT', name: 'Eicher Motors', token: '910', exchange: 'NSE', tradingSymbol: 'EICHERMOT-EQ' },
+                                                    { symbol: 'GRASIM-EQ', displayName: 'GRASIM', name: 'Grasim Industries', token: '1232', exchange: 'NSE', tradingSymbol: 'GRASIM-EQ' },
+                                                    { symbol: 'HCLTECH-EQ', displayName: 'HCLTECH', name: 'HCL Technologies', token: '7229', exchange: 'NSE', tradingSymbol: 'HCLTECH-EQ' },
+                                                    { symbol: 'HDFCBANK-EQ', displayName: 'HDFCBANK', name: 'HDFC Bank', token: '1333', exchange: 'NSE', tradingSymbol: 'HDFCBANK-EQ' },
+                                                    { symbol: 'HDFCLIFE-EQ', displayName: 'HDFCLIFE', name: 'HDFC Life', token: '467', exchange: 'NSE', tradingSymbol: 'HDFCLIFE-EQ' },
+                                                    { symbol: 'HEROMOTOCO-EQ', displayName: 'HEROMOTOCO', name: 'Hero MotoCorp', token: '1348', exchange: 'NSE', tradingSymbol: 'HEROMOTOCO-EQ' },
+                                                    { symbol: 'HINDALCO-EQ', displayName: 'HINDALCO', name: 'Hindalco Industries', token: '1363', exchange: 'NSE', tradingSymbol: 'HINDALCO-EQ' },
+                                                    { symbol: 'HINDUNILVR-EQ', displayName: 'HINDUNILVR', name: 'Hindustan Unilever', token: '1394', exchange: 'NSE', tradingSymbol: 'HINDUNILVR-EQ' },
+                                                    { symbol: 'ICICIBANK-EQ', displayName: 'ICICIBANK', name: 'ICICI Bank', token: '4963', exchange: 'NSE', tradingSymbol: 'ICICIBANK-EQ' },
+                                                    { symbol: 'ITC-EQ', displayName: 'ITC', name: 'ITC', token: '1660', exchange: 'NSE', tradingSymbol: 'ITC-EQ' },
+                                                    { symbol: 'INDUSINDBK-EQ', displayName: 'INDUSINDBK', name: 'IndusInd Bank', token: '5258', exchange: 'NSE', tradingSymbol: 'INDUSINDBK-EQ' },
+                                                    { symbol: 'INFY-EQ', displayName: 'INFY', name: 'Infosys', token: '1594', exchange: 'NSE', tradingSymbol: 'INFY-EQ' },
+                                                    { symbol: 'JSWSTEEL-EQ', displayName: 'JSWSTEEL', name: 'JSW Steel', token: '11723', exchange: 'NSE', tradingSymbol: 'JSWSTEEL-EQ' },
+                                                    { symbol: 'KOTAKBANK-EQ', displayName: 'KOTAKBANK', name: 'Kotak Mahindra Bank', token: '1922', exchange: 'NSE', tradingSymbol: 'KOTAKBANK-EQ' },
+                                                    { symbol: 'LT-EQ', displayName: 'LT', name: 'Larsen & Toubro', token: '11483', exchange: 'NSE', tradingSymbol: 'LT-EQ' },
+                                                    { symbol: 'LTIM-EQ', displayName: 'LTIM', name: 'LTIMindtree', token: '17818', exchange: 'NSE', tradingSymbol: 'LTIM-EQ' },
+                                                    { symbol: 'M&M-EQ', displayName: 'M&M', name: 'Mahindra & Mahindra', token: '2031', exchange: 'NSE', tradingSymbol: 'M&M-EQ' },
+                                                    { symbol: 'MARUTI-EQ', displayName: 'MARUTI', name: 'Maruti Suzuki', token: '10999', exchange: 'NSE', tradingSymbol: 'MARUTI-EQ' },
+                                                    { symbol: 'NESTLEIND-EQ', displayName: 'NESTLEIND', name: 'Nestlé India', token: '17963', exchange: 'NSE', tradingSymbol: 'NESTLEIND-EQ' },
+                                                    { symbol: 'NTPC-EQ', displayName: 'NTPC', name: 'NTPC', token: '11630', exchange: 'NSE', tradingSymbol: 'NTPC-EQ' },
+                                                    { symbol: 'ONGC-EQ', displayName: 'ONGC', name: 'ONGC', token: '2475', exchange: 'NSE', tradingSymbol: 'ONGC-EQ' },
+                                                    { symbol: 'POWERGRID-EQ', displayName: 'POWERGRID', name: 'Power Grid Corporation', token: '14977', exchange: 'NSE', tradingSymbol: 'POWERGRID-EQ' },
+                                                    { symbol: 'RELIANCE-EQ', displayName: 'RELIANCE', name: 'Reliance Industries', token: '2885', exchange: 'NSE', tradingSymbol: 'RELIANCE-EQ' },
+                                                    { symbol: 'SBILIFE-EQ', displayName: 'SBILIFE', name: 'SBI Life Insurance', token: '21808', exchange: 'NSE', tradingSymbol: 'SBILIFE-EQ' },
+                                                    { symbol: 'SBIN-EQ', displayName: 'SBIN', name: 'State Bank of India', token: '3045', exchange: 'NSE', tradingSymbol: 'SBIN-EQ' },
+                                                    { symbol: 'SUNPHARMA-EQ', displayName: 'SUNPHARMA', name: 'Sun Pharma', token: '3351', exchange: 'NSE', tradingSymbol: 'SUNPHARMA-EQ' },
+                                                    { symbol: 'TCS-EQ', displayName: 'TCS', name: 'Tata Consultancy Services', token: '11536', exchange: 'NSE', tradingSymbol: 'TCS-EQ' },
+                                                    { symbol: 'TATACONSUM-EQ', displayName: 'TATACONSUM', name: 'Tata Consumer Products', token: '3432', exchange: 'NSE', tradingSymbol: 'TATACONSUM-EQ' },
+                                                    { symbol: 'TATAMOTORS-EQ', displayName: 'TATAMOTORS', name: 'Tata Motors', token: '3456', exchange: 'NSE', tradingSymbol: 'TATAMOTORS-EQ' },
+                                                    { symbol: 'TATASTEEL-EQ', displayName: 'TATASTEEL', name: 'Tata Steel', token: '3499', exchange: 'NSE', tradingSymbol: 'TATASTEEL-EQ' },
+                                                    { symbol: 'TECHM-EQ', displayName: 'TECHM', name: 'Tech Mahindra', token: '13538', exchange: 'NSE', tradingSymbol: 'TECHM-EQ' },
+                                                    { symbol: 'TITAN-EQ', displayName: 'TITAN', name: 'Titan Company', token: '3506', exchange: 'NSE', tradingSymbol: 'TITAN-EQ' },
+                                                    { symbol: 'ULTRACEMCO-EQ', displayName: 'ULTRACEMCO', name: 'UltraTech Cement', token: '11532', exchange: 'NSE', tradingSymbol: 'ULTRACEMCO-EQ' },
+                                                    { symbol: 'UPL-EQ', displayName: 'UPL', name: 'UPL', token: '3691', exchange: 'NSE', tradingSymbol: 'UPL-EQ' },
+                                                    { symbol: 'WIPRO-EQ', displayName: 'WIPRO', name: 'Wipro', token: '3787', exchange: 'NSE', tradingSymbol: 'WIPRO-EQ' },
+                                                    { symbol: 'ACC-EQ', displayName: 'ACC', name: 'ACC', token: '22', exchange: 'NSE', tradingSymbol: 'ACC-EQ' },
+                                                    { symbol: 'ADANIGREEN-EQ', displayName: 'ADANIGREEN', name: 'Adani Green Energy', token: '25', exchange: 'NSE', tradingSymbol: 'ADANIGREEN-EQ' },
+                                                    { symbol: 'ADANITOTALGAS-EQ', displayName: 'ADANITOTALGAS', name: 'Adani Total Gas', token: '6731', exchange: 'NSE', tradingSymbol: 'ADANITOTALGAS-EQ' },
+                                                    { symbol: 'AMBUJACEM-EQ', displayName: 'AMBUJACEM', name: 'Ambuja Cements', token: '1270', exchange: 'NSE', tradingSymbol: 'AMBUJACEM-EQ' },
+                                                    { symbol: 'ABB-EQ', displayName: 'ABB', name: 'ABB India', token: '13', exchange: 'NSE', tradingSymbol: 'ABB-EQ' },
+                                                    { symbol: 'APOLLOTYRE-EQ', displayName: 'APOLLOTYRE', name: 'Apollo Tyres', token: '163', exchange: 'NSE', tradingSymbol: 'APOLLOTYRE-EQ' },
+                                                    { symbol: 'DMART-EQ', displayName: 'DMART', name: 'Avenue Supermarts (DMart)', token: '4849', exchange: 'NSE', tradingSymbol: 'DMART-EQ' },
+                                                    { symbol: 'BAJAJHLDNG-EQ', displayName: 'BAJAJHLDNG', name: 'Bajaj Holdings & Investment', token: '16', exchange: 'NSE', tradingSymbol: 'BAJAJHLDNG-EQ' },
+                                                    { symbol: 'BANKBARODA-EQ', displayName: 'BANKBARODA', name: 'Bank of Baroda', token: '4668', exchange: 'NSE', tradingSymbol: 'BANKBARODA-EQ' },
+                                                    { symbol: 'BERGEPAINT-EQ', displayName: 'BERGEPAINT', name: 'Berger Paints', token: '404', exchange: 'NSE', tradingSymbol: 'BERGEPAINT-EQ' },
+                                                    { symbol: 'BEL-EQ', displayName: 'BEL', name: 'Bharat Electronics', token: '383', exchange: 'NSE', tradingSymbol: 'BEL-EQ' },
+                                                    { symbol: 'BIOCON-EQ', displayName: 'BIOCON', name: 'Biocon', token: '12490', exchange: 'NSE', tradingSymbol: 'BIOCON-EQ' },
+                                                    { symbol: 'BOSCHLTD-EQ', displayName: 'BOSCHLTD', name: 'Bosch', token: '509', exchange: 'NSE', tradingSymbol: 'BOSCHLTD-EQ' },
+                                                    { symbol: 'CHOLAFIN-EQ', displayName: 'CHOLAFIN', name: 'Cholamandalam Investment & Finance', token: '685', exchange: 'NSE', tradingSymbol: 'CHOLAFIN-EQ' },
+                                                    { symbol: 'COLPAL-EQ', displayName: 'COLPAL', name: 'Colgate-Palmolive India', token: '2955', exchange: 'NSE', tradingSymbol: 'COLPAL-EQ' },
+                                                    { symbol: 'DLF-EQ', displayName: 'DLF', name: 'DLF', token: '14732', exchange: 'NSE', tradingSymbol: 'DLF-EQ' },
+                                                    { symbol: 'DABUR-EQ', displayName: 'DABUR', name: 'Dabur India', token: '772', exchange: 'NSE', tradingSymbol: 'DABUR-EQ' },
+                                                    { symbol: 'NYKAA-EQ', displayName: 'NYKAA', name: 'FSN E-Commerce (Nykaa)', token: '6390', exchange: 'NSE', tradingSymbol: 'NYKAA-EQ' },
+                                                    { symbol: 'GAIL-EQ', displayName: 'GAIL', name: 'GAIL India', token: '1209', exchange: 'NSE', tradingSymbol: 'GAIL-EQ' },
+                                                    { symbol: 'GLAND-EQ', displayName: 'GLAND', name: 'Gland Pharma', token: '5552', exchange: 'NSE', tradingSymbol: 'GLAND-EQ' },
+                                                    { symbol: 'GODREJCP-EQ', displayName: 'GODREJCP', name: 'Godrej Consumer Products', token: '10099', exchange: 'NSE', tradingSymbol: 'GODREJCP-EQ' },
+                                                    { symbol: 'HAVELLS-EQ', displayName: 'HAVELLS', name: 'Havells India', token: '2181', exchange: 'NSE', tradingSymbol: 'HAVELLS-EQ' },
+                                                    { symbol: 'HDFCAMC-EQ', displayName: 'HDFCAMC', name: 'HDFC AMC', token: '4244', exchange: 'NSE', tradingSymbol: 'HDFCAMC-EQ' },
+                                                    { symbol: 'HAL-EQ', displayName: 'HAL', name: 'Hindustan Aeronautics', token: '541154', exchange: 'NSE', tradingSymbol: 'HAL-EQ' },
+                                                    { symbol: 'ICICIGI-EQ', displayName: 'ICICIGI', name: 'ICICI Lombard', token: '15083', exchange: 'NSE', tradingSymbol: 'ICICIGI-EQ' },
+                                                    { symbol: 'ICICIPRULI-EQ', displayName: 'ICICIPRULI', name: 'ICICI Prudential Life', token: '467', exchange: 'NSE', tradingSymbol: 'ICICIPRULI-EQ' },
+                                                    { symbol: 'INDHOTEL-EQ', displayName: 'INDHOTEL', name: 'Indian Hotels Company', token: '1512', exchange: 'NSE', tradingSymbol: 'INDHOTEL-EQ' },
+                                                    { symbol: 'IOC-EQ', displayName: 'IOC', name: 'Indian Oil Corporation', token: '1624', exchange: 'NSE', tradingSymbol: 'IOC-EQ' },
+                                                    { symbol: 'IRCTC-EQ', displayName: 'IRCTC', name: 'IRCTC', token: '13611', exchange: 'NSE', tradingSymbol: 'IRCTC-EQ' },
+                                                    { symbol: 'INDUSTOWER-EQ', displayName: 'INDUSTOWER', name: 'Indus Towers', token: '7984', exchange: 'NSE', tradingSymbol: 'INDUSTOWER-EQ' },
+                                                    { symbol: 'NAUKRI-EQ', displayName: 'NAUKRI', name: 'Info Edge (Naukri)', token: '13751', exchange: 'NSE', tradingSymbol: 'NAUKRI-EQ' },
+                                                    { symbol: 'INDIGO-EQ', displayName: 'INDIGO', name: 'InterGlobe Aviation (IndiGo)', token: '11195', exchange: 'NSE', tradingSymbol: 'INDIGO-EQ' },
+                                                    { symbol: 'LICI-EQ', displayName: 'LICI', name: 'LIC (Life Insurance Corporation)', token: '543526', exchange: 'NSE', tradingSymbol: 'LICI-EQ' },
+                                                    { symbol: 'MARICO-EQ', displayName: 'MARICO', name: 'Marico', token: '4067', exchange: 'NSE', tradingSymbol: 'MARICO-EQ' },
+                                                    { symbol: 'MPHASIS-EQ', displayName: 'MPHASIS', name: 'Mphasis', token: '4406', exchange: 'NSE', tradingSymbol: 'MPHASIS-EQ' },
+                                                    { symbol: 'MUTHOOTFIN-EQ', displayName: 'MUTHOOTFIN', name: 'Muthoot Finance', token: '3263', exchange: 'NSE', tradingSymbol: 'MUTHOOTFIN-EQ' },
+                                                    { symbol: 'PAYTM-EQ', displayName: 'PAYTM', name: 'One97 Communications (Paytm)', token: '6705', exchange: 'NSE', tradingSymbol: 'PAYTM-EQ' },
+                                                    { symbol: 'PIIND-EQ', displayName: 'PIIND', name: 'PI Industries', token: '2824', exchange: 'NSE', tradingSymbol: 'PIIND-EQ' },
+                                                    { symbol: 'PIDILITIND-EQ', displayName: 'PIDILITIND', name: 'Pidilite Industries', token: '2664', exchange: 'NSE', tradingSymbol: 'PIDILITIND-EQ' },
+                                                    { symbol: 'PGHH-EQ', displayName: 'PGHH', name: 'P&G Hygiene & Health Care', token: '2855', exchange: 'NSE', tradingSymbol: 'PGHH-EQ' },
+                                                    { symbol: 'SBICARD-EQ', displayName: 'SBICARD', name: 'SBI Cards & Payment Services', token: '10916', exchange: 'NSE', tradingSymbol: 'SBICARD-EQ' },
+                                                    { symbol: 'SRF-EQ', displayName: 'SRF', name: 'SRF', token: '3273', exchange: 'NSE', tradingSymbol: 'SRF-EQ' },
+                                                    { symbol: 'MOTHERSON-EQ', displayName: 'MOTHERSON', name: 'Samvardhana Motherson', token: '4204', exchange: 'NSE', tradingSymbol: 'MOTHERSON-EQ' },
+                                                    { symbol: 'SHREECEM-EQ', displayName: 'SHREECEM', name: 'Shree Cement', token: '3103', exchange: 'NSE', tradingSymbol: 'SHREECEM-EQ' },
+                                                    { symbol: 'SIEMENS-EQ', displayName: 'SIEMENS', name: 'Siemens India', token: '3144', exchange: 'NSE', tradingSymbol: 'SIEMENS-EQ' },
+                                                    { symbol: 'TATAPOWER-EQ', displayName: 'TATAPOWER', name: 'Tata Power', token: '3426', exchange: 'NSE', tradingSymbol: 'TATAPOWER-EQ' },
+                                                    { symbol: 'TORNTPHARM-EQ', displayName: 'TORNTPHARM', name: 'Torrent Pharmaceuticals', token: '3518', exchange: 'NSE', tradingSymbol: 'TORNTPHARM-EQ' },
+                                                    { symbol: 'UNITDSPR-EQ', displayName: 'UNITDSPR', name: 'United Spirits', token: '3574', exchange: 'NSE', tradingSymbol: 'UNITDSPR-EQ' },
+                                                    { symbol: 'VEDL-EQ', displayName: 'VEDL', name: 'Vedanta', token: '3063', exchange: 'NSE', tradingSymbol: 'VEDL-EQ' },
+                                                    { symbol: 'ZOMATO-EQ', displayName: 'ZOMATO', name: 'Zomato', token: '5165', exchange: 'NSE', tradingSymbol: 'ZOMATO-EQ' },
+                                                  ];
+                                                  const filteredStocks = PREDEFINED_STOCKS.filter(s => {
+                                                    const q = watchlistSearchQuery.toLowerCase();
+                                                    return !q || s.displayName.toLowerCase().includes(q) || s.name.toLowerCase().includes(q);
+                                                  });
+                                                  const alreadyAdded = new Set(watchlistSymbols.map(s => s.symbol));
+                                                  return (
+                                                    <div className="relative mb-3">
+                                                      <button
+                                                        onClick={() => {
+                                                          setWatchlistDropdownOpen(!watchlistDropdownOpen);
+                                                          setWatchlistSearchQuery('');
+                                                        }}
+                                                        className="w-full h-8 flex items-center justify-between px-3 bg-gray-800 border border-gray-600 rounded-md text-xs text-gray-400 hover:border-gray-500 transition-colors"
+                                                        data-testid="button-watchlist-dropdown-toggle"
+                                                      >
+                                                        <span className="flex items-center gap-2">
+                                                          <Plus className="h-3.5 w-3.5" />
+                                                          Add stock to watchlist...
+                                                        </span>
+                                                        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${watchlistDropdownOpen ? 'rotate-180' : ''}`} />
+                                                      </button>
+                                                      {watchlistDropdownOpen && (
+                                                        <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-lg z-50 shadow-xl">
+                                                          <div className="p-2 border-b border-gray-700">
+                                                            <div className="relative">
+                                                              <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-500" />
+                                                              <input
+                                                                autoFocus
+                                                                placeholder="Search stocks..."
+                                                                value={watchlistSearchQuery}
+                                                                onChange={e => setWatchlistSearchQuery(e.target.value)}
+                                                                className="w-full h-7 pl-7 pr-3 text-xs bg-gray-900 border border-gray-600 rounded text-gray-200 placeholder:text-gray-500 outline-none focus:border-blue-500"
+                                                                data-testid="input-watchlist-dropdown-search"
+                                                              />
+                                                            </div>
                                                           </div>
-                                                          <button
-                                                            onClick={() => {
-                                                              addToWatchlist(result);
-                                                              setWatchlistSearchQuery('');
-                                                            }}
-                                                            className="ml-2 flex-shrink-0 text-gray-400 hover:text-green-400 transition-colors p-1"
-                                                            data-testid={`button-add-watchlist-${idx}`}
-                                                          >
-                                                            <Plus className="h-4 w-4" />
-                                                          </button>
+                                                          <div className="max-h-52 overflow-y-auto">
+                                                            {filteredStocks.length === 0 ? (
+                                                              <div className="px-3 py-4 text-center text-xs text-gray-500">No results found</div>
+                                                            ) : filteredStocks.map((stock, idx) => {
+                                                              const added = alreadyAdded.has(stock.symbol);
+                                                              return (
+                                                                <button
+                                                                  key={stock.symbol}
+                                                                  disabled={added}
+                                                                  onClick={() => {
+                                                                    if (!added) {
+                                                                      addToWatchlist(stock);
+                                                                      setWatchlistDropdownOpen(false);
+                                                                      setWatchlistSearchQuery('');
+                                                                    }
+                                                                  }}
+                                                                  className={`w-full flex items-center justify-between px-3 py-2 border-b border-gray-700 last:border-b-0 transition-colors text-left ${added ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-700/60 cursor-pointer'}`}
+                                                                  data-testid={`watchlist-dropdown-item-${idx}`}
+                                                                >
+                                                                  <div className="min-w-0">
+                                                                    <div className="text-xs font-medium text-gray-200">{stock.displayName}</div>
+                                                                    <div className="text-xs text-gray-500 truncate">{stock.name}</div>
+                                                                  </div>
+                                                                  <div className="ml-2 shrink-0">
+                                                                    {added ? (
+                                                                      <span className="text-xs text-green-500">Added</span>
+                                                                    ) : (
+                                                                      <Plus className="h-3.5 w-3.5 text-gray-500" />
+                                                                    )}
+                                                                  </div>
+                                                                </button>
+                                                              );
+                                                            })}
+                                                          </div>
                                                         </div>
-                                                      ))}
+                                                      )}
                                                     </div>
-                                                  )}
-                                                </div>
+                                                  );
+                                                })()}
 
                                                 {/* Watchlist Items */}
                                                 <div className="space-y-1 max-h-48 overflow-y-auto">
