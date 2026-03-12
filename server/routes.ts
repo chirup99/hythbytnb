@@ -7173,7 +7173,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       allNews.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
-      res.json(allNews.slice(0, 80));
+      res.json(allNews.slice(0, 100));
     } catch (error) {
       console.error('Error fetching general market news:', error);
       res.status(500).json({ error: 'Failed to fetch general market news' });

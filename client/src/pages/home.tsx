@@ -15777,7 +15777,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                 <p className="text-xs text-gray-500">{isAllMode ? 'Click Refresh to load latest market news' : 'Add stocks to your watchlist or click Refresh'}</p>
                                               </div>
                                             ) : (
-                                              <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+                                              <div className="space-y-3 max-h-[900px] overflow-y-auto pr-1">
                                                 {newsItems.map((item, index) => (
                                                   <div
                                                     key={`${item.url}-${index}`}
