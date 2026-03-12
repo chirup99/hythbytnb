@@ -21039,25 +21039,62 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                       <div className="flex items-center justify-center h-20">
                                         <Loader2 className="w-4 h-4 animate-spin text-slate-400" />
                                       </div>
-                                    ) : nifty50NewsItems.length > 0 ? (
-                                      <div className="divide-y divide-slate-100 dark:divide-slate-800">
-                                        {nifty50NewsItems.slice(0, 30).map((news, idx) => (
-                                          <div
-                                            key={`${news.url}-${idx}`}
-                                            className="py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer"
-                                            onClick={() => window.open(news.url, '_blank', 'noopener,noreferrer')}
-                                          >
-                                            <p className="text-[10px] text-slate-700 dark:text-slate-300 line-clamp-2 leading-tight mb-0.5">{news.title}</p>
-                                            <div className="flex items-center gap-1.5">
-                                              <span className="text-[9px] font-semibold text-indigo-500 dark:text-indigo-400 shrink-0">{news.displayName}</span>
-                                              <span className="text-[9px] text-slate-400 shrink-0">{getWatchlistNewsRelativeTime(news.publishedAt)}</span>
-                                            </div>
+                                    ) : (() => {
+                                      const now = new Date();
+                                      let fromDate: Date;
+                                      let toDate: Date;
+                                      let rangeLabel: string;
+                                      if (selectedDate) {
+                                        fromDate = new Date(selectedDate);
+                                        fromDate.setDate(fromDate.getDate() - 3);
+                                        fromDate.setHours(0, 0, 0, 0);
+                                        toDate = new Date(selectedDate);
+                                        toDate.setDate(toDate.getDate() + 3);
+                                        toDate.setHours(23, 59, 59, 999);
+                                        const fmt = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+                                        rangeLabel = `${fmt(fromDate)} – ${fmt(toDate)}`;
+                                      } else {
+                                        toDate = new Date(now);
+                                        toDate.setHours(23, 59, 59, 999);
+                                        fromDate = new Date(now);
+                                        fromDate.setDate(fromDate.getDate() - 7);
+                                        fromDate.setHours(0, 0, 0, 0);
+                                        rangeLabel = "Last 7 days";
+                                      }
+                                      const filtered = nifty50NewsItems.filter(n => {
+                                        const t = new Date(n.publishedAt).getTime();
+                                        return t >= fromDate.getTime() && t <= toDate.getTime();
+                                      });
+                                      return (
+                                        <>
+                                          <div className="flex items-center justify-between pb-1 mb-1 border-b border-slate-100 dark:border-slate-800">
+                                            <span className="text-[9px] font-medium text-slate-400 uppercase tracking-wide">{rangeLabel}</span>
+                                            {selectedDate && (
+                                              <span className="text-[9px] text-indigo-400 font-medium">±3 days</span>
+                                            )}
                                           </div>
-                                        ))}
-                                      </div>
-                                    ) : (
-                                      <p className="text-slate-400 italic text-center text-xs mt-4">No news found.</p>
-                                    )}
+                                          {filtered.length > 0 ? (
+                                            <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                                              {filtered.map((news, idx) => (
+                                                <div
+                                                  key={`${news.url}-${idx}`}
+                                                  className="py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer"
+                                                  onClick={() => window.open(news.url, '_blank', 'noopener,noreferrer')}
+                                                >
+                                                  <p className="text-[10px] text-slate-700 dark:text-slate-300 line-clamp-2 leading-tight mb-0.5">{news.title}</p>
+                                                  <div className="flex items-center gap-1.5">
+                                                    <span className="text-[9px] font-semibold text-indigo-500 dark:text-indigo-400 shrink-0">{news.displayName}</span>
+                                                    <span className="text-[9px] text-slate-400 shrink-0">{getWatchlistNewsRelativeTime(news.publishedAt)}</span>
+                                                  </div>
+                                                </div>
+                                              ))}
+                                            </div>
+                                          ) : (
+                                            <p className="text-slate-400 italic text-center text-xs mt-4">No news for this period.</p>
+                                          )}
+                                        </>
+                                      );
+                                    })()}
                                   </div>
                                 ) : (
                                   <>
