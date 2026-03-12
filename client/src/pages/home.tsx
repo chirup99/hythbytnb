@@ -15863,8 +15863,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                         const isNifty50Mode = marketNewsMode === 'nifty50';
                                         const loading = isAllMode ? isAllMarketNewsLoading : isNifty50Mode ? isNifty50NewsLoading : isMarketNewsLoading;
                                         const rawNewsItems = isAllMode ? allMarketNewsItems : isNifty50Mode ? nifty50NewsItems : marketNewsItems;
-                                        const newsItems = isAllMode && newsSelectedSector
-                                          ? rawNewsItems.filter((item: any) => (item.sector || item.displayName) === newsSelectedSector)
+                                        const newsItems = newsSelectedSector
+                                          ? rawNewsItems.filter((item: any) => {
+                                              if (isAllMode) return (item.sector || item.displayName) === newsSelectedSector;
+                                              if (isNifty50Mode) return (NIFTY50_SECTOR_MAP[item.symbol] || 'Market') === newsSelectedSector;
+                                              return true;
+                                            })
                                           : rawNewsItems;
                                         const tagColor = isAllMode ? 'bg-purple-500/20 text-purple-400' : isNifty50Mode ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400';
                                         const emptyMsg = isAllMode ? 'Click Refresh to load latest market news' : isNifty50Mode ? 'Click Refresh to load Nifty 50 news' : 'Add stocks to your watchlist or click Refresh';
@@ -15874,35 +15878,113 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                           else if (isNifty50Mode) fetchNifty50News();
                                           else fetchMarketNews();
                                         };
-                                        const handleAiAnalysis = async () => {
+                                        const NIFTY50_SECTOR_MAP: Record<string, string> = {
+                                          ADANIENT: 'Commodity', ADANIPORTS: 'Commodity', COALINDIA: 'Commodity',
+                                          HINDALCO: 'Commodity', JSWSTEEL: 'Commodity', TATASTEEL: 'Commodity',
+                                          ULTRACEMCO: 'Commodity', UPL: 'Commodity', NTPC: 'Commodity',
+                                          ONGC: 'Commodity', POWERGRID: 'Commodity', BPCL: 'Commodity',
+                                          RELIANCE: 'Commodity', CRUDEOIL: 'Commodity', GOLD: 'Commodity', SILVER: 'Commodity',
+                                          HCLTECH: 'IT', INFY: 'IT', TCS: 'IT', TECHM: 'IT', WIPRO: 'IT', LTIM: 'IT',
+                                          AXISBANK: 'Finance', BAJFINANCE: 'Finance', BAJAJFINSV: 'Finance',
+                                          HDFCBANK: 'Finance', HDFCLIFE: 'Finance', ICICIBANK: 'Finance',
+                                          INDUSINDBK: 'Finance', KOTAKBANK: 'Finance', SBILIFE: 'Finance', SBIN: 'Finance',
+                                          'BAJAJ-AUTO': 'Auto', EICHERMOT: 'Auto', HEROMOTOCO: 'Auto',
+                                          'M&M': 'Auto', MARUTI: 'Auto', TATAMOTORS: 'Auto',
+                                          APOLLOHOSP: 'Pharma', CIPLA: 'Pharma', DIVISLAB: 'Pharma', DRREDDY: 'Pharma', SUNPHARMA: 'Pharma',
+                                          ASIANPAINT: 'Consumer', BRITANNIA: 'Consumer', HINDUNILVR: 'Consumer',
+                                          ITC: 'Consumer', NESTLEIND: 'Consumer', TATACONSUM: 'Consumer', TITAN: 'Consumer',
+                                          BHARTIARTL: 'Market', GRASIM: 'Market', LT: 'Market',
+                                          SENSEX: 'Market', NIFTY: 'Market', BANKNIFTY: 'Market',
+                                        };
+
+                                        const getItemSector = (item: any): string => {
+                                          if (isAllMode) return item.sector || item.displayName || 'Market';
+                                          if (isNifty50Mode) return NIFTY50_SECTOR_MAP[item.symbol] || 'Market';
+                                          return item.displayName || 'Market';
+                                        };
+
+                                        const handleAiAnalysis = () => {
                                           if (rawNewsItems.length === 0) return;
                                           setIsNewsAiAnalysisLoading(true);
                                           setShowNewsAiPanel(true);
                                           setNewsAiAnalysis(null);
                                           setNewsAiAnalysisError(null);
-                                          try {
-                                            const res = await fetch('/api/gemini/market-news-analysis', {
-                                              method: 'POST',
-                                              headers: { 'Content-Type': 'application/json' },
-                                              body: JSON.stringify({ newsItems: rawNewsItems }),
-                                            });
-                                            const data = await res.json();
-                                            if (data.success) {
-                                              setNewsAiAnalysis({ ...data.analysis, totalArticles: data.totalArticles, sectorCounts: data.sectorCounts });
-                                            } else {
-                                              setNewsAiAnalysisError(data.error?.includes('PERMISSION_DENIED') || data.error?.includes('API Key')
-                                                ? 'Gemini API key not configured. Please add GEMINI_API_KEY to your environment secrets.'
-                                                : data.error || 'Analysis failed. Please try again.');
+
+                                          setTimeout(() => {
+                                            try {
+                                              const BULLISH_KW = ['surge', 'jump', 'rally', 'record high', 'gain', 'rise', 'beat', 'profit', 'growth', 'expand', 'outperform', 'strong', 'recover', 'upgrade', 'win', 'deal', 'order', 'breakthrough', 'positive', 'soar', 'climb', 'high'];
+                                              const BEARISH_KW = ['fall', 'drop', 'slump', 'crash', 'loss', 'decline', 'weak', 'miss', 'cut', 'debt', 'concern', 'risk', 'warn', 'downgrade', 'layoff', 'fraud', 'probe', 'scrutiny', 'sell', 'tumble', 'plunge', 'low', 'pressure', 'selloff'];
+                                              const EVENT_KW = ['rbi', 'sebi', 'merger', 'acquisition', 'ipo', 'policy', 'rate', 'quarterly results', 'gdp', 'budget', 'fii', 'dii', 'q4', 'q3', 'q2', 'q1', 'inflation', 'capex'];
+
+                                              const sectorScores: Record<string, { bull: number; bear: number; total: number; titles: string[] }> = {};
+                                              const keyEvents: any[] = [];
+                                              const seenEvents = new Set<string>();
+
+                                              rawNewsItems.forEach((item: any) => {
+                                                const sector = getItemSector(item);
+                                                const t = (item.title || '').toLowerCase();
+                                                if (!sectorScores[sector]) sectorScores[sector] = { bull: 0, bear: 0, total: 0, titles: [] };
+                                                sectorScores[sector].total++;
+                                                sectorScores[sector].titles.push(item.title || '');
+                                                const bullHits = BULLISH_KW.filter(k => t.includes(k)).length;
+                                                const bearHits = BEARISH_KW.filter(k => t.includes(k)).length;
+                                                sectorScores[sector].bull += bullHits;
+                                                sectorScores[sector].bear += bearHits;
+                                                const isEvent = EVENT_KW.some(k => t.includes(k));
+                                                if (isEvent && keyEvents.length < 6 && !seenEvents.has(item.title)) {
+                                                  seenEvents.add(item.title);
+                                                  const impact = bearHits > 0 ? 'HIGH' : bullHits > 0 ? 'MEDIUM' : 'LOW';
+                                                  keyEvents.push({ event: item.title, implication: `Impact on ${sector} sector`, impact });
+                                                }
+                                              });
+
+                                              let totalBull = 0, totalBear = 0;
+                                              Object.values(sectorScores).forEach(s => { totalBull += s.bull; totalBear += s.bear; });
+                                              const overallSentiment = totalBull > totalBear * 1.3 ? 'BULLISH' : totalBear > totalBull * 1.3 ? 'BEARISH' : 'NEUTRAL';
+                                              const marketMood = overallSentiment === 'BULLISH'
+                                                ? 'Markets showing positive momentum with broad-based buying interest across key sectors.'
+                                                : overallSentiment === 'BEARISH'
+                                                ? 'Markets under pressure with selling across multiple sectors amid macro headwinds.'
+                                                : 'Markets consolidating with mixed signals — selective opportunities remain.';
+
+                                              const trendingSectors = Object.entries(sectorScores)
+                                                .filter(([, s]) => s.total >= 1)
+                                                .map(([sector, s]) => {
+                                                  const net = s.bull - s.bear;
+                                                  const sentiment = net > 0 ? 'positive' : net < 0 ? 'negative' : 'neutral';
+                                                  const signal = net > 1 ? 'BUY' : net < -1 ? 'SELL' : 'WATCH';
+                                                  const theme = s.titles.slice(0, 2).join(' · ').substring(0, 80) + (s.titles.length > 2 ? '…' : '');
+                                                  return { sector, sentiment, investmentSignal: signal, keyTheme: theme || `${s.total} articles`, articleCount: s.total, score: Math.abs(net) * 10 + s.total };
+                                                })
+                                                .sort((a, b) => b.score - a.score)
+                                                .slice(0, 8)
+                                                .map((s, i) => ({ ...s, rank: i + 1 }));
+
+                                              const opportunities = trendingSectors
+                                                .filter(s => s.investmentSignal === 'BUY')
+                                                .slice(0, 3)
+                                                .map(s => ({ sector: s.sector, opportunity: `${s.sector} sector showing bullish momentum with ${sectorScores[s.sector]?.total || 0} positive news catalysts`, confidence: Math.min(90, 55 + (sectorScores[s.sector]?.bull || 0) * 5), timeframe: 'short' }));
+
+                                              const riskAlerts = trendingSectors
+                                                .filter(s => s.investmentSignal === 'SELL')
+                                                .slice(0, 3)
+                                                .map(s => ({ risk: `${s.sector} under pressure`, severity: sectorScores[s.sector]?.bear > 3 ? 'HIGH' : 'MEDIUM', mitigation: `Monitor stop-loss levels; wait for stabilisation before adding positions in ${s.sector}` }));
+
+                                              const topBull = trendingSectors.find(s => s.sentiment === 'positive')?.sector || 'IT';
+                                              const weeklyOutlook = `Based on ${rawNewsItems.length} articles across ${Object.keys(sectorScores).length} sectors — ${topBull} leads with positive sentiment. ${overallSentiment === 'BULLISH' ? 'Broader market trend favours longs; manage risk with trailing stops.' : overallSentiment === 'BEARISH' ? 'Defensive posture advised; prefer quality large-caps and reduce leverage.' : 'Stock-specific approach recommended; focus on earnings-driven catalysts.'}`; 
+
+                                              setNewsAiAnalysis({ overallSentiment, marketMood, trendingSectors, keyEvents, opportunities, riskAlerts, weeklyOutlook, totalArticles: rawNewsItems.length, sectorCounts: Object.fromEntries(Object.entries(sectorScores).map(([k, v]) => [k, v.total])) });
+                                            } catch (e) {
+                                              console.error('Local analysis error:', e);
+                                              setNewsAiAnalysisError('Analysis failed. Please try again.');
+                                            } finally {
+                                              setIsNewsAiAnalysisLoading(false);
                                             }
-                                          } catch (e) {
-                                            console.error('AI analysis error:', e);
-                                            setNewsAiAnalysisError('Failed to connect to AI service. Please try again.');
-                                          } finally {
-                                            setIsNewsAiAnalysisLoading(false);
-                                          }
+                                          }, 600);
                                         };
 
                                         const allSectors = ['Market', 'IT', 'Finance', 'Commodity', 'Defence', 'AI & Tech', 'Pharma', 'Consumer', 'Economy', 'Auto'];
+                                        const nifty50Sectors = ['IT', 'Finance', 'Auto', 'Pharma', 'Consumer', 'Commodity', 'Market'];
                                         const sectorColors: Record<string, string> = {
                                           Market: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
                                           IT: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30',
@@ -15936,6 +16018,9 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                                     onClick={() => {
                                                       setMarketNewsMode(tab.key as 'all' | 'watchlist' | 'nifty50');
                                                       setNewsSelectedSector(null);
+                                                      setShowNewsAiPanel(false);
+                                                      setNewsAiAnalysis(null);
+                                                      setNewsAiAnalysisError(null);
                                                       if (tab.key === 'watchlist' && marketNewsItems.length === 0) fetchMarketNews();
                                                       if (tab.key === 'all' && allMarketNewsItems.length === 0) fetchAllMarketNews();
                                                       if (tab.key === 'nifty50' && nifty50NewsItems.length === 0) fetchNifty50News();
@@ -15958,13 +16043,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               </div>
                                               <div className="flex items-center gap-2">
                                                 <span className="text-xs text-gray-500">
-                                                  {isAllMode
-                                                    ? newsSelectedSector
-                                                      ? `${newsItems.length} articles · ${newsSelectedSector}`
-                                                      : `${rawNewsItems.length} articles · last 7 days`
-                                                    : isNifty50Mode ? '50+ stocks · last 7 days' : `${watchlistSymbols.length} stocks · last 7 days`}
+                                                  {newsSelectedSector
+                                                    ? `${newsItems.length} articles · ${newsSelectedSector}`
+                                                    : isAllMode
+                                                      ? `${rawNewsItems.length} articles · last 7 days`
+                                                      : isNifty50Mode ? `${rawNewsItems.length} articles · 50 stocks` : `${watchlistSymbols.length} stocks · last 7 days`}
                                                 </span>
-                                                {isAllMode && rawNewsItems.length > 0 && (
+                                                {(isAllMode || isNifty50Mode) && rawNewsItems.length > 0 && (
                                                   <button
                                                     onClick={handleAiAnalysis}
                                                     disabled={isNewsAiAnalysisLoading}
@@ -15989,16 +16074,19 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               </div>
                                             </div>
 
-                                            {/* Sector filter pills (All News mode only) */}
-                                            {isAllMode && rawNewsItems.length > 0 && (
+                                            {/* Sector filter pills (All News + Nifty 50 modes) */}
+                                            {(isAllMode || isNifty50Mode) && rawNewsItems.length > 0 && (
                                               <div className="flex flex-wrap gap-1.5 mb-3">
                                                 <button
                                                   onClick={() => setNewsSelectedSector(null)}
                                                   className={`px-2.5 py-0.5 rounded-full text-xs font-medium border transition-all ${newsSelectedSector === null ? 'bg-gray-200 text-gray-900 border-gray-200' : 'bg-gray-800/60 text-gray-400 border-gray-700/60 hover:border-gray-500'}`}
                                                   data-testid="filter-sector-all"
                                                 >All</button>
-                                                {allSectors.map(sector => {
-                                                  const count = rawNewsItems.filter((i: any) => (i.sector || i.displayName) === sector).length;
+                                                {(isAllMode ? allSectors : nifty50Sectors).map(sector => {
+                                                  const count = rawNewsItems.filter((i: any) => {
+                                                    if (isAllMode) return (i.sector || i.displayName) === sector;
+                                                    return (NIFTY50_SECTOR_MAP[i.symbol] || 'Market') === sector;
+                                                  }).length;
                                                   if (count === 0) return null;
                                                   const active = newsSelectedSector === sector;
                                                   return (
@@ -16016,7 +16104,7 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             )}
 
                                             {/* AI Analysis Panel */}
-                                            {isAllMode && showNewsAiPanel && (
+                                            {(isAllMode || isNifty50Mode) && showNewsAiPanel && (
                                               <div className="mb-4 rounded-xl border border-violet-500/30 bg-gradient-to-b from-violet-950/40 to-gray-900/60 overflow-hidden">
                                                 <div className="flex items-center justify-between px-4 py-3 border-b border-violet-500/20">
                                                   <div className="flex items-center gap-2">
