@@ -10509,57 +10509,12 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   const [isNewsLoading, setIsNewsLoading] = useState(false);
 
   const [isNotesInNewsMode, setIsNotesInNewsMode] = useState(false);
-  // News fetching logic for Journal tab
+  // When news mode is toggled on in Journal tab, load Nifty 50 news if not already loaded
   useEffect(() => {
-    const fetchNewsForJournal = async () => {
-      setIsNewsLoading(true);
-      try {
-        let query = "Indian Market";
-        let isSymbolSearch = false;
-        
-        if (selectedJournalSymbol) {
-          query = selectedJournalSymbol.replace("NSE:", "").replace("-INDEX", "").replace("-EQ", "").replace("-BE", "");
-          isSymbolSearch = true;
-        }
-        
-        console.log(`📰 [JOURNAL NEWS] Fetching news for: ${query} (isSymbol: ${isSymbolSearch})`);
-        
-        const endpoint = isSymbolSearch 
-          ? `/api/stock-news/${query}?refresh=${Date.now()}`
-          : `/api/stock-news?query=${encodeURIComponent(query)}`;
-          
-        const response = await fetch(endpoint);
-        const data = await response.json();
-        
-        // Handle different backend response structures
-        const results = data.results || data.articles || [];
-        
-        if (data.success && results.length > 0) {
-          setNewsData(results);
-        } else if (isSymbolSearch) {
-          // Fallback to general news only if we searched for a symbol and found nothing
-          console.log(`⚠️ [JOURNAL NEWS] No specific news for ${query}, falling back to general news`);
-          const generalResponse = await fetch("/api/stock-news?query=Indian%20Market");
-          const generalData = await generalResponse.json();
-          const generalResults = generalData.results || generalData.articles || [];
-          if (generalData.success) {
-            setNewsData(generalResults);
-          }
-        } else {
-          // If general search failed or no symbol selected and fetch failed
-          setNewsData([]);
-        }
-      } catch (error) {
-        console.error("❌ [JOURNAL NEWS] Error fetching news:", error);
-      } finally {
-        setIsNewsLoading(false);
-      }
-    };
-
-    if (isNotesInNewsMode) {
-      fetchNewsForJournal();
+    if (isNotesInNewsMode && nifty50NewsItems.length === 0) {
+      fetchNifty50News();
     }
-  }, [isNotesInNewsMode, selectedJournalSymbol]);
+  }, [isNotesInNewsMode]);
 
 
   // Daily life factors system - personal factors affecting market performance
@@ -21080,19 +21035,23 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                 {/* News or Notes content */}
                                 {isNotesInNewsMode ? (
                                   <div className="flex-1 overflow-y-auto custom-thin-scrollbar">
-                                    {isNewsLoading ? (
+                                    {isNifty50NewsLoading && nifty50NewsItems.length === 0 ? (
                                       <div className="flex items-center justify-center h-20">
                                         <Loader2 className="w-4 h-4 animate-spin text-purple-500" />
                                       </div>
-                                    ) : newsData.length > 0 ? (
-                                      <div className="space-y-3">
-                                        {newsData.slice(0, 10).map((news, idx) => (
-                                          <div key={idx} className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-100 dark:border-slate-800">
-                                            <p className="text-[10px] font-medium text-slate-800 dark:text-slate-200 line-clamp-2">{news.title}</p>
-                                            <div className="flex items-center justify-start mt-1">
-                                              <span className="text-[9px] text-purple-500">{news.source}</span>
-                                              <span className="text-[9px] text-slate-500">{news.time}</span>
+                                    ) : nifty50NewsItems.length > 0 ? (
+                                      <div className="space-y-1.5">
+                                        {nifty50NewsItems.slice(0, 30).map((news, idx) => (
+                                          <div
+                                            key={`${news.url}-${idx}`}
+                                            className="px-2 py-1.5 bg-gray-800/40 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700/60"
+                                            onClick={() => window.open(news.url, '_blank', 'noopener,noreferrer')}
+                                          >
+                                            <div className="flex items-center gap-1.5 mb-0.5">
+                                              <span className="text-[9px] px-1 py-0.5 rounded font-medium bg-orange-500/20 text-orange-400 shrink-0">{news.displayName}</span>
+                                              <span className="text-gray-500 text-[9px] shrink-0">{getWatchlistNewsRelativeTime(news.publishedAt)}</span>
                                             </div>
+                                            <p className="text-[10px] font-medium text-slate-200 line-clamp-2 leading-tight">{news.title}</p>
                                           </div>
                                         ))}
                                       </div>
