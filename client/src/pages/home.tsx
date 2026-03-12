@@ -8026,6 +8026,8 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
     source: string;
   }>>([]);
   const [isWatchlistNewsLoading, setIsWatchlistNewsLoading] = useState(false);
+  const [marketNewsItems, setMarketNewsItems] = useState<Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}>>([]);
+  const [isMarketNewsLoading, setIsMarketNewsLoading] = useState(false);
   const [allWatchlistQuarterlyData, setAllWatchlistQuarterlyData] = useState<{[symbol: string]: Array<{
     quarter: string;
     revenue: string;
@@ -8287,6 +8289,52 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
   };
 
   // Get relative time for news
+  const fetchMarketNews = async () => {
+    if (watchlistSymbols.length === 0) {
+      setMarketNewsItems([]);
+      return;
+    }
+    setIsMarketNewsLoading(true);
+    try {
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      const allNews: Array<{title: string; url: string; description?: string; source: string; publishedAt: string; symbol: string; displayName: string;}> = [];
+      const seenUrls = new Set<string>();
+      await Promise.all(
+        watchlistSymbols.map(async (stock) => {
+          try {
+            const cleanSymbol = stock.symbol.replace(/^[A-Z]+:/i, '').replace('-EQ', '').replace('-BE', '');
+            const res = await fetch(`/api/stock-news/${cleanSymbol}`);
+            if (!res.ok) return;
+            const data = await res.json();
+            const items = Array.isArray(data) ? data : (data.news || []);
+            items.forEach((item: any) => {
+              if (!item.url || seenUrls.has(item.url)) return;
+              const publishedDate = new Date(item.publishedAt || item.date || 0);
+              if (publishedDate < oneWeekAgo) return;
+              seenUrls.add(item.url);
+              allNews.push({
+                title: item.title || '',
+                url: item.url || '',
+                description: item.description || item.summary || '',
+                source: item.source || '',
+                publishedAt: item.publishedAt || item.date || new Date().toISOString(),
+                symbol: cleanSymbol,
+                displayName: stock.displayName || cleanSymbol,
+              });
+            });
+          } catch {}
+        })
+      );
+      allNews.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+      setMarketNewsItems(allNews);
+    } catch (error) {
+      console.error('Error fetching market news:', error);
+    } finally {
+      setIsMarketNewsLoading(false);
+    }
+  };
+
   const getWatchlistNewsRelativeTime = (publishedAt: string) => {
     const now = new Date();
     const published = new Date(publishedAt);
@@ -15632,6 +15680,13 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         Watchlist
                                       </h3>
                                       </>
+                                    ) : searchResults.includes("[CHART:MARKET_NEWS]") ? (
+                                      <>
+                      <Newspaper className="h-4 w-4 text-green-400" />
+                      <h3 className="text-lg font-medium text-gray-100">
+                        Market News
+                                      </h3>
+                                      </>
                                     ) : searchResults.includes("[CHART:TRADE]") ? (
                                       <>
                       <Trophy className="h-4 w-4 text-orange-400" />
@@ -15653,6 +15708,73 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                     {(() => {
                                       let renderedContent: any = null;
                                       let processedResults = searchResults;
+
+                                      // Handle Market News view
+                                      if (searchResults.includes("[CHART:MARKET_NEWS]")) {
+                                        return (
+                                          <div className="w-full">
+                                            {/* Header row */}
+                                            <div className="flex items-center justify-between mb-4">
+                                              <div className="flex items-center gap-2">
+                                                <span className="text-sm text-gray-400">
+                                                  Combined news from your {watchlistSymbols.length} watchlist stocks — last 7 days
+                                                </span>
+                                              </div>
+                                              <button
+                                                onClick={() => { fetchMarketNews(); }}
+                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs text-gray-300 transition-colors"
+                                                data-testid="button-refresh-market-news"
+                                              >
+                                                <RefreshCw className={`h-3 w-3 ${isMarketNewsLoading ? 'animate-spin' : ''}`} />
+                                                Refresh
+                                              </button>
+                                            </div>
+
+                                            {isMarketNewsLoading ? (
+                                              <div className="flex flex-col items-center justify-center py-16 gap-3">
+                                                <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+                                                <p className="text-sm text-gray-500">Fetching news from {watchlistSymbols.length} stocks...</p>
+                                              </div>
+                                            ) : marketNewsItems.length === 0 ? (
+                                              <div className="flex flex-col items-center justify-center py-16 gap-3">
+                                                <Newspaper className="h-10 w-10 text-gray-600" />
+                                                <p className="text-sm text-gray-400">No recent news found in the last 7 days</p>
+                                                <p className="text-xs text-gray-500">Add stocks to your watchlist or click Refresh</p>
+                                              </div>
+                                            ) : (
+                                              <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+                                                {marketNewsItems.map((item, index) => (
+                                                  <div
+                                                    key={`${item.url}-${index}`}
+                                                    className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700"
+                                                    onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
+                                                    data-testid={`market-news-item-${index}`}
+                                                  >
+                                                    <div className="flex items-start gap-2">
+                                                      <div className="flex-1 min-w-0">
+                                                        <h4 className="text-gray-200 font-medium text-sm mb-1.5 hover:text-gray-100 transition-colors line-clamp-2 leading-snug">
+                                                          {item.title}
+                                                          <ExternalLink className="h-3 w-3 inline ml-1 opacity-60" />
+                                                        </h4>
+                                                        {item.description && (
+                                                          <p className="text-gray-400 text-xs line-clamp-2 mb-2">{item.description}</p>
+                                                        )}
+                                                        <div className="flex items-center justify-between">
+                                                          <div className="flex items-center gap-2">
+                                                            <span className="text-xs px-1.5 py-0.5 bg-blue-500/20 text-blue-400 rounded font-medium">{item.displayName}</span>
+                                                            <span className="text-gray-500 text-xs">{item.source}</span>
+                                                          </div>
+                                                          <span className="text-gray-500 text-xs shrink-0">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            )}
+                                          </div>
+                                        );
+                                      }
 
                                       // Handle price chart at the top
                                       if (searchResults.includes("[CHART:PRICE_CHART]")) {
@@ -17132,11 +17254,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                         <Button
                           variant="secondary"
                           className="bg-green-600 hover:bg-green-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200"
-                          onClick={() =>
-                            handleSuggestionClick(
-                              "What are today's top financial news and market updates?",
-                            )
-                          }
+                          onClick={() => {
+                            setIsSearchActive(true);
+                            setSearchResults("[CHART:MARKET_NEWS]");
+                            fetchMarketNews();
+                          }}
                         >
                           <div className="flex items-center gap-2">
                             <Newspaper className="h-3 w-3" />
@@ -17342,11 +17464,11 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                               <Button
                                 variant="secondary"
                                 className="bg-green-600 hover:bg-green-700 text-white border-0 h-7 px-2 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0"
-                                onClick={() =>
-                                  handleSuggestionClick(
-                                    "What are today's top financial news and market updates?",
-                                  )
-                                }
+                                onClick={() => {
+                                  setIsSearchActive(true);
+                                  setSearchResults("[CHART:MARKET_NEWS]");
+                                  fetchMarketNews();
+                                }}
                               >
                                 <div className="flex items-center gap-1">
                                   <Newspaper className="h-3 w-3" />
