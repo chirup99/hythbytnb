@@ -15766,42 +15766,33 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                             </div>
 
                                             {loading ? (
-                                              <div className="flex flex-col items-center justify-center py-16 gap-3">
-                                                <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-                                                <p className="text-sm text-gray-500">{isAllMode ? 'Fetching news across all sectors...' : `Fetching news from ${watchlistSymbols.length} stocks...`}</p>
+                                              <div className="flex flex-col items-center justify-center py-8 gap-2">
+                                                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                                                <p className="text-xs text-gray-500">{isAllMode ? 'Fetching news across all sectors...' : `Fetching news from ${watchlistSymbols.length} stocks...`}</p>
                                               </div>
                                             ) : newsItems.length === 0 ? (
-                                              <div className="flex flex-col items-center justify-center py-16 gap-3">
-                                                <Newspaper className="h-10 w-10 text-gray-600" />
-                                                <p className="text-sm text-gray-400">No recent news found in the last 7 days</p>
+                                              <div className="flex flex-col items-center justify-center py-8 gap-2">
+                                                <Newspaper className="h-8 w-8 text-gray-600" />
+                                                <p className="text-xs text-gray-400">No recent news found in the last 7 days</p>
                                                 <p className="text-xs text-gray-500">{isAllMode ? 'Click Refresh to load latest market news' : 'Add stocks to your watchlist or click Refresh'}</p>
                                               </div>
                                             ) : (
-                                              <div className="space-y-3 max-h-[900px] overflow-y-auto pr-1">
+                                              <div className="space-y-1.5 h-[520px] overflow-y-auto pr-1 scrollbar-thin">
                                                 {newsItems.map((item, index) => (
                                                   <div
                                                     key={`${item.url}-${index}`}
-                                                    className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700"
+                                                    className="px-2.5 py-2 bg-gray-800/50 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700/60"
                                                     onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
                                                     data-testid={`market-news-item-${index}`}
                                                   >
-                                                    <div className="flex items-start gap-2">
-                                                      <div className="flex-1 min-w-0">
-                                                        <h4 className="text-gray-200 font-medium text-sm mb-1.5 hover:text-gray-100 transition-colors line-clamp-2 leading-snug">
-                                                          {item.title}
-                                                          <ExternalLink className="h-3 w-3 inline ml-1 opacity-60" />
-                                                        </h4>
-                                                        {item.description && (
-                                                          <p className="text-gray-400 text-xs line-clamp-2 mb-2">{item.description}</p>
-                                                        )}
-                                                        <div className="flex items-center justify-between">
-                                                          <div className="flex items-center gap-2">
-                                                            <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${isAllMode ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400'}`}>{item.displayName}</span>
-                                                            <span className="text-gray-500 text-xs">{item.source}</span>
-                                                          </div>
-                                                          <span className="text-gray-500 text-xs shrink-0">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
-                                                        </div>
-                                                      </div>
+                                                    <p className="text-gray-200 text-xs font-medium line-clamp-1 leading-snug mb-1">
+                                                      {item.title}
+                                                      <ExternalLink className="h-2.5 w-2.5 inline ml-1 opacity-50" />
+                                                    </p>
+                                                    <div className="flex items-center gap-2">
+                                                      <span className={`text-[10px] px-1 py-0.5 rounded font-medium ${isAllMode ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400'}`}>{item.displayName}</span>
+                                                      <span className="text-gray-500 text-[10px] truncate flex-1">{item.source}</span>
+                                                      <span className="text-gray-500 text-[10px] shrink-0">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
                                                     </div>
                                                   </div>
                                                 ))}
