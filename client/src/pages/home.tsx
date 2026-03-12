@@ -15933,62 +15933,23 @@ const [zerodhaTradesDialog, setZerodhaTradesDialog] = useState(false);
                                               </div>
                                             ) : (
                                               <div className="space-y-2 max-h-[680px] overflow-y-auto pr-1">
-                                                {newsItems.map((item, index) => {
-                                                  const stockData = newsStockPrices[item.symbol];
-                                                  const isUp = stockData ? stockData.change >= 0 : null;
-                                                  const sparkColor = isUp === true ? '#22c55e' : isUp === false ? '#ef4444' : '#6b7280';
-                                                  const pts = stockData?.chartData ?? [];
-                                                  let sparkPath = '';
-                                                  if (pts.length >= 2) {
-                                                    const prices = pts.map((p: any) => p.price);
-                                                    const mn = Math.min(...prices), mx = Math.max(...prices);
-                                                    const rng = mx - mn || 1;
-                                                    const W = 56, H = 22;
-                                                    sparkPath = prices.map((p: number, i: number) => {
-                                                      const x = (i / (prices.length - 1)) * W;
-                                                      const y = H - ((p - mn) / rng) * H;
-                                                      return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
-                                                    }).join(' ');
-                                                  }
-                                                  return (
-                                                    <div
-                                                      key={`${item.url}-${index}`}
-                                                      className="px-3 py-2.5 bg-gray-800/40 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700/60"
-                                                      onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
-                                                      data-testid={`market-news-item-${index}`}
-                                                    >
-                                                      <div className="flex items-center gap-2 mb-1.5">
-                                                        <span className={`text-xs px-1.5 py-0.5 rounded font-medium shrink-0 ${tagColor}`}>{item.displayName}</span>
-                                                        <span className="text-gray-200 text-xs line-clamp-1 flex-1 leading-tight font-medium">
-                                                          {item.title}
-                                                          <ExternalLink className="h-2.5 w-2.5 inline ml-1 opacity-50" />
-                                                        </span>
-                                                        <span className="text-gray-500 text-xs shrink-0">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
-                                                      </div>
-                                                      <div className="flex items-center gap-2 pl-0.5">
-                                                        {stockData ? (
-                                                          <>
-                                                            <span className="text-gray-300 text-xs font-mono">
-                                                              {stockData.currency === 'USD'
-                                                                ? `$${stockData.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}`
-                                                                : `₹${stockData.price.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`}
-                                                            </span>
-                                                            <span className={`text-xs font-medium ${isUp ? 'text-green-400' : 'text-red-400'}`}>
-                                                              {isUp ? '▲' : '▼'} {Math.abs(stockData.changePercent).toFixed(2)}%
-                                                            </span>
-                                                            {sparkPath && (
-                                                              <svg width="56" height="22" viewBox="0 0 56 22" className="shrink-0">
-                                                                <path d={sparkPath} fill="none" stroke={sparkColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                              </svg>
-                                                            )}
-                                                          </>
-                                                        ) : (
-                                                          <span className="text-gray-600 text-xs">Loading…</span>
-                                                        )}
-                                                      </div>
+                                                {newsItems.map((item, index) => (
+                                                  <div
+                                                    key={`${item.url}-${index}`}
+                                                    className="px-3 py-2.5 bg-gray-800/40 rounded-lg hover:bg-gray-700/50 transition-colors cursor-pointer border border-gray-700/60"
+                                                    onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
+                                                    data-testid={`market-news-item-${index}`}
+                                                  >
+                                                    <div className="flex items-center gap-2">
+                                                      <span className={`text-xs px-1.5 py-0.5 rounded font-medium shrink-0 ${tagColor}`}>{item.displayName}</span>
+                                                      <span className="text-gray-200 text-xs line-clamp-1 flex-1 leading-tight font-medium">
+                                                        {item.title}
+                                                        <ExternalLink className="h-2.5 w-2.5 inline ml-1 opacity-50" />
+                                                      </span>
+                                                      <span className="text-gray-500 text-xs shrink-0">{getWatchlistNewsRelativeTime(item.publishedAt)}</span>
                                                     </div>
-                                                  );
-                                                })}
+                                                  </div>
+                                                ))}
                                               </div>
                                             )}
                                           </div>
