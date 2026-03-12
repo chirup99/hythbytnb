@@ -18,7 +18,7 @@ import type { InsertSocialPost } from '@shared/schema';
 import { useAudioMode } from '@/contexts/AudioModeContext';
 
 const STOCK_LIST = [
-  'Nifty', 'Banknifty', 'Sensex',
+  'Nifty', 'Banknifty', 'Sensex', 'Crude Oil', 'Gold', 'Silver',
   'Adani Enterprises', 'Adani Ports', 'Apollo Hospitals', 'Asian Paints',
   'Axis Bank', 'Bajaj Auto', 'Bajaj Finance', 'Bajaj Finserv', 'BPCL',
   'Bharti Airtel', 'Britannia', 'Cipla', 'Coal India', "Divi's Laboratories",
